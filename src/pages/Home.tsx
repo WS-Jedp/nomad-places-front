@@ -14,11 +14,13 @@ const Home: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Hello</IonTitle>
+          <IonTitle className="text-8xl">
+            Hello world
+          </IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <section style={{width: "500px", height: "500px" }}>
+        <section className="w-full h-full">
           <GoogleMapWrapper />
         </section>
       </IonContent>

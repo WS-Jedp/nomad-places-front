@@ -31,7 +31,7 @@ export function GoogleMapNomadsComponent({
 
   return (
     <>
-      <div ref={refMap} id="map" style={{ height: "500px" }} />
+      <div ref={refMap} id="map" className="w-full h-full" />
       {map && <NomadPlacesMakers map={map} />}
     </>
   );

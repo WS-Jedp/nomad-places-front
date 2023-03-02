@@ -1,6 +1,7 @@
 import { AppLayout } from "../../layouts/AppLayout";
 import { ItemsAndMapLayout } from "../../layouts/ItemsAndMapLayout";
 import { GoogleMapWrapper } from '../../components/maps/googleMapWrapper'
+import { HandlePlaceCardListItem } from "../../components/places/cards/helpers/handleCardListItem";
 
 export const SearchPlaces: React.FC = () => {
   return (
@@ -10,7 +11,11 @@ export const SearchPlaces: React.FC = () => {
                 <GoogleMapWrapper />
             }
         >
-            <h2>Hello form search places :D</h2>
+            <>
+              <HandlePlaceCardListItem />
+              <HandlePlaceCardListItem />
+              <HandlePlaceCardListItem />
+            </>
         </ItemsAndMapLayout>
     </AppLayout>
   );

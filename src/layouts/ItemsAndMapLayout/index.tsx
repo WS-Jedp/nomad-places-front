@@ -1,38 +1,27 @@
 import React, { useEffect, useRef, useState } from "react"
-import { IonModal } from "@ionic/react"
+import { IonCol, IonList, IonModal, IonRow } from "@ionic/react"
 
-import { useWindowSize } from '../../common/hooks/useWindowSize'
+import { RowPlacesFilterOptions } from '../../components/filters/rowPlacesFilterOptions'
+import { LocationBasicInformation } from '../../components/Location/LocationBasicInformation'
+import { useIsMobile } from '../../common/hooks/useIsMobile'
 
 export const ItemsAndMapLayout: React.FC<{ children: JSX.Element, map: JSX.Element }> = ({ children, map }) => {
 
     const modal = useRef<HTMLIonModalElement>(null);
 
-    const [isMobile, setIsMobile] = useState<boolean>(false)
-    useEffect(() => {
-        if(!isMobile && modal.current) {
-            modal.current.setAttribute('is-open', 'false')
-        }
-    }, [isMobile])
-
-    const [ screenWidth ] = useWindowSize() 
-    useEffect(() => {
-        setIsMobile( screenWidth <= 760 )
-    }, [screenWidth])
+    const [ isMobile ] = useIsMobile()
 
     return (
-        <section
+        <IonRow
             className="
                 relative
-                w-full h-screen
+                w-full h-screen overflow-hidden
                 flex flex-column md:flex-row md:flex-nowrap
                 p-0
             "
         >
             {/* Items */}
-           
-      
                 <IonModal
-                    color="light"
                     ref={modal}
                     isOpen={isMobile}
                     initialBreakpoint={0.42}
@@ -40,23 +29,49 @@ export const ItemsAndMapLayout: React.FC<{ children: JSX.Element, map: JSX.Eleme
                     backdropDismiss={false}
                     backdropBreakpoint={0.5}
                 >
-                    
+                    <LocationBasicInformation />
+                    <RowPlacesFilterOptions />
+
+                    <IonList className="
+                         relative flex flex-col
+                         overflow-y-auto
+                    "
+                    color="light"
+                    >
+                        {
+                            children
+                        }
+                    </IonList>
                 </IonModal>
                 {
                     !isMobile && (
-                        <article 
+                        <IonCol 
+                            size="12"
+                            sizeMd="7"
                             className="
-                                block
+                                relative
+                                flex flex-col
                                 w-full min-w-full md:w-7/12 md:min-w-min
-                                p-6
-                                bg-gray-100
+                                bg-white text-black
                                 z-30
+                                ion-no-padding
                             "
                         >
-                            {
-                                children
-                            }
-                        </article>
+                            {/* Filters */}
+                            <LocationBasicInformation />
+                            <RowPlacesFilterOptions />
+                            <IonList className="
+                                relative flex flex-col md:flex-row md:flex-wrap
+                                w-full
+                                p-6
+                                md:bg-white
+                            "
+                            >
+                                {
+                                    children
+                                }
+                            </IonList>
+                        </IonCol>
                     )
                 }
             
@@ -64,18 +79,21 @@ export const ItemsAndMapLayout: React.FC<{ children: JSX.Element, map: JSX.Eleme
 
 
             {/* Map */}
-            <article
+            <IonCol
+                size="12"
+                sizeMd="5"
                 className="
                     block
                     w-full min-w-full h-full md:w-5/12 md:min-w-min
                     bg-gray-500
                     z-40
+                    ion-no-padding ion-no-margin
                 "
             >
                 {
                     map
                 }
-            </article>
-        </section>
+            </IonCol>
+        </IonRow>
     )
 }

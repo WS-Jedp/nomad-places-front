@@ -5,6 +5,7 @@ export const FilterTag: React.FC<{ text: string, action: MouseEventHandler<HTMLB
         className={`
             inline-flex
             text-center
+            h-7
             p-1 px-3 mr-3
             shadow-md
             rounded-md

@@ -60,11 +60,13 @@ export const ItemsAndMapLayout: React.FC<{ children: JSX.Element, map: JSX.Eleme
                             {/* Filters */}
                             <LocationBasicInformation />
                             <RowPlacesFilterOptions />
+
                             <IonList className="
                                 relative flex flex-col md:flex-row md:flex-wrap
                                 w-full
                                 p-6
                                 md:bg-white
+                                overflow-y-auto
                             "
                             >
                                 {

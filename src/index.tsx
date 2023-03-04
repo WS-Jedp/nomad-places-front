@@ -1,16 +1,22 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { defineCustomElements } from '@ionic/pwa-elements/loader'
+import { Provider } from 'react-redux'
+
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
+import { reduxStore } from './store/redux';
+
 
 const container = document.getElementById('root');
 const root = createRoot(container!);
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <Provider store={reduxStore}>
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  </Provider>
 );
 
 // If you want your app to work offline and load faster, you can change

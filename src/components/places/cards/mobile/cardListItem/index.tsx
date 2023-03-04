@@ -13,14 +13,20 @@ export const PlaceCardListItemMobile: React.FC = () => {
                         </IonCol>
                         <IonCol size="10" class="flex flex-col justify-center items-start">
                             <IonText>
-                                <h1 className="font-bold">H1 Heading</h1>
+                                <h1 className="font-bold">Name of the place</h1>
                             </IonText>
                             <IonText>
-                                <p className="font-sans font-regular text-sm">Paragraph</p>
+                                <p className="font-sans font-regular text-sm">
+                                    Type of place - 20+ people
+                                </p>
+                            </IonText>
+                            <IonText>
+                                <span className="text-xs font-light">3,4 km </span>
                             </IonText>
                         </IonCol>
                     </IonRow>
 
+                    {/* Multimedia */}
                     <IonRow 
                         className="
                             relative

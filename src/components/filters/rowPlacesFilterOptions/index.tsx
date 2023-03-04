@@ -34,7 +34,7 @@ export const RowPlacesFilterOptions: React.FC<{ chilren?: JSX.Element}> = ({ chi
     return (
         <IonRow className="
             relative
-            w-full overflow-x-auto
+            w-full h-24 overflow-x-auto overflow-y-hidden
             flex-nowrap
             p-6
             border-y border-gray-300

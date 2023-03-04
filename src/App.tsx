@@ -23,7 +23,7 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
-// import './index.css'
+import './index.css'
 import './tailwind/input.css'
 import './tailwind/output.css'
 

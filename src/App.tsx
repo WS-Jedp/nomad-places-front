@@ -1,8 +1,10 @@
-import { Redirect, Route } from 'react-router-dom';
+import { Switch, BrowserRouter } from 'react-router-dom'
 import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
+import { Redirect, Route } from 'react-router-dom';
 import { IonReactRouter } from '@ionic/react-router';
-import Home from './pages/Home';
 import { SearchPlaces } from './pages/SearchPlaces';
+import { AppLayout } from './layouts/AppLayout';
+
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -26,21 +28,27 @@ import './theme/variables.css';
 import './index.css'
 import './tailwind/input.css'
 import './tailwind/output.css'
+import Home from './pages/Home';
 
 setupIonicReact();
 
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
-      <IonRouterOutlet className='bg-gray-100'>
-        <Route exact path="/home">
-          <SearchPlaces />
-        </Route>
-        <Route exact path="/">
-          <Redirect to="/home" />
-        </Route>
-      </IonRouterOutlet>
-    </IonReactRouter>
+      <AppLayout>
+          <Switch>
+              <Route path="/home">
+                <SearchPlaces />
+              </Route>
+              <Route exact path="/random">
+                <Home />
+              </Route>
+              <Route path="*">
+                <Redirect to="/home" />
+              </Route>
+          </Switch>
+      </AppLayout>
+    </IonReactRouter  >
   </IonApp>
 );
 

@@ -1,16 +1,19 @@
 import {  IonCol, IonItem, IonRow, IonText } from "@ionic/react"
-import { MULTIMEDIA_TYPE } from "../../../../../models/multimedia"
+import { useHistory } from "react-router-dom"
+import { Place } from "../../../../../models/places"
 import { PlaceCardMultimediaSlider } from '../../../../slider/placeCardMultimedia'
 
-export const PlaceCardListItemDesktop: React.FC = () => {
+interface PlaceCardListItemProps {
+    place: Place
+}
 
-    const handlePlaceClick = () => {
-        console.log("I jsut click this thing!")
-    }
 
+export const PlaceCardListItemDesktop: React.FC<PlaceCardListItemProps> = ({ place }) => {
+
+    const history = useHistory()
 
     return (
-        <IonRow className="bg-none bg-white-300 flex items-center p-0 m-0 w-4/12 md:bg-white" onClick={() => handlePlaceClick()}>
+        <IonRow className="bg-none bg-white-300 flex items-center p-0 m-0 w-4/12 md:bg-white" onClick={() => history.push(`/home/detail/${place.id}`)}>
             <IonRow 
                 className="
                     relative
@@ -19,11 +22,9 @@ export const PlaceCardListItemDesktop: React.FC = () => {
                     px-3
                 "
             > 
-
                 <PlaceCardMultimediaSlider 
-                    multimedia={ [{ type: MULTIMEDIA_TYPE.IMAGE, url: "HELLO WORLD" }, { type: MULTIMEDIA_TYPE.VIDEO, url: "HELLO WORLD" }] }
+                    multimedia={ place.multimedia }
                 />
-              
             </IonRow>
             <IonItem class="relative w-full p-0 ion-no-padding flex flex-col" color="none">
                 
@@ -32,11 +33,11 @@ export const PlaceCardListItemDesktop: React.FC = () => {
                         
                         <IonCol size="12" class="flex flex-col justify-center items-start">
                             <IonText>
-                                <h1 className="font-bold text-black">Name of the place</h1>
+                                <h1 className="font-bold text-black">{ place.name }</h1>
                             </IonText>
                             <IonText>
-                                <p className="font-sans font-regular text-sm text-black">
-                                    Type of place - 20+ people
+                                <p className="font-sans font-regular text-sm text-black capitalize">
+                                    <span className="capitalize">{ place.type[0] }</span> - 20+ people
                                 </p>
                             </IonText>
                             <IonText>
@@ -44,7 +45,6 @@ export const PlaceCardListItemDesktop: React.FC = () => {
                             </IonText>
                         </IonCol>
                     </IonRow>
-
                 </IonRow>
             </IonItem>
         </IonRow>

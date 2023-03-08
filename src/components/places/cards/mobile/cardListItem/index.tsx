@@ -1,9 +1,17 @@
-import { IonAvatar, IonCol, IonItem, IonLabel, IonRow, IonText } from "@ionic/react"
+import { IonAvatar, IonCol, IonItem, IonRow, IonText } from "@ionic/react"
+import { useHistory } from "react-router"
+import { Place } from "../../../../../models/places"
 
-export const PlaceCardListItemMobile: React.FC = () => {
+interface PlaceCardListItemProps {
+    place: Place
+}
+
+export const PlaceCardListItemMobile: React.FC<PlaceCardListItemProps> = ({ place }) => {
+
+    const history = useHistory()
 
     return (
-        <IonRow className="bg-none bg-white-300 flex items-center p-0 m-0 w-full md:bg-white">
+        <IonRow className="bg-none bg-white-300 flex items-center p-0 m-0 w-full md:bg-white" onClick={() => history.push(`/home/detail/${place.id}`)}>
             <IonItem class="relative w-full p-0 ion-no-padding flex flex-col" color="none">
                 <IonRow className="relative w-full p-3">
                     <IonRow class="w-full mb-3 ion-no-padding">
@@ -13,11 +21,11 @@ export const PlaceCardListItemMobile: React.FC = () => {
                         </IonCol>
                         <IonCol size="10" class="flex flex-col justify-center items-start">
                             <IonText>
-                                <h1 className="font-bold">Name of the place</h1>
+                                <h1 className="font-bold">{place.name}</h1>
                             </IonText>
                             <IonText>
-                                <p className="font-sans font-regular text-sm">
-                                    Type of place - 20+ people
+                                <p className="font-sans font-regular text-sm capitalize">
+                                    { place.type[0] } - 20+ people
                                 </p>
                             </IonText>
                             <IonText>

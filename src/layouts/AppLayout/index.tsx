@@ -1,4 +1,4 @@
-import { IonIcon } from '@ionic/react'
+import { IonContent, IonHeader, IonIcon } from '@ionic/react'
 import { navigate } from 'ionicons/icons'
 import './styles.css'
 
@@ -6,13 +6,15 @@ export const AppLayout: React.FC<{ children: JSX.Element }> = ({ children }) => 
 
     return (
         <>
-            <header
+            <IonHeader
+                
                 className="
                     flex items-center justify-around
                     fixed md:sticky top-0 w-full
                     md:border-b md:border-gray-300
                     p-6 py-5 m-0
                     bg-none md:bg-white
+                    ion-no-border
                     z-50
                 "
             >
@@ -29,15 +31,15 @@ export const AppLayout: React.FC<{ children: JSX.Element }> = ({ children }) => 
                     <IonIcon size='small' icon={navigate} color='primary' />
                 </span>
 
-            </header>
+            </IonHeader>
 
-            <section className='
-                w-full
+            <IonContent className='
+                w-full h-full
             '>
                 {
                     children
                 }
-            </section>
+            </IonContent>
         </>
     )
 }

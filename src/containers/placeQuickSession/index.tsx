@@ -1,18 +1,31 @@
-import { IonAvatar, IonCol, IonIcon, IonRouterLink, IonRow, IonText } from "@ionic/react";
+import {
+  IonAvatar,
+  IonCol,
+  IonContent,
+  IonIcon,
+  IonRouterLink,
+  IonRow,
+  IonText,
+} from "@ionic/react";
 import { arrowBack } from "ionicons/icons";
+import { useState } from "react";
+
+import { StoryMultimediaCard } from "../../components/multimedia/stories/cards";
 
 // This quickSession detail will only show what is going on in the place
-// The page detail from a place or the session of a place should allow interact with it 
+// The page detail from a place or the session of a place should allow interact with it
 export const PlaceQuickSession: React.FC = () => {
+  const [isRecentActivity, setIsRecentActivity] = useState<boolean>(true);
+
   return (
-    <IonRow
+    <section
       className="
             relative
-            w-full h-auto
+            w-full h-screen
             flex flex-col items-start justify-start
         "
     >
-    {/* Go back action */}
+      {/* Go back action */}
       <IonRow
         className="
                 relative
@@ -22,12 +35,15 @@ export const PlaceQuickSession: React.FC = () => {
                 mb-1
             "
       >
-        <IonRouterLink className="text-md font-bold font-sans" routerLink="/home">
-            <IonIcon icon={arrowBack} className="mr-1" />
+        <IonRouterLink
+          className="text-md font-bold font-sans"
+          routerLink="/home"
+        >
+          <IonIcon icon={arrowBack} className="mr-1" />
 
-            <IonText color="white" className="inline">
-                Go back
-            </IonText>
+          <IonText color="white" className="inline">
+            Go back
+          </IonText>
         </IonRouterLink>
       </IonRow>
 
@@ -38,77 +54,122 @@ export const PlaceQuickSession: React.FC = () => {
           <IonAvatar color="white" className="bg-gray-300"></IonAvatar>
         </IonCol>
         <IonCol size="7">
-            <IonRow className="flex flex-col justify-center items-start px-7 md:px-5">
-                <IonText>
-                    <h1 className="font-bold">Place name</h1>
-                </IonText>
-              
-                <IonText>
-                    <span className="text-xs font-light">Av. Pobaldo - 3,4 km </span>
-                </IonText>
-            </IonRow>
+          <IonRow className="h-full flex flex-col justify-center px-7 md:px-5">
+            <IonText>
+              <h1 className="font-bold">Place name</h1>
+            </IonText>
+            <IonText>
+              <span className="text-xs font-light">Av. Pobaldo - 3,4 km </span>
+            </IonText>
+          </IonRow>
         </IonCol>
         <IonCol size="4">
-            <IonRow className="
+          <IonRow
+            className="
                 w-full h-full
                 flex flex-row
                 items-center justify-center
             "
-            >
-                <IonText className="m-1">
-                    See
-                </IonText>
-                <IonText className="m-1">
-                    Subs
-                </IonText>
-            </IonRow>
+          >
+            <IonText className="m-1">See</IonText>
+            <IonText className="m-1">Subs</IonText>
+          </IonRow>
         </IonCol>
       </IonRow>
 
 
-    {/* Quick session data */}
-      <IonRow className="w-full p-3 border-b border-gray-300">
-            <IonText>
-                <h3 className="text-lg font-bold">People In the session</h3>
-            </IonText>
-            <IonRow className="w-full flex flex-row flex-nowrap">
-                <div>1</div>
-                <div>2</div>
-                <div>3</div>
-                <div>+20</div>
-                {/* Button to be part of the session and redirect the user */}
-                <div>- Be part of it</div> 
+    {/* Scrollable data */}
+      <section className="
+        relative flex flex-col w-full h-full overflow-y-auto mb-3
+      ">
+        {/* Quick session data */}
+        <IonRow className="flex flex-col w-full p-3 border-b border-gray-300">
+            {/* People in the sesion */}
+            <article className="mb-3">
+                <IonText>
+                    <h3 className="text-lg font-bold">People In the session</h3>
+                </IonText>
+                <IonRow className="w-full flex flex-row flex-nowrap items-center justify-between">
+                    <div className="mr-6 flex flex-row flex-nowrap items-center justify-center">
+                        <figure className="relative inline-flex w-8 h-8 rounded-full bg-gray-300 mr-[-9px] shadow-md"></figure>
+                        <figure className="relative inline-flex w-8 h-8 rounded-full bg-gray-300 mr-[-9px] shadow-md"></figure>
+                        <figure className="relative inline-flex w-8 h-8 rounded-full bg-gray-300 mr-[-9px] shadow-md"></figure>
+                        <figure className="relative inline-flex w-8 h-8 rounded-full bg-gray-300 mr-[-9px] shadow-md"></figure>
+                        <strong className="mx-4 font-semibold text-sm">+20</strong>
+                    </div>
+                    {/* Button to be part of the session and redirect the user */}
+                    <div>
+                        <button>Join</button>
+                    </div>
+                </IonRow>
+            </article>
+
+            {/* Status information */}
+            <IonRow className="mt-3">
+                <IonCol size="6">
+                    <IonText>
+                        <h3 className="text-lg font-bold">Status</h3>
+                        </IonText>
+                        <IonRow className="w-full flex flex-row flex-nowrap items-center">
+                        Open <span className="text-sm font-light">- Close at 18:00pm</span>
+                    </IonRow>
+                </IonCol>
+                <IonCol size="6">
+                    <IonText>
+                        <h3 className="text-lg font-bold">Perfect Mindset</h3>
+                    </IonText>
+                    <IonRow className="w-full flex flex-row flex-nowrap items-center">
+                        Study
+                    </IonRow>
+                </IonCol>
             </IonRow>
 
-            <IonText>
-                <h3 className="text-lg font-bold">Status</h3>
-            </IonText>
-            <IonRow className="w-full flex flex-row flex-nowrap items-center">
-                Open <span className="text-sm font-light">- Close at 18:00pm</span>
-            </IonRow>
 
-            <IonText>
-                <h3 className="text-lg font-bold">Perfect Mindset</h3>
-            </IonText>
-            <IonRow className="w-full flex flex-row flex-nowrap items-center">
-                Study
-            </IonRow>
-      </IonRow>
-      
-    {/* Last stories of the place */}
-      <IonRow className="w-full p-3 border-b border-gray-300">
+        </IonRow>
+
+        {/* Last stories of the place */}
+        <IonRow className="w-full h-auto border-b border-gray-300">
             {/* If  the router is not hard to do we should do it with tabs if not we can do render logic to apply it */}
-            <IonText>
-                <h3 className="text-lg font-bold">Recent Activity | Place Multimedia</h3>
-            </IonText>
-            
-      </IonRow>
+            <IonRow className="relative w-full h-auto">
+            <IonCol size="6" onClick={() => setIsRecentActivity(true)}>
+                <section
+                className={`
+                            h-full
+                            flex items-center justify-center 
+                            cursor-pointer hover:bg-gray-200 p-3
+                            ${isRecentActivity ? "bg-gray-200" : ""}
+                        `}
+                >
+                <h2 className={`${isRecentActivity ? "font-bold" : ""}`}>
+                    Recent Activity
+                </h2>
+                </section>
+            </IonCol>
+            <IonCol size="6" onClick={() => setIsRecentActivity(false)}>
+                <section
+                className={`
+                            h-full
+                            flex items-center justify-center 
+                            cursor-pointer hover:bg-gray-200 p-3
+                            ${!isRecentActivity ? "bg-gray-200" : ""}
+                        `}
+                >
+                <h2 className={`${!isRecentActivity ? "font-bold" : ""}`}>
+                    Place multimedia
+                </h2>
+                </section>
+            </IonCol>
+            </IonRow>
+        </IonRow>
 
-      {/* Tabs */}
-      {/* Last stories */}
-      {/* Quick information about the place */}
-        {/* rules - Status - People in the place - People in the session - Tags of the place*/}
-        {/* See more -> Redirect to Specific place detail page*/}
-    </IonRow>
+        {/* Multimedia grid */}
+        <article className="relative w-full h-auto py-3 flex flex-row flex-nowrap overflow-x-auto overflow-y-hidden">
+            <StoryMultimediaCard />
+            <StoryMultimediaCard />
+            <StoryMultimediaCard />
+        </article>
+        </section>
+      </section>
+
   );
 };

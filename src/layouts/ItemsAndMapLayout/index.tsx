@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
   IonCol,
-  IonItem,
   IonList,
   IonModal,
   IonPage,
@@ -9,13 +8,13 @@ import {
   IonRouterOutlet,
   IonRow,
 } from "@ionic/react";
-import { BrowserRouter, Route, useRouteMatch, Switch, Link } from "react-router-dom";
+import {  Route, useRouteMatch } from "react-router-dom";
 
 import { RowPlacesFilterOptions } from "../../components/filters/rowPlacesFilterOptions";
 import { LocationBasicInformation } from "../../components/Location/LocationBasicInformation";
 import { useIsMobile } from "../../common/hooks/useIsMobile";
 import { ListSearchPlaces } from "../../containers/listSearchPlaces";
-import Home from "../../pages/Home";
+import { PlaceQuickSession } from "../../containers/placeQuickSession";
 
 export const ItemsAndMapLayout: React.FC<{
   children: JSX.Element;
@@ -35,7 +34,7 @@ export const ItemsAndMapLayout: React.FC<{
     <IonPage
       className="
                 relative
-                w-full h-screen overflow-hidden
+                w-full h-full overflow-hidden
                 flex flex-column md:flex-row md:flex-nowrap
                 p-0
             "
@@ -45,15 +44,14 @@ export const ItemsAndMapLayout: React.FC<{
         ref={modal}
         isOpen={isMobile}
         initialBreakpoint={0.42}
-        breakpoints={[0.25, 0.5, 0.75]}
+        breakpoints={[0.25, 0.5, 0.81]}
         backdropDismiss={false}
         backdropBreakpoint={0.5}
       >
         <IonRouterOutlet>
             <Route path="/home/detail/:id">
                 <IonRow class="h-full w-full">
-                  <h2>This is the detail page</h2>
-                  <IonRouterLink routerLink="/home">Go back</IonRouterLink>
+                  <PlaceQuickSession />
                 </IonRow>
               </Route>
 
@@ -64,9 +62,8 @@ export const ItemsAndMapLayout: React.FC<{
                 <IonList
                   className="
                       relative flex flex-col
-                      overflow-y-auto
+                      overflow-y-auto bg-neutral-900
                   "
-                  color="light"
                 >
                   {children}
                 </IonList>
@@ -90,17 +87,14 @@ export const ItemsAndMapLayout: React.FC<{
         >
           <IonRouterOutlet>
               <Route path="/home/detail/:id">
-                <IonRow class="h-full w-full">
-                  <h2>This is the detail page</h2>
-                  <IonRouterLink routerLink="/home">Go back</IonRouterLink>
-                </IonRow>
+                  <PlaceQuickSession />
               </Route>
               <Route exact path="/home">
-                <IonRow>
+                <ListSearchPlaces>
                     {
                       children
                     }
-                </IonRow>
+                </ListSearchPlaces>
               </Route>
           </IonRouterOutlet>
         </IonCol>

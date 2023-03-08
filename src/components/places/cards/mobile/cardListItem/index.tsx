@@ -1,6 +1,7 @@
 import { IonAvatar, IonCol, IonItem, IonRow, IonText } from "@ionic/react"
 import { useHistory } from "react-router"
 import { Place } from "../../../../../models/places"
+import { HandleMultimediaCard } from "../../../../multimedia/cards/helpers/handleMultimediaCard"
 
 interface PlaceCardListItemProps {
     place: Place
@@ -11,10 +12,12 @@ export const PlaceCardListItemMobile: React.FC<PlaceCardListItemProps> = ({ plac
     const history = useHistory()
 
     return (
-        <IonRow className="bg-none bg-white-300 flex items-center p-0 m-0 w-full md:bg-white" onClick={() => history.push(`/home/detail/${place.id}`)}>
+        <IonRow className="bg-none bg-white-300 flex items-center p-0 m-0 w-full md:bg-white">
             <IonItem class="relative w-full p-0 ion-no-padding flex flex-col" color="none">
-                <IonRow className="relative w-full p-3">
-                    <IonRow class="w-full mb-3 ion-no-padding">
+                <IonRow className="relative w-full p-3" >
+
+                    {/* Place information */}
+                    <IonRow class="w-full mb-3 ion-no-padding" onClick={() => history.push(`/home/detail/${place.id}`)}>
                         <IonCol size="2">
                             <IonAvatar color="white" className="bg-gray-300 mr-3">
                             </IonAvatar>
@@ -39,13 +42,17 @@ export const PlaceCardListItemMobile: React.FC<PlaceCardListItemProps> = ({ plac
                         className="
                             relative
                             w-full
-                            flex flex-row flex-nowrap items-center justify-center
-                            px-3
+                            flex flex-row flex-nowrap items-center justify-start
+                            px-1
                         "
                     >
-                        <IonCol size="4" className="bg-gray-200 mr-1 w-32 h-32 rounded-md"></IonCol>
-                        <IonCol size="4" className="bg-gray-200 mr-1 w-32 h-32 rounded-md"></IonCol>
-                        <IonCol size="4" className="bg-gray-200 mr-1 w-32 h-32 rounded-md"></IonCol>
+                        {
+                            place.multimedia.length > 0 && place.multimedia.map((media, index) => (
+                                <IonCol size="4" className="bg-gray-200 mr-2 w-24 h-32 rounded-md">
+                                    <HandleMultimediaCard url={media.url} type={media.type} key={index} />
+                                </IonCol>
+                            ))
+                        }
                     </IonRow>
                 </IonRow>
             </IonItem>

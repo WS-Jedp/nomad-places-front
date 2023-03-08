@@ -33,9 +33,7 @@ export const AppLayout: React.FC<{ children: JSX.Element }> = ({ children }) => 
 
             </IonHeader>
 
-            <IonContent className='
-                w-full h-full
-            '>
+            <IonContent>
                 {
                     children
                 }

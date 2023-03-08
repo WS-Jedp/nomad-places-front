@@ -44,7 +44,7 @@ export const PlaceCardMultimediaSlider: React.FC<{ children?: JSX.Element, multi
         multimedia && multimedia.length > 0 && multimedia.map((media, index) => (
             <swiper-slide key={index} class="relative w-full h-full bg-gray-200 overflow-hidden">
                 <div className="w-full h-full flex items-center justify-center">
-                    <HandleMultimediaCard type={media.type} url="random" />
+                    <HandleMultimediaCard type={media.type} url={media.url} />
                 </div>
             </swiper-slide>
          ))

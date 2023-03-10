@@ -1,0 +1,17 @@
+.grid-multimedia-container {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(120px, 1fr));
+    grid-template-rows: repeat(4, 210px);
+    grid-auto-flow: row;
+    grid-gap: 6px;
+}
+
+@media (min-width: 768px) {
+    .grid-multimedia-container {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(210px, 1fr));
+        grid-template-rows: repeat(4, 200px);
+        grid-auto-flow: row;
+        grid-gap: 6px;
+    }
+}

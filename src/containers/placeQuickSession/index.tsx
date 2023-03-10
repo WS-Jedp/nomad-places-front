@@ -1,16 +1,25 @@
 import {
   IonAvatar,
+  IonChip,
   IonCol,
-  IonContent,
   IonIcon,
+  IonLabel,
   IonRouterLink,
   IonRow,
   IonText,
 } from "@ionic/react";
-import { arrowBack } from "ionicons/icons";
+import { arrowBack, book } from "ionicons/icons";
 import { useState } from "react";
+import { MultimediaMasonryGrid } from "../../components/multimedia/grid/masonry";
 
-import { StoryMultimediaCard } from "../../components/multimedia/stories/cards";
+import { QuickPlaceDetailRecentActivitySlider } from "../../components/slider/quickPlaceDetail/recentActivity";
+import { SimpleButton } from '../../components/buttons/simple'
+import { MULTIMEDIA_TYPE } from "../../models/multimedia";
+import { HandleMindsetTags } from "../../components/tags/mindsets";
+import { MINDSETS } from "../../models/mindsets";
+import { HandlePlaceStatus } from "../../components/tags/placeStatus";
+import { PLACE_STATUS } from "../../models/placeStatus";
+import { AvatarGroup } from "../../components/avatar/group";
 
 // This quickSession detail will only show what is going on in the place
 // The page detail from a place or the session of a place should allow interact with it
@@ -29,7 +38,7 @@ export const PlaceQuickSession: React.FC = () => {
       <IonRow
         className="
                 relative
-                flex flex-row w-full max-h-20 p-6 md:py-3
+                flex flex-row w-full h-16 p-6 md:py-3
                 items-center
                 border-b border-gray-300
                 mb-1
@@ -49,7 +58,7 @@ export const PlaceQuickSession: React.FC = () => {
 
       {/* Place Headers */}
       {/* Place information */}
-      <IonRow class="w-full p-3 ion-no-padding border-b border-gray-300">
+      <IonRow class="w-full p-3 ion-no-padding border-b border-gray-300 shadow-sm">
         <IonCol size="1">
           <IonAvatar color="white" className="bg-gray-300"></IonAvatar>
         </IonCol>
@@ -67,109 +76,156 @@ export const PlaceQuickSession: React.FC = () => {
           <IonRow
             className="
                 w-full h-full
-                flex flex-row
+                flex flex-row flex-nowrap
                 items-center justify-center
             "
           >
-            <IonText className="m-1">See</IonText>
-            <IonText className="m-1">Subs</IonText>
+                <SimpleButton text="Info" action={(ev) => {}} />
+                <SimpleButton text="Subscribe" action={(ev) => {}} />
+            <button>
+            </button>
           </IonRow>
         </IonCol>
       </IonRow>
 
-
-    {/* Scrollable data */}
-      <section className="
-        relative flex flex-col w-full h-full overflow-y-auto mb-3
-      ">
+      {/* Scrollable data */}
+      <IonRow
+        className="
+        relative w-full h-full overflow-y-auto mb-9
+      "
+      >
         {/* Quick session data */}
         <IonRow className="flex flex-col w-full p-3 border-b border-gray-300">
-            {/* People in the sesion */}
-            <article className="mb-3">
-                <IonText>
-                    <h3 className="text-lg font-bold">People In the session</h3>
-                </IonText>
-                <IonRow className="w-full flex flex-row flex-nowrap items-center justify-between">
-                    <div className="mr-6 flex flex-row flex-nowrap items-center justify-center">
-                        <figure className="relative inline-flex w-8 h-8 rounded-full bg-gray-300 mr-[-9px] shadow-md"></figure>
-                        <figure className="relative inline-flex w-8 h-8 rounded-full bg-gray-300 mr-[-9px] shadow-md"></figure>
-                        <figure className="relative inline-flex w-8 h-8 rounded-full bg-gray-300 mr-[-9px] shadow-md"></figure>
-                        <figure className="relative inline-flex w-8 h-8 rounded-full bg-gray-300 mr-[-9px] shadow-md"></figure>
-                        <strong className="mx-4 font-semibold text-sm">+20</strong>
-                    </div>
-                    {/* Button to be part of the session and redirect the user */}
-                    <div>
-                        <button>Join</button>
-                    </div>
-                </IonRow>
-            </article>
-
-            {/* Status information */}
-            <IonRow className="mt-3">
-                <IonCol size="6">
-                    <IonText>
-                        <h3 className="text-lg font-bold">Status</h3>
-                        </IonText>
-                        <IonRow className="w-full flex flex-row flex-nowrap items-center">
-                        Open <span className="text-sm font-light">- Close at 18:00pm</span>
-                    </IonRow>
-                </IonCol>
-                <IonCol size="6">
-                    <IonText>
-                        <h3 className="text-lg font-bold">Perfect Mindset</h3>
-                    </IonText>
-                    <IonRow className="w-full flex flex-row flex-nowrap items-center">
-                        Study
-                    </IonRow>
-                </IonCol>
+          {/* People in the sesion */}
+          <article className="mb-3">
+            <IonText>
+              <h3 className="text-lg font-bold">People In the session</h3>
+            </IonText>
+            <IonRow className="w-full flex flex-row flex-nowrap items-center pt-3 md:pt-2">
+               <AvatarGroup />
+                <SimpleButton text="Join" action={(ev) => {}} />
             </IonRow>
+          </article>
 
+          {/* ------------------------- */}
+          {/* Status of the place in the session */}
+          <IonRow className="mt-3">
+            <IonCol size="6">
+              <IonText>
+                <h3 className="text-lg font-bold">Status</h3>
+              </IonText>
+              <IonRow className="w-full flex flex-row flex-nowrap items-center">
+                <HandlePlaceStatus status={PLACE_STATUS.OPEN} />
+                <span className="text-sm font-light ml-1">Close at 18:00pm</span>
+              </IonRow>
+            </IonCol>
 
+            {/* ------------------------- */}
+            {/* Mindset of the session */}
+            <IonCol size="6">
+              <IonText>
+                <h3 className="text-lg font-bold">Perfect Mindset</h3>
+              </IonText>
+              <IonRow className="w-full flex flex-row flex-nowrap items-center">
+               <HandleMindsetTags mindset={MINDSETS.WORK} />
+              </IonRow>
+            </IonCol>
+          </IonRow>
         </IonRow>
 
+        {/* ------------------------- */}
         {/* Last stories of the place */}
-        <IonRow className="w-full h-auto border-b border-gray-300">
-            {/* If  the router is not hard to do we should do it with tabs if not we can do render logic to apply it */}
-            <IonRow className="relative w-full h-auto">
+        <IonRow className="w-full h-auto max-h-12 border-b border-gray-300">
+          {/* If  the router is not hard to do we should do it with tabs if not we can do render logic to apply it */}
+          <IonRow className="relative w-full h-auto">
             <IonCol size="6" onClick={() => setIsRecentActivity(true)}>
-                <section
+              <section
                 className={`
                             h-full
                             flex items-center justify-center 
                             cursor-pointer hover:bg-gray-200 p-3
                             ${isRecentActivity ? "bg-gray-200" : ""}
                         `}
-                >
+              >
                 <h2 className={`${isRecentActivity ? "font-bold" : ""}`}>
-                    Recent Activity
+                  Recent Activity
                 </h2>
-                </section>
+              </section>
             </IonCol>
             <IonCol size="6" onClick={() => setIsRecentActivity(false)}>
-                <section
+              <section
                 className={`
                             h-full
                             flex items-center justify-center 
                             cursor-pointer hover:bg-gray-200 p-3
                             ${!isRecentActivity ? "bg-gray-200" : ""}
                         `}
-                >
+              >
                 <h2 className={`${!isRecentActivity ? "font-bold" : ""}`}>
-                    Place multimedia
+                  Place multimedia
                 </h2>
-                </section>
+              </section>
             </IonCol>
-            </IonRow>
+          </IonRow>
         </IonRow>
 
         {/* Multimedia grid */}
-        <article className="relative w-full h-auto py-3 flex flex-row flex-nowrap overflow-x-auto overflow-y-hidden">
-            <StoryMultimediaCard />
-            <StoryMultimediaCard />
-            <StoryMultimediaCard />
-        </article>
-        </section>
-      </section>
-
+        <IonRow className="w-full h-full p-3 flex flex-row flex-nowrap overflow-x-auto overflow-y-hidden">
+          {
+            isRecentActivity ? (
+              <QuickPlaceDetailRecentActivitySlider recentActivity={[
+                {
+                  id: '234324',
+                  type: MULTIMEDIA_TYPE.IMAGE,
+                  url: 'rnadom',
+                  createdDate: new Date(),
+                  user: {
+                    id: 'sdfjksf12',
+                    email: 'user@email.com',
+                    username: "RandomUser"
+                  }
+                },
+                {
+                  id: '234324',
+                  type: MULTIMEDIA_TYPE.IMAGE,
+                  url: 'rnadom',
+                  createdDate: new Date(),
+                  user: {
+                    id: 'sdfjksf12',
+                    email: 'user@email.com',
+                    username: "RandomUser"
+                  }
+                },
+                {
+                  id: '234324',
+                  type: MULTIMEDIA_TYPE.IMAGE,
+                  url: 'rnadom',
+                  createdDate: new Date(),
+                  user: {
+                    id: 'sdfjksf12',
+                    email: 'user@email.com',
+                    username: "RandomUser"
+                  }
+                },
+                {
+                  id: '234324',
+                  type: MULTIMEDIA_TYPE.IMAGE,
+                  url: 'rnadom',
+                  createdDate: new Date(),
+                  user: {
+                    id: 'sdfjksf12',
+                    email: 'user@email.com',
+                    username: "RandomUser"
+                  }
+                },
+              ]} />
+            ) : (
+              <MultimediaMasonryGrid />
+            )
+          }
+          
+        </IonRow>
+      </IonRow>
+    </section>
   );
 };

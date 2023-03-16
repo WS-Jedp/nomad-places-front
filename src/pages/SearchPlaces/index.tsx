@@ -1,3 +1,4 @@
+import { io } from 'socket.io-client'
 import { useSelector } from "react-redux";
 import type { RootState } from "../../store/redux";
 
@@ -9,6 +10,7 @@ import { Place } from "../../models/places";
 import { MULTIMEDIA_TYPE } from "../../models/multimedia";
 import { PLACE_TYPES } from "../../models/placeTypes";
 import { IonRow } from "@ionic/react";
+import placesService from '../../services/places';
 
 interface SearchPlacesProps {}
 
@@ -21,10 +23,12 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
         {
           type: MULTIMEDIA_TYPE.IMAGE,
           url: "https://picsum.photos/200/300",
+          createdDate: new Date()
         },
         {
           type: MULTIMEDIA_TYPE.IMAGE,
           url: "https://picsum.photos/200/300",
+          createdDate: new Date()
         },
       ],
       name: "Cafe Velvet",
@@ -36,10 +40,12 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
         {
           type: MULTIMEDIA_TYPE.IMAGE,
           url: "https://picsum.photos/200/300",
+          createdDate: new Date()
         },
         {
           type: MULTIMEDIA_TYPE.IMAGE,
           url: "https://picsum.photos/200/300",
+          createdDate: new Date()
         },
       ],
       name: "Cafe Semilla",
@@ -48,7 +54,16 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
   ]);
 
   useEffect(() => {
-    console.log(nearPlaces, "Near places from redux store");
+    async function connecting() {
+      // const socket =  await io('http://localhost:3080')
+      const data = await placesService.getNearestPlaces({
+        lng: -75.56384696441715,
+        lte: 6.240164325293614,
+        maxDistance: 10000
+      })
+      console.log(data)
+    }
+    connecting()
   }, []);
 
   return (

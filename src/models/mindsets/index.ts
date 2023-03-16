@@ -1,5 +1,9 @@
 export enum MINDSETS {
-    STUDY = "STUDY",
     WORK = "WORK",
-    UNKNOWN = "UNKNOWN"
+    STUDY = "STUDY",
+    ROMANTIC = "ROMANTIC",
+    VIBE = "VIBE",
+    COWORK = "COWORK",
+    SOCIAL = "SOCIAL",
+    UNKNOWN = "UNKNOWN",
 }

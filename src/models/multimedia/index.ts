@@ -8,6 +8,8 @@ export enum MULTIMEDIA_TYPE {
 export interface PlaceMultimedia {
     url: string
     type: MULTIMEDIA_TYPE
+    createdDate: Date
+
 }
 
 export interface RecentActivity {

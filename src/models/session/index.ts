@@ -1,5 +1,6 @@
 import { MINDSETS } from '../mindsets'
 import { PlaceMultimedia } from '../multimedia'
+import { Place } from '../places'
 import { PLACE_STATUS } from '../placeStatus'
 import { User } from '../user'
  
@@ -40,6 +41,10 @@ import { User } from '../user'
     lastActions: PlaceSessionActions[]
     lastRecentlyActivities: PlaceMultimedia[]
     usersInSession: User[]
+  }
+
+  export type placeWithCachedSession = Place & {
+    sessionCachedData: Omit<PlaceSessionCachedDataDTO, 'placeID'>
   }
 
     

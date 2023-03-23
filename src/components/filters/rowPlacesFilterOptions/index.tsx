@@ -1,35 +1,32 @@
-import { IonRow, IonText } from "@ionic/react"
+import { IonRow } from "@ionic/react"
+import { useDispatch, useSelector } from "react-redux"
+import { RootState } from "../../../store/redux"
+import { HandleMindsetTags } from "../../tags/mindsets"
+import { selectNearPlaceFilter, removeNearPlaceFilter, resetSelectedNearPlaceFilters } from '../../../store/redux/slices/filters'
 
-import { FilterTag } from '../filterTag'
+import { AllMindsetTag } from "../../tags/mindsets/all"
 
 export const RowPlacesFilterOptions: React.FC<{ chilren?: JSX.Element}> = ({ chilren })  => {
 
-    const filters = [
-        {
-            id: 1,
-            name: 'Study',
-        },
-        {
-            id: 2,
-            name: 'Work',
-        },
-        {
-            id: 3,
-            name: 'Vibe',
-        },
-        {
-            id: 4,
-            name: 'Romantic',
-        },
-        {
-            id: 5,
-            name: 'Cowork',
-        },
-        {
-            id: 6,
-            name: 'Quiet',
-        },
-    ]
+    const dispatch = useDispatch()
+
+    const { nearPlacesFilter: filters, selectedNearPlacesFilter: selectedFilters } = useSelector((state: RootState) => state.filters)
+
+    const handleAction = (filterID: number) => {
+        if(selectedFilters.some(id => id === filterID)) {
+            dispatch( removeNearPlaceFilter({ placeFilterID: filterID }) )
+        } else {
+            dispatch( selectNearPlaceFilter({ placeFilterID: filterID }) )
+        }
+    }
+
+    const isFilterActivated = (filterID: number):boolean => selectedFilters.some(id => id === filterID)
+
+    const handleAllTagActions = () => {
+        if(!selectedFilters.length) return
+
+        dispatch( resetSelectedNearPlaceFilters() )
+    }
 
     return (
         <IonRow className="
@@ -39,23 +36,16 @@ export const RowPlacesFilterOptions: React.FC<{ chilren?: JSX.Element}> = ({ chi
             p-6
             border-y border-gray-300
         ">
-            <FilterTag
-                action={(ev) => {console.log('Click in the filter tag')}}
-                isSelected
-                text="Todos"
-            />
+            <AllMindsetTag disabled={ selectedFilters.length !== 0 } onClick={handleAllTagActions} />
 
             <div className="inline-flex ml-3 mr-6 h-full w-[1px] bg-gray-300"></div>
 
             {/* Other filters */}
-
             {
                 filters.map(filter => (
-                    <FilterTag
-                        key={filter.id}
-                        action={(ev) => {console.log('Click in the filter tag')}}
-                        text={filter.name}
-                    />
+                    <div className="mr-1">
+                        <HandleMindsetTags disabled={ !isFilterActivated(filter.id) } mindset={filter.name} key={filter.id} action={() => handleAction(filter.id)} />
+                    </div>
                 ))
             }
 

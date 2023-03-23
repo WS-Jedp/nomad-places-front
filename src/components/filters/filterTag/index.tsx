@@ -8,7 +8,7 @@ export const FilterTag: React.FC<{ text: string, action: MouseEventHandler<HTMLB
             h-7
             p-1 px-3 mr-3
             shadow-md
-            rounded-md
+            rounded-full
             bg-white
             transition-all ease-in-out duration-[.42s]
             hover:bg-gray-300 hover:shadow-lg

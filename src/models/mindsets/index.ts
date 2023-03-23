@@ -1,4 +1,5 @@
 export enum MINDSETS {
+    ALL = "ALL",
     WORK = "WORK",
     STUDY = "STUDY",
     ROMANTIC = "ROMANTIC",

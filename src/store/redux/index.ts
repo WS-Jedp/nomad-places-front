@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
+import FiltersSlice from './slices/filters'
 import PlacesSlice from './slices/places'
 
 export const reduxStore = configureStore({
     reducer: {
-        places: PlacesSlice
+        places: PlacesSlice,
+        filters: FiltersSlice
     }
 })
 

@@ -1,20 +1,24 @@
-import { io } from 'socket.io-client'
-import { useSelector } from "react-redux";
-import type { RootState } from "../../store/redux";
-
-import { ItemsAndMapLayout } from "../../layouts/ItemsAndMapLayout";
-import { GoogleMapWrapper } from "../../components/maps/googleMapWrapper";
-import { HandlePlaceCardListItem } from "../../components/places/cards/helpers/handleCardListItem";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { IonRow } from "@ionic/react";
+
 import { Place } from "../../models/places";
 import { MULTIMEDIA_TYPE } from "../../models/multimedia";
 import { PLACE_TYPES } from "../../models/placeTypes";
-import { IonRow } from "@ionic/react";
+
 import placesService from '../../services/places';
+import { ItemsAndMapLayout } from "../../layouts/ItemsAndMapLayout";
+import { GoogleMapWrapper } from "../../components/maps/googleMapWrapper";
+import { HandlePlaceCardListItem } from "../../components/places/cards/helpers/handleCardListItem";
+
+import type { RootState } from "../../store/redux";
+import { setNearPlaces } from '../../store/redux/slices/places' 
+import { placeWithQuickSessionDTOIntoPlaceWithCachedSession } from "../../dto/places/helpers";
 
 interface SearchPlacesProps {}
 
 export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
+  const dispatch = useDispatch()
   const nearPlaces = useSelector((state: RootState) => state.places.nearPlaces);
   const [mockPlaces, setMockPlaces] = useState<Place[]>([
     {
@@ -54,16 +58,17 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
   ]);
 
   useEffect(() => {
-    async function connecting() {
+    async function getNearPlaces() {
       // const socket =  await io('http://localhost:3080')
-      const data = await placesService.getNearestPlaces({
+      const nearPlacesWithCachedSession = await placesService.getNearestPlaces({
         lng: -75.56384696441715,
         lte: 6.240164325293614,
         maxDistance: 10000
       })
-      console.log(data)
+
+      setNearPlaces( { places: placeWithQuickSessionDTOIntoPlaceWithCachedSession(nearPlacesWithCachedSession) } )
     }
-    connecting()
+    // getNearPlaces()
   }, []);
 
   return (

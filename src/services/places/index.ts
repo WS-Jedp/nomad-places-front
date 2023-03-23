@@ -15,11 +15,11 @@ export class placesServices {
     lte: number;
     maxDistance?: number;
     minDistance?: number;
-  }): Promise<PlacesWithQuickSessionDataDTO[]> {
+  }): Promise<PlacesWithQuickSessionDataDTO> {
     if (!payload.maxDistance) payload.maxDistance = 500;
     if (!payload.minDistance) payload.minDistance = 100;
 
-    const places = await this.request.get<PlacesWithQuickSessionDataDTO[]>(
+    const places = await this.request.get<PlacesWithQuickSessionDataDTO>(
       `near?latitude=${payload.lte}&longitude=${payload.lng}&maxDistance=${payload.maxDistance}`
     );
 

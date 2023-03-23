@@ -2,10 +2,13 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
 import { Place } from '../../../../models/places'
+import { PlacesWithQuickSessionDataDTO } from '../../../../dto/places'
+import { PlaceSessionCachedDataDTO, placeWithCachedSession } from '../../../../models/session'
+import places from '../../../../services/places'
 
 export interface PlacesState {
-    currentPlace?: Place | null
-    nearPlaces: Place[]
+    currentPlace?: placeWithCachedSession | null
+    nearPlaces: placeWithCachedSession[]
 }
 
 
@@ -18,8 +21,8 @@ export const placesSlice = createSlice({
     name: 'places',
     initialState: initialPlaceState,
     reducers: {
-        setPlace: (state, action: PayloadAction<{ place: Place }>) => {
-            state.currentPlace = action.payload.place
+        setPlace: (state, action: PayloadAction<{ placeWithCacheData: placeWithCachedSession }>) => {
+            state.currentPlace = action.payload.placeWithCacheData
         },
         findPlace: (state, action: PayloadAction<{ placeID: string }>) => {
             if(!state.nearPlaces.length) return
@@ -30,7 +33,7 @@ export const placesSlice = createSlice({
             state.currentPlace = null
         },
         // Near places reducers
-        setNearPlaces: (state, action: PayloadAction<{ places: Place[] }>) => {
+        setNearPlaces: (state, action: PayloadAction<{ places: placeWithCachedSession[] }>) => {
             state.nearPlaces = action.payload.places
         },
         resetNearPlaces: (state) => {

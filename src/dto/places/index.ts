@@ -1,7 +1,16 @@
 import { Place } from "../../models/places";
-import { PlaceSessionCachedDataDTO } from "../../models/session";
+import { PlaceSession, PlaceSessionCachedDataDTO } from "../../models/session";
 
-export type PlacesWithQuickSessionDataDTO = {
+export type PlaceWithQuickSessionDataDTO = {
     place: Place,
     quickSessionData: PlaceSessionCachedDataDTO
-}[]
+}
+
+export type PlacesWithQuickSessionDataDTO = {
+    placesWithQuickSessionData: PlaceWithQuickSessionDataDTO[]
+}
+
+export type GetPlaceDetailDTO = {
+    place: Place,
+    sessions: PlaceSession[]
+}

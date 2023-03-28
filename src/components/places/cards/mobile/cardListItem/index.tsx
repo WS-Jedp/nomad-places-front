@@ -1,15 +1,19 @@
 import { IonAvatar, IonCol, IonItem, IonRow, IonText } from "@ionic/react"
-import { useHistory } from "react-router"
 import { Place } from "../../../../../models/places"
 import { HandleMultimediaCard } from "../../../../multimedia/cards/helpers/handleMultimediaCard"
 
 interface PlaceCardListItemProps {
     place: Place
+    action: Function
+
 }
 
-export const PlaceCardListItemMobile: React.FC<PlaceCardListItemProps> = ({ place }) => {
+export const PlaceCardListItemMobile: React.FC<PlaceCardListItemProps> = ({ place, action }) => {
 
-    const history = useHistory()
+    function handleClick (ev: React.MouseEvent<HTMLIonRowElement, MouseEvent>)  {
+        ev.preventDefault()
+        action()
+    }
 
     return (
         <IonRow className="bg-none bg-white-300 flex items-center p-0 m-0 w-full md:bg-white">
@@ -17,7 +21,7 @@ export const PlaceCardListItemMobile: React.FC<PlaceCardListItemProps> = ({ plac
                 <IonRow className="relative w-full p-3" >
 
                     {/* Place information */}
-                    <IonRow class="w-full mb-3 ion-no-padding" onClick={() => history.push(`/home/detail/${place.id}`)}>
+                    <IonRow class="w-full mb-3 ion-no-padding" onClick={handleClick}>
                         <IonCol size="2">
                             <IonAvatar color="white" className="bg-gray-300 mr-3">
                             </IonAvatar>
@@ -28,7 +32,8 @@ export const PlaceCardListItemMobile: React.FC<PlaceCardListItemProps> = ({ plac
                             </IonText>
                             <IonText>
                                 <p className="font-sans font-regular text-sm capitalize">
-                                    { place.type[0] } - 20+ people
+                                    {/* { place.type[0] } - 20+ people */}
+                                    20+ people
                                 </p>
                             </IonText>
                             <IonText>
@@ -47,9 +52,9 @@ export const PlaceCardListItemMobile: React.FC<PlaceCardListItemProps> = ({ plac
                         "
                     >
                         {
-                            place.multimedia.length > 0 && place.multimedia.map((media, index) => (
-                                <IonCol size="4" className="bg-gray-200 mr-2 w-24 h-32 rounded-md">
-                                    <HandleMultimediaCard url={media.url} type={media.type} key={index} />
+                            place.multimedia?.length > 0 && place.multimedia.map((media, index) => (
+                                <IonCol size="4" className="bg-gray-200 mr-2 w-24 h-32 rounded-md" key={index}>
+                                    <HandleMultimediaCard url={media.url} type={media.type} />
                                 </IonCol>
                             ))
                         }

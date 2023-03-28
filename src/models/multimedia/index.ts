@@ -9,13 +9,14 @@ export interface PlaceMultimedia {
     url: string
     type: MULTIMEDIA_TYPE
     createdDate: Date
-
 }
 
 export interface RecentActivity {
     id: string
     url: string
     type: MULTIMEDIA_TYPE,
-    user: User
+    username: string
+    userID: string
+    userPhotoURL: string
     createdDate: Date
 }

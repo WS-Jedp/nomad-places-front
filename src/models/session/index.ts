@@ -1,5 +1,5 @@
 import { MINDSETS } from '../mindsets'
-import { PlaceMultimedia } from '../multimedia'
+import { PlaceMultimedia, RecentActivity } from '../multimedia'
 import { Place } from '../places'
 import { PLACE_STATUS } from '../placeStatus'
 import { User } from '../user'
@@ -35,15 +35,15 @@ import { User } from '../user'
   export type PlaceSessionCachedDataDTO = {
     placeID: string;
     lastUpdate: Date;
-    amountOfPeople: Number;
+    amountOfPeople: number;
     bestMindsetTo: MINDSETS;
     placeStatus: PLACE_STATUS;
     lastActions: PlaceSessionActions[]
-    lastRecentlyActivities: PlaceMultimedia[]
+    lastRecentlyActivities: RecentActivity[]
     usersInSession: User[]
   }
 
-  export type placeWithCachedSession = Place & {
+  export type PlaceWithCachedSession = Place & {
     sessionCachedData: Omit<PlaceSessionCachedDataDTO, 'placeID'>
   }
 

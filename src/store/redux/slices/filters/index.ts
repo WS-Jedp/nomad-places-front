@@ -9,19 +9,20 @@ export interface FiltersState {
     selectedNearPlacesFilter: Number[]
 }
 
+const mindsetsFilters = [
+    {
+        id: 1,
+        name: MINDSETS.STUDY,
+    },
+    {
+        id: 2,
+        name: MINDSETS.WORK,
+    },
+]
 
 const initialFiltersState: FiltersState = {
-    nearPlacesFilter: [
-        {
-            id: 1,
-            name: MINDSETS.STUDY,
-        },
-        {
-            id: 2,
-            name: MINDSETS.WORK,
-        },
-    ],
-    selectedNearPlacesFilter: []
+    nearPlacesFilter: mindsetsFilters,
+    selectedNearPlacesFilter: mindsetsFilters.map(filter => filter.id)
 }
 
 export const filtersSlice = createSlice({
@@ -37,7 +38,7 @@ export const filtersSlice = createSlice({
             state.selectedNearPlacesFilter = state.selectedNearPlacesFilter.filter(id => id !== action.payload.placeFilterID)
         },
         resetSelectedNearPlaceFilters: (state) => {
-            state.selectedNearPlacesFilter = []
+            state.selectedNearPlacesFilter = initialFiltersState.selectedNearPlacesFilter
         },
     },
 })

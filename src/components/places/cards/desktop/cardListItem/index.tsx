@@ -1,19 +1,22 @@
 import {  IonCol, IonItem, IonRow, IonText } from "@ionic/react"
-import { useHistory } from "react-router-dom"
 import { Place } from "../../../../../models/places"
 import { PlaceCardMultimediaSlider } from '../../../../slider/placeCardMultimedia'
 
 interface PlaceCardListItemProps {
     place: Place
+    action: Function
 }
 
 
-export const PlaceCardListItemDesktop: React.FC<PlaceCardListItemProps> = ({ place }) => {
+export const PlaceCardListItemDesktop: React.FC<PlaceCardListItemProps> = ({ place, action }) => {
 
-    const history = useHistory()
-
+    function handleClick (ev: React.MouseEvent<HTMLIonRowElement, MouseEvent>)  {
+        ev.preventDefault()
+        action()
+    }
+    
     return (
-        <IonRow className="bg-none bg-white-300 flex items-center p-0 m-0 w-4/12 md:bg-white" onClick={() => history.push(`/home/detail/${place.id}`)}>
+        <IonRow className="bg-none bg-white-300 flex items-center p-0 m-0 w-4/12 md:bg-white" onClick={handleClick }>
             <IonRow 
                 className="
                     relative
@@ -37,7 +40,8 @@ export const PlaceCardListItemDesktop: React.FC<PlaceCardListItemProps> = ({ pla
                             </IonText>
                             <IonText>
                                 <p className="font-sans font-regular text-sm text-black capitalize">
-                                    <span className="capitalize">{ place.type[0] }</span> - 20+ people
+                                    {/* <span className="capitalize">{ place.type[0] }</span> - 20+ people */}
+                                    20+ people
                                 </p>
                             </IonText>
                             <IonText>

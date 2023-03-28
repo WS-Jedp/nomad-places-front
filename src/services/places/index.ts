@@ -1,5 +1,5 @@
 import { Request } from "../../common/request";
-import { PlacesWithQuickSessionDataDTO } from "../../dto/places";
+import { GetPlaceDetailDTO, PlacesWithQuickSessionDataDTO } from "../../dto/places";
 
 export class placesServices {
   protected request: Request;
@@ -24,6 +24,13 @@ export class placesServices {
     );
 
     return places;
+  }
+
+  async getPlace(payload: { placeID: string }): Promise<GetPlaceDetailDTO> {
+    const place = await this.request.get<GetPlaceDetailDTO>(
+      `detail/${payload.placeID}`
+    )
+    return place
   }
 }
 

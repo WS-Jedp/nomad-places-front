@@ -1,12 +1,13 @@
-import { PlacesWithQuickSessionDataDTO } from "..";
-import { placeWithCachedSession } from "../../../models/session";
+import { PlacesWithQuickSessionDataDTO, PlaceWithQuickSessionDataDTO } from "..";
+import { PlaceWithCachedSession } from "../../../models/session";
 
-export const placeWithQuickSessionDTOIntoPlaceWithCachedSession = (places: PlacesWithQuickSessionDataDTO): placeWithCachedSession[]  => {
-    return places.map(place => {
-        const palceWithCachedSesssion: placeWithCachedSession = {
-            ...place.place,
-            sessionCachedData: place.quickSessionData
-        }
-        return palceWithCachedSesssion
-    })
+export const placeWithSessionDataDTOIntoPlaceWithSession = (placeDTO: PlaceWithQuickSessionDataDTO): PlaceWithCachedSession => {
+    return {
+        ...placeDTO.place,
+        sessionCachedData: placeDTO.quickSessionData
+    }
+}
+export const placeWithQuickSessionDTOIntoPlaceWithCachedSession = (places: PlaceWithQuickSessionDataDTO[]): PlaceWithCachedSession[]  => {
+    const mappedPlaces = places.map(placeDTO => placeWithSessionDataDTOIntoPlaceWithSession(placeDTO))
+    return mappedPlaces
 }

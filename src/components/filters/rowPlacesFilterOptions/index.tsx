@@ -23,8 +23,7 @@ export const RowPlacesFilterOptions: React.FC<{ chilren?: JSX.Element}> = ({ chi
     const isFilterActivated = (filterID: number):boolean => selectedFilters.some(id => id === filterID)
 
     const handleAllTagActions = () => {
-        if(!selectedFilters.length) return
-
+        if(selectedFilters.length === filters.length) return
         dispatch( resetSelectedNearPlaceFilters() )
     }
 
@@ -36,15 +35,15 @@ export const RowPlacesFilterOptions: React.FC<{ chilren?: JSX.Element}> = ({ chi
             p-6
             border-y border-gray-300
         ">
-            <AllMindsetTag disabled={ selectedFilters.length !== 0 } onClick={handleAllTagActions} />
+            <AllMindsetTag disabled={ selectedFilters.length !== filters.length } onClick={handleAllTagActions} />
 
             <div className="inline-flex ml-3 mr-6 h-full w-[1px] bg-gray-300"></div>
 
             {/* Other filters */}
             {
                 filters.map(filter => (
-                    <div className="mr-1">
-                        <HandleMindsetTags disabled={ !isFilterActivated(filter.id) } mindset={filter.name} key={filter.id} action={() => handleAction(filter.id)} />
+                    <div className="mr-1" key={filter.id}>
+                        <HandleMindsetTags disabled={ !isFilterActivated(filter.id) } mindset={filter.name} action={() => handleAction(filter.id)} />
                     </div>
                 ))
             }

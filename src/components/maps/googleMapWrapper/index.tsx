@@ -2,6 +2,7 @@ import { Status, Wrapper } from "@googlemaps/react-wrapper";
 import { GoogleMapNomadsComponent } from "../googleMapNomads";
 
 const render = (status: Status) => {
+  
   switch (status) {
     case Status.LOADING:
       return <h1>Loading...</h1>;

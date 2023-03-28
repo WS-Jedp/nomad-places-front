@@ -4,11 +4,10 @@ import {
   IonList,
   IonModal,
   IonPage,
-  IonRouterLink,
   IonRouterOutlet,
   IonRow,
 } from "@ionic/react";
-import {  Route, useRouteMatch } from "react-router-dom";
+import {  Route, useHistory } from "react-router-dom";
 
 import { RowPlacesFilterOptions } from "../../components/filters/rowPlacesFilterOptions";
 import { LocationBasicInformation } from "../../components/Location/LocationBasicInformation";
@@ -20,15 +19,22 @@ export const ItemsAndMapLayout: React.FC<{
   children: JSX.Element;
   map: JSX.Element;
 }> = ({ children, map }) => {
+  const history = useHistory()
   const modal = useRef<HTMLIonModalElement>(null);
-  const { path } = useRouteMatch();
 
   const [isMobile] = useIsMobile();
 
+  const [shouldModalBeOpen, setShouldModalBeOpen] = useState<boolean>(false)
+
+  const goToPlaceSession = async (id: string) => {
+    await setShouldModalBeOpen(false)
+    console.log(shouldModalBeOpen)
+    history.push(`/place/${id}/session`)
+  }
+
   useEffect(() => {
-    // console.log(path, "PATH")
-    // history.push('/home/random-id')
-  }, []);
+    if(isMobile) setShouldModalBeOpen(isMobile)
+  }, [isMobile]);
 
   return (
     <IonPage
@@ -42,7 +48,7 @@ export const ItemsAndMapLayout: React.FC<{
       {/* Items */}
       <IonModal
         ref={modal}
-        isOpen={isMobile}
+        isOpen={isMobile && shouldModalBeOpen}
         initialBreakpoint={0.42}
         breakpoints={[0.25, 0.5, 0.81]}
         backdropDismiss={false}
@@ -51,7 +57,7 @@ export const ItemsAndMapLayout: React.FC<{
         <IonRouterOutlet>
             <Route path="/home/detail/:id">
                 <IonRow class="h-full w-full">
-                  <PlaceQuickSession />
+                  <PlaceQuickSession changePageCallback={goToPlaceSession} />
                 </IonRow>
               </Route>
 
@@ -87,7 +93,7 @@ export const ItemsAndMapLayout: React.FC<{
         >
           <IonRouterOutlet>
               <Route path="/home/detail/:id">
-                  <PlaceQuickSession />
+                  <PlaceQuickSession changePageCallback={goToPlaceSession} />
               </Route>
               <Route exact path="/home">
                 <ListSearchPlaces>

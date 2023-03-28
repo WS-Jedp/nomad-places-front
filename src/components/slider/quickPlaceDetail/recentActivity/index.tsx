@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { useIsMobile } from "../../../../common/hooks/useIsMobile";
 import { RecentActivity } from "../../../../models/multimedia";
+import { PlaceSessionActionDataPayload } from "../../../../models/session";
 import { StoryMultimediaCard } from "../../../multimedia/stories/cards";
 
 const SLIDES_PER_VIEW_MOBILE = 1.4
@@ -38,7 +39,7 @@ export const QuickPlaceDetailRecentActivitySlider: React.FC<
             key={index}
             class="relative w-full h-fulloverflow-hidden"
           >
-            <StoryMultimediaCard />
+            <StoryMultimediaCard  />
           </swiper-slide>
         ))}
     </swiper-container>

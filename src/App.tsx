@@ -3,6 +3,7 @@ import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { Redirect, Route } from 'react-router-dom';
 import { IonReactRouter } from '@ionic/react-router';
 import { SearchPlaces } from './pages/SearchPlaces';
+import { PlaceDetailPage } from './pages/PlaceDetail';
 import { AppLayout } from './layouts/AppLayout';
 
 
@@ -28,27 +29,24 @@ import './theme/variables.css';
 import './index.css'
 import './tailwind/input.css'
 import './tailwind/output.css'
-import Home from './pages/Home';
 
 setupIonicReact();
 
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
-      <AppLayout>
           <Switch>
               <Route path="/home">
                 <SearchPlaces />
               </Route>
-              <Route exact path="/random">
-                <Home />
+              <Route exact path="/place/:id/session">
+                <PlaceDetailPage />
               </Route>
               <Route path="*">
                 <Redirect to="/home" />
               </Route>
           </Switch>
-      </AppLayout>
-    </IonReactRouter  >
+    </IonReactRouter>
   </IonApp>
 );
 

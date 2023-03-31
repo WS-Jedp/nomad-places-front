@@ -71,7 +71,7 @@ export const ItemsAndMapLayout: React.FC<{
                       overflow-y-auto bg-neutral-900
                   "
                 >
-                  {children}
+                    {children}
                 </IonList>
               </Route>
         </IonRouterOutlet>

@@ -22,7 +22,7 @@ export const DetailAndSessionActionsLayout: React.FC<
                         {children}
                     </IonCol>
                 ) : (
-                    <IonCol size="12">
+                    <IonCol size="12" className="pb-32">
                         {secondTab}
                     </IonCol>
                 )
@@ -34,10 +34,10 @@ export const DetailAndSessionActionsLayout: React.FC<
   function renderDesktopView() {
     return (
         <>
-            <IonCol size="12" sizeMd="6">
+            <IonCol size="12" sizeMd="6" className="bg-gray-50 overflow-y-auto h-screen">
                 {children}
             </IonCol>
-            <IonCol size="12" sizeMd="6">
+            <IonCol size="12" sizeMd="6" className="overflow-y-auto h-screen pb-32">
                 {secondTab}
             </IonCol>
         </>
@@ -84,7 +84,7 @@ export const DetailAndSessionActionsLayout: React.FC<
         </IonRow>
       )}
 
-      <IonRow className="w-full h-screen relative overflow-y-auto overflow-x-hidden bg-gray-100 text-black p-3">
+      <IonRow className="w-full h-screen relative overflow-y-auto overflow-x-hidden bg-gray-100 text-black">
         {
             isMobile ? renderMobileView() : renderDesktopView()
         }

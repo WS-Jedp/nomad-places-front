@@ -30,10 +30,10 @@ export const RowPlacesFilterOptions: React.FC<{ chilren?: JSX.Element}> = ({ chi
     return (
         <IonRow className="
             relative
-            w-full h-24 overflow-x-auto overflow-y-hidden
-            flex-nowrap
-            p-6
+            w-full h-14 overflow-x-auto overflow-y-hidden
+            flex flex-nowrap items-center
             border-y border-gray-300
+            px-3 md:px-9
         ">
             <AllMindsetTag disabled={ selectedFilters.length !== filters.length } onClick={handleAllTagActions} />
 

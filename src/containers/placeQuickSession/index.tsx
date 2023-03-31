@@ -83,13 +83,10 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({ changePage
       {/* Place Headers */}
       {/* Place information */}
       <IonRow class="w-full p-3 ion-no-padding border-b border-gray-300 shadow-sm">
-        <IonCol size="1">
-          <IonAvatar color="white" className="bg-gray-300"></IonAvatar>
-        </IonCol>
-        <IonCol size="7">
-          <IonRow className="h-full flex flex-col justify-center px-7 md:px-5">
+        <IonCol size="8">
+          <IonRow className="h-full flex flex-col justify-center">
             <IonText>
-              <h1 className="font-bold">{currentPlace?.name}</h1>
+              <h1 className="font-bold text-lg md:text-xl">{currentPlace?.name}</h1>
             </IonText>
             <IonText>
               <span className="text-xs font-light">Av. Pobaldo - 3,4 km </span>

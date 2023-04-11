@@ -44,7 +44,7 @@ export const PlaceSessionDetail: React.FC = () => {
                     </IonCol>
                 </IonRow>
                 <section className="w-full mb-2">
-                    <p className="font-regular text-xs my-3 text-left">Last update made 30 minutes ago</p>
+                    {/* <p className="font-regular text-xs my-3 text-left">Last update made 30 minutes ago</p> */}
                 </section>
                 <SimpleButton action={() => {}} text="Join" />
             </IonRow>

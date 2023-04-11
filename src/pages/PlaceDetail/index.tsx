@@ -7,6 +7,8 @@ import { findPlace } from "../../store/redux/slices/places";
 import PlacesService from "../../services/places";
 import { PlaceInformationDetail } from '../../containers/placeInformationDetail'
 import { PlaceSessionDetail } from "../../containers/placeSessionDetail";
+import { socket } from "../../socket";
+import { getCurrentISODate } from "../../common/utils/dates";
 
 export const PlaceDetailPage = () => {
   const history = useHistory();
@@ -25,8 +27,18 @@ export const PlaceDetailPage = () => {
 
   async function getPlaceDetail() {
     const place = await PlacesService.getPlace({ placeID: id });
-    console.log(place);
+    await socket.connect()
+
+    const date = getCurrentISODate().toISOString()
+    await socket.emit('join-place-session', { placeID: currentPlace?.id, userID: '6434c701801055bcd667b937', username: 'Juanes', currentDateISO: date })
   }
+
+  useEffect(() => {
+    if(!currentPlace) return
+    socket.on(`place-session-message`, (paylaod) => {
+      console.log(paylaod, 'THIS IS THE PAYLOAD')
+    })
+  }, [])
 
   useEffect(() => {
     if (!id) return handleGoBack();

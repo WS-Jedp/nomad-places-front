@@ -1,19 +1,18 @@
 import { useRef, useState, useEffect } from "react";
-import { useIsMobile } from "../../../../common/hooks/useIsMobile";
-import { RecentActivity } from "../../../../models/multimedia";
-import { PlaceSessionActionDataPayload } from "../../../../models/session";
-import { StoryMultimediaCard } from "../../../multimedia/stories/cards";
+import { useIsMobile } from "../../../common/hooks/useIsMobile";
+import { PlaceMultimedia } from "../../../models/multimedia";
+import { StoryMultimediaCard } from "../../multimedia/stories/cards";
 
 const SLIDES_PER_VIEW_MOBILE = 1.4
 const SLIDES_PER_VIEW_DESKTOP = 3
 
-interface QuickPlaceDetailRecentActivitySliderPros {
-  recentActivity: RecentActivity[];
+interface PlaceDetailMultimediaSliderProps {
+  multimedia: PlaceMultimedia[];
 }
 
-export const QuickPlaceDetailRecentActivitySlider: React.FC<
-  QuickPlaceDetailRecentActivitySliderPros
-> = ({ recentActivity }) => {
+export const PlaceDetailMultimediaSlider: React.FC<
+PlaceDetailMultimediaSliderProps
+> = ({ multimedia }) => {
   const swiperElRef = useRef<any>(null);
 
 
@@ -32,9 +31,9 @@ export const QuickPlaceDetailRecentActivitySlider: React.FC<
       centered-slides="false"
       scrollbar="true"
     >
-      {recentActivity &&
-        recentActivity.length > 0 &&
-        recentActivity.map((media, index) => (
+      {multimedia &&
+        multimedia.length > 0 &&
+        multimedia.map((media, index) => (
           <swiper-slide
             key={index}
             class="relative w-full h-fulloverflow-hidden"

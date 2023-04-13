@@ -4,6 +4,7 @@ import { useAppSelector } from "../../common/hooks/useTypedSelectors";
 import { HandleAmenitiesRender } from "../../components/amenities/handleAmenitiesRender";
 import { MultimediaMasonryGrid } from "../../components/multimedia/grid/masonry";
 import { HandleRuleRender } from "../../components/rules/handleRuleRender";
+import { PlaceDetailMultimediaSlider } from "../../components/slider/placeDetailMultimediaSlider";
 import { MAIN_PLACE_COMMODITIES_KEYS, MAIN_RULES_KEYS, PLACE_COMMODITIES_ENUM, PLACE_RULES_ENUM } from "../../models/places";
 
 export const PlaceInformationDetail:React.FC = () => {
@@ -86,9 +87,11 @@ export const PlaceInformationDetail:React.FC = () => {
             </IonRow>
           </section>
 
-          <section className="relative my-3 w-full h-72 flex flex-col flex-nowrap overflow-x-auto overflow-y-hidden">
+          <section className="relative my-3 w-full flex flex-col flex-nowrap overflow-x-auto">
             <h2 className="font-bold text-lg">Multimedia:</h2>
-            <MultimediaMasonryGrid multimedia={currentPlace?.multimedia || []} />
+            <section>
+              <PlaceDetailMultimediaSlider multimedia={currentPlace?.multimedia || []} />
+            </section>
           </section>
         </IonRow>
     )

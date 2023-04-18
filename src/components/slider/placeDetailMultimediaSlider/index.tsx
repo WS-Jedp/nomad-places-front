@@ -8,11 +8,12 @@ const SLIDES_PER_VIEW_DESKTOP = 3
 
 interface PlaceDetailMultimediaSliderProps {
   multimedia: PlaceMultimedia[];
+  callback?: (index: number) => void
 }
 
 export const PlaceDetailMultimediaSlider: React.FC<
 PlaceDetailMultimediaSliderProps
-> = ({ multimedia }) => {
+> = ({ multimedia, callback }) => {
   const swiperElRef = useRef<any>(null);
 
 
@@ -22,6 +23,10 @@ PlaceDetailMultimediaSliderProps
     if (isMobile) setSlidesPerView(SLIDES_PER_VIEW_MOBILE);
     else setSlidesPerView(SLIDES_PER_VIEW_DESKTOP);
   }, [isMobile]);
+
+  function handleCallback(currentIndex: number) {
+    if (callback) callback(currentIndex)
+  }
 
   return (
     <swiper-container
@@ -38,7 +43,7 @@ PlaceDetailMultimediaSliderProps
             key={index}
             class="relative w-full h-fulloverflow-hidden"
           >
-            <StoryMultimediaCard multimediaType={media.type}  multimediaUrl={media.url} />
+            <StoryMultimediaCard multimediaType={media.type}  multimediaUrl={media.url} callback={() => handleCallback(index)} />
           </swiper-slide>
         ))}
     </swiper-container>

@@ -20,6 +20,8 @@ import { HandlePlaceStatus } from "../../components/tags/placeStatus";
 import { PLACE_STATUS } from "../../models/placeStatus";
 import { AvatarGroup } from "../../components/avatar/group";
 import { useAppSelector } from "../../common/hooks/useTypedSelectors";
+import { MdArrowBack } from "react-icons/md";
+import { BackNavigationButton } from "../../components/buttons/navigation/goBack";
 
 
 interface PlaceQuickSessionProps {
@@ -68,16 +70,7 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({ changePage
                 mb-1
             "
       >
-        <IonRouterLink
-          className="text-md font-bold font-sans"
-          routerLink="/home"
-        >
-          <IonIcon icon={arrowBack} className="mr-1" />
-
-          <IonText color="white" className="inline">
-            Go back
-          </IonText>
-        </IonRouterLink>
+        <BackNavigationButton />
       </IonRow>
 
       {/* Place Headers */}

@@ -1,6 +1,7 @@
 import { useParams, useHistory } from "react-router-dom";
 import { IonRow, IonText } from "@ionic/react";
 import { useEffect } from "react";
+
 import { DetailAndSessionActionsLayout } from "../../layouts/DetailAndSessionActionsLayout";
 import { useAppSelector } from "../../common/hooks/useTypedSelectors";
 import { findPlace } from "../../store/redux/slices/places";
@@ -55,12 +56,12 @@ export const PlaceDetailPage = () => {
       {isMobile && <BackNavigationHeader />}
       <IonRow className={`w-full h-auto ${isMobile ? "p-3" : ""}`}>
         {isMobile && (
-          <IonText>
-            <h2 className="font-bold text-3xl">{currentPlace?.name}</h2>
-            <p className="pt-1">
-              <span>Type of place</span> - <span>Zone of the place</span>
-            </p>
-          </IonText>
+            <IonText>
+              <h2 className="font-bold text-3xl">{currentPlace?.name}</h2>
+              <p className="pt-1">
+                <span>Type of place</span> - <span>Zone of the place</span>
+              </p>
+            </IonText>
         )}
       </IonRow>
       <DetailAndSessionActionsLayout secondTab={<PlaceSessionDetail />}>

@@ -1,4 +1,8 @@
-export const RecentActivityCard: React.FC = () => {
+type RecentActivityCardProps = {
+    callback: () => void
+}
+
+export const RecentActivityCard: React.FC<RecentActivityCardProps> = ({ callback }) => {
 
     return (
         <article className="
@@ -12,6 +16,7 @@ export const RecentActivityCard: React.FC = () => {
                 transition ease-in-out
                 hover:shadow-sm
             "
+            onClick={callback}
         >
             <img src="" alt="" className="object-cover w-full" />
         </article>

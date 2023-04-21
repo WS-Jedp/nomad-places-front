@@ -20,6 +20,7 @@ export const SimpleDropdown: React.FC<SimpleDropdownProps> = ({ children, isOpen
                 border border-gray-300
                 p-6
                 transition-all duration-300 ease-in-out
+                mb-3
                 ${!isOpen ? 'shadow-sm' : 'shadow-lg'}
             `}
         >
@@ -29,7 +30,7 @@ export const SimpleDropdown: React.FC<SimpleDropdownProps> = ({ children, isOpen
                 w-full h-auto
                 flex flex-row flex-nowrap items-center justify-between cursor-pointer
             `} onClick={!isOpen ? openCallback : closeCallback}>
-                <h2 className={`transition ease-in-out duration-300 font-bold ${!isOpen ? 'text-lg' : 'text-2xl'}`}>
+                <h2 className={`font-bold ${!isOpen ? 'text-lg' : 'text-2xl'} transition-all ease-in-out duration-300 `}>
                     {title}
                 </h2>
 

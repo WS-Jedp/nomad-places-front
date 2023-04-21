@@ -17,3 +17,16 @@ export const SimpleButton: React.FC<SimpleButtonProps> = ({ text, action }) => {
     </button>
   );
 };
+
+export const SimpleButtonOutline: React.FC<SimpleButtonProps> = ({ text, action }) => {
+  return (
+    <button
+      className="
+                  bg-white-500 border-solid border border-gray-400 text-black rounded-full py-1 px-6 mx-1 shadow-md hover:bg-gray-100
+                "
+      onClick={action}
+    >
+      <span className="font-medium text-md">{ text }</span>
+    </button>
+  );
+};

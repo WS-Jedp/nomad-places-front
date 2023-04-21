@@ -1,32 +1,26 @@
 import { IonCol, IonRow } from "@ionic/react"
 import { useState } from "react"
 import { MdClose } from "react-icons/md"
+import { SimpleButton, SimpleButtonOutline } from "../../../../components/buttons/simple"
 import { SimpleDropdown } from "../../../../components/dropdowns/simple"
+import { GeneralFiltersEnum } from "../../../../models/filters"
 
 type SearchSpotsGeneralFiltersProps = {
     closeCallback: () => void
+    defaultFilter?: GeneralFiltersEnum
 }
 
-enum GeneralFiltersEnum {
-    type = 'type',
-    mindset = 'mindset',
-    commodities = 'commodities',
-    rules = 'rules',
-    people = 'people',
-    distance = 'distance',
-    none = 'none'
-}
 
-export const SearchSpotsGeneralFilters:React.FC<SearchSpotsGeneralFiltersProps> = ({ closeCallback }) => {
+export const SearchSpotsGeneralFilters:React.FC<SearchSpotsGeneralFiltersProps> = ({ closeCallback, defaultFilter }) => {
 
-    const [currentFilter, setCurrentFilter] = useState<GeneralFiltersEnum>(GeneralFiltersEnum.type)
+    const [currentFilter, setCurrentFilter] = useState<GeneralFiltersEnum>(defaultFilter || GeneralFiltersEnum.type)
 
     return (
         <IonCol className="
                 relative
-                flex flex-col items-start justify-start
-                h-full w-full
-                py-6
+                flex flex-col items-start justify-between
+                w-full h-screen
+                pt-6
             "
         >
 
@@ -48,7 +42,7 @@ export const SearchSpotsGeneralFilters:React.FC<SearchSpotsGeneralFiltersProps> 
             </IonRow>
 
             {/* Filters options */}
-            <IonRow className="w-full h-auto flex flex-row items-center justify-start px-3 py-9">
+            <IonRow className="w-full h-full overflow-y-auto pb-9 flex flex-col flex-nowrap items-center justify-start px-3 py-9">
                 {/* Filter by type of place - Example: By Coffee, library, park, lookout, etc. */}
                 <SimpleDropdown 
                     title="Which type of place?"
@@ -77,13 +71,67 @@ export const SearchSpotsGeneralFilters:React.FC<SearchSpotsGeneralFiltersProps> 
                 
 
                 {/* Filter by commodities from the spot - Example: Public wifi, parking, cowork space, plugs, etc */}
+                <SimpleDropdown 
+                    title="Commotities"
+                    currentValue="All"
+                    isOpen={currentFilter === GeneralFiltersEnum.commodities}
+                    openCallback={() => setCurrentFilter(GeneralFiltersEnum.commodities)}
+                    closeCallback={() => setCurrentFilter(GeneralFiltersEnum.none)}
+                >
+                    <p>
+                        Commodities filters
+                    </p>
+                </SimpleDropdown>
 
                 {/* Filter by rules from the spot - Example: closedAt, openAt, petFriendly, under age, smoking */}
+
+                <SimpleDropdown 
+                    title="Rules"
+                    currentValue="All"
+                    isOpen={currentFilter === GeneralFiltersEnum.rules}
+                    openCallback={() => setCurrentFilter(GeneralFiltersEnum.rules)}
+                    closeCallback={() => setCurrentFilter(GeneralFiltersEnum.none)}
+                >
+                    <p>
+                        Rules filters
+                    </p>
+                </SimpleDropdown>
                 
                 {/* Filter by amount of people in the spot - Example: +10 people, -10 people */}
+                <SimpleDropdown 
+                    title="People amount"
+                    currentValue="+10"
+                    isOpen={currentFilter === GeneralFiltersEnum.people}
+                    openCallback={() => setCurrentFilter(GeneralFiltersEnum.people)}
+                    closeCallback={() => setCurrentFilter(GeneralFiltersEnum.none)}
+                >
+                    <p>
+                        People filters
+                    </p>
+                </SimpleDropdown>
                 
                 {/* Filter by distance from current location */}
 
+
+            </IonRow>
+
+            <IonRow className="
+                sticky bottom-0 left-0
+                w-full h-auto
+                flex flex-row items-center justify-start
+                px-3 py-6
+                bg-white
+                border-t border-gray-300
+            ">
+
+                <SimpleButton 
+                    text="Apply filters"
+                    action={() => {}}
+                />
+                <SimpleButtonOutline 
+                    text="Cancel"
+                    action={closeCallback}
+                />
 
             </IonRow>
 

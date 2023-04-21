@@ -1,11 +1,29 @@
+import { useState } from 'react'
 import { IonHeader } from '@ionic/react'
-import { FaUserAlt, FaLocationArrow, FaHamburger } from 'react-icons/fa'
+import { FaUserAlt, FaLocationArrow } from 'react-icons/fa'
 import { IoMdMenu } from 'react-icons/io'
 import { MdSearch } from 'react-icons/md'
 import { SearchSpotsGeneralFilters } from '../../../containers/filters/mobile/searchSpotsGeneralFilters'
 import { BlurAppModal } from '../../modals/blurContainer'
+import { GeneralFiltersEnum } from '../../../models/filters'
 
 export const GeneralHeader: React.FC = () => {
+
+    const [showUserOptions, setShowUserOptiosn] = useState<boolean>(false)
+
+    function handleShowUserOptions() {
+        setShowUserOptiosn(!showUserOptions)
+    }
+
+
+    const [showFilters, setShowFilters] = useState<boolean>(false)
+    const [currentFilter, setCurrentFilter] = useState<GeneralFiltersEnum>(GeneralFiltersEnum.none)
+
+    function handleOpenFilters(currentFilter: GeneralFiltersEnum) {
+        setShowFilters(true)
+        setCurrentFilter(currentFilter)
+    }
+
     return (
         <IonHeader
                 
@@ -30,17 +48,19 @@ export const GeneralHeader: React.FC = () => {
                     cursor-pointer
                     hover:shadow-md
                     transition-all duration-300
-                '>
-                    <button className='text-black text-sm font-medium'>
+                '
+                    onClick={() => handleOpenFilters(GeneralFiltersEnum.none)}
+                >
+                    <button className='text-black text-sm font-medium' onClick={() => handleOpenFilters(GeneralFiltersEnum.none)}>
                         Search for a spot
                     </button>
                     <span className='hidden md:flex separator h-full w-[1px] bg-gray-300 mx-3'>|</span>
-                    <button className='hidden md:flex text-black text-sm  font-light'>
+                    <button className='hidden md:flex text-black text-sm  font-light' onClick={() => handleOpenFilters(GeneralFiltersEnum.people)}>
                         ¿How many people?
                     </button>
-                    <span className='hidden md:flex separator h-full w-[1px] bg-gray-300 mx-3'>|</span>
+                    <span className='hidden md:flex separator h-full w-[1px] bg-gray-300 mx-3' onClick={() => handleOpenFilters(GeneralFiltersEnum.commodities)}>|</span>
                     <button className='hidden md:flex text-black text-sm  font-light'>
-                        Accommodities
+                        Commodities
                     </button>
 
                     <span className='rounded-full p-1 bg-blue-400 ml-3'>
@@ -76,23 +96,44 @@ export const GeneralHeader: React.FC = () => {
                         <FaLocationArrow size={12} color='gray' />
                     </span>
                     <span className='
+                            relative
                             p-3
                             flex items-center justify-center
                             bg-white
                             rounded-full outline outline-1 outline-gray-300
-                            cursor-pointer
                             hover:bg-gray-100
                         '
                     >
-                        <IoMdMenu size={18} color='gray' className='mr-1' />
-                        <FaUserAlt size={13} color='gray' />
+                        <div className='w-full h-full cursor-pointer flex flex-row flex-nowrap items-center justify-center' onClick={handleShowUserOptions}>
+                            <IoMdMenu size={18} color='gray' className='mr-1' />
+                            <FaUserAlt size={13} color='gray' />
+                        </div>
+
+                        {
+                            showUserOptions && (
+                                <article className="
+                                        absolute bottom-[-121%] right-0
+                                        mt-3
+                                        w-52  overflow-y-auto
+                                        p-3 bg-white shadow-sm
+                                        text-black
+                                    "
+                                >
+                                        Hola
+                                </article>
+                            )
+                        }
                     </span>
 
                 </section>
 
-                <BlurAppModal> 
-                    <SearchSpotsGeneralFilters closeCallback={() => {}} />
-                </BlurAppModal>
+                {
+                    showFilters && (
+                        <BlurAppModal> 
+                            <SearchSpotsGeneralFilters defaultFilter={currentFilter} closeCallback={() => setShowFilters(false)} />
+                        </BlurAppModal>
+                    )
+                }
 
             </IonHeader>
     )

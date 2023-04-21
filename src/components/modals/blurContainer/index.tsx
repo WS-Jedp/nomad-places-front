@@ -14,7 +14,7 @@ export const BlurAppModal:React.FC<AppModalProps> = ({ children })=> {
                 w-screen h-screen
             '
         >
-            <div className="z-50">
+            <div className="relative w-full h-full z-50">
                 { children }
             </div>
             <article  className='

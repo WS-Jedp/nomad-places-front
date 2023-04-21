@@ -2,6 +2,7 @@ import { IonHeader } from '@ionic/react'
 import { FaUserAlt, FaLocationArrow, FaHamburger } from 'react-icons/fa'
 import { IoMdMenu } from 'react-icons/io'
 import { MdSearch } from 'react-icons/md'
+import { SearchSpotsGeneralFilters } from '../../../containers/filters/mobile/searchSpotsGeneralFilters'
 import { BlurAppModal } from '../../modals/blurContainer'
 
 export const GeneralHeader: React.FC = () => {
@@ -89,7 +90,9 @@ export const GeneralHeader: React.FC = () => {
 
                 </section>
 
-                <BlurAppModal> <span className="text-black">Hello</span> </BlurAppModal>
+                <BlurAppModal> 
+                    <SearchSpotsGeneralFilters closeCallback={() => {}} />
+                </BlurAppModal>
 
             </IonHeader>
     )

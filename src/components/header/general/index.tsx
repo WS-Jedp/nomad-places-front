@@ -6,6 +6,9 @@ import { MdSearch } from 'react-icons/md'
 import { SearchSpotsGeneralFilters } from '../../../containers/filters/mobile/searchSpotsGeneralFilters'
 import { BlurAppModal } from '../../modals/blurContainer'
 import { GeneralFiltersEnum } from '../../../models/filters'
+import { UserMenuOptions, UserOptionsMenu } from '../../../containers/menus/userOptions'
+import { AppModal } from '../../modals/container'
+import { AuthFormModal } from '../../../containers/auth/authFormModal'
 
 export const GeneralHeader: React.FC = () => {
 
@@ -22,6 +25,49 @@ export const GeneralHeader: React.FC = () => {
     function handleOpenFilters(currentFilter: GeneralFiltersEnum) {
         setShowFilters(true)
         setCurrentFilter(currentFilter)
+    }
+
+    const [authModal, setAuthModal] = useState<boolean>(false)
+    const [authOption, setAuthOption] = useState<UserMenuOptions | null>()
+
+    function closeAuthModal() {
+        setAuthModal(false)
+        setAuthOption(null)
+    }
+
+    function handleUserMenuOptions(option: UserMenuOptions) {
+        setShowUserOptiosn(false)
+        switch (option) {
+            case UserMenuOptions.register:
+                setAuthModal(true)
+                setAuthOption(UserMenuOptions.register)
+                break
+            case UserMenuOptions.login:
+                setAuthModal(true)
+                setAuthOption(UserMenuOptions.login)
+                break
+            case UserMenuOptions.about:
+                console.log('Go to about page')
+                break
+            case UserMenuOptions.recommend:
+                console.log('Go to recommend page and auth if not logged in')
+                break
+        }
+
+    }
+
+    function renderAuthOption() {
+        if(authOption === UserMenuOptions.register) {
+            return (
+                <AuthFormModal 
+                    closeCallback={closeAuthModal}
+                />
+            )
+        }
+
+        return (
+            <p>Login</p>
+        )
     }
 
     return (
@@ -98,7 +144,7 @@ export const GeneralHeader: React.FC = () => {
                     <span className='
                             relative
                             p-3
-                            flex items-center justify-center
+                            inline-block items-center justify-center
                             bg-white
                             rounded-full outline outline-1 outline-gray-300
                             hover:bg-gray-100
@@ -111,16 +157,9 @@ export const GeneralHeader: React.FC = () => {
 
                         {
                             showUserOptions && (
-                                <article className="
-                                        absolute bottom-[-121%] right-0
-                                        mt-3
-                                        w-52  overflow-y-auto
-                                        p-3 bg-white shadow-sm
-                                        text-black
-                                    "
-                                >
-                                        Hola
-                                </article>
+                                <UserOptionsMenu 
+                                    callback={handleUserMenuOptions}
+                                />
                             )
                         }
                     </span>
@@ -132,6 +171,16 @@ export const GeneralHeader: React.FC = () => {
                         <BlurAppModal> 
                             <SearchSpotsGeneralFilters defaultFilter={currentFilter} closeCallback={() => setShowFilters(false)} />
                         </BlurAppModal>
+                    )
+                }
+
+                {
+                    authModal && (
+                        <AppModal>
+                            {
+                                renderAuthOption()
+                            }
+                        </AppModal>
                     )
                 }
 

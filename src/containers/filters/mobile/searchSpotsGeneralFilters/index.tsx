@@ -1,8 +1,11 @@
 import { IonCol, IonRow } from "@ionic/react"
 import { useState } from "react"
-import { MdClose } from "react-icons/md"
+import { MdClose, MdCoffee } from "react-icons/md"
 import { SimpleButton, SimpleButtonOutline } from "../../../../components/buttons/simple"
 import { SimpleDropdown } from "../../../../components/dropdowns/simple"
+import { InputRowSelect } from "../../../../components/form/container/rowSelect"
+import { SimpleCheckbox } from "../../../../components/form/inputs/checkbox"
+import { SimplePlaceTypeCard } from "../../../../components/places/types/cards/simple"
 import { GeneralFiltersEnum } from "../../../../models/filters"
 
 type SearchSpotsGeneralFiltersProps = {
@@ -45,15 +48,26 @@ export const SearchSpotsGeneralFilters:React.FC<SearchSpotsGeneralFiltersProps> 
             <IonRow className="w-full h-full overflow-y-auto pb-9 flex flex-col flex-nowrap items-center justify-start px-3 py-9">
                 {/* Filter by type of place - Example: By Coffee, library, park, lookout, etc. */}
                 <SimpleDropdown 
-                    title="Which type of place?"
+                    title="What type of spot?"
                     currentValue="All"
                     isOpen={currentFilter === GeneralFiltersEnum.type}
                     openCallback={() => setCurrentFilter(GeneralFiltersEnum.type)}
                     closeCallback={() => setCurrentFilter(GeneralFiltersEnum.none)}
                 >
-                    <p>
-                        Type filters
-                    </p>
+                    <section className="flex flex-row flex-nowrap">
+                        <SimplePlaceTypeCard 
+                            text="Coffee"
+                            icon={<MdCoffee size={24} />}
+                            callback={() => {}}
+                            isSelected
+                        />
+                        <SimplePlaceTypeCard 
+                            text="Cowork"
+                            icon={<MdCoffee size={24} />}
+                            callback={() => {}}
+                            
+                        />
+                    </section>
                 </SimpleDropdown>
 
                 {/* Filter by mindset ambient - Example: For study, work, romantic, etc. */}
@@ -78,9 +92,17 @@ export const SearchSpotsGeneralFilters:React.FC<SearchSpotsGeneralFiltersProps> 
                     openCallback={() => setCurrentFilter(GeneralFiltersEnum.commodities)}
                     closeCallback={() => setCurrentFilter(GeneralFiltersEnum.none)}
                 >
-                    <p>
-                        Commodities filters
-                    </p>
+                    <section>
+                        <SimpleCheckbox 
+                            label="Public wifi"
+                            callback={() => {}}
+                        />
+                        <SimpleCheckbox 
+                            isSelected
+                            label="Parking"
+                            callback={() => {}}
+                        />
+                    </section>
                 </SimpleDropdown>
 
                 {/* Filter by rules from the spot - Example: closedAt, openAt, petFriendly, under age, smoking */}
@@ -105,9 +127,18 @@ export const SearchSpotsGeneralFilters:React.FC<SearchSpotsGeneralFiltersProps> 
                     openCallback={() => setCurrentFilter(GeneralFiltersEnum.people)}
                     closeCallback={() => setCurrentFilter(GeneralFiltersEnum.none)}
                 >
-                    <p>
-                        People filters
-                    </p>
+                        <InputRowSelect 
+                            defaultOption="Cualquiera"
+                            selectedOption="Cualquiera"
+                            options={[
+                                '0-5',
+                                '5-10',
+                                '10-15',
+                                '15-20',
+                                '+20',
+                            ]}
+                            onChange={() => {}}
+                        />
                 </SimpleDropdown>
                 
                 {/* Filter by distance from current location */}

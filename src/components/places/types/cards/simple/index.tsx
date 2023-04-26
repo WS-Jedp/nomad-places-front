@@ -13,7 +13,7 @@ export const SimplePlaceTypeCard: React.FC<SimplePlaceTypeCardProps> = ({ icon, 
                 ${isSelected ? 'border-2' : 'border'} border-solid border-gray-300 ${isSelected ? 'border-gray-500' : ''}
                 flex flex-col items-start justify-between
                 rounded-lg
-                w-24 h-24
+                w-28 h-28
                 p-3
                 cursor-pointer
                 hover:border-gray-500
@@ -26,7 +26,7 @@ export const SimplePlaceTypeCard: React.FC<SimplePlaceTypeCardProps> = ({ icon, 
                 { icon }
             </span>
 
-            <h3 className="font-semibold">
+            <h3 className="font-semibold capitalize">
                 {
                     text
                 }

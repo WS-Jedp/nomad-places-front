@@ -1,9 +1,9 @@
 export enum PLACE_TYPES {
     COFFEE = "COFFEE",
-    STUDY = "STUDY",
-    WORK = "WORK",
-    VIBE = "VIBE",
-    ROMANTIC = "ROMANTIC",
-    COWORK = "COWORK",
-    QUIET = "QUIET"
+    LIBRARY = "LIBRARY",
+    SQUARE = "SQUARE",
+    PARK = "PARK",
+    ROOFTOP = "ROOFTOP",
+    LOOKOUT = "LOOKOUT",
+    RESTAURANT = "RESTAURANT",
 }

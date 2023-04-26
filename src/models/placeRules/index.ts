@@ -1,0 +1,7 @@
+export enum PLACE_RULES {
+    OPEN_AT = "OPEN_AT",
+    CLOSED_AT = "CLOSED_AT",
+    PET_FRIENDLY = "PET_FRIENDLY",
+    SMOKING = "SMOKING",
+    UNDER_AGE = "UNDER_AGE",
+}

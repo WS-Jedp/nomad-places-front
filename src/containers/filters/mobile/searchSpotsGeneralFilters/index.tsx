@@ -3,10 +3,14 @@ import { useState } from "react"
 import { MdClose, MdCoffee } from "react-icons/md"
 import { SimpleButton, SimpleButtonOutline } from "../../../../components/buttons/simple"
 import { SimpleDropdown } from "../../../../components/dropdowns/simple"
+import { RowPlacesFilterOptions } from "../../../../components/filters/rowPlacesFilterOptions"
 import { InputRowSelect } from "../../../../components/form/container/rowSelect"
 import { SimpleCheckbox } from "../../../../components/form/inputs/checkbox"
-import { SimplePlaceTypeCard } from "../../../../components/places/types/cards/simple"
 import { GeneralFiltersEnum } from "../../../../models/filters"
+import { PlaceTypesFilter } from "../../../../components/filters/placeTypesFilter"
+import { PlaceRulesSelection } from "../../../../components/filters/placeRulesSelection"
+import { PlaceCommoditiesSelection } from "../../../../components/filters/placeCommoditiesSelection"
+import { PlaceMindsetsFilters } from "../../../../components/filters/placeMindsetsFilter"
 
 type SearchSpotsGeneralFiltersProps = {
     closeCallback: () => void
@@ -54,20 +58,7 @@ export const SearchSpotsGeneralFilters:React.FC<SearchSpotsGeneralFiltersProps> 
                     openCallback={() => setCurrentFilter(GeneralFiltersEnum.type)}
                     closeCallback={() => setCurrentFilter(GeneralFiltersEnum.none)}
                 >
-                    <section className="flex flex-row flex-nowrap">
-                        <SimplePlaceTypeCard 
-                            text="Coffee"
-                            icon={<MdCoffee size={24} />}
-                            callback={() => {}}
-                            isSelected
-                        />
-                        <SimplePlaceTypeCard 
-                            text="Cowork"
-                            icon={<MdCoffee size={24} />}
-                            callback={() => {}}
-                            
-                        />
-                    </section>
+                    <PlaceTypesFilter />
                 </SimpleDropdown>
 
                 {/* Filter by mindset ambient - Example: For study, work, romantic, etc. */}
@@ -78,9 +69,7 @@ export const SearchSpotsGeneralFilters:React.FC<SearchSpotsGeneralFiltersProps> 
                     openCallback={() => setCurrentFilter(GeneralFiltersEnum.mindset)}
                     closeCallback={() => setCurrentFilter(GeneralFiltersEnum.none)}
                 >
-                    <p>
-                        Mindset filters
-                    </p>
+                    <PlaceMindsetsFilters />
                 </SimpleDropdown>
                 
 
@@ -92,17 +81,7 @@ export const SearchSpotsGeneralFilters:React.FC<SearchSpotsGeneralFiltersProps> 
                     openCallback={() => setCurrentFilter(GeneralFiltersEnum.commodities)}
                     closeCallback={() => setCurrentFilter(GeneralFiltersEnum.none)}
                 >
-                    <section>
-                        <SimpleCheckbox 
-                            label="Public wifi"
-                            callback={() => {}}
-                        />
-                        <SimpleCheckbox 
-                            isSelected
-                            label="Parking"
-                            callback={() => {}}
-                        />
-                    </section>
+                    <PlaceCommoditiesSelection />
                 </SimpleDropdown>
 
                 {/* Filter by rules from the spot - Example: closedAt, openAt, petFriendly, under age, smoking */}
@@ -114,9 +93,7 @@ export const SearchSpotsGeneralFilters:React.FC<SearchSpotsGeneralFiltersProps> 
                     openCallback={() => setCurrentFilter(GeneralFiltersEnum.rules)}
                     closeCallback={() => setCurrentFilter(GeneralFiltersEnum.none)}
                 >
-                    <p>
-                        Rules filters
-                    </p>
+                    <PlaceRulesSelection />
                 </SimpleDropdown>
                 
                 {/* Filter by amount of people in the spot - Example: +10 people, -10 people */}

@@ -35,7 +35,7 @@ export const SimpleCheckbox: React.FC<SimpleCheckboxProps> = ({ label, callback,
                     )
                 }
             </span>
-            <span className="text-md font-semibold">
+            <span className="text-md font-semibold text-start break-keep">
                 {
                     label
                 }

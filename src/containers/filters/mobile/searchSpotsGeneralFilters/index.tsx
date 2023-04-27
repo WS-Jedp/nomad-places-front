@@ -11,6 +11,7 @@ import { PlaceTypesFilter } from "../../../../components/filters/placeTypesFilte
 import { PlaceRulesSelection } from "../../../../components/filters/placeRulesSelection"
 import { PlaceCommoditiesSelection } from "../../../../components/filters/placeCommoditiesSelection"
 import { PlaceMindsetsFilters } from "../../../../components/filters/placeMindsetsFilter"
+import { SpotAmountPeopleFilter } from "../../../../components/filters/spotAmountPeopleFilter"
 
 type SearchSpotsGeneralFiltersProps = {
     closeCallback: () => void
@@ -104,18 +105,7 @@ export const SearchSpotsGeneralFilters:React.FC<SearchSpotsGeneralFiltersProps> 
                     openCallback={() => setCurrentFilter(GeneralFiltersEnum.people)}
                     closeCallback={() => setCurrentFilter(GeneralFiltersEnum.none)}
                 >
-                        <InputRowSelect 
-                            defaultOption="Cualquiera"
-                            selectedOption="Cualquiera"
-                            options={[
-                                '0-5',
-                                '5-10',
-                                '10-15',
-                                '15-20',
-                                '+20',
-                            ]}
-                            onChange={() => {}}
-                        />
+                        <SpotAmountPeopleFilter />
                 </SimpleDropdown>
                 
                 {/* Filter by distance from current location */}

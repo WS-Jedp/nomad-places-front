@@ -5,46 +5,49 @@ import { TbFountain } from "react-icons/tb"
 import { FaMountain, FaBuilding } from "react-icons/fa"
 import { SimplePlaceTypeCard } from "../../places/types/cards/simple"
 import { PLACE_TYPES } from "../../../models/placeTypes"
+import { useAppDispatch, useAppSelector } from "../../../common/hooks/useTypedSelectors"
+import { selectSpotTypeFilter, removeSpotTypeFilter } from '../../../store/redux/slices/filters'
 
 export const PlaceTypesFilter:React.FC = () => {
 
-    const placeTypes: { [key: string]: { type: PLACE_TYPES, icon: React.ReactNode } } = {
-        coffee: {
-            type: PLACE_TYPES.COFFEE,
-            icon: <MdCoffee size={24} color="black" />,
-        },
-        library: {
-            type: PLACE_TYPES.LIBRARY,
-            icon: <IoLibrary size={24} color="black" />,
-        },
-        park: {
-            type: PLACE_TYPES.PARK,
-            icon: <TbFountain size={24} color="black" />,
-        },
-        lookout: {
-            type: PLACE_TYPES.LOOKOUT,
-            icon: <FaMountain size={24} color="black" />,
-        },
-        restaurant: {
-            type: PLACE_TYPES.RESTAURANT,
-            icon: <MdRestaurant size={24} color="black" />,
-        },
-        rooftop: {
-            type: PLACE_TYPES.ROOFTOP,
-            icon: <FaBuilding size={24} color="black" />,
-        },
+    const { spotTypesFilter, selectedSpotTypesFilter } = useAppSelector(state => state.filters)
+    const dispatch = useAppDispatch()
+
+    function handleSpotTypeIcon(spotType: PLACE_TYPES) {
+        switch (spotType) {
+            case PLACE_TYPES.COFFEE:
+                return <MdCoffee size={24} color="black" />
+            case PLACE_TYPES.LIBRARY:
+                return <IoLibrary size={24} color="black" />
+            case PLACE_TYPES.PARK:
+                return <TbFountain size={24} color="black" />
+            case PLACE_TYPES.LOOKOUT:
+                return <FaMountain size={24} color="black" />
+            case PLACE_TYPES.RESTAURANT:
+                return <MdRestaurant size={24} color="black" />
+            case PLACE_TYPES.ROOFTOP:
+                return <FaBuilding size={24} color="black" />
+        }
     }
 
+    function handleCallback(spotTypeId: number) {
+        if(selectedSpotTypesFilter.includes(spotTypeId)) {
+            dispatch(removeSpotTypeFilter({ spotTypeFilterID: spotTypeId }))
+        } else {
+            dispatch(selectSpotTypeFilter({ spotTypeFilterID: spotTypeId }))
+        }
+    }
 
     return (
         <IonRow className="flex flex-row flex-nowrap">
             {
-                Object.keys(placeTypes).map((key, index) => (
+                spotTypesFilter.map((spotType, index) => (
                     <div key={index} className="mr-3">
                         <SimplePlaceTypeCard
-                            text={placeTypes[key].type.toLowerCase()}
-                            icon={placeTypes[key].icon}
-                            callback={() => {}}
+                            text={spotType.title.toLowerCase()}
+                            icon={handleSpotTypeIcon(spotType.name)}
+                            callback={() => handleCallback(spotType.id)}
+                            isSelected={selectedSpotTypesFilter.includes(spotType.id)}
                         />
                     </div>
                 ))

@@ -24,6 +24,7 @@ export type Commodities = {
     publicPlugs: boolean | null
     plugsAmount: number | null
     coworkSpace: boolean | null
+    publicBathrooms: boolean | null
 }
 
 export enum PLACE_COMMODITIES_ENUM {
@@ -32,7 +33,8 @@ export enum PLACE_COMMODITIES_ENUM {
     PARKING =  'parking',
     PUBLIC_PLUGS =  'publicPlugs',
     PLUGS_AMOUNT =  'plugsAmount',
-    COWORK_SPACE =  'coworkSpace'
+    COWORK_SPACE =  'coworkSpace',
+    PUBLIC_BATHROOMS =  'publicBathrooms'
 }
 
 export const MAIN_PLACE_COMMODITIES_KEYS = [
@@ -40,6 +42,7 @@ export const MAIN_PLACE_COMMODITIES_KEYS = [
   PLACE_COMMODITIES_ENUM.PUBLIC_WIFI,
   PLACE_COMMODITIES_ENUM.PUBLIC_PLUGS,
   PLACE_COMMODITIES_ENUM.PARKING,
+  PLACE_COMMODITIES_ENUM.PUBLIC_BATHROOMS,
 ]
   
   /**

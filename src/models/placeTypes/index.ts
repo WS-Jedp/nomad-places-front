@@ -7,3 +7,9 @@ export enum PLACE_TYPES {
     LOOKOUT = "LOOKOUT",
     RESTAURANT = "RESTAURANT",
 }
+
+export type PlaceTypesFilter = {
+    id: number
+    name: PLACE_TYPES
+    title: string
+}

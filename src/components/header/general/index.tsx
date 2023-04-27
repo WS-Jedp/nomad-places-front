@@ -28,11 +28,9 @@ export const GeneralHeader: React.FC = () => {
     }
 
     const [authModal, setAuthModal] = useState<boolean>(false)
-    const [authOption, setAuthOption] = useState<UserMenuOptions | null>()
 
     function closeAuthModal() {
         setAuthModal(false)
-        setAuthOption(null)
     }
 
     function handleUserMenuOptions(option: UserMenuOptions) {
@@ -40,11 +38,9 @@ export const GeneralHeader: React.FC = () => {
         switch (option) {
             case UserMenuOptions.register:
                 setAuthModal(true)
-                setAuthOption(UserMenuOptions.register)
                 break
             case UserMenuOptions.login:
                 setAuthModal(true)
-                setAuthOption(UserMenuOptions.login)
                 break
             case UserMenuOptions.about:
                 console.log('Go to about page')
@@ -54,20 +50,6 @@ export const GeneralHeader: React.FC = () => {
                 break
         }
 
-    }
-
-    function renderAuthOption() {
-        if(authOption === UserMenuOptions.register) {
-            return (
-                <AuthFormModal 
-                    closeCallback={closeAuthModal}
-                />
-            )
-        }
-
-        return (
-            <p>Login</p>
-        )
     }
 
     return (
@@ -177,9 +159,9 @@ export const GeneralHeader: React.FC = () => {
                 {
                     authModal && (
                         <AppModal>
-                            {
-                                renderAuthOption()
-                            }
+                            <AuthFormModal 
+                                closeCallback={closeAuthModal}
+                            />
                         </AppModal>
                     )
                 }

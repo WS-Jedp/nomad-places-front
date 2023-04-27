@@ -41,9 +41,9 @@ export const TextInput: React.FC<TextInputProps> = ({ label, placeholder, callba
                     border border-solid border-gray-300
                     rounded-md
                     text-sm
-                    text-${defineTextColor()}-500
+                    text-${defineTextColor()}-600
                     w-full
-                    focus:outline-1 focus:outline-${defineOutlineColor()}-500
+                    focus:outline-1 focus:outline-${defineOutlineColor()}-600
                 `}
                 type={type }
                 placeholder={placeholder}
@@ -53,7 +53,7 @@ export const TextInput: React.FC<TextInputProps> = ({ label, placeholder, callba
             />
                 { isError && feedbackMessage && (
                     <span className={`
-                        text-xs text-${defineTextColor()}-500 p-1
+                        text-xs text-${defineTextColor()}-600 p-1
                     `}>
                         *{ feedbackMessage }
                     </span>

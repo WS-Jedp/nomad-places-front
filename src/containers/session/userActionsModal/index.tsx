@@ -1,6 +1,7 @@
 import { IonRow, IonCol } from '@ionic/react'
 import { useState } from 'react'
 import { MdArrowBack, MdClose } from 'react-icons/md'
+import { CircleUserAction } from '../../../components/actions/cards/circleUserAction'
 import { SimpleButtonOutline } from '../../../components/buttons/simple'
 
 type UserActionsModalProps = {
@@ -11,10 +12,10 @@ export const UserActionsModal: React.FC<UserActionsModalProps> = ({ closeCallbac
     const [currentAction, setCurrentAction] = useState<string | null>(null)
 
     const actions = [
-        'People',
-        'Ambient/mindset',
-        'Status',
-        'Story'
+        'people',
+        'mindset',
+        'status',
+        'recent-activity'
     ]
 
     function handleAction(action: string) {
@@ -40,12 +41,14 @@ export const UserActionsModal: React.FC<UserActionsModalProps> = ({ closeCallbac
                             <MdArrowBack color='black' size={24} onClick={() => setCurrentAction(null)} />
                             <MdClose color='black' size={24} onClick={closeCallback} />
                         </IonRow>
-                        <IonRow className='flex flex-col w-full items-center justify-start'>
-                            <div className='w-24 h-24 rounded-full bg-gray-300 m-3'></div>
-                            <h3 className='text-3xl font-bold'>
-                                { currentAction }
-                            </h3>
-                        </IonRow>
+                        <CircleUserAction 
+                            size={32} 
+                            iconSize={54} 
+                            callback={() => {}} 
+                            action={currentAction}
+                            text={currentAction}
+                            fontSize='2xl'
+                        />
                     </IonRow>
                 )
             }
@@ -60,13 +63,8 @@ export const UserActionsModal: React.FC<UserActionsModalProps> = ({ closeCallbac
                                         key={index}
                                         size='4' 
                                         className='text-center flex flex-col justify-center items-center my-3 p-3 cursor-pointer'
-                                        onClick={() => handleAction(action)}
                                     >
-                                        <div className='flex flex-col items-center justify-center rounded-full bg-gray-300 w-20 h-20'>
-                                        </div>
-                                        <span className='my-1 text-md font-medium'>
-                                            { action }
-                                        </span>
+                                        <CircleUserAction callback={() => handleAction(action)} action={action} text={action} />
                                     </IonCol>
                                 ))
                             }

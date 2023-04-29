@@ -10,6 +10,8 @@ import { findPlace, getNearestPlaces, setNearPlaces } from '../../store/redux/sl
 import { getUserGeoLocation } from '../../store/redux/slices/user' 
 import { useAppDispatch, useAppSelector } from "../../common/hooks/useTypedSelectors";
 import { AppLayout } from "../../layouts/AppLayout";
+import { BlurAppModal } from "../../components/modals/blurContainer";
+import { UserActionsModal } from "../../containers/session/userActionsModal";
 
 interface SearchPlacesProps {}
 
@@ -60,8 +62,11 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
               )}
             </>
           </ItemsAndMapLayout>
-          
+          <BlurAppModal>
+            <UserActionsModal closeCallback={() => {}} />
+          </BlurAppModal>
       </IonRow>
+
     </AppLayout>
 
   );

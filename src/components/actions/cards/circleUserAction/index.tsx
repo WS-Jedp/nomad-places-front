@@ -11,7 +11,7 @@ type CircleUserActionProps = {
     fontSize?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl'
 }
 
-export const CircleUserAction: React.FC<CircleUserActionProps> = ({ action, callback, size = 20, iconSize = 24, fontSize = 'lg' }) => {
+export const CircleUserAction: React.FC<CircleUserActionProps> = ({ action, callback, size = 20, iconSize = 24, fontSize  }) => {
 
     function defineActionColor() {
         switch (action) {
@@ -50,13 +50,13 @@ export const CircleUserAction: React.FC<CircleUserActionProps> = ({ action, call
             <div className={`
                     flex flex-col 
                     items-center justify-center 
-                    rounded-full w-${size} h-${size}
+                    rounded-full w-${size || 20} h-${size || 20}
                     ${defineActionColor()}
                 `}
             >
                 { defineActionIcon() }
             </div>
-            <span className={`text-center my-1 text-${fontSize} font-medium text-black capitalize`}>
+            <span className={`text-center my-1 text-${fontSize || 'lg'} font-medium text-black capitalize`}>
                 { action }
             </span>
 

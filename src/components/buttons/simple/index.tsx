@@ -9,6 +9,7 @@ export const SimpleButton: React.FC<SimpleButtonProps> = ({ text, action }) => {
   return (
     <button
       className="
+                  w-full max-w-[300px]
                   bg-blue-500 text-white rounded-full py-1 px-6 mx-1 shadow-md hover:bg-blue-400
                   "
                   onClick={action}

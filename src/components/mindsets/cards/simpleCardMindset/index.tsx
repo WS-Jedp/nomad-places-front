@@ -1,4 +1,6 @@
+import { BsHearts } from "react-icons/bs";
 import { IoBook, IoColorWandOutline, IoGlassesOutline } from "react-icons/io5";
+import { MdCelebration } from "react-icons/md";
 import { MINDSETS } from "../../../../models/mindsets";
 
 type SimpleMindsetCard = {
@@ -29,6 +31,10 @@ export const SimpleMindsetCard: React.FC<SimpleMindsetCard> = ({ text, isSelecte
                 return 'text-indigo-500'
             case MINDSETS.WORK:
                 return 'text-blue-600'
+            case MINDSETS.ROMANTIC:
+                return 'text-pink-500'
+            case MINDSETS.VIBE:
+                return 'text-amber-600'
         }
     }
 
@@ -40,6 +46,10 @@ export const SimpleMindsetCard: React.FC<SimpleMindsetCard> = ({ text, isSelecte
                 return 'border-indigo-500'
             case MINDSETS.WORK:
                 return 'border-blue-600'
+            case MINDSETS.WORK:
+                return 'border-pink-500'
+            case MINDSETS.VIBE:
+                return 'border-amber-600'
         }
     }
 
@@ -51,6 +61,10 @@ export const SimpleMindsetCard: React.FC<SimpleMindsetCard> = ({ text, isSelecte
                 return <IoBook size={24} className={handleTextColor()} />
             case MINDSETS.WORK:
                 return <IoGlassesOutline size={24} className={handleTextColor()} />
+            case MINDSETS.ROMANTIC:
+                return <BsHearts size={24} className={handleTextColor()} />
+            case MINDSETS.VIBE:
+                return <MdCelebration size={24} className={handleTextColor()} />
         }
     }
 
@@ -65,7 +79,7 @@ export const SimpleMindsetCard: React.FC<SimpleMindsetCard> = ({ text, isSelecte
                 p-3
                 cursor-pointer
                 hover:${handleHoverColor()}
-                transiation-all duration-300
+                transiation-all duration-300 text-
             `}
             onClick={callback}
         >

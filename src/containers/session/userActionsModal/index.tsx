@@ -2,7 +2,8 @@ import { IonRow, IonCol } from '@ionic/react'
 import { useState } from 'react'
 import { MdArrowBack, MdClose } from 'react-icons/md'
 import { CircleUserAction } from '../../../components/actions/cards/circleUserAction'
-import { SimpleButtonOutline } from '../../../components/buttons/simple'
+import { SimpleButton, SimpleButtonOutline } from '../../../components/buttons/simple'
+import { HandleActionForm } from '../actions/forms/handleActionForm'
 
 type UserActionsModalProps = {
     closeCallback: () => void
@@ -42,12 +43,10 @@ export const UserActionsModal: React.FC<UserActionsModalProps> = ({ closeCallbac
                             <MdClose color='black' size={24} onClick={closeCallback} />
                         </IonRow>
                         <CircleUserAction 
-                            size={32} 
-                            iconSize={54} 
+                            iconSize={30} 
                             callback={() => {}} 
                             action={currentAction}
                             text={currentAction}
-                            fontSize='2xl'
                         />
                     </IonRow>
                 )
@@ -70,28 +69,36 @@ export const UserActionsModal: React.FC<UserActionsModalProps> = ({ closeCallbac
                             }
                         </IonRow>
                     ) : (
-                        <IonRow>
-                            <p>
-                                Action selected
-                            </p>
-                        </IonRow>
+                        <HandleActionForm action={currentAction} />
                     )
 
             }
 
-            <IonRow className="
-                sticky bottom-0 left-0
-                w-full h-auto
-                flex flex-row items-center justify-center
-                px-3 py-6
-                bg-white
-                border-t border-gray-300
-            ">
-                <SimpleButtonOutline 
-                    text="Cancel"
-                    action={closeCallback}
-                />
-            </IonRow>
+            {
+                !currentAction ? (
+                    <IonRow className="
+                        sticky bottom-0 left-0
+                        w-full h-auto
+                        flex flex-row items-center justify-center
+                        px-3 py-6
+                        bg-white
+                        border-t border-gray-300
+                    ">
+                        <SimpleButtonOutline 
+                            text="Cancel"
+                            action={closeCallback}
+                        />
+                    </IonRow>
+                ) : (
+                    <IonRow className="flex items-center justify-center p-6 w-full">
+                        <SimpleButton 
+                            text='Save'
+                            action={() => {}}
+                        />
+                    </IonRow>
+                )
+            }
+
         </IonRow>
     )
 

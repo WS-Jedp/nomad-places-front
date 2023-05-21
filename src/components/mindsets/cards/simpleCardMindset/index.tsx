@@ -20,6 +20,10 @@ export const SimpleMindsetCard: React.FC<SimpleMindsetCard> = ({ text, isSelecte
                 return 'bg-indigo-100 text-indigo-500 border-indigo-500'
             case MINDSETS.WORK:
                 return 'bg-blue-100 text-blue-600 border-blue-600'
+            case MINDSETS.ROMANTIC:
+                return 'bg-pink-100 text-pink-600 border-pink-600'
+            case MINDSETS.VIBE:
+                return 'bg-amber-100 text-amber-600 border-amber-600'
         }
     }
 
@@ -46,7 +50,7 @@ export const SimpleMindsetCard: React.FC<SimpleMindsetCard> = ({ text, isSelecte
                 return 'border-indigo-500'
             case MINDSETS.WORK:
                 return 'border-blue-600'
-            case MINDSETS.WORK:
+            case MINDSETS.ROMANTIC:
                 return 'border-pink-500'
             case MINDSETS.VIBE:
                 return 'border-amber-600'

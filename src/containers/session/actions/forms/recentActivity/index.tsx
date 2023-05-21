@@ -1,14 +1,31 @@
 import { IonRow } from "@ionic/react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { IoMdAdd } from "react-icons/io"
+import { useAppDispatch, useAppSelector } from "../../../../../common/hooks/useTypedSelectors"
 import { verifyFileSize, verifyFileType, verifyVideoDuration } from "../../../../../common/utils/files"
+import { SimpleButton } from "../../../../../components/buttons/simple"
 import { MULTIMEDIA_TYPE } from "../../../../../models/multimedia"
+import { resetSessionRecentActivity, updateSessionRecentActivity } from "../../../../../store/redux/slices/sessionActions/update"
 
-export const AddRecentActivityForm: React.FC = () => {
+interface AddRecentActivityFormProps {
+    onSave: () => void
+}
+export const AddRecentActivityForm: React.FC<AddRecentActivityFormProps> = ({ onSave }) => {
 
-    const [file, setFile] = useState<File>()
-    const [fileType, setFileType] = useState<MULTIMEDIA_TYPE>()
+    const { payload } = useAppSelector(state => state.placeSession.sessionRecentActivityAction)
+    const dispatch = useAppDispatch()
+
+    const [file, setFile] = useState<File | null>(payload)
+    const [fileType, setFileType] = useState<MULTIMEDIA_TYPE | null>()
     const [error, setError] = useState<string | null>(null)
+
+    useEffect(() => {
+        if(payload) {
+            const fileType = verifyFileType(payload)
+            setFileType(fileType)
+        }
+    }, [payload])
+    
 
     function handleInputFileChange(event: React.ChangeEvent<HTMLInputElement>) {
         const inputFile = event.target.files![0]
@@ -25,7 +42,7 @@ export const AddRecentActivityForm: React.FC = () => {
             case MULTIMEDIA_TYPE.VIDEO:
                 verifyVideoDuration(inputFile, function() {
                     setError("Video duration is too long")
-                    setFile(undefined)
+                    setFile(null)
                 })
                 setFileType(MULTIMEDIA_TYPE.VIDEO)
                 setError(null)
@@ -33,17 +50,31 @@ export const AddRecentActivityForm: React.FC = () => {
 
             default:
                 setError("File type is not supported")
-                setFile(undefined)
+                setFile(null)
                 return
         }
         if(!error) setFile(inputFile)
     }
 
+    function handleRemoveFile() {
+        setFile(null)
+        setFileType(undefined)
+        dispatch( resetSessionRecentActivity() )
+    }
+
+    function handleOnSave() {
+        if(file) {
+            dispatch( updateSessionRecentActivity({ recentActivity: file }) )
+        }
+        onSave()
+    }
+
 
     return (
+        <>
         <IonRow className="
             relative
-            w-full p-3
+            w-full h-auto overflow-y-auto p-3
             flex flex-col items-center justify-center
         ">
 
@@ -51,7 +82,6 @@ export const AddRecentActivityForm: React.FC = () => {
                 relative
                 w-72 min-h-72 h-96
                 bg-gray-50 border border-solid border-gray-600 rounded-xl
-                
                 flex flex-col items-center justify-center
                 cursor-pointer
             "
@@ -87,7 +117,7 @@ export const AddRecentActivityForm: React.FC = () => {
                         <p className="my-3">
                             {file.name}
                         </p>
-                        <button className="text-red-500 underline cursor-pointer" onClick={() => setFile(undefined)}>
+                        <button className="text-red-500 underline cursor-pointer" onClick={handleRemoveFile}>
                             Remove file
                         </button>
                     </div>
@@ -102,5 +132,12 @@ export const AddRecentActivityForm: React.FC = () => {
                 )
             }
         </IonRow>
+        <IonRow className="flex items-center justify-center p-6 w-full">
+            <SimpleButton 
+                text='Save'
+                action={handleOnSave}
+            />
+        </IonRow>
+        </>
     ) 
 }

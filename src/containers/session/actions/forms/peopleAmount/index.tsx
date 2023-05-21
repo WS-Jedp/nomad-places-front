@@ -1,11 +1,22 @@
 import { IonCol, IonRow } from "@ionic/react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { MdPeople } from "react-icons/md"
+import { useAppDispatch, useAppSelector } from "../../../../../common/hooks/useTypedSelectors"
 import { SimpleButton } from "../../../../../components/buttons/simple"
+import { PLACE_SESSION_ACTIONS_ENUM } from "../../../../../models/session"
+import { PLACE_AMOUNT_OF_PEOPLE_ACTION_OPTION } from "../../../../../models/session/actions"
+import { resetSessionAmountOfPeople, updateSessionAmountOfPeople } from "../../../../../store/redux/slices/sessionActions/update"
 
-export const PeopleAmountActionForm: React.FC = () => {
+interface PeopleAmountActionFormProps {
+    onSave: () => void
+}
 
-    const opts = [
+export const PeopleAmountActionForm: React.FC<PeopleAmountActionFormProps> = ({ onSave }) => {
+
+    const { payload: currentPeopleAmountOption } = useAppSelector(state => state.placeSession.sessionAmountOfPeopleAction)
+    const dispatch = useAppDispatch()
+
+    const opts: PLACE_AMOUNT_OF_PEOPLE_ACTION_OPTION[] = [
         {
             id: 0,
             amount: '0-5',
@@ -46,39 +57,70 @@ export const PeopleAmountActionForm: React.FC = () => {
     ]
 
     const [options, setOptions] = useState(opts)
-    const [optionSelected, setOptionSelected] = useState<number | null>(null)
+    const [currentOption, setCurrentOption] = useState(currentPeopleAmountOption)
 
     function isOptionSelected(optionID: number) {
-        
-        return optionSelected === optionID
+        return currentOption?.id === optionID
     }
-    
-    return (
-        <IonRow className='relative w-full h-auto flex flex-row'>
-            {
-                options.map((option, index) => (
-                    <IonCol size="4" 
-                    key={index}
-                    className={`
-                            relative
-                            flex flex-col items-center justify-center 
-                            w-full border 
-                            border-solid border-gray-100 
-                            text-center text-black
-                            h-32
-                            cursor-pointer
-                            bg-white ${isOptionSelected(option.id) ? 'bg-gray-200' : ''}
-                            hover:bg-gray-200
-                    `}
-                        onClick={() => setOptionSelected(option.id)}
-                    >
-                        <MdPeople size={30}  color="gray"/>
-                        <h3 className="font-light text-md my-3">
-                            { option.amount }
-                        </h3>
-                    </IonCol>
-                ))
+
+    function handleCurrentOptionSelected(option: PLACE_AMOUNT_OF_PEOPLE_ACTION_OPTION) {
+        if(currentOption) {
+            if(currentOption.id === option.id) {
+                setCurrentOption(null)
+                return
             }
-        </IonRow>
+        }
+        setCurrentOption(option)
+    }
+
+    function handleSaveSessionAction() {
+        if(!currentOption) {
+            dispatch( resetSessionAmountOfPeople() )
+        } else {
+            dispatch( updateSessionAmountOfPeople({ amountOfPeople: currentOption }) )
+        }
+        onSave()
+    }
+
+    return (
+        <>
+            <IonRow className='relative w-full h-auto flex flex-row'>
+                {
+                    options.map((option, index) => (
+                        <IonCol size="4" 
+                        key={index}
+                        className={`
+                                relative
+                                flex flex-col items-center justify-center 
+                                w-full border
+                                border-solid border-gray-100 
+                                text-center text-black
+                                h-32
+                                cursor-pointer
+                        `}
+                            onClick={() => handleCurrentOptionSelected(option)}
+                        >
+                            <div className={`
+                                w-full h-full
+                                flex flex-col items-center justify-center
+                                ${isOptionSelected(option.id) ? 'bg-blue-200 text-blue-500' : 'bg-white text-black'}
+                                hover:bg-blue-100 
+                            `}>
+                                <MdPeople size={30} />
+                                <h3 className="font-light text-md my-3">
+                                    { option.amount }
+                                </h3>
+                            </div>
+                        </IonCol>
+                    ))
+                }
+            </IonRow>
+            <IonRow className="flex items-center justify-center p-6 w-full">
+                <SimpleButton 
+                    text='Save'
+                    action={handleSaveSessionAction}
+                />
+            </IonRow>
+        </>
         )
 }

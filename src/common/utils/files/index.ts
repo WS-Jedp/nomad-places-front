@@ -41,7 +41,6 @@ export function verifyFileSize(file: File) {
     const fileSizeLimit = 5
 
     if (fileSize > fileSizeLimit) {
-        console.log("File size is too big")
         return false
     }
 

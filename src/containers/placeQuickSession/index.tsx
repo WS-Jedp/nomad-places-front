@@ -58,6 +58,7 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({ changePage
             relative
             w-full h-screen
             flex flex-col items-start justify-start
+            text-black
         "
     >
       {/* Go back action */}

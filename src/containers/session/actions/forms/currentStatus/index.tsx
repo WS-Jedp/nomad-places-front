@@ -97,7 +97,6 @@ export const CurrentStatusForm: React.FC<CurrentStatusFormProps> = ({ onSave }) 
                                 border-solid border-gray-100 
                                 text-center text-black
                                 h-32
-                                
                         `}
                             onClick={() => handleOptionSelectd(option)}
                         >

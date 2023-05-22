@@ -111,11 +111,11 @@ export const GeneralHeader: React.FC = () => {
                     <button className='text-black text-sm font-medium' onClick={() => handleOpenFilters(GeneralFiltersEnum.none)}>
                         Search for a spot
                     </button>
-                    <span className='hidden md:flex separator h-full w-[1px] bg-gray-300 mx-3'>|</span>
+                    <span className='hidden md:flex separator h-[21px] w-[1px] bg-gray-300 mx-3'></span>
                     <button className='hidden md:flex text-black text-sm  font-light' onClick={() => handleOpenFilters(GeneralFiltersEnum.people)}>
                         { handleSpotPeopleAmountFilterValue() }
                     </button>
-                    <span className='hidden md:flex separator h-full w-[1px] bg-gray-300 mx-3' onClick={() => handleOpenFilters(GeneralFiltersEnum.commodities)}>|</span>
+                    <span className='hidden md:flex separator h-[21px] w-[1px] bg-gray-300 mx-3' onClick={() => handleOpenFilters(GeneralFiltersEnum.commodities)}></span>
                     <button className='hidden md:flex text-black text-sm  font-light'>
                         { handleSpotCommoditiesFilterValue() }
                     </button>

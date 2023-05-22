@@ -6,9 +6,10 @@ export const LocationBasicInformation: React.FC = () => {
       className="
                 relative
                 flex flex-col md:flex-row md:items-center w-full p-9 md:py-4
+                bg-white text-black
             "
     >
-      <IonText color="white" className="block">
+      <IonText className="block">
         <h1 className="text-xl font-bold font-sans">El poblado, Medellin</h1>
       </IonText>
       <div className="hidden md:inline-block mx-3 h-full w-[1px] bg-gray-300"></div>

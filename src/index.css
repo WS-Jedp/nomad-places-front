@@ -26,3 +26,15 @@
   ::-webkit-scrollbar-thumb:hover {
     background: #555;
   }
+
+  ion-modal {
+    --ion-background-color: #fff;
+  }
+
+  .modal-wrapper{
+    background: transparent !important;
+}
+
+ion-content{
+  --background: transparent;
+}

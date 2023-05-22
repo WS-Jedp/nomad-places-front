@@ -16,14 +16,14 @@ export const PlaceCardListItemMobile: React.FC<PlaceCardListItemProps> = ({ plac
     }
 
     return (
-        <IonRow className="bg-none bg-white-300 flex items-center p-0 m-0 w-full md:bg-white">
+        <IonRow className="bg-white text-black flex items-center p-0 m-0 w-full md:bg-white border-b border-t border-solid border-gray-100">
             <IonItem class="relative w-full p-0 ion-no-padding flex flex-col" color="none">
                 <IonRow className="relative w-full p-3" >
 
                     {/* Place information */}
-                    <IonRow class="w-full mb-3 ion-no-padding" onClick={handleClick}>
+                    <IonRow class="w-full mb-3 ion-no-padding text-black" onClick={handleClick}>
                         <IonCol size="2">
-                            <IonAvatar color="white" className="bg-gray-300 mr-3">
+                            <IonAvatar className="bg-gray-300 mr-3">
                             </IonAvatar>
                         </IonCol>
                         <IonCol size="10" class="flex flex-col justify-center items-start">

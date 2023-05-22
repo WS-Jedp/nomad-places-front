@@ -115,8 +115,6 @@ export const MultimediaSliderModal: React.FC<MultimediaSliderModalProps> = ({
           </IonCol>
         </IonRow>
       )}
-
-      <IonRow></IonRow>
     </IonCol>
   );
 };

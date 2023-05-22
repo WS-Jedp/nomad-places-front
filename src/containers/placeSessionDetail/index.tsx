@@ -9,6 +9,8 @@ import { useState } from "react"
 import { AppModal } from "../../components/modals/container"
 import { MultimediaSliderModal } from "../multimediaSliderModal"
 import { useAppSelector } from "../../common/hooks/useTypedSelectors"
+import { UserActionsModal } from "../session/userActionsModal"
+import { BlurAppModal } from "../../components/modals/blurContainer"
 
 export const PlaceSessionDetail: React.FC = () => {
 
@@ -16,10 +18,18 @@ export const PlaceSessionDetail: React.FC = () => {
 
     const [recentActivityOpen, setRecentActivityOpen] = useState<boolean>(false);
     const [mediaSelectedIndex, setMediaSelectedIndex] = useState<number>(0);
+    const [ userInSession, setUserInSession ] = useState(false)
+    const [ leaveSessionModal, setLeaveSessionModal ] = useState(false)
+    const [ updateSessionModal, setUpdateSessionModal ] = useState(false)
 
     function handleRecentActivityOpen(index: number) {
         setMediaSelectedIndex(index)
         setRecentActivityOpen(true);
+    }
+
+    function handleLeaveSession() {
+        setLeaveSessionModal(false)
+        setUserInSession(false)
     }
 
     if(!currentPlace) return null;
@@ -53,7 +63,20 @@ export const PlaceSessionDetail: React.FC = () => {
                 <section className="w-full mb-2">
                     {/* <p className="font-regular text-xs my-3 text-left">Last update made 30 minutes ago</p> */}
                 </section>
-                <SimpleButton action={() => {}} text="Join session" />
+                {
+                    userInSession ? (
+                        <article className="flex flex-row flex-nowrap w-full items-center justify-start">
+                            <div className="w-5/10">
+                                <SimpleButton action={() => setUpdateSessionModal(true)} text="Update session" />
+                            </div>
+                            <span className="cursor-pointer text-red-500 underline ml-6" onClick={() => setLeaveSessionModal(true)}>
+                                Leave the sesion
+                            </span>
+                        </article>
+                    ) : (
+                        <SimpleButton action={() => setUserInSession(true)} text="Join session" />
+                    )
+                }
             </IonRow>
 
             <IonRow className="w-full py-3 pb-5 relative flex flex-col flex-nowrap">
@@ -89,6 +112,37 @@ export const PlaceSessionDetail: React.FC = () => {
                     />
                 </AppModal>
             )}
+
+            {
+                updateSessionModal && (
+                    <BlurAppModal>
+                        <UserActionsModal closeCallback={() => setUpdateSessionModal(false)} />
+                    </BlurAppModal>
+                )
+            }
+
+            {
+                leaveSessionModal && (
+                    <AppModal>
+                        <article className="w-full max-w-xs bg-white rounded-lg text-black p-6">
+                                <h2 className="font-bold text-2xl">
+                                    Leave The Session
+                                </h2>
+                                <div className="w-full h-[1px] bg-black my-3"></div>
+                                <p className="text-md font-light">
+                                    Are you sure you want to leave the session?
+                                </p>
+
+                                <div className="flex flex-col flex-nowrap w-full items-center justify-center mt-4">
+                                    <SimpleButton action={handleLeaveSession} text="Leave" />
+                                    <span onClick={() => setLeaveSessionModal(false)} className="cursor-pointer font-light my-3 underline text-gray-600 text-sm">
+                                        Cancel
+                                    </span>
+                                </div>
+                        </article>
+                    </AppModal>
+                )
+            }
         </IonRow>
     )
 }

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
   IonCol,
+  IonContent,
   IonList,
   IonModal,
   IonPage,
@@ -28,7 +29,6 @@ export const ItemsAndMapLayout: React.FC<{
 
   const goToPlaceSession = async (id: string) => {
     await setShouldModalBeOpen(false)
-    console.log(shouldModalBeOpen)
     history.push(`/place/${id}/session`)
   }
 
@@ -53,28 +53,32 @@ export const ItemsAndMapLayout: React.FC<{
         breakpoints={[0.25, 0.5, 0.81]}
         backdropDismiss={false}
         backdropBreakpoint={0.5}
+        color="light"
       >
-        <IonRouterOutlet>
-            <Route path="/home/detail/:id">
-                <IonRow class="h-full w-full">
-                  <PlaceQuickSession changePageCallback={goToPlaceSession} />
-                </IonRow>
-              </Route>
+        <IonContent className="no-padding bg-white">
+          <IonRouterOutlet>
+              <Route path="/home/detail/:id">
+                  <IonRow class="h-full w-full">
+                    <PlaceQuickSession changePageCallback={goToPlaceSession} />
+                  </IonRow>
+                </Route>
 
-              <Route exact path="/home">
-                <LocationBasicInformation />
-                <RowPlacesFilterOptions />
+                <Route exact path="/home">
+                  <LocationBasicInformation />
+                  <RowPlacesFilterOptions />
 
-                <IonList
-                  className="
-                      relative flex flex-col
-                      overflow-y-auto bg-neutral-900
-                  "
-                >
-                    {children}
-                </IonList>
-              </Route>
-        </IonRouterOutlet>
+                  <IonList
+                    className="
+                        relative flex flex-col
+                        overflow-y-auto bg-neutral-900
+                    "
+                  >
+                      {children}
+                  </IonList>
+                </Route>
+          </IonRouterOutlet>
+        </IonContent>
+
       </IonModal>
 
       {!isMobile && (

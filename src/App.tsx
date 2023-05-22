@@ -4,8 +4,7 @@ import { Redirect, Route } from 'react-router-dom';
 import { IonReactRouter } from '@ionic/react-router';
 import { SearchPlaces } from './pages/SearchPlaces';
 import { PlaceDetailPage } from './pages/PlaceDetail';
-import { AppLayout } from './layouts/AppLayout';
-
+import { ProfilePage } from './pages/users/profile';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -41,6 +40,9 @@ const App: React.FC = () => (
               </Route>
               <Route exact path="/place/:id/session">
                 <PlaceDetailPage />
+              </Route>
+              <Route exact path="/me/profile">
+                <ProfilePage />
               </Route>
               <Route path="*">
                 <Redirect to="/home" />

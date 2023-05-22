@@ -9,9 +9,13 @@ import { GeneralFiltersEnum } from '../../../models/filters'
 import { UserMenuOptions, UserOptionsMenu } from '../../../containers/menus/userOptions'
 import { AppModal } from '../../modals/container'
 import { AuthFormModal } from '../../../containers/auth/authFormModal'
+import { useHistory } from 'react-router'
+import { useAppSelector } from '../../../common/hooks/useTypedSelectors'
 
 export const GeneralHeader: React.FC = () => {
 
+    const history = useHistory()
+    const { spotAmountPeopleFilter, selectedSpotAmountPeopleFilter, spotCommoditiesFilter, selectedSpotCommoditiesFilter } = useAppSelector(state => state.filters)
     const [showUserOptions, setShowUserOptiosn] = useState<boolean>(false)
 
     function handleShowUserOptions() {
@@ -52,6 +56,31 @@ export const GeneralHeader: React.FC = () => {
 
     }
 
+    function onLogo() {
+        history.push('/home')
+    }
+
+    function handleSpotPeopleAmountFilterValue() {
+        if(!selectedSpotAmountPeopleFilter) return "¿How many people?"
+        const spotPeopleAmountOption = spotAmountPeopleFilter.find(peopleAmount => peopleAmount.id === selectedSpotAmountPeopleFilter)
+        if(!spotPeopleAmountOption) return "¿How many people?"
+
+        return `${spotPeopleAmountOption.text} People`
+    }
+
+    function handleSpotCommoditiesFilterValue() {
+        if(!selectedSpotCommoditiesFilter) return "¿What do you need?"
+        const firstSelectedCommodity = selectedSpotCommoditiesFilter[0]
+
+        const spotCommoditiesOption = spotCommoditiesFilter.find(commodity => commodity.id === firstSelectedCommodity)
+
+        if(!spotCommoditiesOption) return "¿What do you need?"
+
+        if(selectedSpotCommoditiesFilter.length > 1) return `${spotCommoditiesOption.name} +${selectedSpotCommoditiesFilter.length - 1}`
+
+        return `${spotCommoditiesOption.name}`
+    }
+
     return (
         <IonHeader
                 
@@ -65,8 +94,8 @@ export const GeneralHeader: React.FC = () => {
                     z-50
                 "
             >
-                <h1 className="block font-bold text-black text-xl">
-                    spots
+                <h1 className="block font-bold text-black text-xl cursor-pointer" onClick={onLogo}>
+                    Spots
                 </h1>
 
                 <div className='
@@ -84,11 +113,11 @@ export const GeneralHeader: React.FC = () => {
                     </button>
                     <span className='hidden md:flex separator h-full w-[1px] bg-gray-300 mx-3'>|</span>
                     <button className='hidden md:flex text-black text-sm  font-light' onClick={() => handleOpenFilters(GeneralFiltersEnum.people)}>
-                        ¿How many people?
+                        { handleSpotPeopleAmountFilterValue() }
                     </button>
                     <span className='hidden md:flex separator h-full w-[1px] bg-gray-300 mx-3' onClick={() => handleOpenFilters(GeneralFiltersEnum.commodities)}>|</span>
                     <button className='hidden md:flex text-black text-sm  font-light'>
-                        Commodities
+                        { handleSpotCommoditiesFilterValue() }
                     </button>
 
                     <span className='rounded-full p-1 bg-blue-400 ml-3'>

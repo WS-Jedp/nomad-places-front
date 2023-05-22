@@ -7,8 +7,8 @@ import { PlaceTypesFilter, PLACE_TYPES } from '../../../../models/placeTypes'
 import { PLACE_COMMODITIES_ENUM, PLACE_RULES_ENUM } from '../../../../models/places'
 
 export interface FiltersState {
-    nearPlacesFilter: PlaceMindsetsFilter[]
-    selectedNearPlacesFilter: Number[]
+    spotMindsetFilter: PlaceMindsetsFilter[]
+    selectedSpotMindsetFilter: Number[]
     spotTypesFilter: PlaceTypesFilter[]
     selectedSpotTypesFilter: Number[]
     spotCommoditiesFilter: SpotCommoditiesFilters[]
@@ -143,8 +143,8 @@ const spotAmountPeople: SpotAmountPeopleFilter[] = [
 ]
 
 const initialFiltersState: FiltersState = {
-    nearPlacesFilter: mindsetsFilters,
-    selectedNearPlacesFilter: mindsetsFilters.map(filter => filter.id),
+    spotMindsetFilter: mindsetsFilters,
+    selectedSpotMindsetFilter: mindsetsFilters.map(filter => filter.id),
     spotTypesFilter: spotTypesFilters,
     selectedSpotTypesFilter: spotTypesFilters.filter(filter => filter.id === 1 || filter.id === 2).map(filter => filter.id),
     spotCommoditiesFilter: spotCommoditiesFilters,
@@ -162,15 +162,15 @@ export const filtersSlice = createSlice({
         // ----------------
         // Mindset filters 
         selectNearPlaceFilter: (state, action: PayloadAction<{ placeFilterID: number }>) => {
-            state.selectedNearPlacesFilter = [...state.selectedNearPlacesFilter, action.payload.placeFilterID]
+            state.selectedSpotMindsetFilter = [...state.selectedSpotMindsetFilter, action.payload.placeFilterID]
         },
         removeNearPlaceFilter: (state, action: PayloadAction<{ placeFilterID: number }>) => {
-            if(!state.selectedNearPlacesFilter.length) return
+            if(!state.selectedSpotMindsetFilter.length) return
 
-            state.selectedNearPlacesFilter = state.selectedNearPlacesFilter.filter(id => id !== action.payload.placeFilterID)
+            state.selectedSpotMindsetFilter = state.selectedSpotMindsetFilter.filter(id => id !== action.payload.placeFilterID)
         },
         resetSelectedNearPlaceFilters: (state) => {
-            state.selectedNearPlacesFilter = initialFiltersState.selectedNearPlacesFilter
+            state.selectedSpotMindsetFilter = initialFiltersState.selectedSpotMindsetFilter
         },
         
         // ----------------

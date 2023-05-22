@@ -62,9 +62,6 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
               )}
             </>
           </ItemsAndMapLayout>
-          <BlurAppModal>
-            <UserActionsModal closeCallback={() => {}} />
-          </BlurAppModal>
       </IonRow>
 
     </AppLayout>

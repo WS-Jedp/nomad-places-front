@@ -4,13 +4,14 @@ import { MdKeyboardArrowUp } from "react-icons/md"
 type SimpleDropdownProps = {
     title: string
     currentValue: string
+    badge?: boolean
     children: React.ReactNode
     isOpen: boolean
     openCallback: () => void
     closeCallback: () => void
 }
 
-export const SimpleDropdown: React.FC<SimpleDropdownProps> = ({ children, isOpen, title, currentValue, openCallback, closeCallback }) => {
+export const SimpleDropdown: React.FC<SimpleDropdownProps> = ({ children, isOpen, title, currentValue, openCallback, closeCallback, badge = false }) => {
     return (
         <article className={`
                 relative
@@ -36,7 +37,7 @@ export const SimpleDropdown: React.FC<SimpleDropdownProps> = ({ children, isOpen
 
                 {
                     !isOpen ? (
-                        <span className="text-md font-regular text-black">
+                        <span className={`text-xs font-light text-black capitalize ${badge ? 'bg-gray-100 px-4 py-2 rounded-full' : ''}`}>
                             {currentValue}
                         </span>
                     ) : (

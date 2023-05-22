@@ -1,17 +1,15 @@
 import { IonCol, IonRow } from "@ionic/react"
 import { useState } from "react"
-import { MdClose, MdCoffee } from "react-icons/md"
+import { MdClose } from "react-icons/md"
 import { SimpleButton, SimpleButtonOutline } from "../../../../components/buttons/simple"
 import { SimpleDropdown } from "../../../../components/dropdowns/simple"
-import { RowPlacesFilterOptions } from "../../../../components/filters/rowPlacesFilterOptions"
-import { InputRowSelect } from "../../../../components/form/container/rowSelect"
-import { SimpleCheckbox } from "../../../../components/form/inputs/checkbox"
 import { GeneralFiltersEnum } from "../../../../models/filters"
 import { PlaceTypesFilter } from "../../../../components/filters/placeTypesFilter"
 import { PlaceRulesSelection } from "../../../../components/filters/placeRulesSelection"
 import { PlaceCommoditiesSelection } from "../../../../components/filters/placeCommoditiesSelection"
 import { PlaceMindsetsFilters } from "../../../../components/filters/placeMindsetsFilter"
 import { SpotAmountPeopleFilter } from "../../../../components/filters/spotAmountPeopleFilter"
+import { useAppSelector } from "../../../../common/hooks/useTypedSelectors"
 
 type SearchSpotsGeneralFiltersProps = {
     closeCallback: () => void
@@ -20,6 +18,63 @@ type SearchSpotsGeneralFiltersProps = {
 
 
 export const SearchSpotsGeneralFilters:React.FC<SearchSpotsGeneralFiltersProps> = ({ closeCallback, defaultFilter }) => {
+
+    const { 
+        spotTypesFilter, selectedSpotTypesFilter,
+        spotAmountPeopleFilter, selectedSpotAmountPeopleFilter,
+        spotCommoditiesFilter, selectedSpotCommoditiesFilter,
+        spotRulesFilters, selectedSpotRulesFilter,
+        spotMindsetFilter, selectedSpotMindsetFilter
+     } = useAppSelector(state => state.filters)
+
+    function handleSpotTypeFilterCurrentValue() {
+        if(!selectedSpotTypesFilter.length) return `None`
+
+        const MAXIMUN_SPOT_TYPES = spotTypesFilter.length
+        if(selectedSpotTypesFilter.length === MAXIMUN_SPOT_TYPES) return "All"
+
+        const firstSpotType = spotTypesFilter.find(spotType => spotType.id === selectedSpotTypesFilter[0])
+        if(!firstSpotType) return `None`
+
+        if(selectedSpotTypesFilter.length > 1) return `${firstSpotType?.title} +${selectedSpotTypesFilter.length - 1}`
+        return firstSpotType?.title
+    }
+
+    function handlPeopleAmountFilterCurrentValue() {
+        if(!selectedSpotAmountPeopleFilter) return 'None'
+        const peopleAmountOption = spotAmountPeopleFilter.find(peopleAmount => peopleAmount.id === selectedSpotAmountPeopleFilter)
+        if(!peopleAmountOption) return 'None'
+        return peopleAmountOption.text
+    }
+
+    function handleMindsetFilterCurrentValue() {
+        if(!selectedSpotMindsetFilter.length) return 'None'
+        const mindsetOption = spotMindsetFilter.find(mindset => mindset.id === selectedSpotMindsetFilter[0])
+        if(!mindsetOption) return 'None'
+        if(selectedSpotMindsetFilter.length > 1) return `${mindsetOption.name.toLowerCase()} +${selectedSpotMindsetFilter.length - 1}`
+        return mindsetOption.name.toLowerCase()
+    }
+
+    function handleCommoditiesFilterCurrentValue() {
+        if(!selectedSpotCommoditiesFilter.length) return 'None'
+        const commodityOption = spotCommoditiesFilter.find(commodity => commodity.id === selectedSpotCommoditiesFilter[0])
+        if(!commodityOption) return 'None'
+        if(selectedSpotCommoditiesFilter.length > 1) return `${commodityOption.name.toLowerCase()} +${selectedSpotCommoditiesFilter.length - 1}`
+        return commodityOption.name.toLowerCase()
+    }
+
+    function handleRulesFilterCurrentValue() {
+        if(!selectedSpotRulesFilter.length) return 'None'
+        const ruleOption = spotRulesFilters.find(rule => rule.id === selectedSpotRulesFilter[0])
+        if(!ruleOption) return 'None'
+        if(selectedSpotRulesFilter.length > 1) return `${ruleOption.name.toLowerCase()} +${selectedSpotRulesFilter.length - 1}`
+        return ruleOption.name.toLowerCase()
+    }
+
+    function handleOnSearch() {
+
+        closeCallback()
+    }
 
     const [currentFilter, setCurrentFilter] = useState<GeneralFiltersEnum>(defaultFilter || GeneralFiltersEnum.type)
 
@@ -54,7 +109,8 @@ export const SearchSpotsGeneralFilters:React.FC<SearchSpotsGeneralFiltersProps> 
                 {/* Filter by type of place - Example: By Coffee, library, park, lookout, etc. */}
                 <SimpleDropdown 
                     title="What type of spot?"
-                    currentValue="All"
+                    currentValue={handleSpotTypeFilterCurrentValue()}
+                    badge={selectedSpotTypesFilter.length >= 1}
                     isOpen={currentFilter === GeneralFiltersEnum.type}
                     openCallback={() => setCurrentFilter(GeneralFiltersEnum.type)}
                     closeCallback={() => setCurrentFilter(GeneralFiltersEnum.none)}
@@ -65,19 +121,20 @@ export const SearchSpotsGeneralFilters:React.FC<SearchSpotsGeneralFiltersProps> 
                 {/* Filter by mindset ambient - Example: For study, work, romantic, etc. */}
                 <SimpleDropdown 
                     title="Mindset vibes"
-                    currentValue="All"
+                    currentValue={handleMindsetFilterCurrentValue()}
+                    badge={selectedSpotTypesFilter.length >= 1}
                     isOpen={currentFilter === GeneralFiltersEnum.mindset}
                     openCallback={() => setCurrentFilter(GeneralFiltersEnum.mindset)}
                     closeCallback={() => setCurrentFilter(GeneralFiltersEnum.none)}
                 >
                     <PlaceMindsetsFilters />
                 </SimpleDropdown>
-                
 
                 {/* Filter by commodities from the spot - Example: Public wifi, parking, cowork space, plugs, etc */}
                 <SimpleDropdown 
-                    title="Commotities"
-                    currentValue="All"
+                    title="Commodities"
+                    currentValue={handleCommoditiesFilterCurrentValue()}
+                    badge={selectedSpotCommoditiesFilter.length >= 1}
                     isOpen={currentFilter === GeneralFiltersEnum.commodities}
                     openCallback={() => setCurrentFilter(GeneralFiltersEnum.commodities)}
                     closeCallback={() => setCurrentFilter(GeneralFiltersEnum.none)}
@@ -89,7 +146,8 @@ export const SearchSpotsGeneralFilters:React.FC<SearchSpotsGeneralFiltersProps> 
 
                 <SimpleDropdown 
                     title="Rules"
-                    currentValue="All"
+                    currentValue={handleRulesFilterCurrentValue()}
+                    badge={selectedSpotRulesFilter.length >= 1}
                     isOpen={currentFilter === GeneralFiltersEnum.rules}
                     openCallback={() => setCurrentFilter(GeneralFiltersEnum.rules)}
                     closeCallback={() => setCurrentFilter(GeneralFiltersEnum.none)}
@@ -100,7 +158,8 @@ export const SearchSpotsGeneralFilters:React.FC<SearchSpotsGeneralFiltersProps> 
                 {/* Filter by amount of people in the spot - Example: +10 people, -10 people */}
                 <SimpleDropdown 
                     title="People amount"
-                    currentValue="+10"
+                    currentValue={handlPeopleAmountFilterCurrentValue()}
+                    badge={selectedSpotAmountPeopleFilter !== null}
                     isOpen={currentFilter === GeneralFiltersEnum.people}
                     openCallback={() => setCurrentFilter(GeneralFiltersEnum.people)}
                     closeCallback={() => setCurrentFilter(GeneralFiltersEnum.none)}
@@ -116,18 +175,18 @@ export const SearchSpotsGeneralFilters:React.FC<SearchSpotsGeneralFiltersProps> 
             <IonRow className="
                 sticky bottom-0 left-0
                 w-full h-auto
-                flex flex-row items-center justify-start
+                flex flex-row flex-nowrap items-center justify-start
                 px-3 py-6
                 bg-white
                 border-t border-gray-300
             ">
 
                 <SimpleButton 
-                    text="Apply filters"
-                    action={() => {}}
+                    text="Search"
+                    action={handleOnSearch}
                 />
                 <SimpleButtonOutline 
-                    text="Cancel"
+                    text="Close"
                     action={closeCallback}
                 />
 

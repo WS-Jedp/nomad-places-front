@@ -85,13 +85,13 @@ export const UserActionsModal: React.FC<UserActionsModalProps> = ({ closeCallbac
 
             {
                     !currentAction ? (
-                        <IonRow className='w-full flex flex-row h-auto max-w-[420px] md:bg-white md:shadow-md md:rounded-lg md:p-6'>
+                        <IonRow className='w-full flex flex-row h-auto max-w-[420px] items-start md:bg-white md:shadow-md md:rounded-lg md:p-6'>
                             {
                                 actions.map((action, index) => (
                                     <IonCol 
-                                    key={index}
-                                    size='4' 
-                                    className='text-center flex flex-col justify-center items-center my-3 p-3 cursor-pointer'
+                                        key={index}
+                                        size='4' 
+                                        className='text-center flex flex-col justify-center items-center my-3 p-3 cursor-pointer'
                                     >
                                         <CircleUserAction 
                                             callback={() => handleAction(action)}

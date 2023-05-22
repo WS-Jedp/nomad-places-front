@@ -39,7 +39,9 @@ export const PlaceTypesFilter:React.FC = () => {
     }
 
     return (
-        <IonRow className="flex flex-row flex-nowrap">
+        <IonRow className="relative
+            w-full overflow-x-auto overflow-y-hidden
+            flex flex-nowrap items-center">
             {
                 spotTypesFilter.map((spotType, index) => (
                     <div key={index} className="mr-3">

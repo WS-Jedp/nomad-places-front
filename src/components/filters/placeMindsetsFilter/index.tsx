@@ -1,16 +1,15 @@
 import { IonRow } from "@ionic/react"
-import { useDispatch, useSelector } from "react-redux"
-import { RootState } from "../../../store/redux"
 import { selectNearPlaceFilter, removeNearPlaceFilter, resetSelectedNearPlaceFilters } from '../../../store/redux/slices/filters'
 
 import { SimpleMindsetCard } from "../../mindsets/cards/simpleCardMindset"
 import { MINDSETS } from "../../../models/mindsets"
+import { useAppDispatch, useAppSelector } from "../../../common/hooks/useTypedSelectors"
 
 export const PlaceMindsetsFilters: React.FC = ()  => {
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
-    const { nearPlacesFilter: filters, selectedNearPlacesFilter: selectedFilters } = useSelector((state: RootState) => state.filters)
+    const { spotMindsetFilter: filters, selectedSpotMindsetFilter: selectedFilters } = useAppSelector(state => state.filters)
 
     const handleAction = (filterID: number) => {
         if(selectedFilters.some(id => id === filterID)) {

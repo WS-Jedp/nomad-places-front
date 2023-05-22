@@ -42,13 +42,15 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({ closeCallback }) =
         if(isRegister) {
             return (
                 <form action="" className="w-full" onSubmit={(ev) => ev.preventDefault()}>
-                    <TextInput 
-                        type="password"
-                        label="Password"
-                        placeholder="Write your password"
-                        callback={handlePasswordChange}
-                        value={password}
-                    />
+                    <div className="mb-2">
+                        <TextInput 
+                            type="password"
+                            label="Password"
+                            placeholder="Write your password"
+                            callback={handlePasswordChange}
+                            value={password}
+                        />
+                    </div>
                     <TextInput 
                         type="password"
                         label="Confirmation password"
@@ -83,9 +85,9 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({ closeCallback }) =
                             text="Login"
                             action={() => {}}
                         />
-                        <small className="underline text-sm text-gray-300 mt-2 cursor-pointer">
+                        {/* <small className="underline text-sm text-gray-300 mt-2 cursor-pointer">
                             Forgot your password?
-                        </small>
+                        </small> */}
                     </div>
                 </form>
             )

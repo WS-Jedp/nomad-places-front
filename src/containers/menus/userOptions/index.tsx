@@ -1,8 +1,11 @@
+import { useAppSelector } from "../../../common/hooks/useTypedSelectors"
+
 export enum UserMenuOptions {
     register = 'register',
     login = 'login',
     recommend = 'recommend',
-    about = 'about'
+    about = 'about',
+    logout = 'logout'
 }
 
 type UserOptionsMenuProps = {
@@ -10,6 +13,9 @@ type UserOptionsMenuProps = {
 }
 
 export const UserOptionsMenu:React.FC<UserOptionsMenuProps> = ({ callback }) => {
+
+    const { isAuth } = useAppSelector(state => state.user.auth)
+    const userData = useAppSelector(state => state.user.userData)
 
     function handleAction(option: UserMenuOptions) {
         callback(option)
@@ -25,12 +31,27 @@ export const UserOptionsMenu:React.FC<UserOptionsMenuProps> = ({ callback }) => 
                 text-black
             "
         >
-                <button className="px-6 py-3 w-full h-auto text-start hover:bg-gray-50" onClick={() => handleAction(UserMenuOptions.register)}>
-                    <h2 className="font-medium text-sm">Register</h2>
-                </button>
-                <button className="px-6 py-3 w-full h-auto text-start hover:bg-gray-50" onClick={() => handleAction(UserMenuOptions.login)}>
-                    <h2 className="font-regular text-sm">login</h2>
-                </button>
+            {
+                isAuth ? (
+                    <>
+                        <div className="px-6 py-3 w-full h-auto text-start bg-gray-50">
+                            <h2 className="font-medium text-sm">Hello {userData?.personalInformation?.firstName}</h2>
+                        </div>
+                        <button className="px-6 py-3 w-full h-auto text-start hover:bg-gray-50" onClick={() => handleAction(UserMenuOptions.logout)}>
+                            <h2 className="font-regular text-sm font-semibold text-red-500">Log out</h2>
+                        </button>
+                    </>
+                ) : (
+                    <>
+                        <button className="px-6 py-3 w-full h-auto text-start hover:bg-gray-50" onClick={() => handleAction(UserMenuOptions.register)}>
+                            <h2 className="font-medium text-sm">Register</h2>
+                        </button>
+                        <button className="px-6 py-3 w-full h-auto text-start hover:bg-gray-50" onClick={() => handleAction(UserMenuOptions.login)}>
+                            <h2 className="font-regular text-sm">login</h2>
+                        </button>
+                    </>
+                )
+            }
 
                 <div className="bg-gray-300 w-full h-[1px]"></div>
 

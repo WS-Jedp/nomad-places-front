@@ -1,9 +1,12 @@
 
 import { useState } from "react";
 import { MdClose } from "react-icons/md";
+import { useAppDispatch, useAppSelector } from "../../../common/hooks/useTypedSelectors";
 import { InputButton } from "../../../components/buttons/inputButton";
 import { SimpleButton } from "../../../components/buttons/simple";
 import { TextInput } from "../../../components/form/inputs/text";
+import { AuthServices } from "../../../services/auth";
+import { authUser, registerUser } from "../../../store/redux/slices/user";
 
 type AuthFormModalProps = {
     closeCallback: () => void;
@@ -11,9 +14,25 @@ type AuthFormModalProps = {
 
 export const AuthFormModal: React.FC<AuthFormModalProps> = ({ closeCallback }) => {
 
+    const dispatch = useAppDispatch()
+    const { isAuth, token } = useAppSelector(state => state.user.auth)
+
+    const authServices = new AuthServices()
+    const [isLoadingRequest, setIsLoadingRequest] = useState<boolean>(false)
+
     const [email, setEmail] = useState<string>('')
     function handleEmailChange(value: string) {
         setEmail(value)
+    }
+
+    const [username, setUsername] = useState<string>('')
+    function handleUsername(value: string) {
+        setUsername(value)
+    }
+
+    const [firstName, setFirstName] = useState<string>('')
+    function handleFirstName(value: string) {
+        setFirstName(value)
     }
 
     const [password, setPassword] = useState<string>('')
@@ -33,15 +52,84 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({ closeCallback }) =
     const [isRegister, setIsRegister] = useState<boolean>(false)
     const [isLogin, setIsLogin] = useState<boolean>(false)
 
-    function handleNextAuthStep() {
-        setCurrentAuthStep(1)
-        setIsRegister(true)
+    async function handleNextAuthStep() {
+        setIsLoadingRequest(true)
+        const confirmResp = await authServices.userExists(email)
+        if(!confirmResp.exists) {
+            setCurrentAuthStep(1)
+            setIsRegister(true)
+        } else {
+            setCurrentAuthStep(1)
+            setIsLogin(true)
+        }
+        setIsLoadingRequest(false)
+    }
+
+    async function handleLoding() {
+        setIsLoadingRequest(true)
+        await dispatch( authUser({ username: email, password }) )
+        setIsLoadingRequest(false)
+
+        if(isAuth && token) {
+            closeCallback()
+        }
+    }
+
+    async function handleRegister() {
+        setIsLoadingRequest(true)
+        await dispatch( registerUser({
+            payload: {
+                personData: {
+                    firstName,
+                },
+                userData: {
+                    email,
+                    username,
+                    password,
+                }
+            }
+        }) )
+        setIsLoadingRequest(false)
+
+        if(isAuth && token) {
+            closeCallback()
+        }
     }
 
     function renderNextAuthStep() {
         if(isRegister) {
             return (
                 <form action="" className="w-full" onSubmit={(ev) => ev.preventDefault()}>
+                    <div className="mb-2">
+                        <TextInput 
+                            type="email"
+                            label="Email"
+                            placeholder="Write your email"
+                            callback={handleEmailChange}
+                            value={email}
+                        />
+                    </div>
+
+                    <div className="mb-2">
+                        <TextInput 
+                            type="text"
+                            label="Username"
+                            placeholder="Write your username"
+                            callback={handleUsername}
+                            value={username}
+                        />
+                    </div>
+
+                    <div className="mb-2">
+                        <TextInput 
+                            type="text"
+                            label="First name"
+                            placeholder="Write your first name"
+                            callback={handleFirstName}
+                            value={firstName}
+                        />
+                    </div>
+
                     <div className="mb-2">
                         <TextInput 
                             type="password"
@@ -63,7 +151,8 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({ closeCallback }) =
                     <div className="w-full relative mt-5">
                         <InputButton 
                             text="Register"
-                            action={() => {}}
+                            action={handleRegister}
+                            isLoading={isLoadingRequest}
                         />
                     </div>
                 </form>
@@ -83,7 +172,8 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({ closeCallback }) =
                     <div className="w-full relative mt-5">
                         <InputButton 
                             text="Login"
-                            action={() => {}}
+                            action={handleLoding}
+                            isLoading={isLoadingRequest}
                         />
                         {/* <small className="underline text-sm text-gray-300 mt-2 cursor-pointer">
                             Forgot your password?
@@ -129,6 +219,7 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({ closeCallback }) =
                                 <InputButton 
                                     text="Continue"
                                     action={handleNextAuthStep}
+                                    isLoading={isLoadingRequest}
                                 />
                             </div>
                         </form>

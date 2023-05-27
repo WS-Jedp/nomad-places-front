@@ -105,9 +105,9 @@ export const ProfilePage: React.FC = () => {
                         <div className="w-full flex flex-row items-center justify-start mb-3">
                             <MdOutlineWork size={30} className="mr-2" />
                             {
-                                userData?.personalInformation.work ? (
+                                userData?.personalInformation.job ? (
                                     <p className="font-light text-md">
-                                        Work at {userData?.personalInformation.work}
+                                        Work at {userData?.personalInformation.job}
                                     </p>
                                 ) : (
                                     <p className="font-light text-md">

@@ -21,9 +21,9 @@ export const EditProfileModal:React.FC<EditProfileModalProps> = ({ closeCallback
     const [profilePicture, setProfilePicture] = useState<string | null>(userData?.profilePicture || null)
     const [firstName, setFirstName] = useState<string>(userData?.personalInformation.firstName || "")
     const [lastName, setLastName] = useState<string>(userData?.personalInformation.lastName || "")
-    const [work, setWork] = useState<string>(userData?.personalInformation.work || "")
+    const [work, setWork] = useState<string>(userData?.personalInformation.job || "")
     const [country, setCountry] = useState<string>(userData?.personalInformation.country || "")
-    const [langs, setLangs] = useState<string>(userData?.personalInformation.languages || "")
+    const [langs, setLangs] = useState<string[]>(userData?.personalInformation.languages || [])
     const [about, setAbout] = useState<string>(userData?.personalInformation.about || "")
 
     function handleOnPicture(event: React.ChangeEvent<HTMLInputElement>) {
@@ -46,7 +46,7 @@ export const EditProfileModal:React.FC<EditProfileModalProps> = ({ closeCallback
             personalInformation: {
                 firstName,
                 lastName,
-                work,
+                job: work,
                 country,
                 languages: langs,
                 about
@@ -136,11 +136,11 @@ export const EditProfileModal:React.FC<EditProfileModalProps> = ({ closeCallback
                             </div>
                             <div className="w-full my-2">
                                 <TextInput 
-                                    callback={(value) => setLangs(value)}
+                                    callback={(value) => setLangs(value.split(","))}
                                     placeholder="English, Spanish"
                                     type="text"
                                     label="What languages you speak?"
-                                    value={langs}
+                                    value={langs.join(',')}
                                 />
                             </div>
                             <div className="w-full my-2">

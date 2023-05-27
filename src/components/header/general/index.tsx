@@ -46,6 +46,9 @@ export const GeneralHeader: React.FC = () => {
             case UserMenuOptions.login:
                 setAuthModal(true)
                 break
+            case UserMenuOptions.logout:
+                console.log('Logout')
+                break
             case UserMenuOptions.about:
                 console.log('Go to about page')
                 break

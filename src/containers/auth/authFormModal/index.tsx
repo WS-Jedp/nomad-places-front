@@ -3,19 +3,19 @@ import { useState } from "react";
 import { MdClose } from "react-icons/md";
 import { useAppDispatch, useAppSelector } from "../../../common/hooks/useTypedSelectors";
 import { InputButton } from "../../../components/buttons/inputButton";
-import { SimpleButton } from "../../../components/buttons/simple";
 import { TextInput } from "../../../components/form/inputs/text";
 import { AuthServices } from "../../../services/auth";
 import { authUser, registerUser } from "../../../store/redux/slices/user";
 
 type AuthFormModalProps = {
     closeCallback: () => void;
+    successfulRegisterCallback: () => void;
 }
 
-export const AuthFormModal: React.FC<AuthFormModalProps> = ({ closeCallback }) => {
+export const AuthFormModal: React.FC<AuthFormModalProps> = ({ closeCallback, successfulRegisterCallback }) => {
 
     const dispatch = useAppDispatch()
-    const { isAuth, token } = useAppSelector(state => state.user.auth)
+    const { userData, auth } = useAppSelector(state => state.user)
 
     const authServices = new AuthServices()
     const [isLoadingRequest, setIsLoadingRequest] = useState<boolean>(false)
@@ -65,34 +65,36 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({ closeCallback }) =
         setIsLoadingRequest(false)
     }
 
-    async function handleLoding() {
-        setIsLoadingRequest(true)
-        await dispatch( authUser({ username: email, password }) )
-        setIsLoadingRequest(false)
-
-        if(isAuth && token) {
+    async function handleLogin() {
+        try {
+            setIsLoadingRequest(true)
+            await dispatch( authUser({ username: email, password }) )
+            setIsLoadingRequest(false)
             closeCallback()
+        } catch (error) {
+            console.log(error)
         }
     }
 
     async function handleRegister() {
-        setIsLoadingRequest(true)
-        await dispatch( registerUser({
-            payload: {
-                personData: {
-                    firstName,
-                },
-                userData: {
-                    email,
-                    username,
-                    password,
+        try {
+            setIsLoadingRequest(true)
+            await dispatch( registerUser({
+                payload: {
+                    personData: {
+                        firstName,
+                    },
+                    userData: {
+                        email,
+                        username,
+                        password,
+                    }
                 }
-            }
-        }) )
-        setIsLoadingRequest(false)
-
-        if(isAuth && token) {
-            closeCallback()
+            }) )
+            setIsLoadingRequest(false)
+            successfulRegisterCallback()
+        } catch (error) {
+            console.log(error)
         }
     }
 
@@ -172,7 +174,7 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({ closeCallback }) =
                     <div className="w-full relative mt-5">
                         <InputButton 
                             text="Login"
-                            action={handleLoding}
+                            action={handleLogin}
                             isLoading={isLoadingRequest}
                         />
                         {/* <small className="underline text-sm text-gray-300 mt-2 cursor-pointer">

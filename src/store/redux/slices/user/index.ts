@@ -6,6 +6,8 @@ import { Person, User } from '../../../../models/user'
 import { GeoLocation } from '../../../../models/location'
 import { LoginDTO, RegisterUserRequestDTO } from '../../../../dto/auth'
 import { AuthServices } from '../../../../services/auth'
+import { ProfileDTO } from '../../../../dto/user'
+import { TOKEN_KEY } from '../../../../common/constants/localstorage'
 
 export interface UserState {
     userData?:  User
@@ -41,6 +43,14 @@ export const getUserGeoLocation = createAsyncThunk<GeoLocation | null, void>(
         }
     }
 )
+export const getUserData = createAsyncThunk<ProfileDTO, { token: string }>(
+    'user/getUserData',
+    async (params) => {
+        const authServices = new AuthServices()
+        const user = await authServices.getPersonFromUser({ token: params.token })
+        return user
+    }
+)
 
 export const getPersonInformation = createAsyncThunk<User['personalInformation'], { token: string }>(
     'user/getPersonInformation',
@@ -56,16 +66,20 @@ export const authUser = createAsyncThunk<LoginDTO, { username: string, password:
     async (params, thunkApi) => {
         const authServices = new AuthServices()
         const user = await authServices.login({ emailOrUsername: params.username, password: params.password })
+        const token = user.access_token
+        localStorage.setItem(TOKEN_KEY, token)
         return user
     }
 )
 
 export const registerUser = createAsyncThunk<LoginDTO, { payload: RegisterUserRequestDTO }>(
     'user/registerUser',
-    async ({ payload }) => {
+    async ({ payload }, thunkApi) => {
         const authServices = new AuthServices()
         const user = await authServices.register(payload)
-        return user
+        await thunkApi.dispatch(authUser({ username: payload.userData.username, password: payload.userData.password }))
+        localStorage.setItem(TOKEN_KEY, user.access_token)
+        return user 
     }
 )
 
@@ -73,30 +87,36 @@ export const userSlice = createSlice({
     name: 'user',
     initialState: initialUserState,
     reducers: {
-       setUserGeoLocation(state, action: PayloadAction<{ coordinates: GeoLocation }>) {
-        state.location = action.payload.coordinates
-       },
-       resetGeoLocation(state) {
-        state.location = {
-            latitude: undefined,
-            longitude: undefined
-        }
-       },
-       setUserPersonalInformation(state, action: PayloadAction<{ personalInformation: Person }>) {
-            if(state.userData) {
-                state.userData.personalInformation = action.payload.personalInformation
+        setUserGeoLocation(state, action: PayloadAction<{ coordinates: GeoLocation }>) {
+            state.location = action.payload.coordinates
+        },
+        resetGeoLocation(state) {
+            state.location = {
+                latitude: undefined,
+                longitude: undefined
             }
-       },
-       updateUserPersonalInformation(state, action: PayloadAction<{ personalInformation: Omit<Person, 'id'>, profilePicture?: string }>) {
-            if(state.userData) {
-                state.userData!.personalInformation = {
-                    id: state.userData.personalInformation.id,
-                    ...action.payload.personalInformation,
+        },
+        setUserPersonalInformation(state, action: PayloadAction<{ personalInformation: Person }>) {
+                if(state.userData) {
+                    state.userData.personalInformation = action.payload.personalInformation
                 }
-                state.userData!.profilePicture = action.payload.profilePicture
-            }
-       },
-       updateProfilePicture(state, action: PayloadAction<{ profilePicture: User['profilePicture'] }>) {
+        },
+        updateUserPersonalInformation(state, action: PayloadAction<{ personalInformation: Omit<Person, 'id'>, profilePicture?: string }>) {
+                if(state.userData) {
+                    state.userData!.personalInformation = {
+                        id: state.userData.personalInformation.id,
+                        ...action.payload.personalInformation,
+                    }
+                    state.userData!.profilePicture = action.payload.profilePicture
+                }
+        },
+        updateProfilePicture(state, action: PayloadAction<{ profilePicture: User['profilePicture'] }>) {},
+        logout(state) {
+            state.auth.isAuth = false
+            state.auth.token = null
+            state.auth.roles = []
+            state.userData = undefined
+            localStorage.removeItem(TOKEN_KEY)
         }
     },
     extraReducers: (builder) => {
@@ -105,11 +125,13 @@ export const userSlice = createSlice({
             state.location = action.payload
         })
 
+        // get person information
         builder.addCase(getPersonInformation.fulfilled, (state, action) => {
             if(!state.userData) return
             state.userData.personalInformation = action.payload
         })
 
+        // Auth user
         builder.addCase(authUser.fulfilled, (state, action) => {
             state.userData = {
                 id: action.payload.user.id,
@@ -124,10 +146,8 @@ export const userSlice = createSlice({
             state.auth.isAuth = true
             state.auth.roles = []
         })
-        builder.addCase(authUser.rejected, (state, action) => {
-            console.error('Error: ', action.error.message)
-        })
 
+        // Register user
         builder.addCase(registerUser.fulfilled, (state, action) => {
             state.userData = {
                 id: action.payload.user.id,
@@ -142,6 +162,22 @@ export const userSlice = createSlice({
             state.auth.isAuth = true
             state.auth.roles = []
         })
+
+        // Get user data
+        builder.addCase(getUserData.fulfilled, (state, action) => {
+            state.userData = {
+                id: action.payload.id,
+                username: action.payload.username,
+                email: action.payload.email,
+                personalInformation: {
+                    id: action.payload.personID,
+                    firstName: action.payload.person.firstName,
+                }
+            }
+            state.auth.token = localStorage.getItem(TOKEN_KEY)
+            state.auth.isAuth = true
+            state.auth.roles = []
+        })
     }
 })
 
@@ -149,6 +185,7 @@ export const userSlice = createSlice({
 export const { 
     setUserGeoLocation, resetGeoLocation,
     updateUserPersonalInformation, setUserPersonalInformation,
+    logout
 } = userSlice.actions 
 
 export default userSlice.reducer

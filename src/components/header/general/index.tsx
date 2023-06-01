@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { IonHeader } from '@ionic/react'
 import { FaUserAlt, FaLocationArrow } from 'react-icons/fa'
 import { IoMdMenu } from 'react-icons/io'
@@ -10,12 +10,16 @@ import { UserMenuOptions, UserOptionsMenu } from '../../../containers/menus/user
 import { AppModal } from '../../modals/container'
 import { AuthFormModal } from '../../../containers/auth/authFormModal'
 import { useHistory } from 'react-router'
-import { useAppSelector } from '../../../common/hooks/useTypedSelectors'
+import { useAppDispatch, useAppSelector } from '../../../common/hooks/useTypedSelectors'
+import { getUserData, logout } from '../../../store/redux/slices/user'
+import { TOKEN_KEY } from '../../../common/constants/localstorage'
+import { SimpleButton } from '../../buttons/simple'
 
 export const GeneralHeader: React.FC = () => {
 
     const history = useHistory()
     const { spotAmountPeopleFilter, selectedSpotAmountPeopleFilter, spotCommoditiesFilter, selectedSpotCommoditiesFilter } = useAppSelector(state => state.filters)
+    const dispatch = useAppDispatch()
     const [showUserOptions, setShowUserOptiosn] = useState<boolean>(false)
 
     function handleShowUserOptions() {
@@ -32,6 +36,12 @@ export const GeneralHeader: React.FC = () => {
     }
 
     const [authModal, setAuthModal] = useState<boolean>(false)
+    const [registered, setRegistered] = useState<boolean>(false)
+
+    function successfulRegister() {
+        setAuthModal(false)
+        setRegistered(true)
+    }
 
     function closeAuthModal() {
         setAuthModal(false)
@@ -47,7 +57,7 @@ export const GeneralHeader: React.FC = () => {
                 setAuthModal(true)
                 break
             case UserMenuOptions.logout:
-                console.log('Logout')
+                dispatch(logout())
                 break
             case UserMenuOptions.about:
                 console.log('Go to about page')
@@ -84,9 +94,19 @@ export const GeneralHeader: React.FC = () => {
         return `${spotCommoditiesOption.name}`
     }
 
+    async function automaticallyAuthUser() {
+        const token = localStorage.getItem(TOKEN_KEY)
+        if(token) {
+            await dispatch(getUserData({ token }))
+        }
+    }
+
+    useEffect(() => {
+        automaticallyAuthUser()
+    }, [])
+
     return (
         <IonHeader
-                
                 className="
                     flex items-center justify-between
                     fixed md:sticky top-0 w-full
@@ -193,7 +213,34 @@ export const GeneralHeader: React.FC = () => {
                         <AppModal>
                             <AuthFormModal 
                                 closeCallback={closeAuthModal}
+                                successfulRegisterCallback={successfulRegister}
                             />
+                        </AppModal>
+                    )
+                }
+
+                {
+                    registered && (
+                        <AppModal>
+                            <section className='
+                                    relative flex flex-col items-center justify-center
+                                    w-[90%] max-w-xl
+                                    bg-white 
+                                    rounded-lg
+                                    p-6 shadow-xl 
+                                    text-black 
+                                '
+                            >
+                                <h2 className='text-2xl font-bold'>Welcome to Spots! 🎉 </h2>
+                                <div className='w-full h-[2px] my-3 bg-gray-300'></div>
+                                <p className='mb-6'>
+                                    Thanks for registering! now you can start recommending spots to your friends!
+                                </p>
+                                <SimpleButton 
+                                    action={() => setRegistered(false)}
+                                    text='Continue'
+                                />
+                            </section>
                         </AppModal>
                     )
                 }

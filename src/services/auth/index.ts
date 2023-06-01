@@ -11,7 +11,7 @@ export class AuthServices {
         });
     }
 
-    async login(payload: { emailOrUsername: string, password: string }) {
+    async login(payload: { emailOrUsername: string, password: string }): Promise<LoginDTO> {
         const response = await this.request.post<LoginDTO>('login', { username: payload.emailOrUsername, password: payload.password })
         return response
     }
@@ -27,7 +27,7 @@ export class AuthServices {
     }
 
     async getPersonFromUser(payload: { token: string }, ) {
-        const response = await this.request.withAuth(payload.token).get<ProfileDTO>('auth/profile')
+        const response = await this.request.withAuth(payload.token).get<ProfileDTO>('profile')
         return response
     }
 

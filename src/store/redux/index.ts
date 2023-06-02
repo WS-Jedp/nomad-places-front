@@ -3,6 +3,7 @@ import FiltersSlice from './slices/filters'
 import PlacesSlice from './slices/places'
 import UserSlice  from './slices/user'
 import PlaceSesssionActionsSlice from './slices/sessionActions/update'
+import  UserSessionSlice  from './slices/userSession'
 
 export const reduxStore = configureStore({
     reducer: {
@@ -10,6 +11,12 @@ export const reduxStore = configureStore({
         places: PlacesSlice,
         filters: FiltersSlice,
         placeSession: PlaceSesssionActionsSlice,
+        userSession: UserSessionSlice
+    },
+    middleware: (getDefaultMiddleware) => {
+        return getDefaultMiddleware({
+            serializableCheck: false
+        })
     }
 })
 

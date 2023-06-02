@@ -27,6 +27,10 @@ export const PlaceSessionDetail: React.FC = () => {
         setRecentActivityOpen(true);
     }
 
+    function handleJoinSession() {
+        setUserInSession(true)
+    }
+
     function handleLeaveSession() {
         setLeaveSessionModal(false)
         setUserInSession(false)
@@ -74,7 +78,8 @@ export const PlaceSessionDetail: React.FC = () => {
                             </span>
                         </article>
                     ) : (
-                        <SimpleButton action={() => setUserInSession(true)} text="Join session" />
+                        // JOIN SESSION BUTTON
+                        <SimpleButton action={handleJoinSession} text="Join session" />
                     )
                 }
             </IonRow>

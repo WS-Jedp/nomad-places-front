@@ -4,7 +4,7 @@ import { Redirect, Route } from 'react-router-dom';
 import { IonReactRouter } from '@ionic/react-router';
 import { SearchPlaces } from './pages/SearchPlaces';
 import { PlaceDetailPage } from './pages/PlaceDetail';
-import { ProfilePage } from './pages/users/profile';
+import { ProfilePage } from './pages/Users/Profile';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';

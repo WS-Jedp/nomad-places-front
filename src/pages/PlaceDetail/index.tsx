@@ -3,7 +3,7 @@ import { IonRow, IonText } from "@ionic/react";
 import { useEffect } from "react";
 
 import { DetailAndSessionActionsLayout } from "../../layouts/DetailAndSessionActionsLayout";
-import { useAppSelector } from "../../common/hooks/useTypedSelectors";
+import { useAppDispatch, useAppSelector } from "../../common/hooks/useTypedSelectors";
 import { findPlace } from "../../store/redux/slices/places";
 import PlacesService from "../../services/places";
 import { PlaceInformationDetail } from "../../containers/placeInformationDetail";
@@ -12,11 +12,15 @@ import { socket } from "../../socket";
 import { getCurrentISODate } from "../../common/utils/dates";
 import { useIsMobile } from "../../common/hooks/useIsMobile";
 import { BackNavigationHeader } from "../../components/header/backNavigation";
+import { createSocket } from "../../store/redux/slices/userSession";
 
 
 export const PlaceDetailPage = () => {
   const history = useHistory();
+  const { userData } = useAppSelector((state) => state.user);
   const { currentPlace } = useAppSelector((state) => state.places);
+  const { socket } = useAppSelector((state) => state.userSession);
+  const dispatch = useAppDispatch()
   const { id } = useParams<{ id: string }>();
   const [isMobile] = useIsMobile();
 
@@ -29,27 +33,37 @@ export const PlaceDetailPage = () => {
     history.push("/home");
   }
 
-  async function getPlaceDetail() {
-    const place = await PlacesService.getPlace({ placeID: id });
-    // await socket.connect()
-
-    // const date = getCurrentISODate().toISOString()
-    // await socket.emit('join-place-session', { placeID: currentPlace?.id, userID: '6434c701801055bcd667b937', username: 'Juanes', currentDateISO: date })
+  async function connectUserToSession(placeID: string) {
+    if(!socket && userData) {
+      await dispatch( createSocket({ placeID: placeID, userID: userData.id, username: userData.username }) )
+    }
+    if(!socket) return
+    await socket?.joinSession()
+    socket?.onSessionMessage(message => {
+      console.log(message, "THIS IS THE MESSAGE")
+    })
   }
 
-  // useEffect(() => {
-  //   if(!currentPlace) return
-  //   socket.on(`place-session-message`, (paylaod) => {
-  //     console.log(paylaod, 'THIS IS THE PAYLOAD')
-  //   })
-  // }, [])
+  async function getPlaceDetail() {
+    const place = await PlacesService.getPlace({ placeID: id });
+    await connectUserToSession(place.place.id)
+  }
 
-  useEffect(() => {
+  async function handleCreateComponent() {
     if (!id) return handleGoBack();
     if (!currentPlace) return handleEmptyCurrentPlace();
+    await getPlaceDetail();
+  }
 
-    getPlaceDetail();
+
+  useEffect(() => {
+    handleCreateComponent()
   }, []);
+
+  useEffect(() => {
+    if(!currentPlace) return
+    connectUserToSession(currentPlace.id)
+  }, [socket])
 
   return (
     <IonRow className="relative h-screen w-screen overflow-y-hidden bg-white text-black">

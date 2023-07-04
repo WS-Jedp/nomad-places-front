@@ -1,16 +1,19 @@
 import { DAY_TIME_SECTION_ENUM, PlaceSessionActionDataPayload, PLACE_SESSION_ACTIONS_ENUM } from ".."
+import { UserRequestDTO } from "../../../dto/user"
 import { PLACE_STATUS } from "../../placeStatus"
 
 type PlaceSesssionActionPayload = PlaceSessionActionDataPayload['MESSAGE'] | PlaceSessionActionDataPayload['UPDATE'] | PlaceSessionActionDataPayload['RECENT_ACTIVITY']
 
 export type PlaceSessionAction = {
     id: string
-    createdDate: Date
-    payload: PlaceSesssionActionPayload
+    createdDate: string
+    payload: string
     type: PLACE_SESSION_ACTIONS_ENUM
     dayTimeSection: DAY_TIME_SECTION_ENUM
     placeSessionID: string
+    user?: UserRequestDTO
     userID: string
+    username: string
 }
 
 export enum PLACE_SESSION_ACTION_TYPE_ENUM {

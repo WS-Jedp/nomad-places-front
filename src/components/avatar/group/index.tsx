@@ -33,9 +33,13 @@ export const AvatarGroup: React.FC<AvatarGrupProps> = ({
             No users in session
           </span>
         )}
-      <span className={`ml-1 text-xs font-medium ${handlePeopleBadgeColor(amountOfPeople)} rounded-full p-2`}>
-        {amountOfPeople > 0 ? `+${amountOfPeople} people` : "No people"}
-      </span>
+        {
+          users.length > 0 && amountOfPeople > 0 && (
+            <span className={`ml-1 text-xs font-medium ${handlePeopleBadgeColor(amountOfPeople)} rounded-full p-2`}>
+              {amountOfPeople > 0 ? `+${amountOfPeople} people` : "No people"}
+            </span>
+          )
+        }
     </div>
   );
 };

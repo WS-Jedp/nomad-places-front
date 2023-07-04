@@ -13,13 +13,13 @@ import { getCurrentISODate } from "../../common/utils/dates";
 import { useIsMobile } from "../../common/hooks/useIsMobile";
 import { BackNavigationHeader } from "../../components/header/backNavigation";
 import { createSocket } from "../../store/redux/slices/userSession";
+import { getSpotCachedSession } from "../../store/redux/slices/spotSession";
 
 
 export const PlaceDetailPage = () => {
   const history = useHistory();
-  const { userData } = useAppSelector((state) => state.user);
   const { currentPlace } = useAppSelector((state) => state.places);
-  const { socket } = useAppSelector((state) => state.userSession);
+  const { cachedSession } = useAppSelector((state) => state.spotSession);
   const dispatch = useAppDispatch()
   const { id } = useParams<{ id: string }>();
   const [isMobile] = useIsMobile();
@@ -33,37 +33,21 @@ export const PlaceDetailPage = () => {
     history.push("/home");
   }
 
-  async function connectUserToSession(placeID: string) {
-    if(!socket && userData) {
-      await dispatch( createSocket({ placeID: placeID, userID: userData.id, username: userData.username }) )
-    }
-    if(!socket) return
-    await socket?.joinSession()
-    socket?.onSessionMessage(message => {
-      console.log(message, "THIS IS THE MESSAGE")
-    })
-  }
-
-  async function getPlaceDetail() {
-    const place = await PlacesService.getPlace({ placeID: id });
-    await connectUserToSession(place.place.id)
-  }
-
   async function handleCreateComponent() {
     if (!id) return handleGoBack();
     if (!currentPlace) return handleEmptyCurrentPlace();
-    await getPlaceDetail();
   }
 
+  async function getCachedSession() {
+    if(!currentPlace || !currentPlace.id) return
+    await dispatch( getSpotCachedSession({ spotID: currentPlace.id }) )
+  }
 
   useEffect(() => {
     handleCreateComponent()
+    getCachedSession()
   }, []);
 
-  useEffect(() => {
-    if(!currentPlace) return
-    connectUserToSession(currentPlace.id)
-  }, [socket])
 
   return (
     <IonRow className="relative h-screen w-screen overflow-y-hidden bg-white text-black">

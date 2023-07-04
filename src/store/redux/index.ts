@@ -3,7 +3,8 @@ import FiltersSlice from './slices/filters'
 import PlacesSlice from './slices/places'
 import UserSlice  from './slices/user'
 import PlaceSesssionActionsSlice from './slices/sessionActions/update'
-import  UserSessionSlice  from './slices/userSession'
+import UserSessionSlice  from './slices/userSession'
+import SpotSessionSlice  from './slices/spotSession'
 
 export const reduxStore = configureStore({
     reducer: {
@@ -11,7 +12,8 @@ export const reduxStore = configureStore({
         places: PlacesSlice,
         filters: FiltersSlice,
         placeSession: PlaceSesssionActionsSlice,
-        userSession: UserSessionSlice
+        userSession: UserSessionSlice,
+        spotSession: SpotSessionSlice
     },
     middleware: (getDefaultMiddleware) => {
         return getDefaultMiddleware({

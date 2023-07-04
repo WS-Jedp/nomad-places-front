@@ -1,5 +1,6 @@
-import { JoinPlaceSessionRequestDTO, LeavePlaceSessionRequestDTO, PlaceSessionActionUpdateRequestDTO, PlaceSessionUpdateDTO, QuickSessionReviewRequestDTO } from '../../dto/session/sockets'
-import { PlaceSessionActionDataPayload, PLACE_SESSION_ACTIONS_ENUM } from '../../models/session'
+import { JoinPlaceSessionRequestDTO, LeavePlaceSessionRequestDTO, PlaceSessionActionMessageDTO, PlaceSessionActionUpdateRequestDTO, PlaceSessionUpdateDTO, PlaceSessionUpdateMultipleActionsRequestDTO, QuickSessionReviewRequestDTO } from '../../dto/session/sockets'
+import { PlaceSessionActionDataPayload, PLACE_SESSION_ACTIONS_ENUM, UpdateActionData, UPDATE_ACTIONS } from '../../models/session'
+import { PlaceSessionAction } from '../../models/session/actions'
 import { socket } from '../index'
 
 export class UserSessionSocket {
@@ -48,6 +49,10 @@ export class UserSessionSocket {
         }
         await this.socket.emit('join-place-session', joinSessionData)
     }
+
+    async quickJoinSesssion() {
+        await this.socket.emit('quick-join-place-session', { placeID: this.placeID })
+    }
     
     async leaveSession(sessionID: string) {
         const leaveSessionData: LeavePlaceSessionRequestDTO = {
@@ -58,7 +63,7 @@ export class UserSessionSocket {
         }
         this.socket.emit('leave-place-session', leaveSessionData)
     }
-    
+
     /**
      * =================================
      * ==== SESSION ACTIONS METHODS ====
@@ -67,6 +72,7 @@ export class UserSessionSocket {
    async updateSesssion(payload: { actionType: PLACE_SESSION_ACTIONS_ENUM, sessionID: string, actionData: PlaceSessionActionDataPayload }) {
         const actionData: PlaceSessionActionUpdateRequestDTO = {
             userID: this.userID,
+            username: this.username,
             placeID: this.placeID,
             sessionID: payload.sessionID,
             type: payload.actionType,
@@ -76,14 +82,39 @@ export class UserSessionSocket {
         await this.socket.emit('place-session-action', actionData)
    }
 
+   async updateSessionMultipleActions(payload: {
+    sessionID: string,
+    actions: {
+      type: UPDATE_ACTIONS,
+      data: UpdateActionData
+    }[],
+  }) {
+    const actionData: PlaceSessionUpdateMultipleActionsRequestDTO = {
+        userID: this.userID,
+        username: this.username,
+        placeID: this.placeID,
+        sessionID: payload.sessionID,
+        actions: payload.actions,
+        createdDateISO: new Date().toISOString(),
+    }
+    await this.socket.emit('place-session-multiple-actions', actionData)
+
+   }
+
     // This string payload it's actually a JSON stringified object
     // with the following structure:
     // PlaceSessionAction && User types
-    onSessionUpdated(callback: (payload: string) => void) {
-        this.socket.on('place-session-update', callback)
+    onSessionUpdated(callback: (payload: PlaceSessionAction[]) => void) {
+        this.socket.on('place-session-update', (message:string) => {
+            const payload: PlaceSessionAction[] = JSON.parse(message)
+            callback(payload)
+        })
     }
 
-    async onSessionMessage(callback: (payload: string) => void) {
-        await this.socket.on('place-session-message', callback)
+    async onSessionMessage(callback: (payload: PlaceSessionActionMessageDTO) => void) {
+        await this.socket.on('place-session-message', (message: string) => {
+            const payload: PlaceSessionActionMessageDTO = JSON.parse(message)
+            callback(payload)
+        })
     }
 }

@@ -6,6 +6,7 @@ import { useAppSelector } from '../../../common/hooks/useTypedSelectors'
 import { verifyFileType } from '../../../common/utils/files'
 import { CircleUserAction } from '../../../components/actions/cards/circleUserAction'
 import { SimpleButton, SimpleButtonOutline } from '../../../components/buttons/simple'
+import { UPDATE_ACTIONS } from '../../../models/session'
 import { PLACE_SESSION_ACTION_TYPE_ENUM } from '../../../models/session/actions'
 import { HandleActionForm } from '../actions/forms/handleActionForm'
 
@@ -16,6 +17,8 @@ export const UserActionsModal: React.FC<UserActionsModalProps> = ({ closeCallbac
 
     const { sessionActions: actions, ...actionsState } = useAppSelector(state => state.placeSession)
     const [ isUpdateAvailable, setIsUpdateAvailable ] = useState<boolean>(false)
+    const { socket, sessionID } = useAppSelector((state) => state.userSession);
+
 
     const [currentAction, setCurrentAction] = useState<PLACE_SESSION_ACTION_TYPE_ENUM | null>(null)
 
@@ -25,6 +28,42 @@ export const UserActionsModal: React.FC<UserActionsModalProps> = ({ closeCallbac
 
     function handleOnSave() {
         setCurrentAction(null)
+    }
+
+    function onUpdateSession() {
+        const actionsUpdateForm: { type: UPDATE_ACTIONS, data: any  }[] = []
+        if(actionsState.sessionAmountOfPeopleAction.payload) {
+            actionsUpdateForm.push({
+                type: UPDATE_ACTIONS.PLACE_AMOUNT_OF_PEOPLE,
+                data: [actionsState.sessionAmountOfPeopleAction.payload.min, actionsState.sessionAmountOfPeopleAction.payload.max]
+            })
+        }
+
+        if(actionsState.sessionMindsetAction.payload) {
+            actionsUpdateForm.push({
+                type: UPDATE_ACTIONS.PLACE_MINDSET,
+                data: actionsState.sessionMindsetAction.payload
+            })
+        }
+
+        if(actionsState.sessionPlaceStatusAction.payload) {
+            actionsUpdateForm.push({
+                type: UPDATE_ACTIONS.PLACE_STATUS,
+                data: actionsState.sessionPlaceStatusAction.payload
+            })
+        }
+
+        if(actionsState.sessionRecentActivityAction.payload) {
+            actionsUpdateForm.push({
+                type: UPDATE_ACTIONS.PLACE_RECENT_ACTIVITY,
+                data: actionsState.sessionRecentActivityAction.payload
+            })
+        }
+
+        if(sessionID) {
+            socket?.updateSessionMultipleActions({ sessionID: sessionID, actions: actionsUpdateForm })
+            console.log('What')
+        }
     }
 
     function handleActionValue(action: PLACE_SESSION_ACTION_TYPE_ENUM) {
@@ -103,13 +142,13 @@ export const UserActionsModal: React.FC<UserActionsModalProps> = ({ closeCallbac
                                     </IonCol>
                                 ))
                             }
-                            
+
                             {
                                 isUpdateAvailable && (
                                     <IonCol size='12'>
                                         <SimpleButton 
                                             text='Update Session'
-                                            action={() => {}}
+                                            action={onUpdateSession}
                                         />
                                     </IonCol>
                                 )

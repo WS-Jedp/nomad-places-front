@@ -57,7 +57,7 @@ export const DetailAndSessionActionsLayout: React.FC<
           </section>
           {children}
         </IonCol>
-        <IonCol size="12" sizeMd="6" className="overflow-y-auto h-screen pb-32">
+        <IonCol size="12" sizeMd="6" className="overflow-y-auto h-screen">
           {secondTab}
         </IonCol>
       </>

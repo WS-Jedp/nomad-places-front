@@ -1,7 +1,7 @@
 import { MINDSETS } from '../mindsets'
 import { PlaceMultimedia, RecentActivity } from '../multimedia'
 import { Place } from '../places'
-import { PLACE_STATUS } from '../placeStatus'
+import { PlaceState, PLACE_STATUS } from '../placeStatus'
 import { User } from '../user'
  
  /**
@@ -24,12 +24,13 @@ import { User } from '../user'
    */
   export type PlaceSessionActions = {
     id: string
-    createdDate: Date
+    createdDate: string
     payload: any
     type: PLACE_SESSION_ACTIONS_ENUM
     dayTimeSection: DAY_TIME_SECTION_ENUM
     placeSessionID: string
     userID: string
+    username: string
   }
 
   export type PlaceSessionCachedDataDTO = {
@@ -38,7 +39,7 @@ import { User } from '../user'
     amountOfPeople: number;
     bestMindsetTo: MINDSETS;
     placeStatus: PLACE_STATUS;
-    lastActions: PlaceSessionActions[]
+    actions: PlaceSessionActions[]
     lastRecentlyActivities: RecentActivity[]
     usersInSession: User[]
   }
@@ -66,12 +67,21 @@ import { User } from '../user'
     JOIN = 'JOIN',
     LEAVE = 'LEAVE'
   };
-  
 
   export enum UPDATE_ACTIONS {
-    AMOUNT_OF_PEOPLE = 'AMOUNT_OF_PEOPLE',
-    MINDSET_TO = "MINDSET_TO",
+    PLACE_AMOUNT_OF_PEOPLE = 'PLACE_AMOUNT_OF_PEOPLE',
+    PLACE_MINDSET = 'PLACE_MINDSET',
+    PLACE_STATUS = 'PLACE_STATUS',
+    PLACE_RECENT_ACTIVITY = 'PLACE_RECENT_ACTIVITY',
 }
+
+export interface UpdateActionData {
+  [UPDATE_ACTIONS.PLACE_AMOUNT_OF_PEOPLE]: [number, number],
+  [UPDATE_ACTIONS.PLACE_MINDSET]: MINDSETS,
+  [UPDATE_ACTIONS.PLACE_STATUS]: any,
+  [UPDATE_ACTIONS.PLACE_RECENT_ACTIVITY]: null,
+}
+
 
 
   export interface PlaceSessionActionDataPayload {
@@ -82,11 +92,19 @@ import { User } from '../user'
         data: PlaceMultimedia,
     }
     [PLACE_SESSION_ACTIONS_ENUM.UPDATE]: {
-        data: {
-            type: UPDATE_ACTIONS,
-            value: number | MINDSETS
-        },
+      type: UPDATE_ACTIONS,
+      data: {
+        data: [number, number] | MINDSETS | PlaceState
+      }
     }
-    [PLACE_SESSION_ACTIONS_ENUM.LEAVE]: null
-    [PLACE_SESSION_ACTIONS_ENUM.JOIN]: null
+    [PLACE_SESSION_ACTIONS_ENUM.LEAVE]: {
+      data: {
+        username: string
+      }
+    }
+    [PLACE_SESSION_ACTIONS_ENUM.JOIN]: {
+      data: {
+        username: string
+      }
+    }
 }

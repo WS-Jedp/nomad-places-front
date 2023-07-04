@@ -1,10 +1,12 @@
 import { GeoLocation } from "../location"
+import { MINDSETS } from "../mindsets"
 import { PlaceMultimedia } from "../multimedia"
 import { PLACE_TYPES } from "../placeTypes"
 
 export interface Place {
     id: string
     name: string
+    knownFor: MINDSETS
     description?: string | null
     multimedia: PlaceMultimedia[]
     type: PLACE_TYPES[]

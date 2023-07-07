@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
-import { PlaceSessionCachedDataDTO } from "../../../../models/session";
+import { PlaceSession, PlaceSessionActionDataPayload, PlaceSessionCachedDataDTO, PLACE_SESSION_ACTIONS_ENUM, UPDATE_ACTIONS } from "../../../../models/session";
 import { PlaceSessionAction } from "../../../../models/session/actions";
 import SpotSessionServices from "../../../../services/spotSession";
 import { RootState } from "../..";
@@ -34,7 +34,6 @@ export const SpotSessionSlice = createSlice({
         state.cachedSession = null
     },
     addActionToCurrentSession(state, action: PayloadAction<{ action: PlaceSessionAction }>) {
-        console.log(action,'THIS IS THE JOIN ACTION')
         if(state.currentSessionActions.find(act => act.id === action.payload.action.id)) return
 
         state.currentSessionActions.push(action.payload.action)
@@ -43,14 +42,49 @@ export const SpotSessionSlice = createSlice({
         action.payload.forEach(currAction => {
             if(!state.currentSessionActions.find(act => act.id === currAction.id)) {
                 state.currentSessionActions.push(currAction)
+                if(currAction.type === PLACE_SESSION_ACTIONS_ENUM.UPDATE) {
+                    const cachedSession = state.cachedSession
+                    if(cachedSession) {
+                        cachedSession.lastActions.push(currAction)
+
+                        const payload = JSON.parse(currAction.payload) as PlaceSessionActionDataPayload['UPDATE']
+
+                        switch (payload.type) {
+                            case UPDATE_ACTIONS.PLACE_MINDSET:
+                                const currMindsetAction = cachedSession.bestMindsetTo.find(opt => opt.mindset === payload.data.data)
+                                if(currMindsetAction) {
+                                    currMindsetAction.actions.push(currAction)
+                                }
+                                return
+                            case UPDATE_ACTIONS.PLACE_AMOUNT_OF_PEOPLE:
+                                const amountPeopleData = payload.data.data as { amount: string }
+                                const currAmountPeople = cachedSession.amountOfPeople.find(opt => opt.amount === amountPeopleData.amount)
+                                if(currAmountPeople) {
+                                    currAmountPeople.actions.push(currAction)
+                                }
+                                break
+                            case UPDATE_ACTIONS.PLACE_STATUS:
+                                const statusData = payload.data.data as { type: string } 
+                                const currPlaceStatus = cachedSession.placeStatus.find(opt => opt.type === statusData.type)
+                                if(currPlaceStatus) {
+                                    currPlaceStatus.actions.push(currAction)
+                                }
+                                break
+                        }
+                    }
+                }
             }
         })
-    }
+    },
+    // Cached session methods
+    addUserIntoCachedSession(state, action: PayloadAction<{ userID: string }>) {
+
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getSpotCachedSession.fulfilled, (state, action) => {
         state.cachedSession = action.payload
-        state.currentSessionActions = action.payload?.actions || []
+        state.currentSessionActions = action.payload?.lastActions || []
     });
   }
 });

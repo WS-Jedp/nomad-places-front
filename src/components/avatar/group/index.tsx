@@ -1,45 +1,37 @@
+import { PlaceSessionActions } from "../../../models/session";
 import { User } from "../../../models/user";
 import { AvatarSingleCircle } from "../singleCircle";
 
 interface AvatarGrupProps {
-  users: User[];
-  amountOfPeople: number;
+  users: Partial<User>[];
 }
 
 export const AvatarGroup: React.FC<AvatarGrupProps> = ({
-  users,
-  amountOfPeople,
+  users
 }) => {
-
-  function handlePeopleBadgeColor(amount: number): string {
-    if (amount < 10) {
-      return "bg-gray-100";
-    } else if (amount < 20) {
-      return "bg-yellow-100 text-yellow-900";
-    } else if (amount < 30) {
-      return "bg-red-100 text-red-900";
-    } else {
-      return "bg-purple-100 text-purple-900";
-    }
+  if (users.length === 0) {
+    return (
+      <span className="text-xs bg-gray-200 rounded-full p-2">
+        No users in session
+      </span>
+    );
   }
 
   return (
-    <div className="flex flex-row flex-nowwrap items-center justify-start">
-      {users.length > 0 ?
-        users.map((user) => (
-          <AvatarSingleCircle key={user.id} url={''} />
-        )) : (
-          <span className="text-xs bg-gray-200 rounded-full p-2">
-            No users in session
-          </span>
-        )}
-        {
-          users.length > 0 && amountOfPeople > 0 && (
-            <span className={`ml-1 text-xs font-medium ${handlePeopleBadgeColor(amountOfPeople)} rounded-full p-2`}>
-              {amountOfPeople > 0 ? `+${amountOfPeople} people` : "No people"}
-            </span>
-          )
-        }
+    <div className="flex flex-row flex-nowwrap items-center justify-center">
+      <div className="flex flex-row items-center justify-center">
+        {users.length > 0 &&
+          users.map((user) => (
+            <AvatarSingleCircle key={user.id} url={user.profilePicture || ""} />
+          ))}
+      </div>
+
+      {users.length > 0 && (
+        <span className="font-light text-xs ml-4">
+          {users.length}{" "}
+          {users.length === 1 ? "user in session" : "users in session"}
+        </span>
+      )}
     </div>
   );
 };

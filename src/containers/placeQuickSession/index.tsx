@@ -174,9 +174,6 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({ changePage
             <IonRow className="w-full flex flex-row flex-nowrap items-center pt-3 md:pt-2">
               <AvatarGroup
                 users={currentPlace?.sessionCachedData?.usersInSession || []}
-                amountOfPeople={
-                  currentPlace?.sessionCachedData?.amountOfPeople || 0
-                }
               />
               {/* Button to join quickly to the session of the place, temporarily commented */}
               {/* <SimpleButton text="Join" action={(ev) => {}} /> */}

@@ -35,7 +35,10 @@ export const UserActionsModal: React.FC<UserActionsModalProps> = ({ closeCallbac
         if(actionsState.sessionAmountOfPeopleAction.payload) {
             actionsUpdateForm.push({
                 type: UPDATE_ACTIONS.PLACE_AMOUNT_OF_PEOPLE,
-                data: [actionsState.sessionAmountOfPeopleAction.payload.min, actionsState.sessionAmountOfPeopleAction.payload.max]
+                data: {
+                    amount: `${actionsState.sessionAmountOfPeopleAction.payload.min}-${actionsState.sessionAmountOfPeopleAction.payload.max}`,
+                    range: [actionsState.sessionAmountOfPeopleAction.payload.min, actionsState.sessionAmountOfPeopleAction.payload.max]
+                }
             })
         }
 

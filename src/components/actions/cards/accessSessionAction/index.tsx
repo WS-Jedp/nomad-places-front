@@ -25,7 +25,7 @@ export const AccessSessionAction: React.FC<AccessSessionActionProps> = ({ action
     }, [])
 
     return (
-        <li className="
+        <article className="
             relative
             w-full px-3 bg-gray-100
             flex flex-row flex-nowrap items-center justify-between
@@ -42,6 +42,6 @@ export const AccessSessionAction: React.FC<AccessSessionActionProps> = ({ action
                 { new Date(action.createdDate).toDateString() }
             </span>
 
-        </li>
+        </article>
     )
 }

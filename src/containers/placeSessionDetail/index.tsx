@@ -2,8 +2,6 @@ import { IonCol, IonRow } from "@ionic/react"
 import { AvatarGroup } from "../../components/avatar/group"
 import { SimpleButton } from "../../components/buttons/simple"
 import { RecentActivityCard } from "../../components/multimedia/cards/recentActivity"
-import { HandleMindsetTags } from "../../components/tags/mindsets"
-import { MINDSETS } from "../../models/mindsets"
 import { useEffect, useState } from "react"
 import { AppModal } from "../../components/modals/container"
 import { MultimediaSliderModal } from "../multimediaSliderModal"
@@ -11,15 +9,19 @@ import { useAppDispatch, useAppSelector } from "../../common/hooks/useTypedSelec
 import { UserActionsModal } from "../session/userActionsModal"
 import { BlurAppModal } from "../../components/modals/blurContainer"
 import { addUserIntoSession, createSocket, userJoinedSession, userLeftSession } from "../../store/redux/slices/userSession"
-import { PLACE_SESSION_ACTIONS_ENUM } from "../../models/session"
+import { PLACE_SESSION_ACTIONS_ENUM, UPDATE_ACTIONS } from "../../models/session"
 import { HandleActionCardType } from "../../components/actions/cards/handleActionType"
 import { addActionToCurrentSession, addMultipleActionsToCurrentSession } from "../../store/redux/slices/spotSession"
+import { AmountMindsetActions } from "../../components/mindsets/containers/amountMindsetActions"
+import { QuickActionModal } from "../session/quickActionModal"
+import { MINDSETS } from "../../models/mindsets"
+import { AmountOfPeopleActionsAmount } from "../../components/amountOfPeople/containers"
 
 export const PlaceSessionDetail: React.FC = () => {
 
     const dispatch = useAppDispatch()
     const currentPlace = useAppSelector((state) => state.places.currentPlace);
-    const { currentSessionActions } = useAppSelector((state) => state.spotSession);
+    const { currentSessionActions, cachedSession } = useAppSelector((state) => state.spotSession);
     const { userData } = useAppSelector((state) => state.user);
     const { socket, sessionID } = useAppSelector((state) => state.userSession);
 
@@ -30,6 +32,9 @@ export const PlaceSessionDetail: React.FC = () => {
 
     const [ leaveSessionModal, setLeaveSessionModal ] = useState(false)
     const [ updateSessionModal, setUpdateSessionModal ] = useState(false)
+    const [ quickActionModal, setQuickActionModal ] = useState(false)
+    const [ quickActionType, setQuickActionType ] = useState<UPDATE_ACTIONS>()
+    const [ quickActionValue, setQuickActionValue ] = useState<string>()
 
     function handleRecentActivityOpen(index: number) {
         setMediaSelectedIndex(index)
@@ -37,12 +42,18 @@ export const PlaceSessionDetail: React.FC = () => {
     }
 
 
+    // =========================
+    // ACCESS TO SESSION METHODS
+    // =========================
     async function connectUserToSession(placeID: string) {
         setJoiningSessionLoader(true)
         if(!socket && userData) {
             await dispatch( createSocket({ placeID: placeID, userID: userData.id, username: userData.username }) )
         }
-        if(!socket) return
+        if(!socket) {
+            setJoiningSessionLoader(false)
+            return
+        }
         await socket?.joinSession()
 
         setJoiningSessionLoader(false)
@@ -77,6 +88,7 @@ export const PlaceSessionDetail: React.FC = () => {
                     await dispatch( userJoinedSession({ sessionID: payload.sessionID }) )
                     setUserInSession(true)
                 }
+
             } else if(payload.type === PLACE_SESSION_ACTIONS_ENUM.LEAVE) {
                 if(userData?.id === payload.userID) {
                     await dispatch( userLeftSession() )
@@ -125,6 +137,22 @@ export const PlaceSessionDetail: React.FC = () => {
         isUserInSession()
     }, [currentSessionActions])
 
+    // ============================
+    // QUICK UPDATE ACTIONS METHODS
+    // ============================
+    function handleMindsetQuickAction(actionType: UPDATE_ACTIONS, value: MINDSETS) {
+        setQuickActionModal(true)
+        setQuickActionType(actionType)
+        setQuickActionValue(value)
+    }
+
+    function handleAmountOfPeopleQuickAction(actionType: UPDATE_ACTIONS, value: string) {
+        setQuickActionModal(true)
+        setQuickActionType(actionType)
+        setQuickActionValue(value)
+    }
+
+
     if(!currentPlace) return null;
 
     return (
@@ -139,19 +167,20 @@ export const PlaceSessionDetail: React.FC = () => {
                 )
             }
 
-            <IonRow className="w-full p-3 pb-5 relative flex flex-col flex-nowrap border-b border-gray-300">
+            <IonRow className="w-full h-3/6 p-3 pb-5 relative flex flex-col flex-nowrap border-b border-gray-300">
                 <section className="mb-3">
                     <h2 className="font-bold text-lg mb-1">Perfect to:</h2>
-                    <div className="mr-1 inline">
-                        <HandleMindsetTags mindset={currentPlace.sessionCachedData?.bestMindsetTo || MINDSETS.UNKNOWN} />
-                    </div>
+                    <AmountMindsetActions mindsetCallback={handleMindsetQuickAction} />
                 </section>
 
-                <IonRow className="w-full relative flex flex-row mb-3">
+                <IonRow className="relative w-full flex flex-row mb-3">
                     <IonCol size="12">
                         <h2 className="font-bold text-lg">Amount of people:</h2>
-                        <AvatarGroup users={[]} amountOfPeople={20}  />
+                        <div className="py-1">
+                            <AmountOfPeopleActionsAmount callback={handleAmountOfPeopleQuickAction} />
+                        </div>
                     </IonCol>
+                    <AvatarGroup users={cachedSession?.usersInSession || []} />
                 </IonRow>
                 <section className="w-full mb-2">
                     {/* <p className="font-regular text-xs my-3 text-left">Last update made 30 minutes ago</p> */}
@@ -168,22 +197,22 @@ export const PlaceSessionDetail: React.FC = () => {
                         </article>
                     ) : (
                         // JOIN SESSION BUTTON
-                        joiningSessionLoader ? (
-                            <svg className="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24">
-                                <circle className="opacity-25 bg-blue-500" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                            </svg>
-                        ) : (
-                            <SimpleButton action={handleJoinSession} text="Join session" />
-                        )
+                        <SimpleButton
+                            action={handleJoinSession}
+                            text="Join session"
+                            loading={joiningSessionLoader}
+                        />
                     )
                 }
             </IonRow>
 
-            <IonRow className="w-full py-3 pb-5 relative flex flex-col flex-nowrap">
-                <section className="mb-3">
-                    <h2 className="font-bold text-lg mb-1 pb-3 px-3  border-solid border-b-[1px] border-gray-300">Community Actions:</h2>
-                    <ol className="w-full h-screen overflow-y-auto mt-3">
+            
+            <article className="relative w-full pt-3 border-solid border-b-[1px] border-gray-300">
+                <h2 className="w-full font-bold text-lg mb-1 pb-3 px-3  ">Community Actions:</h2>
+            </article>
+            <IonRow className="w-full h-3/6 relative flex flex-col flex-nowrap">
+                <section className="mb-3 h-full overflow-y-auto">
+                    <ol className="w-full min-h-full h-auto mt-3">
                         {
                             currentSessionActions.length > 0 ? (
                                 currentSessionActions.map((action, index) => {
@@ -222,6 +251,18 @@ export const PlaceSessionDetail: React.FC = () => {
                     <BlurAppModal>
                         <UserActionsModal closeCallback={() => setUpdateSessionModal(false)} />
                     </BlurAppModal>
+                )
+            }
+
+            {
+                quickActionModal && quickActionType && quickActionValue && (
+                    <AppModal>
+                        <QuickActionModal 
+                            onCancel={() => setQuickActionModal(false)} 
+                            actionType={quickActionType}
+                            value={quickActionValue}
+                        />
+                    </AppModal>
                 )
             }
 

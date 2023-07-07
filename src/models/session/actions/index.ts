@@ -35,6 +35,7 @@ export type PLACE_AMOUNT_OF_PEOPLE_ACTION_OPTION = {
     amount: string,
     min: number,
     max: number,
+    range: [number, number],
 }
 
 
@@ -44,3 +45,49 @@ export type PLACE_STATUS_SESSION_ACTION_OPTION = {
     name: string,
     type: PLACE_STATUS,
 }
+
+export const PLACE_AMOUNT_OF_PEOPLE_OPTIONS: PLACE_AMOUNT_OF_PEOPLE_ACTION_OPTION[] = [
+    {
+        id: 0,
+        amount: '0-5',
+        min: 0,
+        max: 5,
+        range: [0, 5]
+    },
+    {
+        id: 1,
+        amount: '5-10',
+        min: 5,
+        max: 10,
+        range: [5, 10]
+    },
+    {
+        id: 2,
+        amount: '10-15',
+        min: 10,
+        max: 15,
+        range: [10, 15]
+    },
+    {
+        id: 3,
+        amount: '15-20',
+        min: 15,
+        max: 20,
+        range: [15, 20]
+    },
+    {
+        id: 4,
+        amount: '20-25',
+        min: 20,
+        max: 25,
+        range: [20, 25]
+    },
+    {
+        id: 5,
+        amount: '+25',
+        min: 25,
+        max: 99,
+        range: [25, 99]
+    },
+
+]

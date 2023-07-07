@@ -5,7 +5,7 @@ import { PlaceSessionActionDataPayload, UPDATE_ACTIONS } from "../../../models/s
 
 export const UpdateActionType: React.FC<{ payload: PlaceSessionActionDataPayload['UPDATE'] }> = ({ payload }) => {
 
-    const [ payloadValue, setPayloadValue ] = useState<[number, number] | MINDSETS | any>()
+    const [ payloadValue, setPayloadValue ] = useState<{ range: [number, number], amount: string } | MINDSETS | any>()
 
     useEffect(() => {
         setPayloadValue(payload.data.data)
@@ -16,7 +16,7 @@ export const UpdateActionType: React.FC<{ payload: PlaceSessionActionDataPayload
             return (
                 <div>
                     <p className="font-light text-sm">
-                        There is between <span> {payloadValue?.[0]} to {payloadValue?.[1]} </span> people in the spot
+                        There is between <span> {payloadValue?.range[0]} to {payloadValue?.range[1]} </span> people in the spot
                     </p>
                 </div>
             )

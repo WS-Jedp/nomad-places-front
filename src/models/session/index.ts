@@ -15,6 +15,7 @@ import { User } from '../user'
     recentActivity: PlaceMultimedia[]
     placeID: string
     usersIDs: string[]
+    actions: PlaceSessionActions[]
   }
 
   
@@ -36,19 +37,29 @@ import { User } from '../user'
   export type PlaceSessionCachedDataDTO = {
     placeID: string;
     lastUpdate: Date;
-    amountOfPeople: number;
-    bestMindsetTo: MINDSETS;
-    placeStatus: PLACE_STATUS;
-    actions: PlaceSessionActions[]
+    amountOfPeople: {
+      amount: string,
+      actions: PlaceSessionActions[]
+    }[];
+    bestMindsetTo: {
+      mindset: MINDSETS,
+      actions: PlaceSessionActions[]
+    }[];
+    placeStatus: {
+      name: string,
+      type: string,
+      value: boolean,
+      actions: PlaceSessionActions[]
+    }[];
+    lastActions: PlaceSessionActions[]
     lastRecentlyActivities: RecentActivity[]
-    usersInSession: User[]
+    usersInSession: {username: string, email: string, id: string, profilePicture: string}[]
   }
 
   export type PlaceWithCachedSession = Place & {
     sessionCachedData: Omit<PlaceSessionCachedDataDTO, 'placeID'>
   }
 
-    
   export enum DAY_TIME_SECTION_ENUM {
     EARLY_MORNING = 'EARLY_MORNING',
     BEFORE_SUNRISE = 'BEFORE_SUNRISE',
@@ -94,7 +105,7 @@ export interface UpdateActionData {
     [PLACE_SESSION_ACTIONS_ENUM.UPDATE]: {
       type: UPDATE_ACTIONS,
       data: {
-        data: [number, number] | MINDSETS | PlaceState
+        data: { amount: string, range: [number, number] } | MINDSETS | PlaceState
       }
     }
     [PLACE_SESSION_ACTIONS_ENUM.LEAVE]: {

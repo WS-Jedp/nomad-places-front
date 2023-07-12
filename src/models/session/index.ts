@@ -36,7 +36,7 @@ import { User } from '../user'
 
   export type PlaceSessionCachedDataDTO = {
     placeID: string;
-    lastUpdate: Date;
+    lastUpdate: string;
     amountOfPeople: {
       amount: string,
       actions: PlaceSessionActions[]
@@ -53,7 +53,7 @@ import { User } from '../user'
     }[];
     lastActions: PlaceSessionActions[]
     lastRecentlyActivities: RecentActivity[]
-    usersInSession: {username: string, email: string, id: string, profilePicture: string}[]
+    usersInSession: {username: string, email: string, id: string, profilePicture?: string}[]
   }
 
   export type PlaceWithCachedSession = Place & {

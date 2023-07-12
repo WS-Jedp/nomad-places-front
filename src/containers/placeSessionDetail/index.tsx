@@ -11,11 +11,12 @@ import { BlurAppModal } from "../../components/modals/blurContainer"
 import { addUserIntoSession, createSocket, userJoinedSession, userLeftSession } from "../../store/redux/slices/userSession"
 import { PLACE_SESSION_ACTIONS_ENUM, UPDATE_ACTIONS } from "../../models/session"
 import { HandleActionCardType } from "../../components/actions/cards/handleActionType"
-import { addActionToCurrentSession, addMultipleActionsToCurrentSession } from "../../store/redux/slices/spotSession"
+import { addActionToCurrentSession, addMultipleActionsToCurrentSession, addUserIntoCachedSession, removeUserFromCachedSession } from "../../store/redux/slices/spotSession"
 import { AmountMindsetActions } from "../../components/mindsets/containers/amountMindsetActions"
 import { QuickActionModal } from "../session/quickActionModal"
 import { MINDSETS } from "../../models/mindsets"
 import { AmountOfPeopleActionsAmount } from "../../components/amountOfPeople/containers"
+import { HandleMindsetTags } from "../../components/tags/mindsets"
 
 export const PlaceSessionDetail: React.FC = () => {
 
@@ -65,9 +66,10 @@ export const PlaceSessionDetail: React.FC = () => {
     }
 
     async function disconnectUserFromSession(sessionID: string) {
-        if(!socket) return
+        if(!socket || !userData?.id) return
         setJoiningSessionLoader(true)
         await dispatch( userLeftSession() )
+        await dispatch( removeUserFromCachedSession({ userID: userData.id }) )
         await socket.leaveSession(sessionID)
         setJoiningSessionLoader(false)
     }
@@ -86,6 +88,7 @@ export const PlaceSessionDetail: React.FC = () => {
             if(payload.type === PLACE_SESSION_ACTIONS_ENUM.JOIN) {
                 if(userData?.id === payload.userID) {
                     await dispatch( userJoinedSession({ sessionID: payload.sessionID }) )
+                    await dispatch( addUserIntoCachedSession({ user: userData }) )
                     setUserInSession(true)
                 }
 
@@ -98,7 +101,9 @@ export const PlaceSessionDetail: React.FC = () => {
             if(payload.action) {
                 dispatch( addActionToCurrentSession( { action: payload.action } ) )
             }
+
         })
+
     }, [socket])
 
     useEffect(() => {
@@ -108,34 +113,28 @@ export const PlaceSessionDetail: React.FC = () => {
         })
     }, [socket])
 
-
     // Method to check if the user is in the session
     // If the user is in the session, then we need to add the user into the session
     async function isUserInSession() {
-        if(userInSession) return
-
-        const userJOINAction = currentSessionActions.find(action => action.type === PLACE_SESSION_ACTIONS_ENUM.JOIN && action.userID === userData?.id)
-
-        if(userJOINAction) {
-            const userLeaveSession = currentSessionActions.find(action => action.type === PLACE_SESSION_ACTIONS_ENUM.LEAVE && action.userID === userData?.id)
-            if(!userLeaveSession) {
-                if(!currentPlace || !userData) return
-
-                await dispatch( createSocket({ 
-                    placeID: currentPlace.id,
-                    userID: userData.id,
-                    username: userData.username,
-                    quickJoin: true, 
-                }) )
-                await dispatch( addUserIntoSession({ sessionID: userJOINAction.placeSessionID }) )
-                setUserInSession(true)
-            }
+        if(cachedSession?.usersInSession?.find(user => user.id === userData?.id)) {
+            if(!currentPlace || !userData) return
+            const sessionID = cachedSession.lastActions[0].placeSessionID
+            await dispatch( userJoinedSession({ sessionID: sessionID }) )
+            await dispatch( createSocket({ 
+                placeID: currentPlace.id,
+                userID: userData.id,
+                username: userData.username,
+                quickJoin: true, 
+            }) )
+            setUserInSession(true)
+            return
         }
+        setUserInSession(false)
     }
 
     useEffect(() => {
         isUserInSession()
-    }, [currentSessionActions])
+    }, [cachedSession?.usersInSession])
 
     // ============================
     // QUICK UPDATE ACTIONS METHODS
@@ -152,7 +151,6 @@ export const PlaceSessionDetail: React.FC = () => {
         setQuickActionValue(value)
     }
 
-
     if(!currentPlace) return null;
 
     return (
@@ -168,16 +166,37 @@ export const PlaceSessionDetail: React.FC = () => {
             }
 
             <IonRow className="w-full h-3/6 p-3 pb-5 relative flex flex-col flex-nowrap border-b border-gray-300">
+                {
+                    cachedSession?.lastUpdate && (
+                        (
+                            <section className="my-1">
+                                <h2 className="text-xs font-light">
+                                    Last update at <span className="font-light"> { new Date(cachedSession?.lastUpdate).toISOString() } </span>
+                                </h2>
+                            </section>
+                        )
+                    )
+                }
                 <section className="mb-3">
                     <h2 className="font-bold text-lg mb-1">Perfect to:</h2>
-                    <AmountMindsetActions mindsetCallback={handleMindsetQuickAction} />
+                    {
+                        userInSession ? (
+                            <AmountMindsetActions mindsetCallback={handleMindsetQuickAction} />
+                        ) : (
+                            <HandleMindsetTags mindset={MINDSETS.UNKNOWN} />
+                        )
+                    }
                 </section>
 
                 <IonRow className="relative w-full flex flex-row mb-3">
                     <IonCol size="12">
                         <h2 className="font-bold text-lg">Amount of people:</h2>
-                        <div className="py-1">
-                            <AmountOfPeopleActionsAmount callback={handleAmountOfPeopleQuickAction} />
+                        <div className="my-1">
+                            {
+                                userInSession && (
+                                    <AmountOfPeopleActionsAmount callback={handleAmountOfPeopleQuickAction} />
+                                )
+                            }
                         </div>
                     </IonCol>
                     <AvatarGroup users={cachedSession?.usersInSession || []} />
@@ -206,35 +225,35 @@ export const PlaceSessionDetail: React.FC = () => {
                 }
             </IonRow>
 
-            
-            <article className="relative w-full pt-3 border-solid border-b-[1px] border-gray-300">
-                <h2 className="w-full font-bold text-lg mb-1 pb-3 px-3  ">Community Actions:</h2>
-            </article>
-            <IonRow className="w-full h-3/6 relative flex flex-col flex-nowrap">
-                <section className="mb-3 h-full overflow-y-auto">
-                    <ol className="w-full min-h-full h-auto mt-3">
-                        {
-                            currentSessionActions.length > 0 ? (
-                                currentSessionActions.map((action, index) => {
-                                    return (
-                                        <li key={index}>
-                                            <HandleActionCardType
-                                                action={action}
-                                            />
-                                        </li>
-                                    )
-                                })
-                            ) : (
-                                <li className="px-3">
-                                    <p className="text-xs font-light px-3 py-3 w-full bg-gray-200">
-                                        There are no actions shared by the community yet
-                                    </p>
-                                </li>
-                            )
-                        }
-                    </ol>
+            <section className="relative w-full h-3/6 overflow-y-auto">
+                <article className="relative w-full pt-3 border-solid border-b-[1px] border-gray-300">
+                    <h2 className="w-full font-bold text-lg mb-1 pb-3 px-3  ">Community Actions:</h2>
+                </article>
+                <section className="relative h-full flex flex-col flex-nowrap mb-3">
+                        <ol className="w-full min-h-full h-auto my-3">
+                            {
+                                currentSessionActions.length > 0 ? (
+                                    currentSessionActions.map((action, index) => {
+                                        return (
+                                            <li key={index}>
+                                                <HandleActionCardType
+                                                    action={action}
+                                                />
+                                            </li>
+                                        )
+                                    })
+                                ) : (
+                                    <li className="px-3">
+                                        <p className="text-xs font-light px-3 py-3 w-full bg-gray-200">
+                                            There are no actions shared by the community yet
+                                        </p>
+                                    </li>
+                                )
+                            }
+                        </ol>
                 </section>
-            </IonRow>
+            </section>
+
 
             {recentActivityOpen && (
                 <AppModal>

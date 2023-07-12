@@ -4,6 +4,7 @@ import { PlaceSession, PlaceSessionActionDataPayload, PlaceSessionCachedDataDTO,
 import { PlaceSessionAction } from "../../../../models/session/actions";
 import SpotSessionServices from "../../../../services/spotSession";
 import { RootState } from "../..";
+import { User } from "../../../../models/user";
 
 export interface SpotSessionState {
     sessionID: string | null;
@@ -75,11 +76,35 @@ export const SpotSessionSlice = createSlice({
                 }
             }
         })
+
+        const lastAction = action.payload[action.payload.length - 1]
+        if(lastAction.type === PLACE_SESSION_ACTIONS_ENUM.UPDATE && state.cachedSession) {
+            state.cachedSession.lastUpdate = lastAction.createdDate
+        }
     },
     // Cached session methods
-    addUserIntoCachedSession(state, action: PayloadAction<{ userID: string }>) {
+    addUserIntoCachedSession(state, action: PayloadAction<{ user: User  }>) {
+        if(!state.cachedSession) return
 
+        const users = state.cachedSession.usersInSession
+
+        if(!users.find(user => user.id === action.payload.user.id)) {
+            users.push({
+                id: action.payload.user.id,
+                username: action.payload.user.username,
+                email: action.payload.user.email,
+                profilePicture: action.payload.user.profilePicture,
+            })
+        }
     },
+    removeUserFromCachedSession(state, action: PayloadAction<{ userID: string  }>) {
+        if(!state.cachedSession) return
+        const users = state.cachedSession.usersInSession
+        const user = users.find(user => user.id === action.payload.userID)
+        if(user) {
+            state.cachedSession.usersInSession = users.filter(currUser => currUser.id !== user.id)
+        }
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(getSpotCachedSession.fulfilled, (state, action) => {
@@ -91,7 +116,8 @@ export const SpotSessionSlice = createSlice({
 
 export const {
     resetCachedSession,
-    addActionToCurrentSession, addMultipleActionsToCurrentSession
+    addActionToCurrentSession, addMultipleActionsToCurrentSession,
+    addUserIntoCachedSession, removeUserFromCachedSession
 } = SpotSessionSlice.actions;
 
 export default SpotSessionSlice.reducer;

@@ -8,6 +8,8 @@ import { LoginDTO, RegisterUserRequestDTO } from '../../../../dto/auth'
 import { AuthServices } from '../../../../services/auth'
 import { ProfileDTO } from '../../../../dto/user'
 import { TOKEN_KEY } from '../../../../common/constants/localstorage'
+import { ControlledError } from '../../../../common/controlledError'
+import { ControlledErrorType } from '../../../../common/controlledError/types'
 
 export interface UserState {
     userData?:  User
@@ -17,6 +19,7 @@ export interface UserState {
         roles: string[]
     }
     location: Partial<GeoLocation>
+    errors: ControlledError[]
 }
 
 const initialUserState: UserState = {
@@ -29,7 +32,8 @@ const initialUserState: UserState = {
         isAuth: false,
         token: null,
         roles: []
-    }
+    },
+    errors: []
 }
 
 export const getUserGeoLocation = createAsyncThunk<GeoLocation | null, void>(
@@ -43,11 +47,13 @@ export const getUserGeoLocation = createAsyncThunk<GeoLocation | null, void>(
         }
     }
 )
-export const getUserData = createAsyncThunk<ProfileDTO, { token: string }>(
+export const getUserData = createAsyncThunk<ProfileDTO | ControlledError, { token: string }>(
     'user/getUserData',
     async (params) => {
         const authServices = new AuthServices()
-        const user = await authServices.getPersonFromUser({ token: params.token })
+        const user = await authServices.getPersonFromUser({ token: params.token }).catch(err => {
+            return new ControlledError(err.message, ControlledErrorType.REQUEST, err)
+        })
         return user
     }
 )
@@ -117,6 +123,15 @@ export const userSlice = createSlice({
             state.auth.roles = []
             state.userData = undefined
             localStorage.removeItem(TOKEN_KEY)
+        },
+        resetErros: (state) => {
+            state.errors = []
+        },
+        removeError: (state, action: PayloadAction<{ error: ControlledError }>) => {
+            const index = state.errors.findIndex(err => err.message === action.payload.error.message)
+            if(index !== -1) {
+                state.errors.splice(index, 1)
+            }
         }
     },
     extraReducers: (builder) => {
@@ -165,6 +180,12 @@ export const userSlice = createSlice({
 
         // Get user data
         builder.addCase(getUserData.fulfilled, (state, action) => {
+
+            if(action.payload instanceof ControlledError) {
+                state.errors.push(action.payload)
+                return
+            }
+            
             state.userData = {
                 id: action.payload.id,
                 username: action.payload.username,
@@ -177,6 +198,19 @@ export const userSlice = createSlice({
             state.auth.token = localStorage.getItem(TOKEN_KEY)
             state.auth.isAuth = true
             state.auth.roles = []
+        })
+
+        builder.addCase(getUserData.rejected, (state, action) => {
+            if(action.payload instanceof ControlledError) {
+                state.errors.push(action.payload)
+                return
+            }
+
+            state.auth.isAuth = false
+            state.auth.token = null
+            state.auth.roles = []
+            state.userData = undefined
+            localStorage.removeItem(TOKEN_KEY)
         })
     }
 })

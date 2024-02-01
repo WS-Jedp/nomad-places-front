@@ -6,7 +6,7 @@ import { ItemsAndMapLayout } from "../../layouts/ItemsAndMapLayout";
 import { GoogleMapWrapper } from "../../components/maps/googleMapWrapper";
 import { HandlePlaceCardListItem } from "../../components/places/cards/helpers/handleCardListItem";
 
-import { findPlace, getNearestPlaces, setNearPlaces } from '../../store/redux/slices/places' 
+import { findPlace, getNearestPlaces, getAllPlaces } from '../../store/redux/slices/places' 
 import { getUserGeoLocation } from '../../store/redux/slices/user' 
 import { useAppDispatch, useAppSelector } from "../../common/hooks/useTypedSelectors";
 import { AppLayout } from "../../layouts/AppLayout";
@@ -31,7 +31,9 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
   }
 
   async function getNearPlaces() {
-    await dispatch(getNearestPlaces())
+    // temporal change while I'm outside of Medellin
+    // await dispatch(getNearestPlaces()) // Original
+    await dispatch(getAllPlaces())
   }
 
   useEffect(() => {

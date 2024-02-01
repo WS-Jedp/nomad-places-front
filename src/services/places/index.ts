@@ -10,6 +10,13 @@ export class placesServices {
     });
   }
 
+  async getAllPlacesWithCachedSession(): Promise<PlacesWithQuickSessionDataDTO> {
+    const places = await this.request.get<PlacesWithQuickSessionDataDTO>(
+      'all'
+    )
+    return places
+  }
+
   async getNearestPlaces(payload: {
     lng: number;
     lte: number;

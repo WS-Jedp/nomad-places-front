@@ -1,7 +1,10 @@
 import { Status, Wrapper } from "@googlemaps/react-wrapper";
+import { useAppSelector } from "../../../common/hooks/useTypedSelectors";
 import { GoogleMapNomadsComponent } from "../googleMapNomads";
 
-const render = (status: Status) => {
+const Render = (status: Status) => {
+
+  const { zoomInMap } = useAppSelector(state => state.user)
   
   switch (status) {
     case Status.LOADING:
@@ -12,7 +15,7 @@ const render = (status: Status) => {
       return (
         <GoogleMapNomadsComponent
           center={{ lat: 6.250910937220285, lng: -75.57915349417806 }}
-          zoom={14}
+          zoom={zoomInMap}
         />
       );
   }
@@ -23,7 +26,7 @@ export const GoogleMapWrapper = () => (
   <Wrapper
     version="beta"
     apiKey={"AIzaSyA_KOtPw9DvhlbdDvdy689sRNA_NPNtzmc"}
-    render={render}
+    render={Render}
     libraries={['marker']}
   />
 );

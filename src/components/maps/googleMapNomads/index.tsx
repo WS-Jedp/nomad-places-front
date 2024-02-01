@@ -1,5 +1,7 @@
 import { Status } from "@googlemaps/react-wrapper";
 import { useEffect, useRef, useState } from "react";
+import { useAppDispatch } from "../../../common/hooks/useTypedSelectors";
+import { setZoomMap } from "../../../store/redux/slices/user";
 import { NomadPlacesMakers } from "../markers/nomadPlacesMarkers";
 
 export function GoogleMapNomadsComponent({
@@ -11,6 +13,7 @@ export function GoogleMapNomadsComponent({
 }) {
   const refMap = useRef<any>();
   const [map, setMap] = useState<google.maps.Map>();
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     // if(!refMap || !refMap.current) return
@@ -28,6 +31,18 @@ export function GoogleMapNomadsComponent({
 
    setMap(ref);
   }, []);
+
+  useEffect(() => {
+    if (map) {
+        map.addListener("zoom_changed", () => {
+            const newZoom = map.getZoom();
+            console.log(newZoom)
+            if(newZoom) {
+              dispatch( setZoomMap({ zoom: newZoom }) )
+            }
+        });
+    }
+  }, [map]);
 
   return (
     <>

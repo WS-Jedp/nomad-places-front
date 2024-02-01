@@ -27,15 +27,24 @@ export const getNearestPlaces = createAsyncThunk<
   return placesWithSessionData;
 });
 
+export const getAllPlaces = createAsyncThunk<
+PlaceWithCachedSession[] | null>("places/getAllPlaces", async (params, thunkAPI) => {
+  const allPlacesWithCachedSession = await placesServices.getAllPlacesWithCachedSession();
+  const placesWithSessionData = placeWithQuickSessionDTOIntoPlaceWithCachedSession(allPlacesWithCachedSession.placesWithQuickSessionData)
+  return placesWithSessionData;
+})
+
 
 export interface PlacesState {
   currentPlace?: PlaceWithCachedSession | null;
   nearPlaces: PlaceWithCachedSession[];
+  placeOnFocus?: string; 
 }
 
 const initialPlaceState: PlacesState = {
   currentPlace: null,
   nearPlaces: [],
+  placeOnFocus: undefined
 };
 
 export const placesSlice = createSlice({
@@ -68,12 +77,22 @@ export const placesSlice = createSlice({
     resetNearPlaces: (state) => {
       state.nearPlaces = [];
     },
+    setPlaceOnFocus(state, action: PayloadAction<string>) {
+      state.placeOnFocus = action.payload;
+    },
+    resetPlaceOnFocus(state) {
+      state.placeOnFocus = undefined;
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(getNearestPlaces.fulfilled, (state, action) => {
       if (!action.payload) return;
       state.nearPlaces = action.payload;
     });
+    builder.addCase(getAllPlaces.fulfilled, (state, action) => {
+      if(!action.payload) return;
+      state.nearPlaces = action.payload;
+    })
   },
 });
 
@@ -85,6 +104,8 @@ export const {
   resetPlace,
   setNearPlaces,
   resetNearPlaces,
+  resetPlaceOnFocus,
+  setPlaceOnFocus
 } = placesSlice.actions;
 
 export default placesSlice.reducer;

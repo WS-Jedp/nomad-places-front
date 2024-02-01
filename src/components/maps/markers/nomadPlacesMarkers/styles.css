@@ -1,14 +1,17 @@
 .nomad-place-makers {
-    width: 42px;
-    height: 42px;
+    max-width: 60px;
+    max-height: 21px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
-    background-color: red;
+    border-radius: 12px;
+    background-color: white;
     color: black;
+    font-weight: bold;
     text-align: center;
     transition: .3s ease-in-out;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    z-index: 1;
 }
 
 .nomad-place-marker--detail {

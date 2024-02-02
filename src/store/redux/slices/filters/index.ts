@@ -41,26 +41,26 @@ const spotTypesFilters:PlaceTypesFilter[] = [
         name: PLACE_TYPES.LIBRARY,
         title: 'Library'
     },
-    {
-        id: 3,
-        name: PLACE_TYPES.LOOKOUT,
-        title: 'Lookout'
-    },
-    {
-        id: 4,
-        name: PLACE_TYPES.PARK,
-        title: 'Park'
-    },
-    {
-        id: 5,
-        name: PLACE_TYPES.RESTAURANT,
-        title: 'Restaurant'
-    },
-    {
-        id: 6,
-        name: PLACE_TYPES.ROOFTOP,
-        title: 'Rooftop'
-    },
+    // {
+    //     id: 3,
+    //     name: PLACE_TYPES.LOOKOUT,
+    //     title: 'Lookout'
+    // },
+    // {
+    //     id: 4,
+    //     name: PLACE_TYPES.PARK,
+    //     title: 'Park'
+    // },
+    // {
+    //     id: 5,
+    //     name: PLACE_TYPES.RESTAURANT,
+    //     title: 'Restaurant'
+    // },
+    // {
+    //     id: 6,
+    //     name: PLACE_TYPES.ROOFTOP,
+    //     title: 'Rooftop'
+    // },
 ]
 
 const spotCommoditiesFilters:SpotCommoditiesFilters[] = [

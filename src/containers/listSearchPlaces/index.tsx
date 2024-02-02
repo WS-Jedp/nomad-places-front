@@ -12,7 +12,7 @@ export const ListSearchPlaces:React.FC<ListSearchPlacesProps> = ({ children }) =
     return (
         <>
             {/* Filters */}
-            <LocationBasicInformation />
+            {/* <LocationBasicInformation /> */}
             <RowPlacesFilterOptions />
 
             <IonList className="

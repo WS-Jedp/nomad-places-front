@@ -64,7 +64,7 @@ export const ItemsAndMapLayout: React.FC<{
                 </Route>
 
                 <Route exact path="/home">
-                  <LocationBasicInformation />
+                  {/* <LocationBasicInformation /> */}
                   <RowPlacesFilterOptions />
 
                   <IonList

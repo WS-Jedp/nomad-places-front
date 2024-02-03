@@ -1,9 +1,12 @@
 import { IonAvatar, IonCol, IonItem, IonRow, IonText } from "@ionic/react"
+import { MdPeople } from "react-icons/md"
+import { handleCardColor, handleMindsetIcon } from "../../../../../common/utils/icons/icons"
 import { Place } from "../../../../../models/places"
+import { PlaceWithCachedSession } from "../../../../../models/session"
 import { HandleMultimediaCard } from "../../../../multimedia/cards/helpers/handleMultimediaCard"
 
 interface PlaceCardListItemProps {
-    place: Place
+    place: PlaceWithCachedSession
     action: Function
 
 }
@@ -14,6 +17,14 @@ export const PlaceCardListItemMobile: React.FC<PlaceCardListItemProps> = ({ plac
         ev.preventDefault()
         action()
     }
+
+    function getAmountOfPeopleState() {
+        const mostAmountOfPeople = place.sessionCachedData.amountOfPeople.reduce(
+          (prev, curr) => (prev.actions.length > curr.actions.length ? prev : curr)
+        );
+        if (mostAmountOfPeople.actions.length === 0) return null;
+        return mostAmountOfPeople.amount;
+      }
 
     return (
         <IonRow className="bg-white text-black flex items-center p-0 m-0 w-full md:bg-white border-b border-t border-solid border-gray-100">
@@ -26,19 +37,34 @@ export const PlaceCardListItemMobile: React.FC<PlaceCardListItemProps> = ({ plac
                             <IonAvatar className="bg-gray-300 mr-3">
                             </IonAvatar>
                         </IonCol>
-                        <IonCol size="10" class="flex flex-col justify-center items-start">
-                            <IonText>
-                                <h1 className="font-bold">{place.name}</h1>
-                            </IonText>
-                            <IonText>
-                                <p className="font-sans font-regular text-sm capitalize">
-                                    {/* { place.type[0] } - 20+ people */}
-                                    20+ people
-                                </p>
-                            </IonText>
-                            <IonText>
-                                <span className="text-xs font-light">3,4 km </span>
-                            </IonText>
+                        <IonCol size="10" class="pl-3 flex flex-row justify-center items-start">
+                            <IonCol size="9">
+                                <IonText>
+                                    <h1 className="font-bold">{place.name}</h1>
+                                </IonText>
+                                <IonText>
+                                {getAmountOfPeopleState() && (
+                                    <span className="flex flex-row flex-nowrap items-center justify-center font-sans font-regular text-[12px] capitalize mt-1 px-3 border border-black rounded-lg max-w-[90px]">
+                                        {getAmountOfPeopleState()}{" "}
+                                        {<MdPeople className="mx-1" size={12} />}
+                                    </span>
+                                    )}
+                                </IonText>
+                                <IonText>
+                                    <span className="text-xs font-light">3,4 km </span>
+                                </IonText>
+                            </IonCol>
+                            <IonCol size="3">
+                                <IonRow class="flex flex-row flex-nowrap items-end justify-end">
+                                    {
+                                        place.knownFor && (
+                                            <div className={`opacity-90 rounded-full flex items-center justify-center p-2 ${handleCardColor(place.knownFor)}`}>
+                                                {place.knownFor && handleMindsetIcon(place.knownFor, 15)}
+                                            </div>
+                                        )
+                                    }
+                                </IonRow>
+                            </IonCol>
                         </IonCol>
                     </IonRow>
 

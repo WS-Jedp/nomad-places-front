@@ -14,6 +14,7 @@ import { useIsMobile } from "../../common/hooks/useIsMobile";
 import { BackNavigationHeader } from "../../components/header/backNavigation";
 import { createSocket } from "../../store/redux/slices/userSession";
 import { getSpotCachedSession } from "../../store/redux/slices/spotSession";
+import { useDistanceToSpot } from "../../common/hooks/useDistanceToSpot";
 
 
 export const PlaceDetailPage = () => {
@@ -23,6 +24,21 @@ export const PlaceDetailPage = () => {
   const dispatch = useAppDispatch()
   const { id } = useParams<{ id: string }>();
   const [isMobile] = useIsMobile();
+  const [ distanceToSpot ] = useDistanceToSpot(currentPlace?.location)
+
+
+  function handlePlaceLocation() {
+    if (!currentPlace) return null;
+    let location = "";
+
+    if (currentPlace.location.zone) location += currentPlace.location.zone;
+    if (currentPlace.location.city)
+      location += `, ${currentPlace.location.city}`;
+    if (currentPlace.location.country)
+      location += `, ${currentPlace.location.country}`;
+
+    return location.length > 0 ? location + ' - ' : location;
+  }
 
   function handleEmptyCurrentPlace() {
     findPlace({ placeID: id });
@@ -57,7 +73,7 @@ export const PlaceDetailPage = () => {
             <IonText>
               <h2 className="font-bold text-3xl">{currentPlace?.name}</h2>
               <p className="pt-1">
-                <span>Type of place</span> - <span>Zone of the place</span>
+                {handlePlaceLocation()} {distanceToSpot}km
               </p>
             </IonText>
         )}

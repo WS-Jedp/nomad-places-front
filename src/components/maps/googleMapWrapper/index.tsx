@@ -5,7 +5,9 @@ import { GoogleMapNomadsComponent } from "../googleMapNomads";
 const Render = (status: Status) => {
 
   const { zoomInMap } = useAppSelector(state => state.user)
-  
+  // Just ot use for the MVP
+  const medellinLatLong = { lat: 6.250910937220285, lng: -75.57915349417806 }
+
   switch (status) {
     case Status.LOADING:
       return <h1>Loading...</h1>;
@@ -14,11 +16,13 @@ const Render = (status: Status) => {
     case Status.SUCCESS:
       return (
         <GoogleMapNomadsComponent
-          center={{ lat: 6.250910937220285, lng: -75.57915349417806 }}
+          center={medellinLatLong}
           zoom={zoomInMap}
         />
       );
   }
+
+  
 };
 
 // We need to hide the api key

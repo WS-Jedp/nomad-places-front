@@ -2,10 +2,11 @@ import { useIsMobile } from '../../../../../common/hooks/useIsMobile'
 import { PlaceCardListItemMobile } from '../../mobile/cardListItem'
 import { PlaceCardListItemDesktop } from '../../desktop/cardListItem'
 import { Place } from '../../../../../models/places'
+import { PlaceWithCachedSession } from '../../../../../models/session'
 
 
 interface PlaceCardListItemProps {
-    place: Place
+    place: PlaceWithCachedSession
     action: Function
 }
 

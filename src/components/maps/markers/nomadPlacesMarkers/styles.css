@@ -1,4 +1,5 @@
 .nomad-place-makers {
+    position: relative;
     max-width: 60px;
     max-height: 21px;
     display: flex;

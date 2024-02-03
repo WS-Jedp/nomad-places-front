@@ -1,11 +1,20 @@
 import { IonCol, IonItem, IonRow, IonText } from "@ionic/react";
-import { useAppDispatch, useAppSelector } from "../../../../../common/hooks/useTypedSelectors";
+import { MdPeople } from "react-icons/md";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../../../../common/hooks/useTypedSelectors";
+import { computeDistanceToSpot } from "../../../../../common/utils/geoLocation";
 import { Place } from "../../../../../models/places";
-import { resetPlaceOnFocus, setPlaceOnFocus } from "../../../../../store/redux/slices/places";
+import { PlaceWithCachedSession } from "../../../../../models/session";
+import {
+  resetPlaceOnFocus,
+  setPlaceOnFocus,
+} from "../../../../../store/redux/slices/places";
 import { PlaceCardMultimediaSlider } from "../../../../slider/placeCardMultimedia";
 
 interface PlaceCardListItemProps {
-  place: Place;
+  place: PlaceWithCachedSession;
   action: Function;
 }
 
@@ -14,13 +23,31 @@ export const PlaceCardListItemDesktop: React.FC<PlaceCardListItemProps> = ({
   action,
 }) => {
   const placeOnFocus = useAppSelector((state) => state.places.placeOnFocus);
-  const dispatch = useAppDispatch()
+  const userLocation = useAppSelector((state) => state.user.location);
+  const dispatch = useAppDispatch();
 
   async function handleOnPlaceHover() {
-    await dispatch( setPlaceOnFocus(place.id) )
+    await dispatch(setPlaceOnFocus(place.id));
   }
   async function handleOnLeavingHover() {
-    await dispatch( resetPlaceOnFocus() )
+    await dispatch(resetPlaceOnFocus());
+  }
+
+  function getAmountOfPeopleState() {
+    const mostAmountOfPeople = place.sessionCachedData.amountOfPeople.reduce(
+      (prev, curr) => (prev.actions.length > curr.actions.length ? prev : curr)
+    );
+    if (mostAmountOfPeople.actions.length === 0) return null;
+    return mostAmountOfPeople.amount;
+  }
+
+  function getDistanceToSpot(spot: PlaceWithCachedSession) {
+    if(!userLocation || !userLocation.latitude || !userLocation.longitude) return null
+
+    return computeDistanceToSpot({
+      latitude: userLocation.latitude,
+      longitude: userLocation.longitude
+    }, spot.location)
   }
 
   function handleClick(ev: React.MouseEvent<HTMLIonRowElement, MouseEvent>) {
@@ -49,10 +76,13 @@ export const PlaceCardListItemDesktop: React.FC<PlaceCardListItemProps> = ({
                     px-3
                 "
       >
-        <PlaceCardMultimediaSlider multimedia={place.multimedia} />
+        <PlaceCardMultimediaSlider
+          place={place}
+          multimedia={place.multimedia}
+        />
       </IonRow>
       <IonItem
-        class="relative w-full p-0 ion-no-padding flex flex-col"
+        class="relative w-full p-0 ion-no-padding flex flex-col border-none"
         color="none"
       >
         <IonRow className="relative w-full p-3">
@@ -62,13 +92,15 @@ export const PlaceCardListItemDesktop: React.FC<PlaceCardListItemProps> = ({
                 <h1 className="font-bold text-black">{place.name}</h1>
               </IonText>
               <IonText>
-                <p className="font-sans font-regular text-sm text-black capitalize">
-                  {/* <span className="capitalize">{ place.type[0] }</span> - 20+ people */}
-                  20+ people
-                </p>
+                {getAmountOfPeopleState() && (
+                  <span className="flex flex-row flex-nowrap items-center justify-center font-sans font-regular text-[12px] capitalize mt-1 px-3 border border-black rounded-lg">
+                    {getAmountOfPeopleState()}{" "}
+                    {<MdPeople className="mx-1" size={12} />}
+                  </span>
+                )}
               </IonText>
               <IonText>
-                <span className="text-xs text-black font-light">3,4 km </span>
+                <span className="text-xs text-black font-light">{getDistanceToSpot(place)} km </span>
               </IonText>
             </IonCol>
           </IonRow>

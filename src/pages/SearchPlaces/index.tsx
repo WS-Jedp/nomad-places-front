@@ -139,6 +139,7 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
       }
       return isValid;
     });
+    console.log(filteredPlaces)
     dispatch(setFilteredPlaces(filteredPlaces));
   }
 
@@ -172,7 +173,7 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
           relative
           w-full h-full overflow-hidden
           flex flex-column md:flex-row md:flex-nowrap
-          p-0
+          p-0 bg-white
       "
       >
         <ItemsAndMapLayout map={<GoogleMapWrapper />}>
@@ -186,7 +187,7 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
                 />
               ))
             ) : (
-              <h2>
+              <h2 className="p-3">
                 There is no places around here or try to reduce your filters
               </h2>
             )}

@@ -2,6 +2,7 @@ import { IonCol, IonRow, IonText } from "@ionic/react";
 import { useState } from "react";
 import { MdArrowBack } from "react-icons/md";
 import { useHistory } from "react-router";
+import { useDistanceToSpot } from "../../common/hooks/useDistanceToSpot";
 
 import { useIsMobile } from "../../common/hooks/useIsMobile";
 import { useAppSelector } from "../../common/hooks/useTypedSelectors";
@@ -17,10 +18,23 @@ export const DetailAndSessionActionsLayout: React.FC<
   DetailAndSessionActionsLayoutProps
 > = ({ children, secondTab }) => {
   const [isMobile] = useIsMobile();
-  const history = useHistory();
   const [isRenderSession, setIsRenderSession] = useState<boolean>(false);
   const currentPlace = useAppSelector((state) => state.places.currentPlace);
+  const [ distanceToSpot ] = useDistanceToSpot(currentPlace?.location)
 
+
+  function handlePlaceLocation() {
+    if (!currentPlace) return null;
+    let location = "";
+
+    if (currentPlace.location.zone) location += currentPlace.location.zone;
+    if (currentPlace.location.city)
+      location += `, ${currentPlace.location.city}`;
+    if (currentPlace.location.country)
+      location += `, ${currentPlace.location.country}`;
+
+    return location.length > 0 ? location + ' - ' : location;
+  }
 
   function renderMobileView() {
     return (
@@ -51,7 +65,7 @@ export const DetailAndSessionActionsLayout: React.FC<
             <IonText>
               <h2 className="font-bold text-3xl px-3">{currentPlace?.name}</h2>
               <p className="pt-1 px-3">
-                <span>Type of place</span> - <span>Zone of the place</span>
+                { handlePlaceLocation() } { distanceToSpot }km
               </p>
             </IonText>
           </section>

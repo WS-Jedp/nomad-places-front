@@ -100,6 +100,7 @@ export const placesSlice = createSlice({
     builder.addCase(getAllPlaces.fulfilled, (state, action) => {
       if(!action.payload) return;
       state.nearPlaces = action.payload;
+      state.filteredPlaces = action.payload
     })
   },
 });

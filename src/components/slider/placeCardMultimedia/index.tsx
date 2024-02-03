@@ -1,6 +1,12 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { register } from "swiper/element/bundle";
+import {
+  handleCardColor,
+  handleMindsetIcon,
+  handleSpotTypeIcon,
+} from "../../../common/utils/icons/icons";
 import { PlaceMultimedia } from "../../../models/multimedia";
+import { Place } from "../../../models/places";
 import { HandleMultimediaCard } from "../../multimedia/cards/helpers/handleMultimediaCard";
 
 import "./styles.css";
@@ -21,7 +27,8 @@ declare global {
 export const PlaceCardMultimediaSlider: React.FC<{
   children?: JSX.Element;
   multimedia?: PlaceMultimedia[];
-}> = ({ multimedia }) => {
+  place: Place;
+}> = ({ multimedia, place }) => {
   const swiperElRef = useRef<any>(null);
 
   return (
@@ -46,8 +53,17 @@ export const PlaceCardMultimediaSlider: React.FC<{
             key={index}
             class="relative w-full h-full bg-gray-200 overflow-hidden"
           >
-            <div className="w-full h-full flex items-center justify-center">
+            <div className="relative w-full h-full flex items-center justify-center">
               <HandleMultimediaCard type={media.type} url={media.url} />
+
+              {place.knownFor && (
+                <article className="absolute bottom-0 right-0 p-1">
+                  {/* Mindsets of place */}
+                  <div className={`opacity-90 rounded-full flex items-center justify-center p-1 ${handleCardColor(place.knownFor)}`}>
+                    {place.knownFor && handleMindsetIcon(place.knownFor, 9)}
+                  </div>
+                </article>
+              )}
             </div>
           </swiper-slide>
         ))}

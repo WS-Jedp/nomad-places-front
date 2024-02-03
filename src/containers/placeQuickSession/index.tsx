@@ -19,91 +19,111 @@ import { MINDSETS } from "../../models/mindsets";
 import { HandlePlaceStatus } from "../../components/tags/placeStatus";
 import { PLACE_STATUS } from "../../models/placeStatus";
 import { AvatarGroup } from "../../components/avatar/group";
-import { useAppDispatch, useAppSelector } from "../../common/hooks/useTypedSelectors";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../common/hooks/useTypedSelectors";
 import { MdArrowBack } from "react-icons/md";
 import { BackNavigationButton } from "../../components/buttons/navigation/goBack";
 import { createSocket } from "../../store/redux/slices/userSession";
-
+import { computeDistanceToSpot } from "../../common/utils/geoLocation";
+import { useDistanceToSpot } from "../../common/hooks/useDistanceToSpot";
 
 interface PlaceQuickSessionProps {
-  changePageCallback: Function
+  changePageCallback: Function;
 }
 
 // This quickSession detail will only show what is going on in the place
 // The page detail from a place or the session of a place should allow interact with it
-export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({ changePageCallback }) => {
+export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
+  changePageCallback,
+}) => {
   const history = useHistory();
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const { currentPlace } = useAppSelector((state) => state.places);
-  const { userData } = useAppSelector((state) => state.user);
+  const { userData, location: userLocation } = useAppSelector((state) => state.user);
   const { socket } = useAppSelector((state) => state.userSession);
   const [isRecentActivity, setIsRecentActivity] = useState<boolean>(false);
+
+  const [ distanceToSpot ] = useDistanceToSpot(currentPlace?.location)
 
   function handleNoCurrentPlace() {
     return history.goBack();
   }
+  
 
   async function handleUserSession() {
-    if(!userData || !currentPlace) return
+    if (!userData || !currentPlace) return;
 
-    if(!socket) {
-      await dispatch( createSocket({ userID: userData.id, placeID: currentPlace?.id, username: userData.username }) )
+    if (!socket) {
+      await dispatch(
+        createSocket({
+          userID: userData.id,
+          placeID: currentPlace?.id,
+          username: userData.username,
+        })
+      );
     }
 
-    if(!socket) return
+    if (!socket) return;
 
-    await socket.quickReview()
-    await socket.onQuickReviewUpdate(quickReview => {
-      console.log(quickReview, "THIS IS THE QUICK REVIEW")
-    })
+    await socket.quickReview();
+    await socket.onQuickReviewUpdate((quickReview) => {
+      console.log(quickReview, "THIS IS THE QUICK REVIEW");
+    });
   }
 
-  function handlePlaceOpenStatus(): PLACE_STATUS {
-    if(!currentPlace) return PLACE_STATUS.CLOSED
+  function isOpenNow(): PLACE_STATUS {
+    const openAt = currentPlace?.rules.openAt;
+    const closedAt = currentPlace?.rules.closedAt;
+    if (!currentPlace || !closedAt || !openAt) return PLACE_STATUS.CLOSED;
 
-    const currentTime = new Date()
-    const closedAt = currentPlace.rules.closedAt.split(':')
-    const openAt = currentPlace.rules.openAt.split(':')
+    // Get the current time
+    const now = new Date();
+    const currentTime = now.getHours() + now.getMinutes() / 60; // Convert current time to decimal hours
 
-    if(currentTime.getHours() >= Number(openAt[0])) {
-      if(currentTime.getMinutes() >= Number(openAt[1])) {
-        if(currentTime.getHours() <= Number(closedAt[0])) {
-          if(currentTime.getMinutes() <= Number(closedAt[1])) {
-            return PLACE_STATUS.OPEN
-          }
-        }
-      }
-    }
-    return PLACE_STATUS.CLOSED
+    // Convert openHour and closedHour to decimal hours
+    const [openHours, openMinutes] = openAt.split(":").map(Number);
+    const [closedHours, closedMinutes] = closedAt.split(":").map(Number);
+    const openTimeDecimal = openHours + openMinutes / 60;
+    const closedTimeDecimal = closedHours + closedMinutes / 60;
+
+    // Check if current time is within the open hours
+    return currentTime >= openTimeDecimal && currentTime < closedTimeDecimal
+      ? PLACE_STATUS.OPEN
+      : PLACE_STATUS.CLOSED;
   }
 
   function handlePlaceLocation() {
-    if(!currentPlace) return null
-    let location = ""
+    if (!currentPlace) return null;
+    let location = "";
 
-    if(currentPlace.location.zone) location += currentPlace.location.zone
-    if(currentPlace.location.city) location += `, ${currentPlace.location.city}`
-    if(currentPlace.location.country) location += `, ${currentPlace.location.country}`
+    if (currentPlace.location.zone) location += currentPlace.location.zone;
+    if (currentPlace.location.city)
+      location += `, ${currentPlace.location.city}`;
+    if (currentPlace.location.country)
+      location += `, ${currentPlace.location.country}`;
 
-    return location
+    return location.length > 0 ? location + ' - ' : location;
   }
 
   useEffect(() => {
-    if(!currentPlace) handleNoCurrentPlace()
+    if (!currentPlace) handleNoCurrentPlace();
     // console.log(currentPlace)
-    handleUserSession()
+    handleUserSession();
   }, []);
 
   useEffect(() => {
-    handleUserSession()
-  }, [socket])
+    handleUserSession();
+  }, [socket]);
 
-
-  function handleInformationButton(ev: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    ev.preventDefault()
-    if (!currentPlace) handleNoCurrentPlace()
+  function handleInformationButton(
+    ev: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) {
+    ev.preventDefault();
+    if (!currentPlace) handleNoCurrentPlace();
     else {
-      changePageCallback(currentPlace.id)
+      changePageCallback(currentPlace.id);
     }
   }
 
@@ -135,12 +155,16 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({ changePage
         <IonCol size="8">
           <IonRow className="h-full flex flex-col justify-center">
             <IonText>
-              <h1 className="font-bold text-lg md:text-xl">{currentPlace?.name}</h1>
+              <h1 className="font-bold text-lg md:text-xl">
+                {currentPlace?.name}
+              </h1>
             </IonText>
             <IonText>
-              <span className="text-xs font-light">{handlePlaceLocation()} </span>
+              <span className="text-xs font-light">
+                {handlePlaceLocation()}{" "}
+              </span>
               {/* Distance from current location */}
-              {/* <span>- 3,4 km</span> */}
+              <span className="text-xs">{distanceToSpot} km</span>
             </IonText>
           </IonRow>
         </IonCol>
@@ -188,11 +212,7 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({ changePage
                 <h3 className="text-lg font-bold">Status</h3>
               </IonText>
               <IonRow className="w-full flex flex-row flex-nowrap items-center">
-                <HandlePlaceStatus
-                  status={
-                    handlePlaceOpenStatus()
-                  }
-                />
+                <HandlePlaceStatus status={isOpenNow()} />
                 <span className="text-sm font-light ml-1">
                   Close at {currentPlace?.rules?.closedAt}
                 </span>
@@ -206,7 +226,9 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({ changePage
                 <h3 className="text-lg font-bold">Known for</h3>
               </IonText>
               <IonRow className="w-full flex flex-row flex-nowrap items-center">
-                <HandleMindsetTags mindset={currentPlace?.knownFor || MINDSETS.UNKNOWN} />
+                <HandleMindsetTags
+                  mindset={currentPlace?.knownFor || MINDSETS.UNKNOWN}
+                />
               </IonRow>
             </IonCol>
           </IonRow>

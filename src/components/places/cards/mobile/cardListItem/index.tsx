@@ -28,7 +28,7 @@ export const PlaceCardListItemMobile: React.FC<PlaceCardListItemProps> = ({ plac
 
     return (
         <IonRow className="bg-white text-black flex items-center p-0 m-0 w-full md:bg-white border-b border-t border-solid border-gray-100">
-            <IonItem class="relative w-full p-0 ion-no-padding flex flex-col" color="none">
+            <IonItem className="relative w-full p-0 ion-no-padding flex flex-col" color="none">
                 <IonRow className="relative w-full p-3" >
 
                     {/* Place information */}
@@ -37,7 +37,7 @@ export const PlaceCardListItemMobile: React.FC<PlaceCardListItemProps> = ({ plac
                             <IonAvatar className="bg-gray-300 mr-3">
                             </IonAvatar>
                         </IonCol>
-                        <IonCol size="10" class="pl-3 flex flex-row justify-center items-start">
+                        <IonCol size="10" className="pl-3 flex flex-row justify-center items-start">
                             <IonCol size="9">
                                 <IonText>
                                     <h1 className="font-bold">{place.name}</h1>

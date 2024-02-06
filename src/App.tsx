@@ -1,4 +1,5 @@
 import { Switch, BrowserRouter } from 'react-router-dom'
+import { toast, ToastContainer } from 'react-toastify'
 import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { Redirect, Route } from 'react-router-dom';
 import { IonReactRouter } from '@ionic/react-router';
@@ -29,27 +30,62 @@ import './index.css'
 import './tailwind/input.css'
 import './tailwind/output.css'
 
+import 'react-toastify/dist/ReactToastify.css';
+
+import { useAppDispatch, useAppSelector } from './common/hooks/useTypedSelectors';
+import { useEffect } from 'react';
+import { addDisplayedAlert, addDisplayedError, removeAlert, removeError } from './store/redux/slices/controlledErrors';
+
 setupIonicReact();
 
-const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-          <Switch>
-              <Route path="/home">
-                <SearchPlaces />
-              </Route>
-              <Route exact path="/place/:id/session">
-                <PlaceDetailPage />
-              </Route>
-              <Route exact path="/me/profile">
-                <ProfilePage />
-              </Route>
-              <Route path="*">
-                <Redirect to="/home" />
-              </Route>
-          </Switch>
-    </IonReactRouter>
-  </IonApp>
-);
+const App: React.FC = () => {
+  const { errors, displayedErrors, alerts, displayedAlerts } = useAppSelector(state => state.controlledErrors)
+  const dispatch = useAppDispatch()
+  useEffect(() => {
+    if(errors.length == 0) return
+
+    errors.forEach(error => { 
+      if(!displayedErrors.find(err => err === error.id)) {
+        toast.error(error.message, { onClose: () => dispatch( removeError(error.id) ) } )
+        dispatch( addDisplayedError(error.id) )
+      }
+    })
+
+  }, [errors])
+
+  useEffect(() => {
+    if(alerts.length == 0) return
+
+    alerts.forEach(alert => { 
+      if(!displayedAlerts.find(al => al === alert.id)) {
+        toast.warning(alert.message, { onClose: () => dispatch( removeAlert(alert.id) ) } )
+        dispatch( addDisplayedAlert(alert.id) )
+      }
+    })
+
+  }, [alerts])
+
+  return (
+      <IonApp>
+        <ToastContainer stacked limit={3} position='bottom-left' />
+        <IonReactRouter>
+              <Switch>
+                  <Route path="/home">
+                    <SearchPlaces />
+                  </Route>
+                  <Route exact path="/place/:id/session">
+                    <PlaceDetailPage />
+                  </Route>
+                  <Route exact path="/me/profile">
+                    <ProfilePage />
+                  </Route>
+                  <Route path="*">
+                    <Redirect to="/home" />
+                  </Route>
+              </Switch>
+        </IonReactRouter>
+      </IonApp>
+  );
+}
 
 export default App;

@@ -15,23 +15,33 @@ export const getNearestPlaces = createAsyncThunk<
     state: RootState;
   }
 >("places/getNearestPlaces", async (params, thunkAPI) => {
-  const userCoords = thunkAPI.getState().user.location;
-  if (!userCoords.latitude || !userCoords.longitude) return null;
-  const nearPlacesWithCachedSessionDTO = await placesServices.getNearestPlaces({
-    lng: userCoords.longitude,
-    lte: userCoords.latitude,
-    maxDistance: params?.maxDistance ? params.maxDistance : 10000,
-  });
-
-  const placesWithSessionData = placeWithQuickSessionDTOIntoPlaceWithCachedSession(nearPlacesWithCachedSessionDTO.placesWithQuickSessionData)
-  return placesWithSessionData;
+  try {
+    const userCoords = thunkAPI.getState().user.location;
+    if (!userCoords.latitude || !userCoords.longitude) return null;
+    const nearPlacesWithCachedSessionDTO = await placesServices.getNearestPlaces({
+      lng: userCoords.longitude,
+      lte: userCoords.latitude,
+      maxDistance: params?.maxDistance ? params.maxDistance : 10000,
+    });
+  
+    const placesWithSessionData = placeWithQuickSessionDTOIntoPlaceWithCachedSession(nearPlacesWithCachedSessionDTO.placesWithQuickSessionData)
+    return placesWithSessionData;
+  } catch (error) {
+    throw new Error(String(error))
+    return null
+  }
 });
 
 export const getAllPlaces = createAsyncThunk<
 PlaceWithCachedSession[] | null>("places/getAllPlaces", async (params, thunkAPI) => {
-  const allPlacesWithCachedSession = await placesServices.getAllPlacesWithCachedSession();
-  const placesWithSessionData = placeWithQuickSessionDTOIntoPlaceWithCachedSession(allPlacesWithCachedSession.placesWithQuickSessionData)
-  return placesWithSessionData;
+  try {
+    const allPlacesWithCachedSession = await placesServices.getAllPlacesWithCachedSession();
+    const placesWithSessionData = placeWithQuickSessionDTOIntoPlaceWithCachedSession(allPlacesWithCachedSession.placesWithQuickSessionData)
+    return placesWithSessionData;
+  } catch (error) {
+    throw new Error(String(error))
+    return null
+  }
 })
 
 
@@ -39,7 +49,7 @@ export interface PlacesState {
   currentPlace?: PlaceWithCachedSession | null;
   nearPlaces: PlaceWithCachedSession[];
   filteredPlaces: PlaceWithCachedSession[];
-  placeOnFocus?: string; 
+  placeOnFocus?: string;
 }
 
 const initialPlaceState: PlacesState = {
@@ -101,6 +111,10 @@ export const placesSlice = createSlice({
       if(!action.payload) return;
       state.nearPlaces = action.payload;
       state.filteredPlaces = action.payload
+    });
+    builder.addCase(getAllPlaces.rejected, (state, err) => {
+      state.nearPlaces = []
+      state.filteredPlaces = []
     })
   },
 });

@@ -29,7 +29,7 @@ export class Request {
             }
          })
         const resp = await data.json() as ReponseDTO<Content>
-        if(resp.status !== 200) {
+        if(resp.error) {
             throw new Error(resp.error)
         }
         return resp.content

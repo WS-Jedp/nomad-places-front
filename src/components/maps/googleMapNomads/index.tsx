@@ -12,6 +12,7 @@ export function GoogleMapNomadsComponent({
   center: google.maps.LatLngLiteral;
   zoom: number;
 }) {
+  const userLocation = useAppSelector(state => state.user.location)
   const currentPlace = useAppSelector(state => state.places.currentPlace)
   const placeOnFocus = useAppSelector(state => state.places.placeOnFocus)
   const places = useAppSelector(state => state.places.nearPlaces)
@@ -22,6 +23,7 @@ export function GoogleMapNomadsComponent({
   useEffect(() => {
       if(!currentPlace || !map) {
         dispatch( resetPlaceOnFocus() )
+        dispatch( setZoomMap({ zoom: 13 }) )
         return
       }
 
@@ -30,6 +32,7 @@ export function GoogleMapNomadsComponent({
         lng: currentPlace.location.longitude,
       })
       dispatch( setPlaceOnFocus(currentPlace.id) )
+      dispatch( setZoomMap({ zoom: 11 }) )
   }, [currentPlace])
 
   useEffect(() => {
@@ -44,6 +47,18 @@ export function GoogleMapNomadsComponent({
       lng: focusedPlace.location.longitude,
     })
 }, [placeOnFocus])
+
+// Panning to user location
+// Commented while we are in dev and international mode
+// useEffect(() => {
+//   if(!map || !userLocation || !userLocation.latitude || !userLocation.longitude) return
+
+//   map.panTo({
+//     lat: userLocation.latitude,
+//     lng: userLocation.longitude,
+//   })
+//   dispatch( setZoomMap({ zoom: 11 }) )
+// }, [userLocation])
 
   useEffect(() => {
     // if(!refMap || !refMap.current) return

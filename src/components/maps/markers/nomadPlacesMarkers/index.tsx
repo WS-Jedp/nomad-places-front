@@ -23,6 +23,7 @@ interface NomadPlacesMarkersProps {
 export const NomadPlacesMakers: React.FC<NomadPlacesMarkersProps> = ({
   map,
 }) => {
+  const userLocation = useAppSelector((state) => state.user.location);
   const places = useAppSelector((state) => state.places.nearPlaces);
   const placeHovered = useAppSelector((state) => state.places.placeOnFocus);
   const currentZoomInMap = useAppSelector((state) => state.user.zoomInMap);
@@ -66,6 +67,30 @@ export const NomadPlacesMakers: React.FC<NomadPlacesMarkersProps> = ({
 
   return (
     <>
+    {
+      // User location markerk
+      (userLocation && userLocation.latitude && userLocation.longitude) && ( 
+        <GoogleMapCustomMaker
+          map={map}
+          position={{
+            lat: userLocation.latitude,
+            lng: userLocation.longitude
+          }}
+          onClick={() => {}}
+        >
+          <article className="flex flex-col items-center justify-center text-center">
+              <div
+                className={`relative bg-indigo-600 rounded-full p-[9px] font-bold shadow shadow-lg border-[3px] border-white
+                  ${getPinScale()}
+              `}
+              >
+                  
+              </div>
+          </article>
+        </GoogleMapCustomMaker>
+      )
+
+    }
       {places.map((place) => {
         return (
           <GoogleMapCustomMaker
@@ -77,7 +102,7 @@ export const NomadPlacesMakers: React.FC<NomadPlacesMarkersProps> = ({
             key={place.id}
             onClick={() => handleClickInPlace(place.id)}
           >
-            <article className="flex flex-col items-center justify-center text-center">
+            <article  className="flex flex-col items-center justify-center text-center">
               
               <div
                 className={`nomad-place-makers relative

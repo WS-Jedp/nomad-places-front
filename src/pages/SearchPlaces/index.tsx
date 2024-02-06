@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { IonRow } from "@ionic/react";
+import { toast } from 'react-toastify'
 
 import { ItemsAndMapLayout } from "../../layouts/ItemsAndMapLayout";
 import { GoogleMapWrapper } from "../../components/maps/googleMapWrapper";
@@ -18,8 +18,8 @@ import {
   useAppSelector,
 } from "../../common/hooks/useTypedSelectors";
 import { AppLayout } from "../../layouts/AppLayout";
-import { BlurAppModal } from "../../components/modals/blurContainer";
-import { UserActionsModal } from "../../containers/session/userActionsModal";
+import { SatelliteLoader } from "../../components/loaders/satellite";
+import { IonRow } from "@ionic/react";
 
 interface SearchPlacesProps {}
 
@@ -40,6 +40,7 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
     spotRulesFilters,
     spotTypesFilter,
   } = useAppSelector((state) => state.filters);
+  const [isSearchingPlaces, setIsSearchingPlaces] = useState(false);
 
   async function selectPlace(placeID: string) {
     await dispatch(findPlace({ placeID }));
@@ -53,7 +54,14 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
   async function getNearPlaces() {
     // temporal change while I'm outside of Medellin
     // await dispatch(getNearestPlaces()) // Original
-    await dispatch(getAllPlaces());
+    try {
+      setIsSearchingPlaces(true)
+      await dispatch(getAllPlaces());
+    } catch (err) {
+      toast.error(String(err))
+    } finally {
+      setIsSearchingPlaces(false); 
+    }
   }
 
   function getFilteredPlaces() {
@@ -61,7 +69,10 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
       let isValid = true;
 
       // Filtering for the spot type
-      if (selectedSpotTypesFilter.length > 0 && selectedSpotTypesFilter.length < spotTypesFilter.length) {
+      if (
+        selectedSpotTypesFilter.length > 0 &&
+        selectedSpotTypesFilter.length < spotTypesFilter.length
+      ) {
         selectedSpotTypesFilter.forEach((typeID) => {
           const spotTypeName = spotTypesFilter.find(
             (type) => type.id === typeID
@@ -74,20 +85,28 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
       }
 
       // Filtering for the spot mindset
-      if (selectedSpotMindsetFilter.length > 0 && selectedSpotMindsetFilter.length < spotMindsetFilter.length) {
-        const selectedSpotMindsetsFilter = selectedSpotMindsetFilter.map(typeID => {
-          return spotMindsetFilter.find(mindset => mindset.id === typeID)?.name
-        })
+      if (
+        selectedSpotMindsetFilter.length > 0 &&
+        selectedSpotMindsetFilter.length < spotMindsetFilter.length
+      ) {
+        const selectedSpotMindsetsFilter = selectedSpotMindsetFilter.map(
+          (typeID) => {
+            return spotMindsetFilter.find((mindset) => mindset.id === typeID)
+              ?.name;
+          }
+        );
 
         const cachedBestMindsetTo =
-            place.sessionCachedData.bestMindsetTo.reduce((prev, curr) =>
-              prev.actions.length > curr.actions.length ? prev : curr
-            );
+          place.sessionCachedData.bestMindsetTo.reduce((prev, curr) =>
+            prev.actions.length > curr.actions.length ? prev : curr
+          );
 
-        if(cachedBestMindsetTo && cachedBestMindsetTo.actions.length > 0) {
-          if(!selectedSpotMindsetsFilter.includes(cachedBestMindsetTo.mindset)) {
-            isValid = false
-            return
+        if (cachedBestMindsetTo && cachedBestMindsetTo.actions.length > 0) {
+          if (
+            !selectedSpotMindsetsFilter.includes(cachedBestMindsetTo.mindset)
+          ) {
+            isValid = false;
+            return;
           }
         } else {
           if (selectedSpotMindsetsFilter.length > 0) {
@@ -100,46 +119,67 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
       }
 
       // Filtering by commodities
-      if(selectedSpotCommoditiesFilter.length > 0 && selectedSpotCommoditiesFilter.length < spotCommoditiesFilter.length) {
-        const selectedSpotCommodities = selectedSpotCommoditiesFilter.map(commodityID => {
-          return spotCommoditiesFilter.find(commodity => commodity.id === commodityID)?.commodity
-        })
-
-        selectedSpotCommodities.forEach(commodity => {
-          if(commodity && place.commodities && !place.commodities[commodity]) {
-            isValid = false
-            return
+      if (
+        selectedSpotCommoditiesFilter.length > 0 &&
+        selectedSpotCommoditiesFilter.length < spotCommoditiesFilter.length
+      ) {
+        const selectedSpotCommodities = selectedSpotCommoditiesFilter.map(
+          (commodityID) => {
+            return spotCommoditiesFilter.find(
+              (commodity) => commodity.id === commodityID
+            )?.commodity;
           }
-        })
+        );
+
+        selectedSpotCommodities.forEach((commodity) => {
+          if (commodity && place.commodities && !place.commodities[commodity]) {
+            isValid = false;
+            return;
+          }
+        });
       }
 
       // Filtering by rules
-      if(selectedSpotRulesFilter.length > 0 && selectedSpotRulesFilter.length < spotRulesFilters.length) {
-        const selectedSpotRules = selectedSpotRulesFilter.map(ruleID => {
-          return spotRulesFilters.find(rule => rule.id === ruleID)?.rule
-        })
+      if (
+        selectedSpotRulesFilter.length > 0 &&
+        selectedSpotRulesFilter.length < spotRulesFilters.length
+      ) {
+        const selectedSpotRules = selectedSpotRulesFilter.map((ruleID) => {
+          return spotRulesFilters.find((rule) => rule.id === ruleID)?.rule;
+        });
 
-        selectedSpotRules.forEach(rule => {
-          if(rule && place.rules && !place.rules[rule]) {
-            isValid = false
-            return
+        selectedSpotRules.forEach((rule) => {
+          if (rule && place.rules && !place.rules[rule]) {
+            isValid = false;
+            return;
           }
-        })
+        });
       }
 
       // Filtering by Amount of people
-      if(selectedSpotAmountPeopleFilter) {
-        const amountOfPeopleFilter = spotAmountPeopleFilter.find(amount => amount.id === selectedSpotAmountPeopleFilter)
-        if(!place.sessionCachedData) return
-        const mostAmountOfPeopleInCachedSession = place.sessionCachedData.amountOfPeople.reduce((prev, curr) => prev.actions.length > curr.actions.length ? prev : curr) 
-        if(mostAmountOfPeopleInCachedSession.actions.length === 0 || mostAmountOfPeopleInCachedSession.amount !== amountOfPeopleFilter?.text) {
-          isValid = false
-          return
+      if (
+        selectedSpotAmountPeopleFilter &&
+        place.sessionCachedData.amountOfPeople
+      ) {
+        const amountOfPeopleFilter = spotAmountPeopleFilter.find(
+          (amount) => amount.id === selectedSpotAmountPeopleFilter
+        );
+        if (!place.sessionCachedData) return;
+        const mostAmountOfPeopleInCachedSession =
+          place.sessionCachedData.amountOfPeople.reduce((prev, curr) =>
+            prev.actions.length > curr.actions.length ? prev : curr
+          );
+        if (
+          mostAmountOfPeopleInCachedSession.actions.length === 0 ||
+          mostAmountOfPeopleInCachedSession.amount !==
+            amountOfPeopleFilter?.text
+        ) {
+          isValid = false;
+          return;
         }
       }
       return isValid;
     });
-    console.log(filteredPlaces)
     dispatch(setFilteredPlaces(filteredPlaces));
   }
 
@@ -178,7 +218,9 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
       >
         <ItemsAndMapLayout map={<GoogleMapWrapper />}>
           <>
-            {places.filteredPlaces.length ? (
+            {isSearchingPlaces ? (
+              <SatelliteLoader text="Searching..." />
+            ) : places.filteredPlaces.length ? (
               places.filteredPlaces.map((place) => (
                 <HandlePlaceCardListItem
                   key={place.id}

@@ -1,10 +1,13 @@
 
 import { useState } from "react";
 import { MdClose } from "react-icons/md";
+import { ControlledError } from "../../../common/controlledError";
+import { ControlledErrorType } from "../../../common/controlledError/types";
 import { useAppDispatch, useAppSelector } from "../../../common/hooks/useTypedSelectors";
 import { InputButton } from "../../../components/buttons/inputButton";
 import { TextInput } from "../../../components/form/inputs/text";
 import { AuthServices } from "../../../services/auth";
+import { addError } from "../../../store/redux/slices/controlledErrors";
 import { authUser, registerUser } from "../../../store/redux/slices/user";
 
 type AuthFormModalProps = {
@@ -16,6 +19,7 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({ closeCallback, suc
 
     const dispatch = useAppDispatch()
     const { userData, auth } = useAppSelector(state => state.user)
+    const [error, setError] = useState<string| null>()
 
     const authServices = new AuthServices()
     const [isLoadingRequest, setIsLoadingRequest] = useState<boolean>(false)
@@ -53,16 +57,23 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({ closeCallback, suc
     const [isLogin, setIsLogin] = useState<boolean>(false)
 
     async function handleNextAuthStep() {
-        setIsLoadingRequest(true)
-        const confirmResp = await authServices.userExists(email)
-        if(!confirmResp.exists) {
-            setCurrentAuthStep(1)
-            setIsRegister(true)
-        } else {
-            setCurrentAuthStep(1)
-            setIsLogin(true)
+        try {
+            setIsLoadingRequest(true)
+            const confirmResp = await authServices.userExists(email)
+            if(!confirmResp.exists) {
+                setCurrentAuthStep(1)
+                setIsRegister(true)
+            } else {
+                setCurrentAuthStep(1)
+                setIsLogin(true)
+            }
+            setIsLoadingRequest(false)
+        } catch (error) {
+            // dispatch( addError(new ControlledError(String(error), ControlledErrorType.REQUEST)) )
+            setError(String(error))
+        } finally {
+            setIsLoadingRequest(false)
         }
-        setIsLoadingRequest(false)
     }
 
     async function handleLogin() {
@@ -72,7 +83,10 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({ closeCallback, suc
             setIsLoadingRequest(false)
             closeCallback()
         } catch (error) {
-            console.log(error)
+            // dispatch( addError(new ControlledError(String(error), ControlledErrorType.REQUEST)) )
+            setError(String(error))
+        } finally {
+            setIsLoadingRequest(false)
         }
     }
 
@@ -94,7 +108,10 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({ closeCallback, suc
             setIsLoadingRequest(false)
             successfulRegisterCallback()
         } catch (error) {
-            console.log(error)
+            // dispatch( addError(new ControlledError(String(error), ControlledErrorType.REQUEST)) )
+            setError(String(error))
+        } finally {
+            setIsLoadingRequest(false)
         }
     }
 
@@ -230,6 +247,16 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({ closeCallback, suc
 
                 {
                     currentAuthStep === 1 && renderNextAuthStep()
+                }
+
+                {
+                    error && (
+                        <div className="w-full mt-3 text-start">
+                            <span className="text-red-500 text-xs"> 
+                                *{ error }
+                            </span>
+                        </div>
+                    )
                 }
 
             </section>

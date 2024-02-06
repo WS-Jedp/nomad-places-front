@@ -34,6 +34,7 @@ export const PlaceCardListItemDesktop: React.FC<PlaceCardListItemProps> = ({
   }
 
   function getAmountOfPeopleState() {
+    if(!place.sessionCachedData?.amountOfPeople?.length) return
     const mostAmountOfPeople = place.sessionCachedData.amountOfPeople.reduce(
       (prev, curr) => (prev.actions.length > curr.actions.length ? prev : curr)
     );
@@ -82,7 +83,7 @@ export const PlaceCardListItemDesktop: React.FC<PlaceCardListItemProps> = ({
         />
       </IonRow>
       <IonItem
-        class="relative w-full p-0 ion-no-padding flex flex-col border-none"
+        className="relative w-full p-0 ion-no-padding flex flex-col border-none"
         color="none"
       >
         <IonRow className="relative w-full p-3">

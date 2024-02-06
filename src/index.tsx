@@ -2,6 +2,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { defineCustomElements } from '@ionic/pwa-elements/loader'
 import { Provider } from 'react-redux'
+import { ToastContainer } from 'react-toastify';
 
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';

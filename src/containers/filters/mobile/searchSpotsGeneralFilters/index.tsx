@@ -1,6 +1,7 @@
 import { IonCol, IonRow } from "@ionic/react"
 import { useState } from "react"
 import { MdClose } from "react-icons/md"
+import { useTranslation } from "react-i18next"
 import { SimpleButton, SimpleButtonOutline } from "../../../../components/buttons/simple"
 import { SimpleDropdown } from "../../../../components/dropdowns/simple"
 import { GeneralFiltersEnum } from "../../../../models/filters"
@@ -19,6 +20,8 @@ type SearchSpotsGeneralFiltersProps = {
 
 export const SearchSpotsGeneralFilters:React.FC<SearchSpotsGeneralFiltersProps> = ({ closeCallback, defaultFilter }) => {
 
+    const { t } = useTranslation()
+    
     const { 
         spotTypesFilter, selectedSpotTypesFilter,
         spotAmountPeopleFilter, selectedSpotAmountPeopleFilter,
@@ -28,47 +31,47 @@ export const SearchSpotsGeneralFilters:React.FC<SearchSpotsGeneralFiltersProps> 
      } = useAppSelector(state => state.filters)
 
     function handleSpotTypeFilterCurrentValue() {
-        if(!selectedSpotTypesFilter.length) return `None`
+        if(!selectedSpotTypesFilter.length) return t('filters.labels.none')
 
         const MAXIMUN_SPOT_TYPES = spotTypesFilter.length
-        if(selectedSpotTypesFilter.length === MAXIMUN_SPOT_TYPES) return "All"
+        if(selectedSpotTypesFilter.length === MAXIMUN_SPOT_TYPES) return t('filters.labels.all')
 
         const firstSpotType = spotTypesFilter.find(spotType => spotType.id === selectedSpotTypesFilter[0])
-        if(!firstSpotType) return `None`
+        if(!firstSpotType) return t('filters.labels.none')
 
         if(selectedSpotTypesFilter.length > 1) return `${firstSpotType?.title} +${selectedSpotTypesFilter.length - 1}`
-        return firstSpotType?.title
+        return t(`filters.spotTypes.${firstSpotType?.title.toLowerCase()}`)
     }
 
     function handlPeopleAmountFilterCurrentValue() {
-        if(!selectedSpotAmountPeopleFilter) return 'None'
+        if(!selectedSpotAmountPeopleFilter) return t('filters.labels.any')
         const peopleAmountOption = spotAmountPeopleFilter.find(peopleAmount => peopleAmount.id === selectedSpotAmountPeopleFilter)
-        if(!peopleAmountOption) return 'None'
+        if(!peopleAmountOption) return t('filters.labels.none')
         return peopleAmountOption.text
     }
 
     function handleMindsetFilterCurrentValue() {
-        if(!selectedSpotMindsetFilter.length) return 'None'
+        if(!selectedSpotMindsetFilter.length) return t('filters.labels.none')
         const mindsetOption = spotMindsetFilter.find(mindset => mindset.id === selectedSpotMindsetFilter[0])
-        if(!mindsetOption) return 'None'
-        if(selectedSpotMindsetFilter.length > 1) return `${mindsetOption.name.toLowerCase()} +${selectedSpotMindsetFilter.length - 1}`
-        return mindsetOption.name.toLowerCase()
+        if(!mindsetOption) return t('filters.labels.none')
+        if(selectedSpotMindsetFilter.length > 1) return `${t(`filters.mindsets.${mindsetOption.name.toLowerCase()}`)} +${selectedSpotMindsetFilter.length - 1}`
+        return t(`filters.mindsets.${mindsetOption.name.toLowerCase()}`)
     }
 
     function handleCommoditiesFilterCurrentValue() {
-        if(!selectedSpotCommoditiesFilter.length) return 'None'
+        if(!selectedSpotCommoditiesFilter.length) return t('filters.labels.any')
         const commodityOption = spotCommoditiesFilter.find(commodity => commodity.id === selectedSpotCommoditiesFilter[0])
-        if(!commodityOption) return 'None'
-        if(selectedSpotCommoditiesFilter.length > 1) return `${commodityOption.name.toLowerCase()} +${selectedSpotCommoditiesFilter.length - 1}`
-        return commodityOption.name.toLowerCase()
+        if(!commodityOption) return t('filters.labels.any')
+        if(selectedSpotCommoditiesFilter.length > 1) return `${t(`filters.commodities.${commodityOption.commodity}`)} +${selectedSpotCommoditiesFilter.length - 1}`
+        return t(`filters.commodities.${commodityOption.commodity}`)
     }
 
     function handleRulesFilterCurrentValue() {
-        if(!selectedSpotRulesFilter.length) return 'None'
+        if(!selectedSpotRulesFilter.length) return t('filters.labels.any')
         const ruleOption = spotRulesFilters.find(rule => rule.id === selectedSpotRulesFilter[0])
-        if(!ruleOption) return 'None'
-        if(selectedSpotRulesFilter.length > 1) return `${ruleOption.name.toLowerCase()} +${selectedSpotRulesFilter.length - 1}`
-        return ruleOption.name.toLowerCase()
+        if(!ruleOption) return t('filters.labels.any')
+        if(selectedSpotRulesFilter.length > 1) return `${t(`filters.rules.${ruleOption.rule}`)} +${selectedSpotRulesFilter.length - 1}`
+        return t(`filters.rules.${ruleOption.rule}`)
     }
 
     function handleOnSearch() {
@@ -108,7 +111,7 @@ export const SearchSpotsGeneralFilters:React.FC<SearchSpotsGeneralFiltersProps> 
             <IonRow className="w-full h-full overflow-y-auto pb-9 flex flex-col flex-nowrap items-center justify-start px-3 py-9">
                 {/* Filter by type of place - Example: By Coffee, library, park, lookout, etc. */}
                 <SimpleDropdown 
-                    title="What type of spot?"
+                    title={t('filters.labels.whatTypeOfSpot?')}
                     currentValue={handleSpotTypeFilterCurrentValue()}
                     badge={selectedSpotTypesFilter.length >= 1}
                     isOpen={currentFilter === GeneralFiltersEnum.type}
@@ -120,7 +123,7 @@ export const SearchSpotsGeneralFilters:React.FC<SearchSpotsGeneralFiltersProps> 
 
                 {/* Filter by mindset ambient - Example: For study, work, romantic, etc. */}
                 <SimpleDropdown 
-                    title="Mindset vibes"
+                    title={t('filters.labels.mindsetVibes')}
                     currentValue={handleMindsetFilterCurrentValue()}
                     badge={selectedSpotTypesFilter.length >= 1}
                     isOpen={currentFilter === GeneralFiltersEnum.mindset}
@@ -132,7 +135,7 @@ export const SearchSpotsGeneralFilters:React.FC<SearchSpotsGeneralFiltersProps> 
 
                 {/* Filter by commodities from the spot - Example: Public wifi, parking, cowork space, plugs, etc */}
                 <SimpleDropdown 
-                    title="Commodities"
+                    title={t('filters.titles.commodities')}
                     currentValue={handleCommoditiesFilterCurrentValue()}
                     badge={selectedSpotCommoditiesFilter.length >= 1}
                     isOpen={currentFilter === GeneralFiltersEnum.commodities}
@@ -145,7 +148,7 @@ export const SearchSpotsGeneralFilters:React.FC<SearchSpotsGeneralFiltersProps> 
                 {/* Filter by rules from the spot - Example: closedAt, openAt, petFriendly, under age, smoking */}
 
                 <SimpleDropdown 
-                    title="Rules"
+                    title={t('filters.titles.rules')}
                     currentValue={handleRulesFilterCurrentValue()}
                     badge={selectedSpotRulesFilter.length >= 1}
                     isOpen={currentFilter === GeneralFiltersEnum.rules}
@@ -157,7 +160,7 @@ export const SearchSpotsGeneralFilters:React.FC<SearchSpotsGeneralFiltersProps> 
                 
                 {/* Filter by amount of people in the spot - Example: +10 people, -10 people */}
                 <SimpleDropdown 
-                    title="People amount"
+                    title={t('filters.labels.peopleAmount')}
                     currentValue={handlPeopleAmountFilterCurrentValue()}
                     badge={selectedSpotAmountPeopleFilter !== null}
                     isOpen={currentFilter === GeneralFiltersEnum.people}
@@ -182,11 +185,11 @@ export const SearchSpotsGeneralFilters:React.FC<SearchSpotsGeneralFiltersProps> 
             ">
 
                 <SimpleButton 
-                    text="Search"
+                    text={t('actions.general.search')}
                     action={handleOnSearch}
                 />
                 <SimpleButtonOutline 
-                    text="Close"
+                    text={t('actions.general.close')}
                     action={closeCallback}
                 />
 

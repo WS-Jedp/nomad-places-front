@@ -1,0 +1,50 @@
+{
+    "labels": {
+        "howManyPeople?": "¿Cuántas personas?",
+        "whatDoYouNeed?": "¿Que necesitas?",
+        "whatTypeOfSpot?": "¿Qué tipo de spot?",
+        "mindsetVibes": "Mentalidad",
+        "peopleAmount": "Cantidad de personas",
+        "all": "Todos",
+        "any": "Cualquiera",
+        "none": "Ninguna"
+    },
+    "titles": {
+        "people": "Personas",
+        "person": "Persona",
+        "commodities": "Comodidades",
+        "spotType": "Tipo de Spot",
+        "rules": "Reglas",
+        "mindset": "Mentalidad"
+    },
+    "commodities": {
+        "publicWifi": "Wifi",
+        "wifiSpeed": "Velocidad del Wifi",
+        "parking": "Estacionamiento",
+        "publicPlugs": "Enchufes",
+        "plugsAmoount": "Cantidad de Enchufes",
+        "coworkSpace": "Espacio de Coworking",
+        "publicBathrooms": "Baños",
+        "ac": "Aire Acondicionado",
+        "heater": "Calefacción",
+        "balcony": "Balcón",
+        "terrace": "Terraza"
+    },
+    "rules": {
+        "openAt": "Abre a",
+        "closeAt": "Cierra a",
+        "petFriendly": "Mascotas",
+        "smoking": "Espacio para fumar",
+        "underAge": "Menores de edad permitidos"
+    },
+    "spotTypes": {
+        "coffee": "Café",
+        "library": "Librería"
+    },
+    "mindsets": {
+        "work": "Trabajar",
+        "study": "Estudiar",
+        "relax": "Relajarse",
+        "socialize": "Socializar"
+    }
+}

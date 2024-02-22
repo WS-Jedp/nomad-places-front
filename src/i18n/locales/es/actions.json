@@ -1,0 +1,25 @@
+{
+    "general": {
+        "search": "Buscar",
+        "searchForASpot": "Buscar un Spot",
+        "findASpot": "Encontrar un Spot",
+        "recommendSpots": "Recomendar Spots",
+        "recommendASpot": "Recomendar un Spot",
+        "close": "Cerrar",
+        "save": "Guardar",
+        "cancel": "Cancelar"
+    },
+    "auth": {
+        "login": "Iniciar sesión",
+        "register": "Registrarse",
+        "logout": "Cerrar sesión"
+    },
+    "navigation": {
+        "goBack": "Volver",
+        "continue": "Continuar"
+    },
+    "session": {
+        "join": "Unirse a la sesión",
+        "leave": "Abandonar la sesión"
+    }
+}

@@ -21,7 +21,7 @@ export const HandleRuleRender:React.FC<HandleRuleRenderProps> = ({ rule }) => {
             return (
                 <UnderAgeFriendlyRuleCard state={rule[ruleKey]} />
             )
-        case PLACE_RULES_ENUM.UNDER_ANGE:
+        case PLACE_RULES_ENUM.UNDER_AGE:
             return (
                 <SmokingFriendlyRuleCard state={rule[ruleKey]} />
             )

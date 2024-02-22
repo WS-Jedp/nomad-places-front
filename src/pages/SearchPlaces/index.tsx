@@ -24,6 +24,8 @@ import { IonRow } from "@ionic/react";
 interface SearchPlacesProps {}
 
 export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
+
+
   const history = useHistory();
   const dispatch = useAppDispatch();
   const places = useAppSelector((state) => state.places);

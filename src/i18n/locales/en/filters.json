@@ -1,0 +1,44 @@
+{
+    "labels": {
+        "howManyPeople?": "How many people?",
+        "whatDoYouNeed?": "What do you need?",
+        "whatTypeOfSpot?": "What type of spot?",
+        "mindsetVibes": "Mindset vibes",
+        "peopleAmount": "People amount",
+        "all": "All",
+        "any": "Any",
+        "none": "None"
+    },
+    "titles": {
+        "people": "People",
+        "person": "Person",
+        "commodities": "Commodities",
+        "spotType": "Spot type",
+        "rules": "Rules",
+        "mindset": "Mindset"
+    },
+    "commodities": {
+        "publicWifi": "Wifi",
+        "wifiSpeed": "Wifi Speed",
+        "parking": "Parking",
+        "publicPlugs": "Plugs",
+        "plugsAmoount": "Plugs Amount",
+        "coworkSpace": "Cowork Space",
+        "publicBathrooms": "Bathrooms",
+        "ac": "AC",
+        "heater": "Heater",
+        "balcony": "Balcony",
+        "terrace": "Terrace"
+    },
+    "rules": {
+        "openAt": "Open at",
+        "closeAt": "Close at",
+        "petFriendly": "Pet Friendly",
+        "smoking": "Smoking Friendly",
+        "underAge": "Under Age Friendly"
+    },
+    "spotTypes": {
+        "coffee": "Coffee",
+        "library": "Library"
+    }
+}

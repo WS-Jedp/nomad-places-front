@@ -70,11 +70,11 @@ export const MAIN_PLACE_COMMODITIES_KEYS = [
     CLOSED_AT = 'closedAt',
     PET_FRIENDLY = 'petFriendly',
     SMOKING = 'smoking',
-    UNDER_ANGE = 'underAge'
+    UNDER_AGE = 'underAge'
   }
 
   export const MAIN_RULES_KEYS: PLACE_RULES_ENUM[] = [
     PLACE_RULES_ENUM.PET_FRIENDLY,
     PLACE_RULES_ENUM.SMOKING,
-    PLACE_RULES_ENUM.UNDER_ANGE
+    PLACE_RULES_ENUM.UNDER_AGE
   ]

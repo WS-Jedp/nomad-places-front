@@ -104,7 +104,7 @@ const spotRulesFilters: SpotRulesFilters[] = [
     },
     {
         id: 3,
-        rule: PLACE_RULES_ENUM.UNDER_ANGE,
+        rule: PLACE_RULES_ENUM.UNDER_AGE,
         name: 'Under age allowed',
     },
 ]

@@ -24,8 +24,11 @@ import {
 } from "../../../store/redux/slices/user";
 import { TOKEN_KEY } from "../../../common/constants/localstorage";
 import { SimpleButton } from "../../buttons/simple";
+import { useTranslation } from "react-i18next";
 
 export const GeneralHeader: React.FC = () => {
+  const { t } = useTranslation();
+
   const history = useHistory();
   const userLocation = useAppSelector((state) => state.user.location);
   const {
@@ -89,24 +92,24 @@ export const GeneralHeader: React.FC = () => {
   }
 
   function handleSpotPeopleAmountFilterValue() {
-    if (!selectedSpotAmountPeopleFilter) return "¿How many people?";
+    if (!selectedSpotAmountPeopleFilter) return t('filters.labels.howManyPeople?');
     const spotPeopleAmountOption = spotAmountPeopleFilter.find(
       (peopleAmount) => peopleAmount.id === selectedSpotAmountPeopleFilter
     );
-    if (!spotPeopleAmountOption) return "¿How many people?";
+    if (!spotPeopleAmountOption) return t('filters.labels.howManyPeople?');
 
-    return `${spotPeopleAmountOption.text} People`;
+    return `${spotPeopleAmountOption.text} ${t('filters.title.people')}`;
   }
 
   function handleSpotCommoditiesFilterValue() {
-    if (!selectedSpotCommoditiesFilter) return "¿What do you need?";
+    if (!selectedSpotCommoditiesFilter) return t('filters.labels.whatDoYouNeed?');
     const firstSelectedCommodity = selectedSpotCommoditiesFilter[0];
 
     const spotCommoditiesOption = spotCommoditiesFilter.find(
       (commodity) => commodity.id === firstSelectedCommodity
     );
 
-    if (!spotCommoditiesOption) return "¿What do you need?";
+    if (!spotCommoditiesOption) return t('filters.labels.whatDoYouNeed?');
 
     if (selectedSpotCommoditiesFilter.length > 1)
       return `${spotCommoditiesOption.name} +${
@@ -166,7 +169,7 @@ export const GeneralHeader: React.FC = () => {
           className="text-black text-sm font-medium"
           onClick={() => handleOpenFilters(GeneralFiltersEnum.none)}
         >
-          Search for a spot
+          {t("actions.general.findASpot")}
         </button>
         <span className="hidden md:flex separator h-[21px] w-[1px] bg-gray-300 mx-3"></span>
         <button
@@ -201,7 +204,9 @@ export const GeneralHeader: React.FC = () => {
                             hover:bg-gray-100
                         "
         >
-          <span className="text-black text-sm">Recommend a spot</span>
+          <span className="text-black text-sm">
+            {t("actions.general.recommendASpot")}
+          </span>
         </button>
 
         {/* Get geolocation from user */}
@@ -274,13 +279,15 @@ export const GeneralHeader: React.FC = () => {
                                     text-black 
                                 "
           >
-            <h2 className="text-2xl font-bold">Welcome to Spots! 🎉 </h2>
+            <h2 className="text-2xl font-bold">
+              {t("messages.welcomeToSpots.title")}
+            </h2>
             <div className="w-full h-[2px] my-3 bg-gray-300"></div>
-            <p className="mb-6">
-              Thanks for registering! now you can start recommending spots to
-              your friends!
-            </p>
-            <SimpleButton action={() => setRegistered(false)} text="Continue" />
+            <p className="mb-6">{t("messages.welcomeToSpots.message")}</p>
+            <SimpleButton
+              action={() => setRegistered(false)}
+              text={t("actions.navigation.continue")}
+            />
           </section>
         </AppModal>
       )}

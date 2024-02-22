@@ -1,0 +1,25 @@
+{
+    "general": {
+        "search": "Search",
+        "searchForASpot": "Search for a spot",
+        "findASpot": "Find a Spot",
+        "recommendSpots": "Recommend Spots",
+        "recommendASpot": "Recommend a Spot",
+        "close": "Close",
+        "save": "Save",
+        "cancel": "Cancel"
+    },
+    "auth": {
+        "login": "Login",
+        "register": "Register",
+        "logout": "Logout"
+    },
+    "navigation": {
+        "goBack": "Go Back",
+        "continue": "Continue"
+    },
+    "session": {
+        "join": "Join Session",
+        "leave": "Leave Session"
+    }
+}

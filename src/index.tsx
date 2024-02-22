@@ -2,13 +2,13 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { defineCustomElements } from '@ionic/pwa-elements/loader'
 import { Provider } from 'react-redux'
-import { ToastContainer } from 'react-toastify';
 
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 import { reduxStore } from './store/redux';
 
+import './i18n'
 
 const container = document.getElementById('root');
 const root = createRoot(container!);

@@ -102,7 +102,7 @@ export const SearchSpotsGeneralFilters:React.FC<SearchSpotsGeneralFiltersProps> 
                 </IonCol>
                 <IonCol>
                     <h1 className="text-2xl font-bold text-black">
-                        Spots filters
+                        { t('filters.texts.title') }
                     </h1>
                 </IonCol>
             </IonRow>

@@ -20,11 +20,13 @@ import {
 import { AppLayout } from "../../layouts/AppLayout";
 import { SatelliteLoader } from "../../components/loaders/satellite";
 import { IonRow } from "@ionic/react";
+import { useTranslation } from "react-i18next";
 
 interface SearchPlacesProps {}
 
 export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
 
+  const { t } = useTranslation()
 
   const history = useHistory();
   const dispatch = useAppDispatch();
@@ -221,7 +223,7 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
         <ItemsAndMapLayout map={<GoogleMapWrapper />}>
           <>
             {isSearchingPlaces ? (
-              <SatelliteLoader text="Searching..." />
+              <SatelliteLoader text={t('actions.general.searching')} />
             ) : places.filteredPlaces.length ? (
               places.filteredPlaces.map((place) => (
                 <HandlePlaceCardListItem
@@ -232,7 +234,7 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
               ))
             ) : (
               <h2 className="p-3">
-                There is no places around here or try to reduce your filters
+                { t('filters.messages.reduceFilters') }
               </h2>
             )}
           </>

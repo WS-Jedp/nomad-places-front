@@ -1,6 +1,7 @@
 import { IonRow, IonCol } from '@ionic/react'
 import { stat } from 'fs'
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { MdArrowBack, MdClose } from 'react-icons/md'
 import { useAppSelector } from '../../../common/hooks/useTypedSelectors'
 import { verifyFileType } from '../../../common/utils/files'
@@ -14,6 +15,8 @@ type UserActionsModalProps = {
     closeCallback: () => void
 }
 export const UserActionsModal: React.FC<UserActionsModalProps> = ({ closeCallback }) => {
+
+    const { t } = useTranslation();
 
     const { sessionActions: actions, ...actionsState } = useAppSelector(state => state.placeSession)
     const [ isUpdateAvailable, setIsUpdateAvailable ] = useState<boolean>(false)
@@ -65,7 +68,6 @@ export const UserActionsModal: React.FC<UserActionsModalProps> = ({ closeCallbac
 
         if(sessionID) {
             socket?.updateSessionMultipleActions({ sessionID: sessionID, actions: actionsUpdateForm })
-            console.log('What')
         }
     }
 
@@ -76,7 +78,7 @@ export const UserActionsModal: React.FC<UserActionsModalProps> = ({ closeCallbac
                 return amountOfPeople?.amount
 
             case PLACE_SESSION_ACTION_TYPE_ENUM.PLACE_MINDSET:
-                return actionsState.sessionMindsetAction.payload?.toLowerCase()
+                return actionsState.sessionMindsetAction.payload && t(`filters.mindsets.${actionsState.sessionMindsetAction.payload?.toLowerCase()}`)
 
             case PLACE_SESSION_ACTION_TYPE_ENUM.PLACE_RECENT_ACTIVITY:
                 const recentActivity = actionsState.sessionRecentActivityAction.payload
@@ -85,7 +87,7 @@ export const UserActionsModal: React.FC<UserActionsModalProps> = ({ closeCallbac
                 return fileType?.toLowerCase() || null
 
             case PLACE_SESSION_ACTION_TYPE_ENUM.PLACE_STATUS:
-                return actionsState.sessionPlaceStatusAction.payload?.type.toLowerCase()
+                return actionsState.sessionMindsetAction.payload && t(`spots.session.${actionsState.sessionPlaceStatusAction.payload?.type.toLowerCase()}`)
         }
     }
 
@@ -107,7 +109,7 @@ export const UserActionsModal: React.FC<UserActionsModalProps> = ({ closeCallbac
             {
                 !currentAction ? (
                     <h2 className='text-3xl font-bold my-3 pt-3'>
-                        Update the Spot
+                        { t('spots.information.updateTheSession') }
                     </h2>
                 ) : (
                     <IonRow className='w-full flex flex-col'>
@@ -141,6 +143,7 @@ export const UserActionsModal: React.FC<UserActionsModalProps> = ({ closeCallbac
                                             text={action} 
                                             size={20}
                                             value={handleActionValue(action)}
+                                            fontSize="sm"
                                         />
                                     </IonCol>
                                 ))
@@ -150,7 +153,7 @@ export const UserActionsModal: React.FC<UserActionsModalProps> = ({ closeCallbac
                                 isUpdateAvailable && (
                                     <IonCol size='12'>
                                         <SimpleButton 
-                                            text='Update Session'
+                                            text={t('actions.general.update')}
                                             action={onUpdateSession}
                                         />
                                     </IonCol>
@@ -175,7 +178,7 @@ export const UserActionsModal: React.FC<UserActionsModalProps> = ({ closeCallbac
                     ">
                         
                         <SimpleButtonOutline 
-                            text="Cancel"
+                            text={t('actions.general.cancel')}
                             action={closeCallback}
                         />
                     </IonRow>

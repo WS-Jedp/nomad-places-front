@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { PlaceSessionActions } from "../../../models/session";
 import { User } from "../../../models/user";
 import { AvatarSingleCircle } from "../singleCircle";
@@ -9,10 +10,11 @@ interface AvatarGrupProps {
 export const AvatarGroup: React.FC<AvatarGrupProps> = ({
   users
 }) => {
+  const { t } = useTranslation();
   if (users.length === 0) {
     return (
       <span className="text-xs bg-gray-200 rounded-full p-2">
-        No users in session
+        { t('spots.messages.noUsersInSession') }
       </span>
     );
   }
@@ -29,7 +31,7 @@ export const AvatarGroup: React.FC<AvatarGrupProps> = ({
       {users.length > 0 && (
         <span className="font-light text-xs ml-4">
           {users.length}{" "}
-          {users.length === 1 ? "user in session" : "users in session"}
+          {users.length === 1 ? t('spots.messages.userInSession') : t('spots.messages.usersInSession')}
         </span>
       )}
     </div>

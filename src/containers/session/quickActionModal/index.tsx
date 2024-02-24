@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useTranslation } from 'react-i18next'
 import { useAppSelector } from "../../../common/hooks/useTypedSelectors"
 import { AmountOfPeopleCircleCard } from "../../../components/amountOfPeople/cards/circleCard"
 import { SimpleButton } from "../../../components/buttons/simple"
@@ -16,6 +17,7 @@ interface QuickActionModalProps {
 
 export const QuickActionModal:React.FC<QuickActionModalProps> = ({ onCancel, actionType, value }) => {
 
+    const { t } = useTranslation();
     const { sessionID, socket } = useAppSelector(state => state.userSession)
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [ currentData, setCurrentData ] = useState(value)
@@ -35,11 +37,11 @@ export const QuickActionModal:React.FC<QuickActionModalProps> = ({ onCancel, act
 
         switch (actionType) {
             case UPDATE_ACTIONS.PLACE_AMOUNT_OF_PEOPLE:
-                return <p className="text-sm font-medium my-2">Is this the amount of people in the spot?</p>
+                return <p className="text-sm font-medium my-2">{t('spots.messages.session.confirmation.amountOfPeople')}</p>
             case UPDATE_ACTIONS.PLACE_MINDSET:
-                return <p className="text-sm font-medium my-2"> Is this the environment of the spot? </p>
+                return <p className="text-sm font-medium my-2">{t('spots.messages.session.confirmation.perfectTo')}</p>
             case UPDATE_ACTIONS.PLACE_STATUS:
-                return <p className="text-sm font-medium my-2">Is this the current status of the spot?</p>
+                return <p className="text-sm font-medium my-2">{t('spots.messages.session.confirmation.status')}</p>
         }
     }
 
@@ -50,7 +52,7 @@ export const QuickActionModal:React.FC<QuickActionModalProps> = ({ onCancel, act
             case UPDATE_ACTIONS.PLACE_MINDSET:
                     return <CircleMindsetActions actionsAmount={1} mindset={value as MINDSETS} withBadge={false} />
             case UPDATE_ACTIONS.PLACE_STATUS:
-                return <p>The spot it's { value } </p>
+                return <p>{t('spots.messages.session.updateStatus')} {  t(`spots.session.${value.toLowerCase()}`)  } </p>
         }
     }
 
@@ -119,12 +121,12 @@ export const QuickActionModal:React.FC<QuickActionModalProps> = ({ onCancel, act
 
                 <SimpleButton 
                     action={uploadAction}
-                    text="Yes"
+                    text={ t('actions.confirmation.yes')}
                     loading={isLoading}
                 />
 
                 <span className="cursor-pointer text-red-400 underline mx-3" onClick={onCancel}>
-                    Cancel
+                    { t('actions.general.cancel') }
                 </span>
 
             </div>

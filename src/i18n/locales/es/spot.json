@@ -1,0 +1,59 @@
+{
+    "information": {
+        "description": "Descripción",
+        "aboutTheSpot": "Acerca del Spot",
+        "aboutTheSession": "Acerca de la sesión",
+        "rules": "Reglas",
+        "commodities": "Comodidades",
+        "multimedia": "Multimedia",
+        "leaveTheSession": "Salir de la sesión",
+        "updateTheSession": "Actualizar la sesión",
+        "quickUpdate": "Actualización rápida"
+    },
+    "session": {
+        "usersInSession": "Usuarios en sesión",
+        "amountOfPeople": "Cantidad de personas",
+        "status": "Estado",
+        "knownFor": "Conocido por",
+        "multimedia": "Multimedia del spot",
+        "perfectTo": "Perfecto para",
+        "communityActions": "Acciones de la comunidad",
+        "closed": "Cerrado",
+        "open": "Abierto",
+        "recentActivity": "Actividad reciente"
+    },
+    "messages": {
+        "noDescription": "No hay una descripción para este Spot por ahora :(",
+        "noMultimedia": "No hay multimedia para este Spot por ahora",
+        "noUsersInSession": "No hay usuarios en sesión",
+        "userInSession": "usuario en la sesión",
+        "usersInSession": "usuarios en la sesión",
+        "noCommunityActions": "No hay acciones de la comunidad por ahora",
+        "session": {
+            "lastUpdateAt": "Última actualización",
+            "leaveSessionConfirmation": "¿Estás seguro que quieres salir de la sesión?",
+            "userJoin": "se unió a la sesión",
+            "userLeave": "salió de la sesión",
+            "updateAmountOfPeople": "Hay entre {{firstAmount}} y {{lastAmount}} personas en el spot.",
+            "updatePerfectTo": "El spot es perfecto para",
+            "updateStatus": "El spot está",
+            "confirmation": {
+                "amountOfPeople": "¿Es esta la cantidad de personas en el spot?",
+                "perfectTo": "¿Es este el ambiente del spot?",
+                "status": "¿Es este el estado del spot?"
+            }
+        },
+        "rules": {
+            "petFriendly": "Se aceptan mascotas",
+            "noPetFriendly": "No se aceptan mascotas",
+            "smoking": "Se permite fumar",
+            "noSmoking": "No se permite fumar",
+            "underAge": "Se permite menores de edad",
+            "noUnderAge": "No se permite menores de edad"
+        },
+        "commodities": {
+            "publicWifi": "Velocidad alrededor de",
+            "plugs": "Hay alrededor de"
+        }
+    }
+}

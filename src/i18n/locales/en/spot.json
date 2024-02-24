@@ -1,0 +1,59 @@
+{
+    "information": {
+        "description": "Description",
+        "aboutTheSpot": "About the spot",
+        "aboutTheSession": "About the session",
+        "rules": "Rules",
+        "commodities": "Commodities",
+        "multimedia": "Multimedia",
+        "leaveTheSession": "Leave The Session",
+        "updateTheSession": "Update The Session",
+        "quickUpdate": "Quick update"
+    },
+    "session": {
+        "usersInSession": "Users in session",
+        "amountOfPeople": "Amount of people",
+        "status": "Status",
+        "knownFor": "Known for",
+        "multimedia": "Spot multimedia",
+        "perfectTo": "Perfect to",
+        "communityActions": "Community actions",
+        "closed": "Closed",
+        "open": "Open",
+        "recentActivity": "Recent activity"
+    },
+    "messages": {
+        "noDescription": "There is no a description for this spot yet :(",
+        "noMultimedia": "There is no multimedia for this spot yet",
+        "noUsersInSession": "No users in session",
+        "userInSession": "user in session",
+        "usersInSession": "users in session",
+        "noCommunityActions": "There are no actions shared by the community yet",
+        "session": {
+            "lastUpdateAt": "Last update at",
+            "leaveSessionConfirmation": "Are you sure you want to leave this session?",
+            "userJoinTheSession": "joined the session",
+            "userLeaveTheSession": "left the session",
+            "updateAmountOfPeople": "There is between {{firstAmount}} to {{lastAmount}} people in the spot",
+            "updatePerfectTo": "This spot is perfect to",
+            "updateStatus": "The spot it's",
+            "confirmation": {
+                "amountOfPeople": "Is this the amount of people in the spot?",
+                "perfectTo": "Is this the environfment to of the spot?",
+                "status": "Is this the current status of the spot?"
+            }
+        },
+        "rules": {
+            "petFriendly": "Pets are allowed",
+            "noPetFriendly": "Pets are not allowed",
+            "smoking": "Smoking is allowed",
+            "noSmoking": "Smoking is not allowed",
+            "underAge": "Underage are allowed",
+            "noUnderAge": "Underage are not allowed"
+        },
+        "commodities": {
+            "publicWifi": "Speed of",
+            "plugs": "There is around"
+        }
+    }
+}

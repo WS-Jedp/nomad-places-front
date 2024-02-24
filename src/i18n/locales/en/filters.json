@@ -1,4 +1,8 @@
 {
+    "texts": {
+        "title": "Filters",
+        "message": "Select the filters you want to apply"
+    },
     "labels": {
         "howManyPeople?": "How many people?",
         "whatDoYouNeed?": "What do you need?",
@@ -7,7 +11,8 @@
         "peopleAmount": "People amount",
         "all": "All",
         "any": "Any",
-        "none": "None"
+        "none": "None",
+        "unknown": "Unknown"
     },
     "titles": {
         "people": "People",
@@ -34,11 +39,26 @@
         "openAt": "Open at",
         "closeAt": "Close at",
         "petFriendly": "Pet Friendly",
+        "noPetFriendly": "Not Pet Friendly",
         "smoking": "Smoking Friendly",
-        "underAge": "Under Age Friendly"
+        "noSmoking": "Not Smoking Friendly",
+        "underAge": "Under Age Friendly",
+        "noUnderAge": "Not Under Age Friendly"
     },
     "spotTypes": {
         "coffee": "Coffee",
         "library": "Library"
+    },
+    "mindsets": {
+        "work": "Work",
+        "study": "Study",
+        "relax": "Chill",
+        "socialize": "Socialize",
+        "vibe": "Vibe",
+        "romantic": "Romantic"
+    },
+    "messages": {
+        "reduceFilters": "There is no near spots around, try reducing the filters",
+        "noSpots": "There is no near spots around"
     }
 }

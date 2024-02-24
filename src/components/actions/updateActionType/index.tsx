@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react"
+import { useTranslation } from "react-i18next"
 import { MINDSETS } from "../../../models/mindsets"
 import { PlaceState, PLACE_STATUS } from "../../../models/placeStatus"
 import { PlaceSessionActionDataPayload, UPDATE_ACTIONS } from "../../../models/session"
 
 export const UpdateActionType: React.FC<{ payload: PlaceSessionActionDataPayload['UPDATE'] }> = ({ payload }) => {
-
+    const { t } = useTranslation();
     const [ payloadValue, setPayloadValue ] = useState<{ range: [number, number], amount: string } | MINDSETS | any>()
 
     useEffect(() => {
@@ -16,7 +17,7 @@ export const UpdateActionType: React.FC<{ payload: PlaceSessionActionDataPayload
             return (
                 <div>
                     <p className="font-light text-sm">
-                        There is between <span> {payloadValue?.range[0]} to {payloadValue?.range[1]} </span> people in the spot
+                        { t('spots.messages.session.updateAmountOfPeople', { firstAmount: payloadValue?.range[0] || 0, lastAmount: payloadValue?.range[1] || 0 }) }
                     </p>
                 </div>
             )
@@ -24,7 +25,7 @@ export const UpdateActionType: React.FC<{ payload: PlaceSessionActionDataPayload
             return (
                 <div>
                     <p className="font-light text-sm">
-                        The spot it's perfect to <span> { payloadValue } </span>
+                        {t('spots.messages.session.updatePerfectTo')} <span> { payloadValue && t(`filters.mindsets.${String(payloadValue).toLowerCase()}`)  } </span>
                     </p>
                 </div>
             )
@@ -34,7 +35,7 @@ export const UpdateActionType: React.FC<{ payload: PlaceSessionActionDataPayload
             return (
                 <div>
                     <p className="font-light text-sm">
-                        The spot it's <span> { payloadValue.type } </span>
+                        {t('spots.messages.session.updateStatus')} <span> { payloadValue.type } </span>
                     </p>
                 </div>
             )

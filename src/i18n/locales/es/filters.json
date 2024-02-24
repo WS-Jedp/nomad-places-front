@@ -1,4 +1,8 @@
 {
+    "texts": {
+        "title": "Filtros",
+        "message": "Selecciona los filtros que necesitas para encontrar el spot perfecto"
+    },
     "labels": {
         "howManyPeople?": "¿Cuántas personas?",
         "whatDoYouNeed?": "¿Que necesitas?",
@@ -7,7 +11,8 @@
         "peopleAmount": "Cantidad de personas",
         "all": "Todos",
         "any": "Cualquiera",
-        "none": "Ninguna"
+        "none": "Ninguna",
+        "unknown": "Desconocido"
     },
     "titles": {
         "people": "Personas",
@@ -33,9 +38,12 @@
     "rules": {
         "openAt": "Abre a",
         "closeAt": "Cierra a",
-        "petFriendly": "Mascotas",
+        "petFriendly": "Mascotas permitidas",
+        "noPetFriendly": "Mascotas no permitidas",
         "smoking": "Espacio para fumar",
-        "underAge": "Menores de edad permitidos"
+        "noSmoking": "Sin espacio para fumar",
+        "underAge": "Menores de edad permitidos",
+        "noUnderAge": "Menores de edad no permitidos"
     },
     "spotTypes": {
         "coffee": "Café",
@@ -45,6 +53,12 @@
         "work": "Trabajar",
         "study": "Estudiar",
         "relax": "Relajarse",
-        "socialize": "Socializar"
+        "socialize": "Socializar",
+        "vibe": "Divertirse",
+        "romantic": "Romántico"
+    },
+    "messages": {
+        "reduceFilters": "No hay spots alrededor, intenta reduciendo los filtros",
+        "noSpots": "No hay spots alrededor"
     }
 }

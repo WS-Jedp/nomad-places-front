@@ -1,5 +1,6 @@
 import { IonCol, IonRow } from "@ionic/react"
 import { useEffect, useState } from "react"
+import { useTranslation } from "react-i18next"
 import { MdPeople } from "react-icons/md"
 import { useAppDispatch, useAppSelector } from "../../../../../common/hooks/useTypedSelectors"
 import { SimpleButton } from "../../../../../components/buttons/simple"
@@ -13,6 +14,7 @@ interface PeopleAmountActionFormProps {
 
 export const PeopleAmountActionForm: React.FC<PeopleAmountActionFormProps> = ({ onSave }) => {
 
+    const { t } = useTranslation()
     const { payload: currentPeopleAmountOption } = useAppSelector(state => state.placeSession.sessionAmountOfPeopleAction)
     const dispatch = useAppDispatch()
 
@@ -123,7 +125,7 @@ export const PeopleAmountActionForm: React.FC<PeopleAmountActionFormProps> = ({ 
             </IonRow>
             <IonRow className="flex items-center justify-center p-6 w-full">
                 <SimpleButton 
-                    text='Save'
+                    text={t('actions.general.save')}
                     action={handleSaveSessionAction}
                 />
             </IonRow>

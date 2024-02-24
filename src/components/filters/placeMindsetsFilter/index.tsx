@@ -4,8 +4,11 @@ import { selectNearPlaceFilter, removeNearPlaceFilter, resetSelectedNearPlaceFil
 import { SimpleMindsetCard } from "../../mindsets/cards/simpleCardMindset"
 import { MINDSETS } from "../../../models/mindsets"
 import { useAppDispatch, useAppSelector } from "../../../common/hooks/useTypedSelectors"
+import { useTranslation } from "react-i18next"
 
 export const PlaceMindsetsFilters: React.FC = ()  => {
+
+    const { t } = useTranslation()
 
     const dispatch = useAppDispatch()
 
@@ -34,7 +37,7 @@ export const PlaceMindsetsFilters: React.FC = ()  => {
         ">
             <div className="mr-3">
                 <SimpleMindsetCard 
-                    text={MINDSETS.ALL.toLowerCase()}
+                    text={t('filters.labels.all')}
                     isSelected={ selectedFilters.length === filters.length }
                     mindset={MINDSETS.ALL}
                     callback={handleAllTagActions}
@@ -46,7 +49,7 @@ export const PlaceMindsetsFilters: React.FC = ()  => {
                 filters.map(filter => (
                     <div className="mr-3" key={filter.id}>
                         <SimpleMindsetCard 
-                            text={filter.name.toLowerCase()}
+                            text={t(`filters.mindsets.${filter.name.toLowerCase()}`)}
                             isSelected={ isFilterActivated(filter.id) }
                             mindset={filter.name}
                             callback={() => handleAction(filter.id)}

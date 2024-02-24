@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next"
 import { FaSmoking, FaSmokingBan } from "react-icons/fa"
 import { RuleCard } from "../../card"
 import { RuleCardState } from "../../cardState"
@@ -8,21 +9,23 @@ interface RuleCardProps {
 
 export const SmokingFriendlyRuleCard: React.FC<RuleCardProps> = ({ state }) => {
 
+    const { t } = useTranslation(); 
+
     return (
         <RuleCardState 
             state={state}
             positiveState={
                 <RuleCard 
                         Icon={FaSmoking}
-                        rule="Smoking"
-                        description="Smoking is allowed"
+                        rule={t('filters.rules.smoking')}
+                        description={t('spots.messages.rules.smoking')}
                     />
             }
             negativeState={
                 <RuleCard 
                     Icon={FaSmokingBan}
-                    rule="No Smoking"
-                    description="Smoking is not allowed"
+                    rule={t('filters.rules.noSmoking')}
+                    description={t('spots.messages.rules.noSmoking')}
                 />
             }
         />

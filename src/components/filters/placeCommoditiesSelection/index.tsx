@@ -2,8 +2,11 @@ import { IonRow, IonCol } from "@ionic/react"
 import { SimpleCheckbox } from "../../form/inputs/checkbox"
 import { useAppDispatch, useAppSelector } from "../../../common/hooks/useTypedSelectors"
 import { selectCommodityFilter, removeCommodityFilter } from "../../../store/redux/slices/filters"
+import { useTranslation } from "react-i18next"
 
 export const PlaceCommoditiesSelection: React.FC = () => {
+
+    const { t } = useTranslation()
 
     const { selectedSpotCommoditiesFilter, spotCommoditiesFilter } = useAppSelector(state => state.filters)
     const dispatch = useAppDispatch()
@@ -25,7 +28,7 @@ export const PlaceCommoditiesSelection: React.FC = () => {
                 spotCommoditiesFilter.map((commodity) => (
                     <IonCol size="6" sizeMd="6" key={commodity.id}>
                         <SimpleCheckbox 
-                            label={commodity.name}
+                            label={t(`filters.commodities.${commodity.commodity}`)}
                             callback={() => handleCallback(commodity.id)}
                             isSelected={isComoditySelected(commodity.id)}
                         />

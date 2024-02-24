@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { FaBrain } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import { MdInfo, MdPeopleAlt } from "react-icons/md";
@@ -15,16 +16,18 @@ type CircleUserActionProps = {
 
 export const CircleUserAction: React.FC<CircleUserActionProps> = ({ action, callback, size = 20, iconSize = 24, fontSize, value  }) => {
 
+    const { t } = useTranslation();
+
     function defineActionName(action: PLACE_SESSION_ACTION_TYPE_ENUM) {
         switch (action) {
             case PLACE_SESSION_ACTION_TYPE_ENUM.PLACE_AMOUNT_OF_PEOPLE:
-                return 'People'
+                return t('spots.session.amountOfPeople')
             case PLACE_SESSION_ACTION_TYPE_ENUM.PLACE_MINDSET:
-                return 'Mindset'
+                return t('spots.session.perfectTo')
             case PLACE_SESSION_ACTION_TYPE_ENUM.PLACE_RECENT_ACTIVITY:
-                return 'Recent Activity'
+                return t('spots.session.recentActivity')
             case PLACE_SESSION_ACTION_TYPE_ENUM.PLACE_STATUS:
-                return 'Status'
+                return t('spots.session.status')
         }
     }
 

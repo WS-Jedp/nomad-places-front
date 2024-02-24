@@ -1,0 +1,56 @@
+{
+    "inputs": {
+        "auth": {
+            "email": {
+                "placeholder": "Enter your email",
+                "label": "Email"
+            },
+            "password": {
+                "placeholder": "Enter your password",
+                "label": "Password"
+            },
+            "passwordConfirmation": {
+                "placeholder": "Confirm your password",
+                "label": "Confirm Password"
+            },
+            "username": {
+                "placeholder": "Enter your username",
+                "label": "Username"
+            },
+            "firstName": {
+                "placeholder": "Enter your first name",
+                "label": "First Name"
+            },
+            "lastName": {
+                "placeholder": "Enter your last name",
+                "label": "Last Name"
+            }
+        }
+    },
+    "messages": {
+        "auth": {
+            "email": {
+                "required": "Email is required.",
+                "invalid": "Email is invalid."
+            },
+            "login": {
+                "success": "You have been logged in successfully.",
+                "error": "Invalid email or password."
+            },
+            "registers": {
+                "success": "You have been registered successfully.",
+                "error": "An error occurred while registering."
+            },
+            "logout": {
+                "success": "You have been logged out successfully."
+            },
+            "resetPassword": {
+                "success": "An email has been sent to you with instructions on how to reset your password.",
+                "error": "An error occurred while resetting your password."
+            },
+            "passwordMatch": {
+                "error": "Passwords do not match."
+            }
+        }
+    }
+}

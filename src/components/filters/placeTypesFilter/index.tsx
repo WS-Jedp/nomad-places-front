@@ -1,4 +1,5 @@
 import { IonRow } from "@ionic/react"
+import { useTranslation } from "react-i18next"
 import { MdCoffee, MdRestaurant } from "react-icons/md"
 import { IoLibrary } from "react-icons/io5"
 import { TbFountain } from "react-icons/tb"
@@ -9,6 +10,8 @@ import { useAppDispatch, useAppSelector } from "../../../common/hooks/useTypedSe
 import { selectSpotTypeFilter, removeSpotTypeFilter } from '../../../store/redux/slices/filters'
 
 export const PlaceTypesFilter:React.FC = () => {
+
+    const { t } = useTranslation()
 
     const { spotTypesFilter, selectedSpotTypesFilter } = useAppSelector(state => state.filters)
     const dispatch = useAppDispatch()
@@ -46,7 +49,7 @@ export const PlaceTypesFilter:React.FC = () => {
                 spotTypesFilter.map((spotType, index) => (
                     <div key={index} className="mr-3">
                         <SimplePlaceTypeCard
-                            text={spotType.title.toLowerCase()}
+                            text={ t(`filters.spotTypes.${spotType.title.toLowerCase()}`)}
                             icon={handleSpotTypeIcon(spotType.name)}
                             callback={() => handleCallback(spotType.id)}
                             isSelected={selectedSpotTypesFilter.includes(spotType.id)}

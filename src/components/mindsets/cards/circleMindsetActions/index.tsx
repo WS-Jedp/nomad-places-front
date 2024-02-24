@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next"
 import { BsHearts } from "react-icons/bs"
 import { IoBook, IoColorWandOutline, IoGlassesOutline } from "react-icons/io5"
 import { MdCelebration } from "react-icons/md"
@@ -12,8 +13,10 @@ interface CircleMindsetActionsProps {
 }
 
 export const CircleMindsetActions:React.FC<CircleMindsetActionsProps> = ({ actionsAmount, mindset, callback = () => {}, withBadge = true }) => {
-    function handleCardColor() {
 
+    const { t } = useTranslation();
+
+    function handleCardColor() {
         if(actionsAmount === 0) {
             return 'bg-gray-200 text-gray-400 border-gray-400 hover:bg-gray-300'
         }
@@ -100,7 +103,7 @@ export const CircleMindsetActions:React.FC<CircleMindsetActionsProps> = ({ actio
                 </div>
                 <span className="text-[12px] font-bold my-1">
                     {
-                        mindset
+                        t(`filters.mindsets.${mindset.toLowerCase()}`) 
                     }
                 </span>
                 {

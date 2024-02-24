@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { useTranslation } from 'react-i18next'
 import { PlaceSessionActionDataPayload, PLACE_SESSION_ACTIONS_ENUM } from "../../../../models/session"
 import { PlaceSessionAction, PLACE_SESSION_ACTIONS_TYPE } from "../../../../models/session/actions"
 
@@ -7,16 +8,17 @@ interface AccessSessionActionProps {
 }
 
 export const AccessSessionAction: React.FC<AccessSessionActionProps> = ({ action }) => {
-    
+
+    const {t} = useTranslation()
     const [payloadData, setPayloadData] = useState<PlaceSessionActionDataPayload['JOIN' | 'LEAVE']>()
 
 
     function getActionType() {
         if(action.type === PLACE_SESSION_ACTIONS_ENUM.JOIN) {
-            return 'Join'
+            return t('spots.messages.session.userJoin')
         }
 
-        return 'Leave'
+        return t('spots.messages.session.userLeave')
     }
 
     useEffect(() => {
@@ -34,7 +36,7 @@ export const AccessSessionAction: React.FC<AccessSessionActionProps> = ({ action
             <div className="flex py-3 flex-row flex-nowrap items-center justify-start">
                 <div className="mr-2 w-2 h-2 rounded-full shadow-sm bg-gray-300"></div>
                 <p className="text-md md:text-sm font-light">
-                    <span className="font-semibold">@{payloadData?.data.username}</span> {getActionType()} the session
+                    <span className="font-semibold">@{payloadData?.data.username}</span> {getActionType()}
                 </p>
             </div>
 

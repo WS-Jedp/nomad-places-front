@@ -1,5 +1,6 @@
 import { IonCol, IonRow } from "@ionic/react"
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import { IoMdAlert, IoMdCheckmarkCircleOutline, IoMdCloseCircleOutline } from "react-icons/io"
 import { MdPeople } from "react-icons/md"
 import { useAppDispatch, useAppSelector } from "../../../../../common/hooks/useTypedSelectors"
@@ -14,6 +15,7 @@ interface CurrentStatusFormProps {
 
 export const CurrentStatusForm: React.FC<CurrentStatusFormProps> = ({ onSave }) => {
 
+    const {t} = useTranslation()
     const { payload: currentStatusOption } = useAppSelector(state => state.placeSession.sessionPlaceStatusAction)
     const dispatch = useAppDispatch()
 
@@ -110,7 +112,7 @@ export const CurrentStatusForm: React.FC<CurrentStatusFormProps> = ({ onSave }) 
                                     handleIcon(option.type)
                                 }
                                 <h3 className="font-light text-md my-3">
-                                    { option.name }
+                                    { t(`spots.session.${option.name.toLowerCase()}`) }
                                 </h3>
                             </div>
                         </IonCol>
@@ -119,7 +121,7 @@ export const CurrentStatusForm: React.FC<CurrentStatusFormProps> = ({ onSave }) 
             </IonRow>
             <IonRow className="flex items-center justify-center p-6 w-full">
                 <SimpleButton 
-                    text='Save'
+                    text={t('actions.general.save')}
                     action={handleOnSave}
                 />
             </IonRow>

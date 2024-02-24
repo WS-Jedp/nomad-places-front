@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { MdClose } from "react-icons/md";
+import { useTranslation } from "react-i18next";
 import { ControlledError } from "../../../common/controlledError";
 import { ControlledErrorType } from "../../../common/controlledError/types";
 import {
@@ -21,6 +22,7 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
   closeCallback,
   successfulRegisterCallback,
 }) => {
+  const { t } = useTranslation()
   const dispatch = useAppDispatch();
   const { userData, auth } = useAppSelector((state) => state.user);
   const [error, setError] = useState<string | null>();
@@ -146,8 +148,8 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
           <div className="mb-2">
             <TextInput
               type="email"
-              label="Email"
-              placeholder="Write your email"
+              label={t('forms.inputs.auth.email.label')}
+              placeholder={t('forms.inputs.auth.email.placeholder')}
               callback={handleEmailChange}
               value={email}
             />
@@ -156,8 +158,8 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
           <div className="mb-2">
             <TextInput
               type="text"
-              label="Username"
-              placeholder="Write your username"
+              label={t('forms.inputs.auth.username.label')}
+              placeholder={t('forms.inputs.auth.username.placeholder')}
               callback={handleUsername}
               value={username}
             />
@@ -166,8 +168,8 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
           <div className="mb-2">
             <TextInput
               type="text"
-              label="First name"
-              placeholder="Write your first name"
+              label={t('forms.inputs.auth.firstName.label')}
+              placeholder={t('forms.inputs.auth.firstName.placeholder')}
               callback={handleFirstName}
               value={firstName}
             />
@@ -176,26 +178,26 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
           <div className="mb-2">
             <TextInput
               type="password"
-              label="Password"
-              placeholder="Write your password"
+              label={t('forms.inputs.auth.password.label')}
+              placeholder={t('forms.inputs.auth.password.placeholder')}
               callback={handlePasswordChange}
               value={password}
             />
           </div>
           <TextInput
             type="password"
-            label="Confirmation password"
-            placeholder="Confirm your password"
+            label={t('forms.inputs.auth.passwordConfirmation.label')}
+            placeholder={t('forms.inputs.auth.passwordConfirmation.placeholder')}
             callback={handleConfirmPasswordChange}
             value={confirmPassword}
             isError={!isConfirmPasswordValid()}
             feedbackMessage={
-              isConfirmPasswordValid() ? undefined : "Passwords do not match"
+              isConfirmPasswordValid() ? undefined : t('forms.messages.passwordMatch.error')
             }
           />
           <div className="w-full relative mt-5">
             <InputButton
-              text="Register"
+              text={t('actions.auth.register')}
               action={handleRegister}
               isLoading={isLoadingRequest}
             />
@@ -213,14 +215,14 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
         >
           <TextInput
             type="password"
-            label="Password"
-            placeholder="Write your password"
+            label={t('forms.inputs.auth.password.label')}
+            placeholder={t('forms.inputs.auth.password.placeholder')}
             callback={handlePasswordChange}
             value={password}
           />
           <div className="w-full relative mt-5">
             <InputButton
-              text="Login"
+              text={t('actions.auth.login')}
               action={handleLogin}
               isLoading={isLoadingRequest}
             />
@@ -243,7 +245,7 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
         
         <h2 className="font-bold text-2xl">
             {
-                forgotPassword ? 'Forgot your password?' : 'Login or register'
+                forgotPassword ? t('messages.forgotPassword.title') : t('messages.auth.loginOrRegister')
             }
         </h2>
       </section>
@@ -251,10 +253,10 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
       {forgotPassword ? (
         <section className="relative flex flex-col items-start justify-start py-3">
             <h2 className="font-bold text-base">
-                Reset your password
+              { t('messages.resetPassword.title') }
             </h2>
             <p className="text-start text-sm mb-3">
-                We will send you a link that will be valid for 15 minutes to recover your password
+              { t('messages.resetPassword.message') }
             </p>
             <form
               action=""
@@ -263,12 +265,12 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
             >
               <TextInput
                 type="text"
-                label="Email"
-                placeholder="Write your email"
+                label={t('forms.inputs.auth.email.label')}
+                placeholder={t('forms.inputs.auth.email.placeholder')}
                 callback={handleEmailChange}
                 value={email}
                 isValid
-                feedbackMessage="Email is invalid"
+                feedbackMessage={t('forms.messages.email.invalid')}
               />
               {error && (
                 <div className="w-full mt-1 text-start">
@@ -277,7 +279,7 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
               )}
               <div className="w-full relative mt-5 mb-1">
                 <InputButton
-                  text="Send Link"
+                  text={t('actions.auth.sendLink')}
                   action={() => {}}
                   isLoading={isLoadingRequest}
                 />
@@ -286,13 +288,13 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
                 className="underline text-xs text-gray-400 cursor-pointer"
                 onClick={handleCancelForgotPassword}
               >
-                Cancel
+                { t('actions.general.cancel') }
               </small>
             </form>
         </section>
       ) : (
         <section className="relative flex flex-col items-start justify-start py-3">
-          <h2 className="text-lg font-bold mb-3">Welcome to Spots</h2>
+          <h2 className="text-lg font-bold mb-3">{t('messages.welcome.title')}</h2>
 
           {currentAuthStep === 0 && (
             <form
@@ -302,12 +304,12 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
             >
               <TextInput
                 type="text"
-                label="Email"
-                placeholder="Email"
+                label={t('forms.inputs.auth.email.label')}
+                placeholder={t('forms.inputs.auth.email.placeholder')}
                 callback={handleEmailChange}
                 value={email}
                 isValid
-                feedbackMessage="Email is invalid"
+                feedbackMessage={t('forms.messages.email.invalid')}
               />
               {error && (
                 <div className="w-full mt-1 text-start">
@@ -316,7 +318,7 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
               )}
               <div className="w-full relative mt-5 mb-1">
                 <InputButton
-                  text="Continue"
+                  text={t('actions.navigation.continue')}
                   action={handleNextAuthStep}
                   isLoading={isLoadingRequest}
                 />
@@ -326,7 +328,7 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
                 className="underline text-xs text-gray-400 cursor-pointer"
                 onClick={handleForgotPassword}
               >
-                Forgot your password?
+                { t('messages.forgotPassword.title') }
               </small>
             </form>
           )}

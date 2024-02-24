@@ -1,5 +1,6 @@
 import { IonChip, IonIcon, IonLabel } from "@ionic/react";
 import { glassesOutline } from "ionicons/icons";
+import { useTranslation } from "react-i18next";
 
 interface WorkMindsetTagProps {
   disabled?: boolean
@@ -8,6 +9,7 @@ interface WorkMindsetTagProps {
 
 
 export const WorkMindsetTag: React.FC<WorkMindsetTagProps> = ({ disabled, onClick }) => {
+  const { t } = useTranslation()
   const handleClick:React.MouseEventHandler<HTMLIonChipElement> = (ev) => {
     ev.preventDefault()
     onClick()
@@ -15,7 +17,7 @@ export const WorkMindsetTag: React.FC<WorkMindsetTagProps> = ({ disabled, onClic
   return (
     <IonChip outline className={`px-3 py-1 ${disabled ? 'bg-gray-200' : 'bg-blue-100'}`} onClick={handleClick}>
       <IonIcon icon={glassesOutline} className={`mr-2 ${disabled ? 'text-gray-400' : 'text-blue-600'}`} />
-      <IonLabel className={`text-md font-medium ${disabled ? 'text-gray-400' : 'text-blue-600'}`}>Work</IonLabel>
+      <IonLabel className={`text-md font-medium ${disabled ? 'text-gray-400' : 'text-blue-600'}`}>{ t('filters.mindsets.work') }</IonLabel>
     </IonChip>
   );
 };

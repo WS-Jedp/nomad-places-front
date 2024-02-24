@@ -1,18 +1,28 @@
 {
     "general": {
         "search": "Search",
+        "searching": "Searching...",
         "searchForASpot": "Search for a spot",
         "findASpot": "Find a Spot",
         "recommendSpots": "Recommend Spots",
         "recommendASpot": "Recommend a Spot",
         "close": "Close",
         "save": "Save",
-        "cancel": "Cancel"
+        "update": "Update",
+        "cancel": "Cancel",
+        "seeMore": "See More",
+        "seeLess": "See Less",
+        "seeMoreInformation": "See More Information"
+    },
+    "confirmation": {
+        "yes": "Yes",
+        "no": "No"
     },
     "auth": {
         "login": "Login",
         "register": "Register",
-        "logout": "Logout"
+        "logout": "Logout",
+        "sendLink": "Send Link"
     },
     "navigation": {
         "goBack": "Go Back",
@@ -20,6 +30,7 @@
     },
     "session": {
         "join": "Join Session",
-        "leave": "Leave Session"
+        "leave": "Leave Session",
+        "update": "Update Session"
     }
 }

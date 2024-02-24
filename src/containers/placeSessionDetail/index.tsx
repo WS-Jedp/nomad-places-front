@@ -17,8 +17,11 @@ import { QuickActionModal } from "../session/quickActionModal"
 import { MINDSETS } from "../../models/mindsets"
 import { AmountOfPeopleActionsAmount } from "../../components/amountOfPeople/containers"
 import { HandleMindsetTags } from "../../components/tags/mindsets"
+import { useTranslation } from 'react-i18next'
 
 export const PlaceSessionDetail: React.FC = () => {
+
+    const { t } = useTranslation();
 
     const dispatch = useAppDispatch()
     const currentPlace = useAppSelector((state) => state.places.currentPlace);
@@ -171,14 +174,14 @@ export const PlaceSessionDetail: React.FC = () => {
                         (
                             <section className="my-1">
                                 <h2 className="text-xs font-light">
-                                    Last update at <span className="font-light"> { new Date(cachedSession?.lastUpdate).toISOString() } </span>
+                                   {t('spots.messages.session.lastUpdateAt')} <span className="font-light"> { new Date(cachedSession?.lastUpdate).toISOString() } </span>
                                 </h2>
                             </section>
                         )
                     )
                 }
                 <section className="mb-3">
-                    <h2 className="font-bold text-lg mb-1">Perfect to:</h2>
+                    <h2 className="font-bold text-lg mb-1">{t('spots.session.perfectTo')}</h2>
                     {
                         userInSession ? (
                             <AmountMindsetActions mindsetCallback={handleMindsetQuickAction} />
@@ -190,7 +193,7 @@ export const PlaceSessionDetail: React.FC = () => {
 
                 <IonRow className="relative w-full flex flex-row mb-3">
                     <IonCol size="12">
-                        <h2 className="font-bold text-lg">Amount of people:</h2>
+                        <h2 className="font-bold text-lg">{t('spots.session.amountOfPeople')}:</h2>
                         <div className="my-1">
                             {
                                 userInSession && (
@@ -208,17 +211,17 @@ export const PlaceSessionDetail: React.FC = () => {
                     userInSession ? (
                         <article className="flex flex-row flex-nowrap w-full items-center justify-start">
                             <div className="w-5/10">
-                                <SimpleButton action={() => setUpdateSessionModal(true)} text="Update session" />
+                                <SimpleButton action={() => setUpdateSessionModal(true)} text={t('actions.session.update')} />
                             </div>
                             <span className="cursor-pointer text-red-500 underline ml-6" onClick={() => setLeaveSessionModal(true)}>
-                                Leave the sesion
+                                {t('actions.session.leave')}
                             </span>
                         </article>
                     ) : (
                         // JOIN SESSION BUTTON
                         <SimpleButton
                             action={handleJoinSession}
-                            text="Join session"
+                            text={t('actions.session.join')}
                             loading={joiningSessionLoader}
                         />
                     )
@@ -227,7 +230,7 @@ export const PlaceSessionDetail: React.FC = () => {
 
             <section className="relative w-full h-3/6 overflow-y-auto">
                 <article className="relative w-full pt-3 border-solid border-b-[1px] border-gray-300">
-                    <h2 className="w-full font-bold text-lg mb-1 pb-3 px-3  ">Community Actions:</h2>
+                    <h2 className="w-full font-bold text-lg mb-1 pb-3 px-3">{t('spots.session.communityActions')}:</h2>
                 </article>
                 <section className="relative h-full flex flex-col flex-nowrap mb-3">
                         <ol className="w-full min-h-full h-auto my-3">
@@ -245,7 +248,7 @@ export const PlaceSessionDetail: React.FC = () => {
                                 ) : (
                                     <li className="px-3">
                                         <p className="text-xs font-light px-3 py-3 w-full bg-gray-200">
-                                            There are no actions shared by the community yet
+                                            {t('spots.messages.noCommunityActions')}
                                         </p>
                                     </li>
                                 )
@@ -290,17 +293,17 @@ export const PlaceSessionDetail: React.FC = () => {
                     <AppModal>
                         <article className="w-full max-w-xs bg-white rounded-lg text-black p-6">
                                 <h2 className="font-bold text-2xl">
-                                    Leave The Session
+                                    {t('spots.information.leaveTheSession')}
                                 </h2>
                                 <div className="w-full h-[1px] bg-black my-3"></div>
                                 <p className="text-md font-light">
-                                    Are you sure you want to leave the session?
+                                    {t('spots.messages.session.leaveSessionConfirmation')}
                                 </p>
 
                                 <div className="flex flex-col flex-nowrap w-full items-center justify-center mt-4">
-                                    <SimpleButton action={handleLeaveSession} text="Leave" />
+                                    <SimpleButton action={handleLeaveSession} text={t('actions.session.leave')} />
                                     <span onClick={() => setLeaveSessionModal(false)} className="cursor-pointer font-light my-3 underline text-gray-600 text-sm">
-                                        Cancel
+                                        {t('actions.general.cancel')}
                                     </span>
                                 </div>
                         </article>

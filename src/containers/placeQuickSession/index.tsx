@@ -28,6 +28,7 @@ import { BackNavigationButton } from "../../components/buttons/navigation/goBack
 import { createSocket } from "../../store/redux/slices/userSession";
 import { computeDistanceToSpot } from "../../common/utils/geoLocation";
 import { useDistanceToSpot } from "../../common/hooks/useDistanceToSpot";
+import { useTranslation } from "react-i18next";
 
 interface PlaceQuickSessionProps {
   changePageCallback: Function;
@@ -38,6 +39,9 @@ interface PlaceQuickSessionProps {
 export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
   changePageCallback,
 }) => {
+
+  const { t } = useTranslation();
+
   const history = useHistory();
   const dispatch = useAppDispatch();
   const { currentPlace } = useAppSelector((state) => state.places);
@@ -176,7 +180,7 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
                 items-center justify-center
             "
           >
-            <SimpleButton text="Information" action={handleInformationButton} />
+            <SimpleButton text={t('actions.general.seeMore')} action={handleInformationButton} />
             {/* <SimpleButton text="Subscribe" action={(ev) => {}} /> */}
           </IonRow>
         </IonCol>
@@ -193,7 +197,7 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
           {/* People in the sesion */}
           <article className="mb-3">
             <IonText>
-              <h3 className="text-lg font-bold">People In the session</h3>
+              <h3 className="text-lg font-bold">{ t('spots.session.usersInSession') }</h3>
             </IonText>
             <IonRow className="w-full flex flex-row flex-nowrap items-center pt-3 md:pt-2">
               <AvatarGroup
@@ -209,12 +213,12 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
           <IonRow className="mt-3">
             <IonCol size="6">
               <IonText>
-                <h3 className="text-lg font-bold">Status</h3>
+                <h3 className="text-lg font-bold">{t('spots.session.status')}</h3>
               </IonText>
               <IonRow className="w-full flex flex-row flex-nowrap items-center">
                 <HandlePlaceStatus status={isOpenNow()} />
                 <span className="text-sm font-light ml-1">
-                  Close at {currentPlace?.rules?.closedAt}
+                  {t('filters.rules.closeAt')} {currentPlace?.rules?.closedAt}
                 </span>
               </IonRow>
             </IonCol>
@@ -223,7 +227,7 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
             {/* Mindset of the session */}
             <IonCol size="6">
               <IonText>
-                <h3 className="text-lg font-bold">Known for</h3>
+                <h3 className="text-lg font-bold">{t('spots.session.knownFor')}</h3>
               </IonText>
               <IonRow className="w-full flex flex-row flex-nowrap items-center">
                 <HandleMindsetTags
@@ -248,7 +252,7 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
                         `}
               >
                 <h2 className={`${!isRecentActivity ? "font-bold" : ""}`}>
-                  Place multimedia
+                  { t('spots.session.multimedia') }
                 </h2>
               </section>
             </IonCol>

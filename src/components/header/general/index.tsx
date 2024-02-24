@@ -92,24 +92,26 @@ export const GeneralHeader: React.FC = () => {
   }
 
   function handleSpotPeopleAmountFilterValue() {
-    if (!selectedSpotAmountPeopleFilter) return t('filters.labels.howManyPeople?');
+    if (!selectedSpotAmountPeopleFilter)
+      return t("filters.labels.howManyPeople?");
     const spotPeopleAmountOption = spotAmountPeopleFilter.find(
       (peopleAmount) => peopleAmount.id === selectedSpotAmountPeopleFilter
     );
-    if (!spotPeopleAmountOption) return t('filters.labels.howManyPeople?');
+    if (!spotPeopleAmountOption) return t("filters.labels.howManyPeople?");
 
-    return `${spotPeopleAmountOption.text} ${t('filters.title.people')}`;
+    return `${spotPeopleAmountOption.text} ${t("filters.title.people")}`;
   }
 
   function handleSpotCommoditiesFilterValue() {
-    if (!selectedSpotCommoditiesFilter) return t('filters.labels.whatDoYouNeed?');
+    if (!selectedSpotCommoditiesFilter)
+      return t("filters.labels.whatDoYouNeed?");
     const firstSelectedCommodity = selectedSpotCommoditiesFilter[0];
 
     const spotCommoditiesOption = spotCommoditiesFilter.find(
       (commodity) => commodity.id === firstSelectedCommodity
     );
 
-    if (!spotCommoditiesOption) return t('filters.labels.whatDoYouNeed?');
+    if (!spotCommoditiesOption) return t("filters.labels.whatDoYouNeed?");
 
     if (selectedSpotCommoditiesFilter.length > 1)
       return `${spotCommoditiesOption.name} +${

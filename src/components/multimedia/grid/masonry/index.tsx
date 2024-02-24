@@ -1,4 +1,5 @@
 import { IonRow } from "@ionic/react"
+import { useTranslation } from "react-i18next"
 import { PlaceMultimedia } from "../../../../models/multimedia"
 import { HandleMultimediaCard } from "../../cards/helpers/handleMultimediaCard"
 import './styles.css'
@@ -8,7 +9,7 @@ interface MultimediaMasonryGridProps {
 }
 
 export const MultimediaMasonryGrid:React.FC<MultimediaMasonryGridProps> = ({ multimedia }) => {
-
+    const { t } = useTranslation();
     return (
         <IonRow className="relative w-full h-full">
             <section className="w-full grid-multimedia-container">
@@ -19,7 +20,7 @@ export const MultimediaMasonryGrid:React.FC<MultimediaMasonryGridProps> = ({ mul
                         </figure>
                     )) : (
                         <p>
-                            There is no multimedia content
+                            { t('spots.messages.noMultimedia') }
                         </p>
                     )
                 }

@@ -6,6 +6,7 @@ import { PlaceMindsetsFilter } from "../../../../../models/filters"
 import { MINDSETS } from "../../../../../models/mindsets"
 import { useAppDispatch, useAppSelector } from "../../../../../common/hooks/useTypedSelectors"
 import { resetSessionMindset, updateSessionMindset } from "../../../../../store/redux/slices/sessionActions/update"
+import { useTranslation } from "react-i18next"
 
 interface BestMindsetFormProps {
     onSave: () => void
@@ -13,6 +14,7 @@ interface BestMindsetFormProps {
 
 export const BestMindsetForm: React.FC<BestMindsetFormProps> = ({ onSave }) => {
 
+    const {t} = useTranslation();
     const { payload: currentMindsetOption } = useAppSelector(state => state.placeSession.sessionMindsetAction)
     const dispatch = useAppDispatch()
 
@@ -72,7 +74,7 @@ export const BestMindsetForm: React.FC<BestMindsetFormProps> = ({ onSave }) => {
                             onClick={() => handleSelectOption(option.name)}
                         >
                             <SimpleMindsetCard 
-                                text={option.name.toLowerCase()}
+                                text={t(`filters.mindsets.${option.name.toLowerCase()}`)}
                                 isSelected={ optionSelected === option.name }
                                 mindset={option.name}
                                 callback={() => {}}
@@ -83,7 +85,7 @@ export const BestMindsetForm: React.FC<BestMindsetFormProps> = ({ onSave }) => {
             </IonRow>
             <IonRow className="flex items-center justify-center p-6 w-full">
                 <SimpleButton 
-                    text='Save'
+                    text={t('actions.general.save')}
                     action={onSaveAction}
                 />
             </IonRow>

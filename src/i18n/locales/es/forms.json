@@ -1,0 +1,52 @@
+{
+    "inputs": {
+        "auth": {
+            "email": {
+                "placeholder": "Escribe tu correo electrónico",
+                "label": "Email"
+            },
+            "password": {
+                "placeholder": "Escribe tu contraseña",
+                "label": "Password"
+            },
+            "passwordConfirmation": {
+                "placeholder": "Confirma tu contraseña",
+                "label": "Confirmación de contraseña"
+            },
+            "username": {
+                "placeholder": "Escribe tu nombre de usuario",
+                "label": "Nombre de usuario"
+            },
+            "firstName": {
+                "placeholder": "Escribe tu nombre",
+                "label": "Nombre"
+            },
+            "lastName": {
+                "placeholder": "Escribe tu apellido",
+                "label": "Apellido"
+            }
+        }
+    },
+    "messages": {
+        "auth": {
+            "login": {
+                "success": "Has sido autenticado correctamente.",
+                "error": "Ha ocurrido un error al autenticarte."
+            },
+            "registers": {
+                "success": "Has sido registrado correctamente.",
+                "error": "Ha ocurrido un error al registrarte."
+            },
+            "logout": {
+                "success": "Has sido desautenticado correctamente."
+            },
+            "resetPassword": {
+                "success": "Se ha enviado un correo electrónico para restablecer tu contraseña.",
+                "error": "Ha ocurrido un error al restablecer tu contraseña."
+            },
+            "passwordMatch": {
+                "error": "Las contraseñas no coinciden."
+            }
+        }
+    }
+}

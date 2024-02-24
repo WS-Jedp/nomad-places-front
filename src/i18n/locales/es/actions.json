@@ -1,18 +1,28 @@
 {
     "general": {
         "search": "Buscar",
+        "searching": "Buscando...",
         "searchForASpot": "Buscar un Spot",
         "findASpot": "Encontrar un Spot",
         "recommendSpots": "Recomendar Spots",
         "recommendASpot": "Recomendar un Spot",
         "close": "Cerrar",
         "save": "Guardar",
-        "cancel": "Cancelar"
+        "update": "Actualizar",
+        "cancel": "Cancelar",
+        "seeMore": "Ver Más",
+        "seeLess": "Ver Menos",
+        "seeMoreInformation": "Ver más información"
+    },
+    "confirmation": {
+        "yes": "Sí",
+        "no": "No"
     },
     "auth": {
         "login": "Iniciar sesión",
         "register": "Registrarse",
-        "logout": "Cerrar sesión"
+        "logout": "Cerrar sesión",
+        "sendLink": "Enviar enlace"
     },
     "navigation": {
         "goBack": "Volver",
@@ -20,6 +30,7 @@
     },
     "session": {
         "join": "Unirse a la sesión",
-        "leave": "Abandonar la sesión"
+        "leave": "Abandonar la sesión",
+        "update": "Actualizar la sesión"
     }
 }

@@ -1,13 +1,13 @@
 import { IonCol, IonRow, IonText } from "@ionic/react";
 import { useState } from "react";
-import { MdArrowBack } from "react-icons/md";
-import { useHistory } from "react-router";
+import { useTranslation } from 'react-i18next'
 import { useDistanceToSpot } from "../../common/hooks/useDistanceToSpot";
 
 import { useIsMobile } from "../../common/hooks/useIsMobile";
 import { useAppSelector } from "../../common/hooks/useTypedSelectors";
 import { BackNavigationButton } from "../../components/buttons/navigation/goBack";
 import { GeneralHeader } from "../../components/header/general";
+
 
 interface DetailAndSessionActionsLayoutProps {
   children: JSX.Element;
@@ -17,6 +17,7 @@ interface DetailAndSessionActionsLayoutProps {
 export const DetailAndSessionActionsLayout: React.FC<
   DetailAndSessionActionsLayoutProps
 > = ({ children, secondTab }) => {
+  const { t } = useTranslation();
   const [isMobile] = useIsMobile();
   const [isRenderSession, setIsRenderSession] = useState<boolean>(false);
   const currentPlace = useAppSelector((state) => state.places.currentPlace);
@@ -98,7 +99,7 @@ export const DetailAndSessionActionsLayout: React.FC<
               <h2
                 className={`text-black ${!isRenderSession ? "font-bold" : ""}`}
               >
-                About The Place
+                { t('spots.information.aboutTheSpot') }
               </h2>
             </section>
           </IonCol>
@@ -114,7 +115,7 @@ export const DetailAndSessionActionsLayout: React.FC<
               <h2
                 className={`text-black ${isRenderSession ? "font-bold" : ""}`}
               >
-                About The Session
+                { t('spots.information.aboutTheSession') }
               </h2>
             </section>
           </IonCol>

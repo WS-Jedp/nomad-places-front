@@ -1,6 +1,20 @@
 {
+    "auth": {
+        "loginOrRegister": "Iniciar sesión o registrarse"
+    },
+    "welcome": {
+        "title": "Bienvenido a Spots"
+    },
     "welcomeToSpots": {
         "title": "¡Bienvenido a Spots! 🎉",
         "message": "¡Gracias por registrarte en Spots!. Ahora puedes encontrar tus lugares favoritos para ti y tus sueños"
+    },
+    "resetPassword": {
+        "title": "Restablecer tu contraseña",
+        "message": "Te enviaremos un correo electrónico con un enlace para restablecer tu contraseña que sera valido por 1 hora."
+    },
+    "forgotPassword": {
+        "title": "¿Olvidaste tu contraseña?",
+        "message": "Ingresa tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña."
     }
 }

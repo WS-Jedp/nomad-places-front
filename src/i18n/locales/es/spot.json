@@ -41,6 +41,12 @@
                 "amountOfPeople": "¿Es esta la cantidad de personas en el spot?",
                 "perfectTo": "¿Es este el ambiente del spot?",
                 "status": "¿Es este el estado del spot?"
+            },
+            "unallowed": {
+                "locationRange": "Debes estar en el rango del spot para unirte a la sesión",
+                "alreadyInSession": "Ya estás en esta sesión",
+                "alreadyLeftSession": "Ya has salido de esta sesión",
+                "userLocation": "Debes tener tu ubicación activada para unirte a la sesión"
             }
         },
         "rules": {

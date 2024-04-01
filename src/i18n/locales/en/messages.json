@@ -1,6 +1,10 @@
 {
     "auth": {
-        "loginOrRegister": "Login or Register"
+        "loginOrRegister": "Login or Register",
+        "notLoggedIn": "Your're not logged in",
+        "required": {
+            "message": "You need to login or register to access this feature"
+        }
     },
     "welcome": {
         "title": "Welcome to Spots"
@@ -11,7 +15,10 @@
     },
     "resetPassword": {
         "title": "Reset your password",
-        "message": "We will send you a link that will be valid for 1 hour to reset your password"
+        "message": "We will send you a link that will be valid for 1 hour to reset your password",
+        "updatingPassword": "Create a new password for your account {{email}} and confirm it",
+        "emailSent": "We have sent you an email with a link to reset your password",
+        "passwordUpdated": "Your password has been updated successfully, you can now login with your new password"
     },
     "forgotPassword": {
         "title": "Forgot your password?",

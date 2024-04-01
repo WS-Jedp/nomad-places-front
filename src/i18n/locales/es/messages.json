@@ -1,6 +1,10 @@
 {
     "auth": {
-        "loginOrRegister": "Iniciar sesión o registrarse"
+        "loginOrRegister": "Iniciar sesión o registrarse",
+        "notLoggedIn": "No has iniciado sesión",
+        "required": {
+            "message": "Necesitas iniciar sesión para poder acceder a esta funcionalidad"
+        }
     },
     "welcome": {
         "title": "Bienvenido a Spots"
@@ -11,7 +15,10 @@
     },
     "resetPassword": {
         "title": "Restablecer tu contraseña",
-        "message": "Te enviaremos un correo electrónico con un enlace para restablecer tu contraseña que sera valido por 1 hora."
+        "message": "Te enviaremos un correo electrónico con un enlace para restablecer tu contraseña que sera valido por 1 hora.",
+        "updatingPassword": "Crea una nueva contraseña para tu cuenta {{email}} y confirma tu nueva contraseña.",
+        "emailSent": "Te heemos enviado un correo electrónico con un enlace para restablecer tu contraseña.",
+        "passwordUpdated": "Tu contraseña ha sido actualizada. Ahora puedes iniciar sesión con tu nueva contraseña."
     },
     "forgotPassword": {
         "title": "¿Olvidaste tu contraseña?",

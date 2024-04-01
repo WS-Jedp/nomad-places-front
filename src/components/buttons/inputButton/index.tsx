@@ -5,11 +5,13 @@ interface InputButtonProps {
   action: MouseEventHandler<HTMLButtonElement>;
   type?: 'button' | 'submit' | 'reset';
   isLoading?: boolean;
+  disabled?: boolean
 }
 
-export const InputButton: React.FC<InputButtonProps> = ({ text, action, type = 'button', isLoading}) => {
+export const InputButton: React.FC<InputButtonProps> = ({ text, action, type = 'button', isLoading, disabled = false}) => {
   return (
     <button
+      disabled={disabled}
       className="
                     w-full
                     flex flex-row flex-nowrap items-center justify-center

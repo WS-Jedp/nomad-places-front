@@ -12,7 +12,7 @@ import {
 } from "../../../containers/menus/userOptions";
 import { AppModal } from "../../modals/container";
 import { AuthFormModal } from "../../../containers/auth/authFormModal";
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import {
   useAppDispatch,
   useAppSelector,
@@ -21,14 +21,18 @@ import {
   getUserData,
   logout,
   getUserGeoLocation,
+  hideAuthModal,
+  showAuthModal,
 } from "../../../store/redux/slices/user";
 import { TOKEN_KEY } from "../../../common/constants/localstorage";
 import { SimpleButton } from "../../buttons/simple";
 import { useTranslation } from "react-i18next";
+import { ResetPasswordModal } from "../../../containers/auth/resetPasswordModal";
 
 export const GeneralHeader: React.FC = () => {
   const { t } = useTranslation();
 
+  const location = useLocation()
   const history = useHistory();
   const userLocation = useAppSelector((state) => state.user.location);
   const {
@@ -54,26 +58,27 @@ export const GeneralHeader: React.FC = () => {
     setCurrentFilter(currentFilter);
   }
 
-  const [authModal, setAuthModal] = useState<boolean>(false);
+  const userData = useAppSelector((state) => state.user.userData);
+  const { modal: authModal, isAuth } = useAppSelector((state) => state.user.auth);
   const [registered, setRegistered] = useState<boolean>(false);
 
   function successfulRegister() {
-    setAuthModal(false);
+    dispatch( hideAuthModal() )
     setRegistered(true);
   }
 
   function closeAuthModal() {
-    setAuthModal(false);
+    dispatch(hideAuthModal());
   }
 
   function handleUserMenuOptions(option: UserMenuOptions) {
     setShowUserOptiosn(false);
     switch (option) {
       case UserMenuOptions.register:
-        setAuthModal(true);
+        dispatch( showAuthModal() )
         break;
       case UserMenuOptions.login:
-        setAuthModal(true);
+        dispatch(showAuthModal())
         break;
       case UserMenuOptions.logout:
         dispatch(logout());
@@ -137,6 +142,25 @@ export const GeneralHeader: React.FC = () => {
     automaticallyAuthUser();
   }, []);
 
+  const [recoverPasswordToken, setRecoverPasswordToken] = useState<string | null>(null);
+  const [recoverEmail, setRecoverEmail] = useState<string | null>(null);
+
+  function closeRecoveredPasswordModal() {
+    setRecoverPasswordToken(null);
+    setRecoverEmail(null);
+  }
+
+  useEffect(() => {
+    const query = new URLSearchParams(location.search);
+    const recoverToken = query.get('recover_password');
+    const email = query.get('email');
+
+    if (recoverToken && email) {
+      setRecoverPasswordToken(recoverToken);
+      setRecoverEmail(email)
+    }
+  }, [])
+
   return (
     <IonHeader
       className="
@@ -146,7 +170,7 @@ export const GeneralHeader: React.FC = () => {
                     px-3 md:px-9 py-5 m-0
                     bg-none md:bg-white
                     ion-no-border
-                    z-50
+                    z-[999]
                 "
     >
       <h1
@@ -235,14 +259,25 @@ export const GeneralHeader: React.FC = () => {
                             bg-white
                             rounded-full outline outline-1 outline-gray-300
                             hover:bg-gray-100
+                            z-[999]
                         "
         >
           <div
             className="w-full h-full cursor-pointer flex flex-row flex-nowrap items-center justify-center"
             onClick={handleShowUserOptions}
           >
-            <IoMdMenu size={18} color="gray" className="mr-1" />
             <FaUserAlt size={13} color="gray" />
+            {
+                isAuth ? (
+                    <span className="font-light mx-1 text-sm text-black">
+                      {
+                        userData?.username
+                      }
+                    </span>
+                ) : (
+                    <IoMdMenu size={18} color="gray" className="ml-1" />
+                )
+            }
           </div>
 
           {showUserOptions && (
@@ -293,6 +328,18 @@ export const GeneralHeader: React.FC = () => {
           </section>
         </AppModal>
       )}
+
+      {
+        (recoverPasswordToken && recoverEmail)  && (
+          <AppModal>
+            <ResetPasswordModal 
+              email={recoverEmail}
+              token={recoverPasswordToken}
+              closeCallback={closeRecoveredPasswordModal}
+            />
+          </AppModal>
+        )
+      }
     </IonHeader>
   );
 };

@@ -41,6 +41,12 @@
                 "amountOfPeople": "Is this the amount of people in the spot?",
                 "perfectTo": "Is this the environfment to of the spot?",
                 "status": "Is this the current status of the spot?"
+            },
+            "unallowed": {
+                "locationRange": "You must be in the spot to join or update the session",
+                "alreadyInSession": "You are already in this session",
+                "alreadyLeftSession": "You already left this session",
+                "userLocation": "You must have your location enabled to join or update the session"
             }
         },
         "rules": {

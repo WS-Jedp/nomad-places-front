@@ -33,6 +33,7 @@ export const UserOptionsMenu:React.FC<UserOptionsMenuProps> = ({ callback }) => 
                 w-52  overflow-y-auto rounded-lg
                 bg-white shadow-xl
                 text-black
+                z-[999]
             "
         >
             {
@@ -59,9 +60,9 @@ export const UserOptionsMenu:React.FC<UserOptionsMenuProps> = ({ callback }) => 
 
                 <div className="bg-gray-300 w-full h-[1px]"></div>
 
-                <button className="px-6 py-3 w-full h-auto text-start hover:bg-gray-50" onClick={() => handleAction(UserMenuOptions.recommend)}>
+                {/* <button className="px-6 py-3 w-full h-auto text-start hover:bg-gray-50" onClick={() => handleAction(UserMenuOptions.recommend)}>
                     <h2 className="font-regular text-sm">{t('actions.general.recommendASpot')}</h2>
-                </button>
+                </button> */}
                 <button className="px-6 py-3 w-full h-auto text-start hover:bg-gray-50" onClick={() => handleAction(UserMenuOptions.about)}>
                     <h2 className="font-regular text-sm">{t('titles.general.aboutSpots')}</h2>
                 </button>

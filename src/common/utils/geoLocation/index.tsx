@@ -23,3 +23,8 @@ function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
 export function computeDistanceToSpot(userLocation: GeoLocation, spotLocation: GeoLocation) {
     return calculateDistance(userLocation.latitude, userLocation.longitude, spotLocation.latitude, spotLocation.longitude).toFixed(2)
 }
+
+export function userInAllowedRange(userLocation: GeoLocation, spotLocation: GeoLocation): boolean {
+    const ALLOWED_RANGE = 0.5 // in kilometers
+    return calculateDistance(userLocation.latitude, userLocation.longitude, spotLocation.latitude, spotLocation.longitude) <= ALLOWED_RANGE
+}

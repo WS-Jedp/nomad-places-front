@@ -137,6 +137,22 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
     }
   }
 
+  const [isRecoverEmailSent, setIsRecoverEmailSent] = useState<boolean>(false);
+  async function handleRecoverPassword() {
+    try {
+      setIsLoadingRequest(true);
+      await authServices.recoverPassword(email, 'es');
+      setIsLoadingRequest(false);
+      setIsRecoverEmailSent(true);
+    } catch (error) {
+      // dispatch( addError(new ControlledError(String(error), ControlledErrorType.REQUEST)) )
+      setError(String(error));
+      setIsRecoverEmailSent(false);
+    } finally {
+      setIsLoadingRequest(false);
+    }
+  }
+
   function renderNextAuthStep() {
     if (isRegister) {
       return (
@@ -192,7 +208,7 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
             value={confirmPassword}
             isError={!isConfirmPasswordValid()}
             feedbackMessage={
-              isConfirmPasswordValid() ? undefined : t('forms.messages.passwordMatch.error')
+              isConfirmPasswordValid() ? undefined : t('forms.messages.auth.passwordMatch.error')
             }
           />
           <div className="w-full relative mt-5">
@@ -278,11 +294,20 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
                 </div>
               )}
               <div className="w-full relative mt-5 mb-1">
-                <InputButton
-                  text={t('actions.auth.sendLink')}
-                  action={() => {}}
-                  isLoading={isLoadingRequest}
-                />
+                {
+                  !isRecoverEmailSent ? (
+                    <InputButton
+                      text={t('actions.auth.sendLink')}
+                      disabled={!email}
+                      action={handleRecoverPassword}
+                      isLoading={isLoadingRequest}
+                    />
+                  ) : (
+                    <span className="text-green-500 text-sm">
+                      { t('messages.resetPassword.emailSent') }
+                    </span>
+                  )
+                }
               </div>
               <small
                 className="underline text-xs text-gray-400 cursor-pointer"

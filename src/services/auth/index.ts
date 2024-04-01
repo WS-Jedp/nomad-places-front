@@ -1,6 +1,7 @@
 import { Request } from "../../common/request";
 import { ConfirmProfileDTO, LoginDTO, RegisterUserRequestDTO } from "../../dto/auth";
 import { ProfileDTO } from "../../dto/user";
+import { User } from "../../models/user";
 
 export class AuthServices {
     protected request: Request;
@@ -33,6 +34,16 @@ export class AuthServices {
 
     async userExists(emailOrUsername:string) {
         const response = await this.request.get<ConfirmProfileDTO>(`profile/confirm?usernameOrEmail=${emailOrUsername}`)
+        return response
+    }
+
+    async recoverPassword(email:string, lang: string = 'es') {
+        const response = await this.request.post<boolean>('recover-password', { email, language: lang })
+        return response
+    }
+
+    async resetPassword(email: string, token: string, newPassword: string) {
+        const response = await this.request.post<{message: string, user: User}>('reset-password', { email, token, newPassword })
         return response
     }
 }

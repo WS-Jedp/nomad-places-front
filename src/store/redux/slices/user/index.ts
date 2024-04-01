@@ -17,6 +17,7 @@ export interface UserState {
         isAuth: boolean
         token: string | null
         roles: string[]
+        modal: boolean
     }
     location: Partial<GeoLocation>
     zoomInMap: number,
@@ -33,7 +34,8 @@ const initialUserState: UserState = {
     auth: {
         isAuth: false,
         token: null,
-        roles: []
+        roles: [],
+        modal: false
     },
     errors: []
 }
@@ -137,6 +139,12 @@ export const userSlice = createSlice({
         },
         setZoomMap(state, action: PayloadAction<{ zoom: number }>) {
             state.zoomInMap = action.payload.zoom
+        },
+        showAuthModal(state) {
+            state.auth.modal = true
+        },
+        hideAuthModal(state) {
+            state.auth.modal = false
         }
     },
     extraReducers: (builder) => {
@@ -224,7 +232,9 @@ export const userSlice = createSlice({
 export const { 
     setUserGeoLocation, resetGeoLocation, setZoomMap,
     updateUserPersonalInformation, setUserPersonalInformation,
-    logout, 
+    showAuthModal, hideAuthModal,
+    resetErros, removeError,
+    logout,
 } = userSlice.actions 
 
 export default userSlice.reducer

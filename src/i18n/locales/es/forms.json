@@ -7,7 +7,7 @@
             },
             "password": {
                 "placeholder": "Escribe tu contraseña",
-                "label": "Password"
+                "label": "Contraseña"
             },
             "passwordConfirmation": {
                 "placeholder": "Confirma tu contraseña",

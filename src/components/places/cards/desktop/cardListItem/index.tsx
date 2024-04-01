@@ -24,6 +24,7 @@ export const PlaceCardListItemDesktop: React.FC<PlaceCardListItemProps> = ({
 }) => {
   const placeOnFocus = useAppSelector((state) => state.places.placeOnFocus);
   const userLocation = useAppSelector((state) => state.user.location);
+  const { isAuth } = useAppSelector((state) => state.user.auth);
   const dispatch = useAppDispatch();
 
   async function handleOnPlaceHover() {
@@ -34,7 +35,7 @@ export const PlaceCardListItemDesktop: React.FC<PlaceCardListItemProps> = ({
   }
 
   function getAmountOfPeopleState() {
-    if(!place.sessionCachedData?.amountOfPeople?.length) return
+    if (!place.sessionCachedData?.amountOfPeople?.length) return;
     const mostAmountOfPeople = place.sessionCachedData.amountOfPeople.reduce(
       (prev, curr) => (prev.actions.length > curr.actions.length ? prev : curr)
     );
@@ -43,12 +44,16 @@ export const PlaceCardListItemDesktop: React.FC<PlaceCardListItemProps> = ({
   }
 
   function getDistanceToSpot(spot: PlaceWithCachedSession) {
-    if(!userLocation || !userLocation.latitude || !userLocation.longitude) return null
+    if (!userLocation || !userLocation.latitude || !userLocation.longitude)
+      return null;
 
-    return computeDistanceToSpot({
-      latitude: userLocation.latitude,
-      longitude: userLocation.longitude
-    }, spot.location)
+    return computeDistanceToSpot(
+      {
+        latitude: userLocation.latitude,
+        longitude: userLocation.longitude,
+      },
+      spot.location
+    );
   }
 
   function handleClick(ev: React.MouseEvent<HTMLIonRowElement, MouseEvent>) {
@@ -93,7 +98,7 @@ export const PlaceCardListItemDesktop: React.FC<PlaceCardListItemProps> = ({
                 <h1 className="font-bold text-black">{place.name}</h1>
               </IonText>
               <IonText>
-                {getAmountOfPeopleState() && (
+                {isAuth && getAmountOfPeopleState() && (
                   <span className="flex flex-row flex-nowrap items-center justify-center font-sans font-regular text-[12px] capitalize mt-1 px-3 border border-black rounded-lg">
                     {getAmountOfPeopleState()}{" "}
                     {<MdPeople className="mx-1" size={12} />}
@@ -101,7 +106,9 @@ export const PlaceCardListItemDesktop: React.FC<PlaceCardListItemProps> = ({
                 )}
               </IonText>
               <IonText>
-                <span className="text-xs text-black font-light">{getDistanceToSpot(place)} km </span>
+                <span className="text-xs text-black font-light">
+                  {getDistanceToSpot(place)} km{" "}
+                </span>
               </IonText>
             </IonCol>
           </IonRow>

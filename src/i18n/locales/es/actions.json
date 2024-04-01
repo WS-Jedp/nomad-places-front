@@ -22,7 +22,8 @@
         "login": "Iniciar sesión",
         "register": "Registrarse",
         "logout": "Cerrar sesión",
-        "sendLink": "Enviar enlace"
+        "sendLink": "Enviar enlace",
+        "updatePassword": "Actualizar contraseña"
     },
     "navigation": {
         "goBack": "Volver",

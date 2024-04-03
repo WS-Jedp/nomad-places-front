@@ -102,7 +102,7 @@ export const ProfilePage: React.FC = () => {
                             }
                         </div>
 
-                        <div className="w-full flex flex-row items-center justify-start mb-3">
+                        {/* <div className="w-full flex flex-row items-center justify-start mb-3">
                             <MdOutlineWork size={30} className="mr-2" />
                             {
                                 userData?.personalInformation.job ? (
@@ -115,7 +115,7 @@ export const ProfilePage: React.FC = () => {
                                     </p>
                                 )
                             }
-                        </div>
+                        </div> */}
                     </section>
                 </IonRow>
             </IonRow>

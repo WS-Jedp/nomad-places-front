@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { MdClose } from "react-icons/md";
 import { useTranslation } from "react-i18next";
+import { INDUSTRIES, INDUSTRIES_LIST } from '../../../models/industries'
 import { ControlledError } from "../../../common/controlledError";
 import { ControlledErrorType } from "../../../common/controlledError/types";
 import {
@@ -12,6 +13,7 @@ import { TextInput } from "../../../components/form/inputs/text";
 import { AuthServices } from "../../../services/auth";
 import { addError } from "../../../store/redux/slices/controlledErrors";
 import { authUser, registerUser } from "../../../store/redux/slices/user";
+import { IonChip, IonLabel } from "@ionic/react";
 
 type AuthFormModalProps = {
   closeCallback: () => void;
@@ -56,6 +58,19 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
 
   function isConfirmPasswordValid() {
     return password === confirmPassword;
+  }
+
+  const [personIndustries, setPersonIndustries] = useState<INDUSTRIES[]>([]);
+  function isIndustrySelected(industry: INDUSTRIES) {
+    return personIndustries.includes(industry);
+  }
+
+  function handleOnIndustry(tag: INDUSTRIES) {
+    if (isIndustrySelected(tag)) {
+      setPersonIndustries(personIndustries.filter((t) => t !== tag));
+    } else {
+      setPersonIndustries([...personIndustries, tag]);
+    }
   }
 
   const [currentAuthStep, setCurrentAuthStep] = useState<number>(0);
@@ -118,6 +133,7 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
           payload: {
             personData: {
               firstName,
+              industry: personIndustries,
             },
             userData: {
               email,
@@ -200,17 +216,33 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
               value={password}
             />
           </div>
-          <TextInput
-            type="password"
-            label={t('forms.inputs.auth.passwordConfirmation.label')}
-            placeholder={t('forms.inputs.auth.passwordConfirmation.placeholder')}
-            callback={handleConfirmPasswordChange}
-            value={confirmPassword}
-            isError={!isConfirmPasswordValid()}
-            feedbackMessage={
-              isConfirmPasswordValid() ? undefined : t('forms.messages.auth.passwordMatch.error')
-            }
-          />
+          <div className="mb-2">
+            <TextInput
+              type="password"
+              label={t('forms.inputs.auth.passwordConfirmation.label')}
+              placeholder={t('forms.inputs.auth.passwordConfirmation.placeholder')}
+              callback={handleConfirmPasswordChange}
+              value={confirmPassword}
+              isError={!isConfirmPasswordValid()}
+              feedbackMessage={
+                isConfirmPasswordValid() ? undefined : t('forms.messages.auth.passwordMatch.error')
+              }
+            />
+          </div>
+          {/* Industry tag options */}
+
+            <div className="flex flex-col align-start justify-start text-start">
+              <label className="text-sm font-semibold my-1">Selecciona la industria con las que te identifiques (Opcional):</label>
+              <div className="flex flex-row flex-wrap align-start justify-start">
+                {
+                  INDUSTRIES_LIST.map((industry, index) => (
+                    <IonChip onClick={() => handleOnIndustry(industry)} outline key={index} className={`cursor-pointer px-3 my-1 mr-1 py-1 ${isIndustrySelected(industry) ? 'bg-indigo-100 text-indigo-500' : 'bg-gray-200 text-gray-500' } `}>
+                      <IonLabel className="text-sm lowercase font-medium">{industry}</IonLabel>
+                    </IonChip>
+                  ))
+                }
+              </div>
+            </div>
           <div className="w-full relative mt-5">
             <InputButton
               text={t('actions.auth.register')}

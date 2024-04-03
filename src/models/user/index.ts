@@ -1,3 +1,5 @@
+import { INDUSTRIES } from "../industries"
+
 export interface User {
     id: string
     username: string
@@ -14,5 +16,5 @@ export interface Person {
     about?: string
     country?: string
     languages?: string[]
-    job?: string
+    industry?: INDUSTRIES[]
 }

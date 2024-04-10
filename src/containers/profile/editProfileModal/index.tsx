@@ -6,11 +6,12 @@ import {
   useAppDispatch,
   useAppSelector,
 } from "../../../common/hooks/useTypedSelectors";
+import { SimpleButton } from "../../../components/buttons/simple";
 import { TextInput } from "../../../components/form/inputs/text";
 import { TextAreaInput } from "../../../components/form/inputs/textarea";
 import { AppModal } from "../../../components/modals/container";
 import { INDUSTRIES, INDUSTRIES_LIST } from "../../../models/industries";
-import { updateUserPersonalInformation } from "../../../store/redux/slices/user";
+import { updateUserInformation, updateUserPersonalInformation } from "../../../store/redux/slices/user";
 
 type EditProfileModalProps = {
   closeCallback: () => void;
@@ -24,9 +25,10 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
   const { userData } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
 
-  const [profilePicture, setProfilePicture] = useState<string | null>(
-    userData?.profilePicture || null
-  );
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [profilePicture, setProfilePicture] = useState<Blob | null>(null);
+
   const [firstName, setFirstName] = useState<string>(
     userData?.personalInformation.firstName || ""
   );
@@ -48,8 +50,8 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
 
   function handleOnPicture(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files![0];
-    const imageFile = URL.createObjectURL(file);
-    setProfilePicture(imageFile);
+    // const imageFile = URL.createObjectURL(file);
+    setProfilePicture(file.slice(0, file.size, file.type));
   }
 
   function handleOnRemoveProfilePicture() {
@@ -72,22 +74,35 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
     }
   }
 
-  function handleOnSave() {
-    dispatch(
-      updateUserPersonalInformation({
-        personalInformation: {
+  async function handleOnSave() {
+    if(!userData) return
+    setIsLoading(true);
+    
+    await dispatch(updateUserInformation({
+      payload: {
+        userData: {
+          profilePicture: profilePicture || undefined,
+          userID: userData.id,
+        },
+        personData: {
+          id: userData.personalInformation.id,
           firstName,
           lastName,
           industry: industries,
           country,
           languages: langs,
           about,
-        },
-        profilePicture: profilePicture || undefined,
-      })
-    );
+        }
+      }
+    }))
+
+    setIsLoading(false);
     if (saveCallback) saveCallback();
   }
+
+  useEffect(() => {
+    console.log(userData)
+  }, [])
 
   return (
     <AppModal>
@@ -106,9 +121,15 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
 
           <h2 className="font-bold text-md">Edit profile</h2>
 
-          <span className="font-bold text-md underline" onClick={handleOnSave}>
-            Save
-          </span>
+          {
+            isLoading ? (
+              <span className="font-light text-xs">Loading...</span>
+            ) : (
+              <span className="font-bold text-md underline" onClick={handleOnSave}>
+                Save
+              </span>
+            )
+          }
         </IonRow>
 
         <section className="relative w-full h-full overflow-y-auto">
@@ -124,9 +145,9 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
                 onInput={handleOnPicture}
               />
               <figure className="relative w-32 h-32 bg-gray-400 rounded-full">
-                {profilePicture ? (
+                {userData?.profilePicture ? (
                   <img
-                    src={profilePicture}
+                    src={userData.profilePicture}
                     alt="Profile picture"
                     className="w-full h-full object-cover rounded-full"
                   />
@@ -221,6 +242,12 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
                 rows={5}
               />
             </div>
+
+            <SimpleButton 
+              action={handleOnSave}
+              loading={isLoading}
+              text="Save"
+            />
           </IonRow>
         </section>
       </section>

@@ -13,3 +13,19 @@ export type ProfileDTO = UserRequestDTO & {
     createdDate: Date
     person: Person
 }
+
+export type UpdatePersonalInformationDTO = {
+    userData: {
+        userID: string,
+        profilePicture?: Blob
+    },
+    personData: {
+        id: string
+        firstName: string,
+        lastName?: string,
+        about?: string,
+        country?: string
+        industry?: string[]
+        languages?: string[]
+    }
+}

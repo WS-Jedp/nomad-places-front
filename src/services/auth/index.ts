@@ -1,7 +1,7 @@
 import { Request } from "../../common/request";
 import { ConfirmProfileDTO, LoginDTO, RegisterUserRequestDTO } from "../../dto/auth";
-import { ProfileDTO } from "../../dto/user";
-import { User } from "../../models/user";
+import { ProfileDTO, UpdatePersonalInformationDTO } from "../../dto/user";
+import { Person, User } from "../../models/user";
 
 export class AuthServices {
     protected request: Request;
@@ -19,6 +19,16 @@ export class AuthServices {
 
     async register(payload: RegisterUserRequestDTO) {
         const response = await this.request.post<LoginDTO>('register', payload)
+        return response
+    }
+
+    async updateUserInformation(payload: { token: string, payload: UpdatePersonalInformationDTO }) {
+        const response = await this.request.withAuth(payload.token).post<{
+            data: {
+                user: User,
+                person: Person
+            }
+        }>('profile/update', payload.payload)
         return response
     }
 
@@ -46,4 +56,6 @@ export class AuthServices {
         const response = await this.request.post<{message: string, user: User}>('reset-password', { email, token, newPassword })
         return response
     }
+
+   
 }

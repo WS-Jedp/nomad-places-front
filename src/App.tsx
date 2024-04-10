@@ -76,7 +76,7 @@ const App: React.FC = () => {
                   <Route exact path="/place/:id/session">
                     <PlaceDetailPage />
                   </Route>
-                  <Route exact path="/me/profile">
+                  <Route exact path="/profile/me">
                     <ProfilePage />
                   </Route>
                   <Route path="*">

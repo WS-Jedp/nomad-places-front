@@ -23,7 +23,8 @@
         "register": "Register",
         "logout": "Logout",
         "sendLink": "Send Link",
-        "updatePassword": "Update Password"
+        "updatePassword": "Update Password",
+        "seeProfile": "See Profile"
     },
     "navigation": {
         "goBack": "Go Back",

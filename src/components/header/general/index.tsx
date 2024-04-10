@@ -89,6 +89,9 @@ export const GeneralHeader: React.FC = () => {
       case UserMenuOptions.recommend:
         console.log("Go to recommend page and auth if not logged in");
         break;
+      case UserMenuOptions.profile:
+        history.push("/profile/me");
+        break;
     }
   }
 

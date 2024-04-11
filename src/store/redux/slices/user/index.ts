@@ -10,6 +10,8 @@ import { ProfileDTO, UpdatePersonalInformationDTO } from "../../../../dto/user";
 import { TOKEN_KEY } from "../../../../common/constants/localstorage";
 import { ControlledError } from "../../../../common/controlledError";
 import { ControlledErrorType } from "../../../../common/controlledError/types";
+import { SocialServices } from "../../../../services/social";
+import { getUserFollowRequests } from "../social";
 
 export interface UserState {
   userData?: User;
@@ -260,6 +262,8 @@ export const userSlice = createSlice({
           id: action.payload.user.personID,
           firstName: action.payload.user.firstName,
         },
+        followers: [],
+        following: [],
       };
       state.auth.token = action.payload.access_token;
       state.auth.isAuth = true;

@@ -6,6 +6,8 @@ export type UserRequestDTO = {
     email: string
     firstName: string
     personID: string
+    following?: string[]
+    followers?: string[]
 }
 
 export type ProfileDTO = UserRequestDTO & {

@@ -1,5 +1,5 @@
 import { IonChip, IonCol, IonLabel, IonRow } from "@ionic/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   MdArrowBack,
   MdHome,
@@ -7,8 +7,10 @@ import {
   MdOutlineWork,
   MdWork,
 } from "react-icons/md";
-import { useHistory } from "react-router";
-import { useAppSelector } from "../../../common/hooks/useTypedSelectors";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../../common/hooks/useTypedSelectors";
 import { EditProfileModal } from "../../../containers/profile/editProfileModal";
 import { SpotsDiscoveredModal } from "../../../containers/profile/spotsDiscovered";
 import { SpotsRecommendedModal } from "../../../containers/profile/spotsRecommendedModal";
@@ -17,6 +19,7 @@ import { UserFollowingModal } from "../../../containers/profile/userFollowingMod
 import { AppLayout } from "../../../layouts/AppLayout";
 
 export const ProfilePage: React.FC = () => {
+  const { followRequests } = useAppSelector((state) => state.social);
   const { userData } = useAppSelector((state) => state.user);
 
   const [editModal, setEditModal] = useState(false);
@@ -108,7 +111,11 @@ export const ProfilePage: React.FC = () => {
               className="flex flex-col items-center justify-center text-center p-2 w-5/12 cursor-pointer hover:underline"
               onClick={onFollowing}
             >
-              <strong className="text-2xl font-semibold my-0 py-0">21</strong>
+              <strong className="text-2xl font-semibold my-0 py-0">
+                {userData?.following?.length && userData?.following?.length > 0
+                  ? userData.following.length
+                  : 0}
+              </strong>
               <span className="font-light text-md my-0 py-0">Following</span>
             </button>
             <button
@@ -116,11 +123,17 @@ export const ProfilePage: React.FC = () => {
               onClick={onFollowers}
             >
               <strong className="relative text-2xl font-semibold my-0 py-0">
-                12
+                {userData?.followers?.length && userData?.followers?.length > 0
+                  ? userData.followers.length
+                  : 0}
                 {/* Notifications */}
-                <div className="absolute top-0 right-[-12px] w-4 h-4 bg-blue-500 text-white font-bold text-xs rounded-full flex items-center justify-center text-center">
-                  2
-                </div>
+                {
+                    followRequests && followRequests.length > 0 && (
+                        <div className="absolute top-0 right-[-12px] w-4 h-4 bg-blue-500 text-white font-bold text-xs rounded-full flex items-center justify-center text-center">
+                            { followRequests.length }
+                        </div>
+                    )
+                }
               </strong>
               <span className="font-light text-md my-0 py-0">Followers</span>
             </button>
@@ -133,7 +146,10 @@ export const ProfilePage: React.FC = () => {
                 Spots Discovered
               </span>
             </button>
-            <button className="flex flex-col items-center justify-center text-center p-2 w-5/12 cursor-pointer hover:underline" onClick={onSpotsRecommended}>
+            <button
+              className="flex flex-col items-center justify-center text-center p-2 w-5/12 cursor-pointer hover:underline"
+              onClick={onSpotsRecommended}
+            >
               <strong className="text-2xl font-semibold my-0 py-0">2</strong>
               <span className="font-light text-md my-0 py-0">
                 Spots Recommended
@@ -212,7 +228,9 @@ export const ProfilePage: React.FC = () => {
         <SpotsDiscoveredModal closeCallback={closeSpotsDiscovered} />
       )}
 
-      {spotsRecommendedModal && (<SpotsRecommendedModal closeCallback={closeSpotsRecommended} />)}
+      {spotsRecommendedModal && (
+        <SpotsRecommendedModal closeCallback={closeSpotsRecommended} />
+      )}
     </AppLayout>
   );
 };

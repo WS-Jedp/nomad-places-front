@@ -9,6 +9,7 @@ import {
 import { SimpleButton } from "../../../components/buttons/simple";
 import { TextInput } from "../../../components/form/inputs/text";
 import { TextAreaInput } from "../../../components/form/inputs/textarea";
+import { LoaderSpinner } from "../../../components/loaders/spinner";
 import { AppModal } from "../../../components/modals/container";
 import { INDUSTRIES, INDUSTRIES_LIST } from "../../../models/industries";
 import { updateUserInformation, updateUserPersonalInformation } from "../../../store/redux/slices/user";
@@ -100,10 +101,6 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
     if (saveCallback) saveCallback();
   }
 
-  useEffect(() => {
-    console.log(userData)
-  }, [])
-
   return (
     <AppModal>
       <section
@@ -123,7 +120,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
 
           {
             isLoading ? (
-              <span className="font-light text-xs">Loading...</span>
+              <LoaderSpinner />
             ) : (
               <span className="font-bold text-md underline" onClick={handleOnSave}>
                 Save

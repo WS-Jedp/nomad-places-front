@@ -6,6 +6,8 @@ export interface User {
     email: string
     profilePicture?: string
     personalInformation: Person
+    followers?: string[]
+    following?: string[]
 }
 
 export interface Person {

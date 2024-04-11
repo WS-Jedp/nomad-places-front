@@ -28,6 +28,7 @@ import { TOKEN_KEY } from "../../../common/constants/localstorage";
 import { SimpleButton } from "../../buttons/simple";
 import { useTranslation } from "react-i18next";
 import { ResetPasswordModal } from "../../../containers/auth/resetPasswordModal";
+import { getUserFollowRequests } from "../../../store/redux/slices/social";
 
 export const GeneralHeader: React.FC = () => {
   const { t } = useTranslation();
@@ -82,6 +83,7 @@ export const GeneralHeader: React.FC = () => {
         break;
       case UserMenuOptions.logout:
         dispatch(logout());
+        history.push("/home");  
         break;
       case UserMenuOptions.about:
         console.log("Go to about page");
@@ -137,6 +139,7 @@ export const GeneralHeader: React.FC = () => {
     const token = localStorage.getItem(TOKEN_KEY);
     if (token) {
       await dispatch(getUserData({ token }));
+      await dispatch(getUserFollowRequests())
     }
   }
 

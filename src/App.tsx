@@ -35,6 +35,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useAppDispatch, useAppSelector } from './common/hooks/useTypedSelectors';
 import { useEffect } from 'react';
 import { addDisplayedAlert, addDisplayedError, removeAlert, removeError } from './store/redux/slices/controlledErrors';
+import { AuthProtectedPage } from './hoc/authProtected';
+import { ExternalProfilePage } from './pages/Users/ExternalProfile';
 
 setupIonicReact();
 
@@ -77,7 +79,12 @@ const App: React.FC = () => {
                     <PlaceDetailPage />
                   </Route>
                   <Route exact path="/profile/me">
-                    <ProfilePage />
+                    <AuthProtectedPage>
+                      <ProfilePage />
+                    </AuthProtectedPage>
+                  </Route>
+                  <Route exact path="/profile/:userID">
+                      <ExternalProfilePage />
                   </Route>
                   <Route path="*">
                     <Redirect to="/home" />

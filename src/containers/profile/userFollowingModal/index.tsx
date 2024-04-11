@@ -1,6 +1,17 @@
 import { IonRow } from "@ionic/react";
+import { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
+import { ControlledError } from "../../../common/controlledError";
+import { ControlledErrorType } from "../../../common/controlledError/types";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../../common/hooks/useTypedSelectors";
+import { LoaderSpinner } from "../../../components/loaders/spinner";
 import { AppModal } from "../../../components/modals/container";
+import { User } from "../../../models/user";
+import { SocialServices } from "../../../services/social";
+import { addError } from "../../../store/redux/slices/controlledErrors";
 
 export interface UserFollowingModalProps {
   closeCallback: () => void;
@@ -9,6 +20,53 @@ export interface UserFollowingModalProps {
 export const UserFollowingModal: React.FC<UserFollowingModalProps> = ({
   closeCallback,
 }) => {
+  const { token } = useAppSelector((state) => state.user.auth);
+  const dispatch = useAppDispatch();
+
+  const [following, setFollowing] = useState<User[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  function handleUnfollow(userID: string) {
+    console.log("Unfollow clicked");
+  }
+
+  async function getFollowing() {
+    setIsLoading(true);
+    try {
+      if (!token) {
+        dispatch(
+          addError(
+            new ControlledError(
+              "You need to be logged in to see your followers",
+              ControlledErrorType.FRONTEND_SYSTEM
+            )
+          )
+        );
+        return;
+      }
+
+      const socialServices = new SocialServices();
+      const following = await socialServices.getFollowing({ token });
+
+      setFollowing(following);
+    } catch (error) {
+      console.error(error);
+      dispatch(
+        addError(
+          new ControlledError(
+            String(error),
+            ControlledErrorType.FRONTEND_SYSTEM
+          )
+        )
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  }
+  useEffect(() => {
+    getFollowing();
+  }, []);
+
   return (
     <AppModal>
       <section
@@ -33,30 +91,42 @@ export const UserFollowingModal: React.FC<UserFollowingModalProps> = ({
 
         <section className="flex flex-col items-start justify-start w-full p-5 overflow-y-auto">
           <h2 className="font-bold text-lg mb-3">Who you follow:</h2>
-          <ul className="w-full">
-          <li className="flex flex-row items-center justify-between w-full h-auto border-t-[1px] border-zinc-200 py-2">
-              <button className="flex flex-row items-center justify-start hover:underline">
-                <figure className="w-6 h-6 bg-zinc-300 rounded-full overflow-hidden">
-                  <img
-                    src="#"
-                    alt=""
-                    className="w-full h-full object-cover rounded-full"
-                  />
-                </figure>
-                <h2 className="font-semibold text-sm ml-3">John Doe</h2>
-              </button>
+          {isLoading ? (
+            <LoaderSpinner />
+          ) : (
+            <ul className="w-full">
+              {following.length > 0 ? (
+                following.map((user) => (
+                  <li className="flex flex-row items-center justify-between w-full h-auto border-t-[1px] border-zinc-200 py-2">
+                    <button className="flex flex-row items-center justify-start hover:underline">
+                      <figure className="w-6 h-6 bg-zinc-300 rounded-full overflow-hidden">
+                        <img
+                          src={user.profilePicture}
+                          alt=""
+                          className="w-full h-full object-cover rounded-full"
+                        />
+                      </figure>
+                      <h2 className="font-semibold text-sm ml-3">{ user.username }</h2>
+                    </button>
 
-            <button
-                className="
-                                relative
-                                text-xs md:text-md font-light px-3 py-1 underline
-                            "
-            >
-                Unfollow
-            </button>
-            </li>
-            
-          </ul>
+                    <button
+                      onClick={() => handleUnfollow(user.id)}
+                      className="
+                                      relative
+                                      text-xs md:text-md font-light px-3 py-1 underline
+                                  "
+                    >
+                      Unfollow
+                    </button>
+                  </li>
+                ))
+              ) : (
+                <p className="text-sm font-light text-start">
+                  You are not following anyone yet.
+                </p>
+              )}
+            </ul>
+          )}
         </section>
       </section>
     </AppModal>

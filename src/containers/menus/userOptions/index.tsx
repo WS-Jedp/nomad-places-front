@@ -19,6 +19,7 @@ export const UserOptionsMenu:React.FC<UserOptionsMenuProps> = ({ callback }) => 
 
     const { t } = useTranslation()
 
+    const { followRequests } = useAppSelector((state) => state.social);
     const { isAuth } = useAppSelector(state => state.user.auth)
     const userData = useAppSelector(state => state.user.userData)
 
@@ -45,9 +46,13 @@ export const UserOptionsMenu:React.FC<UserOptionsMenuProps> = ({ callback }) => 
                         </div>
                         <button className="px-6 py-3 w-full h-auto text-start hover:bg-gray-50 flex flex-row flex-nowrap items-center justify-between" onClick={() => handleAction(UserMenuOptions.profile)}>
                             <h2 className="font-medium text-sm">{t('actions.auth.seeProfile')}</h2>
-                            <div className="w-4 h-4 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-center text-xs">
-                                2
-                            </div>
+                            {
+                                followRequests && followRequests.length > 0 && (
+                                    <div className="w-4 h-4 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-center text-xs">
+                                        { followRequests.length }
+                                    </div>
+                                )
+                            }
                         </button>
                         <button className="px-6 py-3 w-full h-auto text-start hover:bg-gray-50" onClick={() => handleAction(UserMenuOptions.logout)}>
                             <h2 className="font-regular text-sm font-semibold text-red-500">{t('actions.auth.logout')}</h2>

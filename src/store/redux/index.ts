@@ -6,6 +6,7 @@ import PlaceSesssionActionsSlice from './slices/sessionActions/update'
 import UserSessionSlice  from './slices/userSession'
 import SpotSessionSlice  from './slices/spotSession'
 import ControlledErrorsSlice  from './slices/controlledErrors'
+import SocialSlice  from './slices/social'
 
 export const reduxStore = configureStore({
     reducer: {
@@ -16,6 +17,7 @@ export const reduxStore = configureStore({
         userSession: UserSessionSlice,
         spotSession: SpotSessionSlice,
         controlledErrors: ControlledErrorsSlice,
+        social: SocialSlice
     },
     middleware: (getDefaultMiddleware) => {
         return getDefaultMiddleware({

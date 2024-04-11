@@ -14,6 +14,7 @@ import { AuthServices } from "../../../services/auth";
 import { addError } from "../../../store/redux/slices/controlledErrors";
 import { authUser, registerUser } from "../../../store/redux/slices/user";
 import { IonChip, IonLabel } from "@ionic/react";
+import { getUserFollowRequests } from "../../../store/redux/slices/social";
 
 type AuthFormModalProps = {
   closeCallback: () => void;
@@ -115,6 +116,7 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
     try {
       setIsLoadingRequest(true);
       await dispatch(authUser({ username: email, password }));
+      await dispatch( getUserFollowRequests() )
       setIsLoadingRequest(false);
       closeCallback();
     } catch (error) {

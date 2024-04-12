@@ -1,6 +1,7 @@
 import { IonRow } from "@ionic/react";
 import { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
+import { useHistory } from "react-router";
 import { ControlledError } from "../../../common/controlledError";
 import { ControlledErrorType } from "../../../common/controlledError/types";
 import {
@@ -12,6 +13,7 @@ import { AppModal } from "../../../components/modals/container";
 import { User } from "../../../models/user";
 import { SocialServices } from "../../../services/social";
 import { addError } from "../../../store/redux/slices/controlledErrors";
+import { unfollowUser } from "../../../store/redux/slices/user";
 
 export interface UserFollowingModalProps {
   closeCallback: () => void;
@@ -20,14 +22,27 @@ export interface UserFollowingModalProps {
 export const UserFollowingModal: React.FC<UserFollowingModalProps> = ({
   closeCallback,
 }) => {
+  const history = useHistory()
   const { token } = useAppSelector((state) => state.user.auth);
   const dispatch = useAppDispatch();
 
   const [following, setFollowing] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  function handleUnfollow(userID: string) {
-    console.log("Unfollow clicked");
+  function handleOnUser(userID: string) {
+    history.push(`/profile/${userID}`)
+  }
+
+  async function handleUnfollow(userID: string) {
+    setIsLoading(true)
+    try {
+      await dispatch( unfollowUser({ userToUnfollowID: userID }) )
+      setFollowing(old => old.filter(user => user.id !== userID))      
+    } catch (error) {
+      dispatch( addError( new ControlledError(String(error), ControlledErrorType.FRONTEND_SYSTEM) ) )
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   async function getFollowing() {
@@ -98,7 +113,7 @@ export const UserFollowingModal: React.FC<UserFollowingModalProps> = ({
               {following.length > 0 ? (
                 following.map((user) => (
                   <li className="flex flex-row items-center justify-between w-full h-auto border-t-[1px] border-zinc-200 py-2">
-                    <button className="flex flex-row items-center justify-start hover:underline">
+                    <button onClick={() => handleOnUser(user.id)} className="flex flex-row items-center justify-start hover:underline">
                       <figure className="w-6 h-6 bg-zinc-300 rounded-full overflow-hidden">
                         <img
                           src={user.profilePicture}

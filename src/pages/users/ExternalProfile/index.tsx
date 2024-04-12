@@ -22,14 +22,18 @@ import { ProfileDTO } from "../../../dto/user";
 import { AppLayout } from "../../../layouts/AppLayout";
 import { SocialServices } from "../../../services/social";
 import { addError } from "../../../store/redux/slices/controlledErrors";
+import { toFollowRequest } from "../../../store/redux/slices/social";
+import { unfollowUser } from "../../../store/redux/slices/user";
 
 export const ExternalProfilePage: React.FC = () => {
   const dispatch = useAppDispatch();
-    const history = useHistory()
+  const history = useHistory();
   const { userID } = useParams<{ userID: string }>();
   const { userData: authUser } = useAppSelector((state) => state.user);
   const { token } = useAppSelector((state) => state.user.auth);
+  const { toFollowRequests } = useAppSelector((state) => state.social);
   const [isLoading, setIsLoading] = useState<Boolean>(false);
+  const [isLoadingFollow, setIsLoadingFollow] = useState<Boolean>(false);
   const [userData, setUserData] = useState<ProfileDTO | undefined>(undefined);
 
   const [spotsDiscoveredModal, setSpotsDiscoveredModal] = useState(false);
@@ -48,8 +52,28 @@ export const ExternalProfilePage: React.FC = () => {
     setSpotsRecommendedModal(false);
   }
 
+  function isFollowingRequested() {
+    return toFollowRequests.some(
+      (request) =>
+        request.receiverID === userID && request.senderID === authUser?.id
+    );
+  }
+
+  async function handleOnUnfollow() {
+    setIsLoadingFollow(true);
+    try {
+      await dispatch( unfollowUser({ userToUnfollowID: userID }) )
+      if(userData && userData.followers) {
+        userData.followers = userData.followers.filter(follower => follower !== authUser?.id)
+      }
+    } catch (error) {
+      await dispatch( addError(new ControlledError(String(error), ControlledErrorType.FRONTEND_SYSTEM)) )
+    } finally {
+      setIsLoadingFollow(false)
+    }
+  }
+
   async function getExternalProfileData() {
-    console.log(userID, "HELLO WORLD")
     setIsLoading(true);
     try {
       if (!token) {
@@ -85,14 +109,15 @@ export const ExternalProfilePage: React.FC = () => {
   }
 
   useEffect(() => {
-    if(authUser?.id === userID) {
-        history.push('/profile/me')
-        return
+    if (authUser?.id === userID) {
+      history.push("/profile/me");
+      return;
     }
     getExternalProfileData();
   }, [token]);
 
   async function onFollow() {
+    setIsLoadingFollow(true);
     if (!token) {
       dispatch(
         addError(
@@ -106,8 +131,7 @@ export const ExternalProfilePage: React.FC = () => {
     }
 
     try {
-      const socialServices = new SocialServices();
-      await socialServices.sendFollowRequest({ token, userToFollowID: userID });
+      await dispatch(toFollowRequest({ userToFollowID: userID }));
     } catch (error) {
       dispatch(
         addError(
@@ -118,9 +142,10 @@ export const ExternalProfilePage: React.FC = () => {
         )
       );
       console.error(error);
+    } finally {
+      setIsLoadingFollow(false);
     }
   }
-  
 
   return (
     <AppLayout>
@@ -147,22 +172,26 @@ export const ExternalProfilePage: React.FC = () => {
                 </figure>
 
                 <div className="mt-3">
-                {
-                    authUser?.following?.some(following => following === userID) ? (
-                        <button  className="underline font-light text-md">
-                            Unfollow
-                        </button>
-                    ) : (
-                        <SimpleButton
-                            text="Request to follow"
-                            action={onFollow}
-                        />
-                    )
-                }
+                  {isLoadingFollow ? (
+                    <LoaderSpinner />
+                  ) : authUser?.following?.some(
+                      (following) => following === userID
+                    ) ? (
+                    <button onClick={handleOnUnfollow} className="underline font-light text-md">
+                      Unfollow
+                    </button>
+                  ) : isFollowingRequested() ? (
+                    <p className="border-[1px] border-black text-center text-xs font-light p-2 rounded-md">
+                      You already requested to follow
+                    </p>
+                  ) : (
+                    <SimpleButton text="Request to follow" action={onFollow} />
+                  )}
                 </div>
 
                 <h2 className="font-bold text-4xl mt-3">
-                  Hey, I'm {`${userData?.person.firstName} ${userData?.person.lastName}`} 
+                  Hey, I'm{" "}
+                  {`${userData?.person.firstName} ${userData?.person.lastName}`}
                 </h2>
                 <span className="font-light text-md">Joined in 2024</span>
 

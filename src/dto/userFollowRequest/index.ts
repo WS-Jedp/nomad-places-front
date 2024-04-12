@@ -5,5 +5,8 @@ export interface UserFollowRequestCreatedDTO {
 }
 
 export interface UserFollowRequestsDTO {
-    requests: UserFollowRequest[];
+    requests: {
+        followRequests: UserFollowRequest[];
+        toFollowRequests: UserFollowRequest[];
+    }
 }

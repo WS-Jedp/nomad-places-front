@@ -16,7 +16,7 @@ export class SocialServices {
         return response.user
     }
 
-    async getFollowRequests(payload: { token: string }) {
+    async getUserSocialRequests(payload: { token: string }) {
         const response = await this.request.withAuth(payload.token).get<UserFollowRequestsDTO>(`me/follow/requests`)
         return response.requests
     }
@@ -26,11 +26,11 @@ export class SocialServices {
         return response.socialRequest
     }
     async acceptFollowRequest(payload: { requestID: string, token: string }) {
-        const response = await this.request.withAuth(payload.token).post<UserFollowRequestCreatedDTO>(`follow/request/accept/${payload.requestID}/accept`)
+        const response = await this.request.withAuth(payload.token).post<UserFollowRequestCreatedDTO>(`follow/request/accept/${payload.requestID}`)
         return response.socialRequest
     }
     async rejectFollowRequest(payload: { requestID: string, token: string }) {
-        const response = await this.request.withAuth(payload.token).post<UserFollowRequestCreatedDTO>(`follow/request/reject/${payload.requestID}/reject`)
+        const response = await this.request.withAuth(payload.token).post<UserFollowRequestCreatedDTO>(`follow/request/reject/${payload.requestID}`)
         return response.socialRequest
     }
 

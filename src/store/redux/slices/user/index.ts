@@ -12,6 +12,7 @@ import { ControlledError } from "../../../../common/controlledError";
 import { ControlledErrorType } from "../../../../common/controlledError/types";
 import { SocialServices } from "../../../../services/social";
 import { getUserFollowRequests } from "../social";
+import { UserFollowRequest } from "../../../../models/userFollowRequest";
 
 export interface UserState {
   userData?: User;
@@ -108,9 +109,9 @@ export const registerUser = createAsyncThunk<
 export const updateUserInformation = createAsyncThunk<
   {
     data: {
-        user: User;
-        person: Person;
-    }
+      user: User;
+      person: Person;
+    };
   },
   { payload: UpdatePersonalInformationDTO }
 >("user/updateUserInformation", async ({ payload }, thunkApi) => {
@@ -124,6 +125,87 @@ export const updateUserInformation = createAsyncThunk<
     token: state.user.auth.token,
   });
   return user;
+});
+
+// Social methods
+export const acceptFollowRequest = createAsyncThunk<
+  {
+    request: UserFollowRequest
+  },
+  { requestID: string }
+>("user/acceptFollowRequest", async ({ requestID }, thunkApi) => {
+  const state = thunkApi.getState() as { user: UserState };
+  if (!state.user.auth.token) {
+    throw new Error("Token not found");
+  }
+  const socialServices = new SocialServices();
+  const request = await socialServices.acceptFollowRequest({
+    requestID,
+    token: state.user.auth.token,
+  });
+  return {
+    request
+  }
+});
+
+export const rejectFollowRequest = createAsyncThunk<
+  {
+    request: UserFollowRequest
+  },
+  { requestID: string }
+>("user/rejectFollowRequest", async ({ requestID }, thunkApi) => {
+  const state = thunkApi.getState() as { user: UserState };
+  if (!state.user.auth.token) {
+    throw new Error("Token not found");
+  }
+  const socialServices = new SocialServices();
+  const request = await socialServices.rejectFollowRequest({
+    requestID,
+    token: state.user.auth.token,
+  });
+  return {
+    request
+  }
+});
+
+export const removeUserFollower = createAsyncThunk<
+  {
+    followers: string[]
+  },
+  { userToRemoveID: string }
+>("user/removeUserFollower", async ({ userToRemoveID }, thunkApi) => {
+  const state = thunkApi.getState() as { user: UserState };
+  if (!state.user.auth.token) {
+    throw new Error("Token not found");
+  }
+  const socialServices = new SocialServices();
+  const followers = await socialServices.removeFollower({
+    userToRemoveID,
+    token: state.user.auth.token,
+  });
+  return {
+    followers
+  }
+});
+
+export const unfollowUser = createAsyncThunk<
+  {
+    following: string[]
+  },
+  { userToUnfollowID: string }
+>("user/unfollowerUser", async ({ userToUnfollowID }, thunkApi) => {
+  const state = thunkApi.getState() as { user: UserState };
+  if (!state.user.auth.token) {
+    throw new Error("Token not found");
+  }
+  const socialServices = new SocialServices();
+  const following = await socialServices.unfollowUser({
+    userToUnfollowID,
+    token: state.user.auth.token,
+  });
+  return {
+    following
+  }
 });
 
 export const userSlice = createSlice({
@@ -219,6 +301,8 @@ export const userSlice = createSlice({
           id: action.payload.user.personID,
           firstName: action.payload.user.firstName,
         },
+        followers: action.payload.user.followers || [],
+        following: action.payload.user.following || []
       };
       state.auth.token = action.payload.access_token;
       state.auth.isAuth = true;
@@ -281,6 +365,8 @@ export const userSlice = createSlice({
         id: action.payload.id,
         username: action.payload.username,
         email: action.payload.email,
+        followers: action.payload.followers || [],
+        following: action.payload.following || [],
         personalInformation: {
           ...action.payload.person,
         },
@@ -301,6 +387,22 @@ export const userSlice = createSlice({
       state.auth.roles = [];
       state.userData = undefined;
       localStorage.removeItem(TOKEN_KEY);
+    });
+
+    // Social methods
+    builder.addCase(acceptFollowRequest.fulfilled, (state, action) => {
+      if (!state.userData) return;
+      state.userData.following?.push(action.payload.request.senderID);
+    });
+
+    builder.addCase(removeUserFollower.fulfilled, (state, action) => {
+      if (!state.userData) return;
+      state.userData.followers = action.payload.followers;
+    });
+
+    builder.addCase(unfollowUser.fulfilled, (state, action) => {
+      if (!state.userData) return;
+      state.userData.following = action.payload.following;
     });
   },
 });

@@ -1,5 +1,13 @@
 {
     "general": {
         "aboutSpots": "Acerca de Spots"
+    },
+    "social": {
+        "profile": {
+            "about": "Acerda de mi"
+        },
+        "externalProfile": {
+            "about": "Acerca de {{name}}"
+        }
     }
 }

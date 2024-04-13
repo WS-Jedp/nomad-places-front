@@ -1,5 +1,6 @@
 import { IonChip, IonLabel, IonRow } from "@ionic/react";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { IoMdClose } from "react-icons/io";
 import { MdEdit } from "react-icons/md";
 import {
@@ -23,6 +24,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
   closeCallback,
   saveCallback,
 }) => {
+  const { t } = useTranslation()
   const { userData } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
 
@@ -114,16 +116,16 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
             "
       >
         <IonRow className="w-full flex flex-row itesm-center justify-between p-5 shadow-sm">
-          <IoMdClose size={24} onClick={handleOnClose} />
+          <IoMdClose size={24} onClick={handleOnClose} className="cursor-pointer" />
 
-          <h2 className="font-bold text-md">Edit profile</h2>
+          <h2 className="font-bold text-md">{t('actions.auth.editProfile')}</h2>
 
           {
             isLoading ? (
               <LoaderSpinner />
             ) : (
-              <span className="font-bold text-md underline" onClick={handleOnSave}>
-                Save
+              <span className="font-bold text-md underline cursor-pointer" onClick={handleOnSave}>
+                {t('actions.general.save')}
               </span>
             )
           }
@@ -163,7 +165,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
                 className="mt-5 text-red-500 text-md font-ligh underline cursor-pointer"
                 onClick={handleOnRemoveProfilePicture}
               >
-                Remove picture
+                {t('actions.auth.removePicture')}
               </span>
             )}
           </IonRow>
@@ -172,43 +174,43 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
             <div className="w-full my-2">
               <TextInput
                 callback={(value) => setFirstName(value)}
-                placeholder="Write your firstname"
+                placeholder={t('forms.inputs.auth.firstName.placeholder')}
                 type="text"
-                label="First name"
+                label={t('forms.inputs.auth.firstName.label')}
                 value={firstName}
               />
             </div>
             <div className="w-full my-2">
               <TextInput
                 callback={(value) => setLastName(value)}
-                placeholder="Write your lastname"
+                placeholder={t('forms.inputs.auth.lastName.placeholder')}
                 type="text"
-                label="Last name"
+                label={t('forms.inputs.auth.lastName.label')}
                 value={lastName}
               />
             </div>
             <div className="w-full my-2">
               <TextInput
                 callback={(value) => setCountry(value)}
-                placeholder="City, Country"
+                placeholder={t('forms.inputs.personalInformation.from.placeholder')}
                 type="text"
-                label="Where you from?"
+                label={t('forms.inputs.personalInformation.from.label')}
                 value={country}
               />
             </div>
             <div className="w-full my-2">
               <TextInput
                 callback={(value) => setLangs(value.split(","))}
-                placeholder="English, Spanish"
+                placeholder={t('forms.inputs.personalInformation.languages.placeholder')}
                 type="text"
-                label="What languages you speak?"
+                label={t('forms.inputs.personalInformation.languages.label')}
                 value={langs.join(",")}
               />
             </div>
 
             <div className="flex flex-col align-start justify-start text-start">
               <label className="text-sm font-semibold my-1">
-                Selecciona la industria con las que te identifiques (Opcional):
+                {t('forms.inputs.personalInformation.industry.label')}
               </label>
               <div className="flex flex-row flex-wrap align-start justify-start">
                 {INDUSTRIES_LIST.map((industry, index) => (
@@ -222,8 +224,8 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
                         : "bg-gray-200 text-gray-500"
                     } `}
                   >
-                    <IonLabel className="text-sm lowercase font-medium">
-                      {industry}
+                    <IonLabel className="text-sm font-medium">
+                      {t(`filters.users.industries.${industry}`)}
                     </IonLabel>
                   </IonChip>
                 ))}
@@ -233,8 +235,8 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
             <div className="w-full my-2">
               <TextAreaInput
                 callback={(value) => setAbout(value)}
-                placeholder="Tell us something about you"
-                label="About"
+                placeholder={t('forms.inputs.personalInformation.about.placeholder')}
+                label={t('forms.inputs.personalInformation.about.label')}
                 value={about}
                 rows={5}
               />
@@ -243,7 +245,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
             <SimpleButton 
               action={handleOnSave}
               loading={isLoading}
-              text="Save"
+              text={t('actions.general.save')}
             />
           </IonRow>
         </section>

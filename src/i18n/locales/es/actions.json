@@ -12,11 +12,14 @@
         "cancel": "Cancelar",
         "seeMore": "Ver Más",
         "seeLess": "Ver Menos",
-        "seeMoreInformation": "Ver más información"
+        "seeMoreInformation": "Ver más información",
+        "remove": "Remover"
     },
     "confirmation": {
         "yes": "Sí",
-        "no": "No"
+        "no": "No",
+        "accept": "Aceptar",
+        "decline": "Rechazar"
     },
     "auth": {
         "login": "Iniciar sesión",
@@ -24,7 +27,14 @@
         "logout": "Cerrar sesión",
         "sendLink": "Enviar enlace",
         "updatePassword": "Actualizar contraseña",
-        "seeProfile": "Ver perfil"
+        "seeProfile": "Ver perfil",
+        "editProfile": "Editar perfil",
+        "removePicture": "Remover imagen de perfil",
+        "addPicture": "Agregar imagen de perfil"
+    },
+    "social": {
+        "follow": "Seguir",
+        "unfollow": "Dejar de seguir"
     },
     "navigation": {
         "goBack": "Volver",

@@ -12,11 +12,15 @@
         "cancel": "Cancel",
         "seeMore": "See More",
         "seeLess": "See Less",
-        "seeMoreInformation": "See More Information"
+        "seeMoreInformation": "See More Information",
+        "remove": "Remove"
     },
     "confirmation": {
         "yes": "Yes",
-        "no": "No"
+        "no": "No",
+        "accept": "Accept",
+        "reject": "Reject",
+        "decline": "Decline"
     },
     "auth": {
         "login": "Login",
@@ -24,7 +28,14 @@
         "logout": "Logout",
         "sendLink": "Send Link",
         "updatePassword": "Update Password",
-        "seeProfile": "See Profile"
+        "seeProfile": "See Profile",
+        "editProfile": "Edit Profile",
+        "removePicture": "Remove Profile Picture",
+        "addPicture": "Add Profile Picture"    
+    },
+    "social": {
+        "follow": "Follow",
+        "unfollow": "Unfollow"
     },
     "navigation": {
         "goBack": "Go Back",

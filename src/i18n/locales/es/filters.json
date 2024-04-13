@@ -57,6 +57,32 @@
         "vibe": "Divertirse",
         "romantic": "Romántico"
     },
+    "users": {
+        "industries": {
+            "STUDENT": "Estudiante",
+            "WORKER": "Trabajador",
+            "ENTREPRENEUR": "Emprendedor",
+            "FREELANCER": "Independiente",
+            "ARTIST": "Artista",
+            "PROGRAMMER": "Programador",
+            "DESIGNER": "Diseñador",
+            "MARKETER": "Mercadólogo",
+            "ADMINISTRATOR": "Administrador",
+            "WRITER": "Escritor",
+            "TOURIST": "Turista",
+            "PHOTOGRAPHER": "Fotógrafo",
+            "MUSICIAN": "Músico",
+            "SALESMAN": "Vendedor",
+            "MANAGER": "Gerente",
+            "FINNANCE": "Finanzas",
+            "LAWYER": "Abogado",
+            "TEACHER": "Maestro",
+            "RESEARCHER": "Investigador",
+            "ENGINEER": "Ingeniero",
+            "ARCHITECT": "Arquitecto",
+            "OTHER": "Otro"
+        }
+    },
     "messages": {
         "reduceFilters": "No hay spots alrededor, intenta reduciendo los filtros",
         "noSpots": "No hay spots alrededor"

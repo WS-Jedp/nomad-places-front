@@ -1,5 +1,6 @@
 import { IonRow } from "@ionic/react";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { IoMdClose } from "react-icons/io";
 import { useHistory } from "react-router";
 import { ControlledError } from "../../../common/controlledError";
@@ -21,6 +22,7 @@ export const UserFollowersModal: React.FC<UserFollowersModalProps> = ({
   closeCallback,
 }) => {
   const history = useHistory()
+  const { t } = useTranslation()
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [followers, setFollowers] = useState<User[]>([]);
   const { followRequests } = useAppSelector((state) => state.social);
@@ -106,13 +108,17 @@ export const UserFollowersModal: React.FC<UserFollowersModalProps> = ({
             onClick={closeCallback}
           />
 
-          <h2 className="font-bold text-md">Followers</h2>
+          <h2 className="font-bold text-md">
+            {t('messages.social.general.followers')}
+          </h2>
         </IonRow>
 
         {followRequests && followRequests.length > 0 && (
           <section className="flex flex-col items-start justify-start w-full p-5 overflow-y-auto">
             <h2 className="font-bold text-lg mb-3">
-              These people wants to follow you:
+              {
+                t('messages.social.requests.follow')
+              }
             </h2>
             <ul className="w-full">
                 {
@@ -140,7 +146,7 @@ export const UserFollowersModal: React.FC<UserFollowersModalProps> = ({
                                             hover:bg-blue-300
                                         "
                         >
-                          Acept
+                          { t('actions.confirmation.accept') }
                         </button>
                         <button
                           onClick={() => handleOnRejectRequest(req.id)}
@@ -152,7 +158,7 @@ export const UserFollowersModal: React.FC<UserFollowersModalProps> = ({
                                             hover:bg-zinc-300
                                         "
                         >
-                          Decline
+                          { t('actions.confirmation.decline') }
                         </button>
                       </div>
                     </li>
@@ -163,7 +169,11 @@ export const UserFollowersModal: React.FC<UserFollowersModalProps> = ({
         )}
 
         <section className="flex flex-col items-start justify-start w-full p-5 overflow-y-auto">
-          <h2 className="font-bold text-lg mb-3">Who follows you?</h2>
+          <h2 className="font-bold text-lg mb-3">
+            {
+              t('messages.social.followers.who')
+            }
+          </h2>
           {
             isLoading ? (
               <LoaderSpinner />
@@ -191,13 +201,13 @@ export const UserFollowersModal: React.FC<UserFollowersModalProps> = ({
                                           text-xs md:text-md font-light px-3 py-1 underline
                                       "
                         >
-                          Remove
+                          { t('actions.general.remove') }
                         </button>
                       </li>
                     ))
                   ) : (
                     <p className="text-sm font-light text-start">
-                      It looks that nobody is smart enough to follow you &gt;:|
+                      {t('messages.social.followers.empty')}
                     </p>
                   )
                 }

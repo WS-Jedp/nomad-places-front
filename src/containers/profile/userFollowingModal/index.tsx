@@ -1,5 +1,6 @@
 import { IonRow } from "@ionic/react";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { IoMdClose } from "react-icons/io";
 import { useHistory } from "react-router";
 import { ControlledError } from "../../../common/controlledError";
@@ -23,6 +24,7 @@ export const UserFollowingModal: React.FC<UserFollowingModalProps> = ({
   closeCallback,
 }) => {
   const history = useHistory()
+  const { t } = useTranslation()
   const { token } = useAppSelector((state) => state.user.auth);
   const dispatch = useAppDispatch();
 
@@ -101,11 +103,17 @@ export const UserFollowingModal: React.FC<UserFollowingModalProps> = ({
             onClick={closeCallback}
           />
 
-          <h2 className="font-bold text-md">Following</h2>
+          <h2 className="font-bold text-md">
+            { t('messages.social.general.following') }
+          </h2>
         </IonRow>
 
         <section className="flex flex-col items-start justify-start w-full p-5 overflow-y-auto">
-          <h2 className="font-bold text-lg mb-3">Who you follow:</h2>
+          <h2 className="font-bold text-lg mb-3">
+            {
+              t('messages.social.follows.who')
+            }
+          </h2>
           {isLoading ? (
             <LoaderSpinner />
           ) : (
@@ -131,13 +139,13 @@ export const UserFollowingModal: React.FC<UserFollowingModalProps> = ({
                                       text-xs md:text-md font-light px-3 py-1 underline
                                   "
                     >
-                      Unfollow
+                      { t('actions.social.unfollow') }
                     </button>
                   </li>
                 ))
               ) : (
                 <p className="text-sm font-light text-start">
-                  You are not following anyone yet.
+                  { t('messages.social.follows.empty') }
                 </p>
               )}
             </ul>

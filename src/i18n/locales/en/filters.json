@@ -57,6 +57,32 @@
         "vibe": "Vibe",
         "romantic": "Romantic"
     },
+    "users": {
+        "industries": {
+            "STUDENT": "Student",
+            "WORKER": "Worker",
+            "ENTREPRENEUR": "Entrepreneur",
+            "FREELANCER": "Freelancer",
+            "ARTIST": "Artist",
+            "PROGRAMMER": "Programmer",
+            "DESIGNER": "Designer",
+            "MARKETER": "Marketer",
+            "ADMINISTRATOR": "Administrator",
+            "WRITER": "Writer",
+            "TOURIST": "Tourist",
+            "PHOTOGRAPHER": "Photographer",
+            "MUSICIAN": "Musician",
+            "SALESMAN": "Salesman",
+            "MANAGER": "Manager",
+            "FINNANCE": "Finance",
+            "LAWYER": "Lawyer",
+            "TEACHER": "Teacher",
+            "RESEARCHER": "Researcher",
+            "ENGINEER": "Engineer",
+            "ARCHITECT": "Architect",
+            "OTHER": "Other"
+        }
+    },
     "messages": {
         "reduceFilters": "There is no near spots around, try reducing the filters",
         "noSpots": "There is no near spots around"

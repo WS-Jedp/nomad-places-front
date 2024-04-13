@@ -25,6 +25,24 @@
                 "placeholder": "Enter your last name",
                 "label": "Last Name"
             }
+        },
+        "personalInformation": {
+            "from": {
+                "placeholder": "Ex. Medellín, Colombia",
+                "label": "Where are you from?"
+            },
+            "languages": {
+                "placeholder": "English, Spanish, French...",
+                "label": "What languages do you speak?"
+            },
+            "industry": {
+                "placeholder": "Ex. Software Development, Marketing, Design...",
+                "label": "Pick the activities with you are most identified (Optional)"
+            },
+            "about": {
+                "placeholder": "Tell us about yourself",
+                "label": "About you"
+            }
         }
     },
     "messages": {

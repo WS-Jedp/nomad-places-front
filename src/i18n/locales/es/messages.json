@@ -23,5 +23,54 @@
     "forgotPassword": {
         "title": "¿Olvidaste tu contraseña?",
         "message": "Ingresa tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña."
+    },
+    "social": {
+        "general": {
+            "joinedAt": "Se unió en {{date}}",
+            "followers": "Seguidores",
+            "following": "Siguiendo"
+        },
+        "follows": {
+            "who": "¿A quién sigues?",
+            "empty": "No sigues a nadie aún"
+        },
+        "followers": {
+            "who": "¿Quién te sigue?",
+            "empty": "No te sigue nadie aún"
+        },
+        "requests": {
+            "follow": "Estos usuarios te quieren seguir"
+        },
+        "externalProfile": {
+            "greeting": "¡Hola! soy {{name}}",
+            "speaks": "Habla {{languages}}",
+            "from": "De {{from}}",
+            "industry": "Se dedica en {{industry}}",
+            "empty": {
+                "personalDescription": "Oops! {{name}} no ha agregado una descripción aún",
+                "spotsRecommended": "{{name}} no ha recomendado ningún lugar aún, ¡qué pena!",
+                "spotsDiscovered": "{{name}} no ha visitado ningún lugar aún",
+                "languages": "No sabemos qué idiomas habla {{name}}",
+                "country": "No sabemos de qué país es {{name}}",
+                "industry": "No sabemos a que se dedica {{name}}"
+            },
+            "socialRequest": {
+                "followSent": "Solicitud de seguimiento enviada" 
+            }
+        },
+        "userProfile": {
+            "industry": "Estas dedicado en {{industry}}",
+            "empty": {
+                "personalDescription": "Todavía no has agregado una descripción sobre ti",
+                "spotsRecommended": "Todavía no has recomendado ningún spot",
+                "spotsDiscovered": "Todavía no has descubierto ningún spot",
+                "languages": "Todavía no has compartido que idiomas hablas",
+                "country": "Todavía no has compartido de qué país eres",
+                "industry": "Todavía no has compartido a qué te dedicas"
+            }
+        }
+    },
+    "utils": {
+        "and": "y"
     }
 }

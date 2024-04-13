@@ -1,5 +1,13 @@
 {
     "general": {
         "aboutSpots": "About Spots"
+    },
+    "social": {
+        "profile": {
+            "about": "About you"
+        },
+        "externalProfile": {
+            "about": "About {{name}}"
+        }
     }
 }

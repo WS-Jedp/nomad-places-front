@@ -8,6 +8,7 @@ export interface User {
     personalInformation: Person
     followers?: string[]
     following?: string[]
+    createdDate?: string
 }
 
 export interface Person {

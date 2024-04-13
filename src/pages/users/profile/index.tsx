@@ -1,14 +1,12 @@
-import { IonChip, IonCol, IonLabel, IonRow } from "@ionic/react";
-import { useEffect, useState } from "react";
+import { IonCol, IonRow } from "@ionic/react";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
-  MdArrowBack,
   MdHome,
   MdLanguage,
   MdOutlineWork,
-  MdWork,
 } from "react-icons/md";
 import {
-  useAppDispatch,
   useAppSelector,
 } from "../../../common/hooks/useTypedSelectors";
 import { EditProfileModal } from "../../../containers/profile/editProfileModal";
@@ -19,6 +17,7 @@ import { UserFollowingModal } from "../../../containers/profile/userFollowingMod
 import { AppLayout } from "../../../layouts/AppLayout";
 
 export const ProfilePage: React.FC = () => {
+  const { t } = useTranslation()
   const { followRequests } = useAppSelector((state) => state.social);
   const { userData } = useAppSelector((state) => state.user);
 
@@ -65,6 +64,42 @@ export const ProfilePage: React.FC = () => {
     setSpotsRecommendedModal(false);
   }
 
+  function getUserJoinedYear() {
+    if(userData?.createdDate) {
+      const date = new Date(userData.createdDate)
+      return date.getFullYear()
+    }
+    return ''
+  }
+
+
+  function getUserLangs(langs: string[]) {
+    if(langs.length === 1) {
+      return langs[0]
+    }
+
+    if(langs.length === 2) {
+      return `${langs[0]} ${t('messages.utils.and')} ${langs[1]}`
+    }
+
+    const lastLang = langs.pop()
+    return `${langs.join(', ')} ${t('messages.utils.and')} ${lastLang}`
+  }
+
+  function getUserIndustries(industries: string[]) {
+    if(industries.length === 1) {
+      return t(`filters.users.industries.${industries[0]}`)
+    }
+
+    if(industries.length === 2) {
+      return `${t(`filters.users.industries.${industries[0]}`)} ${t('messages.utils.and')} ${t(`filters.users.industries.${industries[1]}`)}`
+    }
+
+    const lastIndustry = t(`filters.users.industries.${industries.pop()}`)
+    const currentLangIndustries = industries.map(industry => t(`filters.users.industries.${industry}`))
+    return `${currentLangIndustries.join(', ')} ${t('messages.utils.and')} ${lastIndustry}`
+  }
+
   return (
     <AppLayout>
       <IonRow
@@ -80,7 +115,7 @@ export const ProfilePage: React.FC = () => {
             <figure className="w-28 h-28 bg-gray-400 rounded-full overflow-hidden">
               <img
                 src={userData?.profilePicture}
-                alt=""
+                alt={`${userData?.personalInformation.firstName} profile picture`}
                 className="w-full h-full object-cover roudned-full"
               />
             </figure>
@@ -89,19 +124,19 @@ export const ProfilePage: React.FC = () => {
               onClick={onEdit}
               className="underline text-blue-600 py-2 font-light"
             >
-              Edit profile
+              { t('actions.auth.editProfile') }
             </button>
 
             <h2 className="font-bold text-4xl mt-3">
-              Hey, I'm {userData?.personalInformation.firstName}
+              {t("messages.social.externalProfile.greeting", {name: userData?.personalInformation.firstName} )}
             </h2>
-            <span className="font-light text-md">Joined in 2024</span>
+            <span className="font-light text-md">{t("messages.social.general.joinedAt", { date: getUserJoinedYear() })}</span>
 
             <p className="text-md font-light my-2 text-center">
               {userData?.personalInformation.about ? (
                 <>{userData?.personalInformation.about}</>
               ) : (
-                "There is no a description yet. :("
+                t('messages.social.userProfile.empty.personalDescription')
               )}
             </p>
           </IonRow>
@@ -116,7 +151,7 @@ export const ProfilePage: React.FC = () => {
                   ? userData.following.length
                   : 0}
               </strong>
-              <span className="font-light text-md my-0 py-0">Following</span>
+              <span className="font-light text-md my-0 py-0">{t('messages.social.general.following')}</span>
             </button>
             <button
               className="relative flex flex-col items-center justify-center text-center p-2 w-5/12 cursor-pointer hover:underline"
@@ -135,7 +170,7 @@ export const ProfilePage: React.FC = () => {
                     )
                 }
               </strong>
-              <span className="font-light text-md my-0 py-0">Followers</span>
+              <span className="font-light text-md my-0 py-0">{t('messages.social.general.followers')}</span>
             </button>
             <button
               className="flex flex-col items-center justify-center text-center p-2 w-5/12 cursor-pointer hover:underline"
@@ -168,18 +203,18 @@ export const ProfilePage: React.FC = () => {
             size="12"
             className="flex flex-col items-start w-full py-5 px-9"
           >
-            <h2 className="font-bold text-3xl">About</h2>
+            <h2 className="font-bold text-3xl">{t('titles.social.profile.about')}</h2>
             <section className="my-3">
               <div className="w-full flex flex-row items-center justify-start mb-3">
                 <MdLanguage size={30} className="mr-2" />
                 {userData?.personalInformation.languages &&
                 userData.personalInformation.languages.length > 0 ? (
                   <p className="font-light text-md">
-                    Speaks {userData?.personalInformation.languages.join(", ")}
+                    {t("messages.social.externalProfile.speaks", {languages: getUserLangs(userData.personalInformation.languages || []) })}
                   </p>
                 ) : (
                   <p className="font-light text-md">
-                    We don't know which languages speak
+                    {t('messages.social.userProfile.empty.languages')}
                   </p>
                 )}
               </div>
@@ -187,10 +222,10 @@ export const ProfilePage: React.FC = () => {
               <div className="w-full flex flex-row items-center justify-start mb-3">
                 <MdHome size={30} className="mr-2" />
                 {userData?.personalInformation.country ? (
-                  <p className="font-light text-md">From Medellin, Colombia</p>
+                  <p className="font-light text-md">{t("messages.social.externalProfile.from", { from: userData?.personalInformation.country  })}</p>
                 ) : (
                   <p className="font-light text-md">
-                    We don't know where it's from
+                    {t('messages.social.userProfile.empty.country')}
                   </p>
                 )}
               </div>
@@ -201,12 +236,13 @@ export const ProfilePage: React.FC = () => {
                   {userData?.personalInformation.industry &&
                   userData?.personalInformation.industry.length > 0 ? (
                     <span className="font-light text-md">
-                      Focus on{" "}
-                      {userData?.personalInformation.industry.join(", ")}
+                      {
+                        t("messages.social.userProfile.industry", { industry: getUserIndustries(userData.personalInformation.industry) || [] })
+                      }
                     </span>
                   ) : (
                     <span className="font-light text-md">
-                      We don't know what does
+                      {t('messages.social.userProfile.empty.industry')}
                     </span>
                   )}
                 </p>

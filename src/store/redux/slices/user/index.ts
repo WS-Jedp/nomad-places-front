@@ -348,6 +348,7 @@ export const userSlice = createSlice({
         },
         followers: [],
         following: [],
+        createdDate: action.payload.user.createdDate,
       };
       state.auth.token = action.payload.access_token;
       state.auth.isAuth = true;
@@ -367,6 +368,7 @@ export const userSlice = createSlice({
         email: action.payload.email,
         followers: action.payload.followers || [],
         following: action.payload.following || [],
+        createdDate: action.payload.createdDate,
         personalInformation: {
           ...action.payload.person,
         },

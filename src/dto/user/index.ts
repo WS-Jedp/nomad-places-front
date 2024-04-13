@@ -8,11 +8,12 @@ export type UserRequestDTO = {
     personID: string
     following?: string[]
     followers?: string[]
+    createdDate?: string
 }
 
 export type ProfileDTO = UserRequestDTO & {
     profilePicture?: string
-    createdDate: Date
+    createdDate: string
     person: Person
 }
 

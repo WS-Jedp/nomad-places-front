@@ -25,6 +25,25 @@
                 "placeholder": "Escribe tu apellido",
                 "label": "Apellido"
             }
+        },
+        "personalInformation": {
+            "from": {
+                "placeholder": "Ej. Medellín, Colombia",
+                "label": "¿De dónde eres?"
+            },
+            "languages": {
+                "placeholder": "Español, Inglés, Francés...",
+                "label": "¿Cuales idiomas hablas?"
+            },
+            "industry": {
+                "placeholder": "Ej. Tecnología, Educación, Salud...",
+                "label": "Selecciona las actividades con las que más te identificas (Opcional)"
+            },
+            "about": {
+                "placeholder": "Escribe algo sobre ti",
+                "label": "Acerca de ti"
+            
+            }
         }
     },
     "messages": {

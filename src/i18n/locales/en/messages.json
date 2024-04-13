@@ -23,5 +23,54 @@
     "forgotPassword": {
         "title": "Forgot your password?",
         "message": "Enter your email and we will send you a link to reset your password"
+    },
+    "social": {
+        "general": {
+            "joinedAt": "Joined at {{date}}",
+            "followers": "Followers",
+            "following": "Following"
+        },
+        "follows": {
+            "who": "Who are you following?",
+            "empty": "You're not following anyone yet"
+        },
+        "followers": {
+            "who": "Who is following you?",
+            "empty": "You don't have any followers yet"
+        },
+        "requests": {
+            "follow": "These users wants to follow you"
+        },
+        "externalProfile": {
+            "greeting": "Hello! I'm {{name}}",
+            "speaks": "Speaks {{languages}}",
+            "from": "From {{from}}",
+            "industry": "Main activity on {{industry}}",
+            "empty": {
+                "personalDescription": "Oops! {{name}} doesn't have a description yet",
+                "spotsRecommended": "{{name}} hasn't recommended any spots yet, busy person!",
+                "spotsDiscovered": "{{name}} hasn't visited any spot yet, what a shame!",
+                "languages": "We don't know if {{name}} can speak :o",
+                "country": "We don't know where {{name}} is from",
+                "industry": "We don't know what {{name}} does for a living"
+            },
+            "socialRequest": {
+                "followSent": "Follow request sent" 
+            }
+        },
+        "userProfile": {
+            "industry": "Your main activity is {{industry}}",
+            "empty": {
+                "personalDescription": "You haven't add a description yet",
+                "spotsRecommended": "You haven't recommended any spots yet",
+                "spotsDiscovered": "You haven't visited any spot yet",
+                "languages": "You haven't share which languages do you speak",
+                "country": "You haven't share your country with us",
+                "industry": "You haven't share your main activity with us"
+            }
+        }
+    },
+    "utils": {
+        "and": "and"
     }
 }

@@ -1,0 +1,22 @@
+{
+    "titles": {
+        "newPlace": "Discovering a new place?",
+        "spotsJourney": "Your Spot’s Journey to Stardom",
+        "communityCheck": "Community Check-In",
+        "stayTuned": "Stay Tuned",
+        "finalVeredict": "Final Verdict",
+        "shareSpot": "Share a new Spot",
+        "shareToCommunity": "Share it to the Community"
+    },
+    "texts": {
+        "spot": "Hey there, Adventurer! It looks like you have discovered a new place that still isn’t on the map.",
+        "gratefulForSharing": "We are really glad that you decide to share your discovery with us.",
+        "growingTheCommunity": "We're super grateful you're sharing the coolest places for all of us. Every spot you share helps us grow stronger and more connected as a community.",
+        "considerations": "Here are some things you need to know before you proceed",
+        "communityReview": "Your newly discovery will be reviewd and confirmmed by the community.",
+        "spotProgress": "Keep an eye on the progress of your discovery in the app. Share it with your friends to have faster progress.",
+        "toConfirmSpot": "With 6 confirmations before time’s up, it’ll be officially on the map!",
+        "encourageExploring": "Keep exploring, keep sharing, and let’s make every nomad’s journey amazing together!",
+        "cheersToMoreAdventures": "Cheers to more adventures!"
+    }
+}

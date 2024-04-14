@@ -6,6 +6,7 @@ export enum PLACE_TYPES {
     ROOFTOP = "ROOFTOP",
     LOOKOUT = "LOOKOUT",
     RESTAURANT = "RESTAURANT",
+    COWORK_ZONE = "COWORK_ZONE",
 }
 
 export type PlaceTypesFilter = {
@@ -13,3 +14,10 @@ export type PlaceTypesFilter = {
     name: PLACE_TYPES
     title: string
 }
+
+export const PLACE_TYPES_KEYS = [
+    PLACE_TYPES.COFFEE,
+    PLACE_TYPES.LIBRARY,
+    PLACE_TYPES.ROOFTOP,
+    PLACE_TYPES.COWORK_ZONE,
+]

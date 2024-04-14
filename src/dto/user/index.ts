@@ -8,6 +8,8 @@ export type UserRequestDTO = {
     personID: string
     following?: string[]
     followers?: string[]
+    confirmedPlacesIDs?: string[]
+    discoveredPlacesIDs?: string[]
     createdDate?: string
 }
 

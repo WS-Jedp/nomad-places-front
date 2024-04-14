@@ -70,6 +70,9 @@
             }
         }
     },
+    "spotsTeam": {
+        "yours": "El equipo de Spots"
+    },
     "utils": {
         "and": "y"
     }

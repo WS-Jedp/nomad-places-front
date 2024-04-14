@@ -29,12 +29,23 @@ import { SimpleButton } from "../../buttons/simple";
 import { useTranslation } from "react-i18next";
 import { ResetPasswordModal } from "../../../containers/auth/resetPasswordModal";
 import { getUserFollowRequests } from "../../../store/redux/slices/social";
+import { NewPlaceDiscoveredModal } from "../../../containers/discoveredPlaces/modals/newPlaceDiscoverModal";
+import { startDiscoveringPlace, stopDiscoveringPlace } from "../../../store/redux/slices/places";
 
 export const GeneralHeader: React.FC = () => {
   const { t } = useTranslation();
 
   const location = useLocation()
   const history = useHistory();
+
+  const showDiscoveringPlace = useAppSelector((state) => state.places.discoveringPlace);
+  function closeDiscoveringPlaceModal() {
+    dispatch(stopDiscoveringPlace())
+  }
+  function openDiscoveringPlaceModal() {
+    dispatch(startDiscoveringPlace())
+  }
+
   const userLocation = useAppSelector((state) => state.user.location);
   const {
     spotAmountPeopleFilter,
@@ -89,7 +100,7 @@ export const GeneralHeader: React.FC = () => {
         console.log("Go to about page");
         break;
       case UserMenuOptions.recommend:
-        console.log("Go to recommend page and auth if not logged in");
+        openDiscoveringPlaceModal()
         break;
       case UserMenuOptions.profile:
         history.push("/profile/me");
@@ -225,6 +236,7 @@ export const GeneralHeader: React.FC = () => {
 
       <section className="flex flex-row flex-nowrap items-center justify-center">
         <button
+          onClick={openDiscoveringPlaceModal}
           className="
                             hidden md:flex
                             flex-items flex-nowrap 
@@ -237,7 +249,7 @@ export const GeneralHeader: React.FC = () => {
                         "
         >
           <span className="text-black text-sm">
-            {t("actions.general.recommendASpot")}
+            {t("actions.discover.suggest.spot")}
           </span>
         </button>
 
@@ -344,6 +356,13 @@ export const GeneralHeader: React.FC = () => {
               closeCallback={closeRecoveredPasswordModal}
             />
           </AppModal>
+        )
+      }
+
+      {/* Discovering place modal */}
+      {
+        showDiscoveringPlace && (
+          <NewPlaceDiscoveredModal closeCallback={closeDiscoveringPlaceModal} />
         )
       }
     </IonHeader>

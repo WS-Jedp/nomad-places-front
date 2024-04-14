@@ -70,6 +70,9 @@
             }
         }
     },
+    "spotsTeam": {
+        "yours": "Your Spots team"
+    },
     "utils": {
         "and": "and"
     }

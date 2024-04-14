@@ -9,6 +9,8 @@ export interface User {
     followers?: string[]
     following?: string[]
     createdDate?: string
+    confirmedPlacesIDs?: string[]
+    discoveredPlacesIDs?: string[]
 }
 
 export interface Person {

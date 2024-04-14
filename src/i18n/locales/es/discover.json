@@ -1,0 +1,22 @@
+{
+    "titles": {
+        "newPlace": "¿Descubriste un nuevo lugar?",
+        "spotsJourney": "El viaje de descubrir un lugar",
+        "communityCheck": "Revisión de la comunidad",
+        "stayTuned": "Mantente atento",
+        "finalVeredict": "Veredicto final",
+        "shareSpot": "Comparte un nuevo lugar",
+        "shareToCommunity": "Compartelo con la comunidad"
+    },
+    "texts": {
+        "spot": "¡Hola, aventurero! Parece que has descubierto un nuevo lugar que aún no está en el mapa.",
+        "gratefulForSharing": "Estamos muy contentos de que hayas decidido compartir tu descubrimiento con nosotros",
+        "growingTheCommunity": "Estamos muy agradecidos de que compartas los lugares más geniales con todos nosotros. Cada lugar que compartes nos ayuda a crecer más fuertes y conectados como comunidad.",
+        "considerations": "Aquí hay algunas cosas que debes tener en cuenta",
+        "communityReview": "Tu nuevo descubrimiento será revisado y confirmado por la comunidad.",
+        "spotProgress": "Revisa el progreso de tu descubrimiento en la aplicación. Compartelo con tus amigos para tener un progreso más rápido.",
+        "toConfirmSpot": "Con 6 confirmaciones antes de que se acabe el tiempo, ¡estará oficialmente en el mapa!",
+        "encourageExploring": "Sigue explorando, sigue compartiendo y hagamos que cada viaje de un nómada digital sea increíble juntos!",
+        "cheersToMoreAdventures": "¡Salud a más aventuras!"
+    }
+}

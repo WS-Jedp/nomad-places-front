@@ -8,6 +8,7 @@ import { SimplePlaceTypeCard } from "../../places/types/cards/simple"
 import { PLACE_TYPES } from "../../../models/placeTypes"
 import { useAppDispatch, useAppSelector } from "../../../common/hooks/useTypedSelectors"
 import { selectSpotTypeFilter, removeSpotTypeFilter } from '../../../store/redux/slices/filters'
+import { handleSpotTypeIcon } from "../../../common/utils/icons/icons"
 
 export const PlaceTypesFilter:React.FC = () => {
 
@@ -15,23 +16,6 @@ export const PlaceTypesFilter:React.FC = () => {
 
     const { spotTypesFilter, selectedSpotTypesFilter } = useAppSelector(state => state.filters)
     const dispatch = useAppDispatch()
-
-    function handleSpotTypeIcon(spotType: PLACE_TYPES) {
-        switch (spotType) {
-            case PLACE_TYPES.COFFEE:
-                return <MdCoffee size={24} color="black" />
-            case PLACE_TYPES.LIBRARY:
-                return <IoLibrary size={24} color="black" />
-            case PLACE_TYPES.PARK:
-                return <TbFountain size={24} color="black" />
-            case PLACE_TYPES.LOOKOUT:
-                return <FaMountain size={24} color="black" />
-            case PLACE_TYPES.RESTAURANT:
-                return <MdRestaurant size={24} color="black" />
-            case PLACE_TYPES.ROOFTOP:
-                return <FaBuilding size={24} color="black" />
-        }
-    }
 
     function handleCallback(spotTypeId: number) {
         if(selectedSpotTypesFilter.includes(spotTypeId)) {

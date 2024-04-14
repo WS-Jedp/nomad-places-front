@@ -47,7 +47,9 @@
     },
     "spotTypes": {
         "coffee": "Coffee",
-        "library": "Library"
+        "library": "Library",
+        "rooftop": "Rooftop",
+        "cowork_zone": "Cowork Zone"
     },
     "mindsets": {
         "work": "Work",

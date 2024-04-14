@@ -1,3 +1,4 @@
+import { UserRequestDTO } from "../../dto/user"
 import { GeoLocation } from "../location"
 import { MINDSETS } from "../mindsets"
 import { PlaceMultimedia } from "../multimedia"
@@ -13,6 +14,14 @@ export interface Place {
     location: GeoLocation
     commodities?: Commodities
     rules: PlaceRules
+    discoveredBy?: UserRequestDTO
+    discoveredByID?: string[]
+    confirmedBy?: UserRequestDTO[]
+    confirmedByIDs?: string[]
+    discoveredDate?: string
+    approvedDate?: string
+    rejectedDate?: string
+    confirmationStatus: PLACE_CONFIRMATION_STATUS
 }
 
 /**
@@ -71,6 +80,12 @@ export const MAIN_PLACE_COMMODITIES_KEYS = [
     PET_FRIENDLY = 'petFriendly',
     SMOKING = 'smoking',
     UNDER_AGE = 'underAge'
+  }
+
+  export enum PLACE_CONFIRMATION_STATUS {
+    RECOMMENDED = 'RECOMMENDED',
+    APPROVED = 'APPROVED',
+    REJECTED = 'REJECTED'
   }
 
   export const MAIN_RULES_KEYS: PLACE_RULES_ENUM[] = [

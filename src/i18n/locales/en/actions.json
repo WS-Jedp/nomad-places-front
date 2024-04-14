@@ -13,7 +13,8 @@
         "seeMore": "See More",
         "seeLess": "See Less",
         "seeMoreInformation": "See More Information",
-        "remove": "Remove"
+        "remove": "Remove",
+        "shareIt": "Share it"
     },
     "confirmation": {
         "yes": "Yes",
@@ -45,5 +46,12 @@
         "join": "Join Session",
         "leave": "Leave Session",
         "update": "Update Session"
+    },
+    "discover": {
+        "shareSpot": "Share spot",
+        "shareDiscovery": "Share discovery",
+        "suggest": {
+            "spot": "Suggest a spot"
+        }
     }
 }

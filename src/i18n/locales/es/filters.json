@@ -47,7 +47,9 @@
     },
     "spotTypes": {
         "coffee": "Café",
-        "library": "Librería"
+        "library": "Librería",
+        "rooftop": "Azotea",
+        "cowork_zone": "Coworking"
     },
     "mindsets": {
         "work": "Trabajar",

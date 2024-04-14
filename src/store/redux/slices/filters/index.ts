@@ -56,11 +56,16 @@ const spotTypesFilters:PlaceTypesFilter[] = [
     //     name: PLACE_TYPES.RESTAURANT,
     //     title: 'Restaurant'
     // },
-    // {
-    //     id: 6,
-    //     name: PLACE_TYPES.ROOFTOP,
-    //     title: 'Rooftop'
-    // },
+    {
+        id: 6,
+        name: PLACE_TYPES.ROOFTOP,
+        title: 'Rooftop'
+    },
+    {
+        id: 7,
+        name: PLACE_TYPES.COWORK_ZONE,
+        title: PLACE_TYPES.COWORK_ZONE
+    },
 ]
 
 const spotCommoditiesFilters:SpotCommoditiesFilters[] = [

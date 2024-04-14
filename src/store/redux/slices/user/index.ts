@@ -348,6 +348,8 @@ export const userSlice = createSlice({
         },
         followers: [],
         following: [],
+        confirmedPlacesIDs: action.payload.user.confirmedPlacesIDs,
+        discoveredPlacesIDs: action.payload.user.discoveredPlacesIDs,
         createdDate: action.payload.user.createdDate,
       };
       state.auth.token = action.payload.access_token;
@@ -368,6 +370,8 @@ export const userSlice = createSlice({
         email: action.payload.email,
         followers: action.payload.followers || [],
         following: action.payload.following || [],
+        confirmedPlacesIDs: action.payload.confirmedPlacesIDs || [],
+        discoveredPlacesIDs: action.payload.discoveredPlacesIDs || [],
         createdDate: action.payload.createdDate,
         personalInformation: {
           ...action.payload.person,

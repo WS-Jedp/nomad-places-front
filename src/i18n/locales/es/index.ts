@@ -4,6 +4,7 @@ import Filters from './filters.json'
 import Titles from './titles.json'
 import Forms from './forms.json'
 import Spots from './spot.json'
+import Discover from './discover.json'
 
 export default {
     actions: Actions,
@@ -11,5 +12,6 @@ export default {
     filters: Filters,
     titles: Titles,
     forms: Forms,
-    spots: Spots
+    spots: Spots,
+    discover: Discover
 } 

@@ -10,6 +10,7 @@ import { TbFountain } from "react-icons/tb";
 import { FaBuilding, FaMountain } from "react-icons/fa";
 import { MINDSETS } from "../../../../models/mindsets";
 import { PLACE_TYPES } from "../../../../models/placeTypes";
+import { IoMdWifi } from "react-icons/io";
 
 export function handleMindsetIcon(mindset: MINDSETS, size = 21) {
   switch (mindset) {
@@ -42,6 +43,8 @@ export function handleSpotTypeIcon(spotType: PLACE_TYPES, size = 21) {
       return <MdRestaurant size={size} />;
     case PLACE_TYPES.ROOFTOP:
       return <FaBuilding size={size} />;
+    case PLACE_TYPES.COWORK_ZONE:
+      return <IoMdWifi size={size} />;
     default:
       return <MdCoffee size={size} />;
   }

@@ -46,6 +46,7 @@ PlaceWithCachedSession[] | null>("places/getAllPlaces", async (params, thunkAPI)
 
 
 export interface PlacesState {
+  discoveringPlace: boolean;
   currentPlace?: PlaceWithCachedSession | null;
   nearPlaces: PlaceWithCachedSession[];
   filteredPlaces: PlaceWithCachedSession[];
@@ -53,6 +54,7 @@ export interface PlacesState {
 }
 
 const initialPlaceState: PlacesState = {
+  discoveringPlace: false,
   currentPlace: null,
   nearPlaces: [],
   filteredPlaces: [],
@@ -100,6 +102,12 @@ export const placesSlice = createSlice({
     },
     resetFilteredPlaces(state) {
       state.filteredPlaces = state.nearPlaces
+    },
+    startDiscoveringPlace: (state, ) => {
+      state.discoveringPlace = true
+    },
+    stopDiscoveringPlace: (state, ) => {
+      state.discoveringPlace = false
     }
   },
   extraReducers: (builder) => {
@@ -122,15 +130,11 @@ export const placesSlice = createSlice({
 
 
 export const {
-  findPlace,
-  setPlace,
-  resetPlace,
-  setNearPlaces,
-  resetNearPlaces,
-  resetPlaceOnFocus,
-  setPlaceOnFocus,
-  setFilteredPlaces,
-  resetFilteredPlaces,
+  findPlace, setPlace,
+  resetPlace,setNearPlaces, resetNearPlaces,
+  resetPlaceOnFocus, setPlaceOnFocus,
+  setFilteredPlaces, resetFilteredPlaces,
+  startDiscoveringPlace, stopDiscoveringPlace
 } = placesSlice.actions;
 
 export default placesSlice.reducer;

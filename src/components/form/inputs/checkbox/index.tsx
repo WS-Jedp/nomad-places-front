@@ -29,9 +29,8 @@ export const SimpleCheckbox: React.FC<SimpleCheckboxProps> = ({
                 hover:bg-gray-100
                 transition-all duration-300
             `}
-      onClick={callback}
     >
-      <div className="flex flex-row flex-nowrap">
+      <div className="flex flex-row flex-nowrap w-full" onClick={callback}>
         <span
           className={`
                         relative
@@ -56,7 +55,7 @@ export const SimpleCheckbox: React.FC<SimpleCheckboxProps> = ({
       {withInputValue && onChangeInputValue && (
         <input
           type="text"
-          className="w-auto max-w-[60px] bg-transparent border-b-[1px] text-xs text-end"
+          className="w-auto max-w-[60px] bg-transparent border-b-[1px] text-xs text-end z-30"
           placeholder="Ej. 320kbps"
           onChange={(ev) => onChangeInputValue(ev.target.value)}
         />

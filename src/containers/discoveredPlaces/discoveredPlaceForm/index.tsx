@@ -20,6 +20,7 @@ import { MINDSETS } from "../../../models/mindsets";
 import { PLACE_COMMODITIES_ENUM } from "../../../models/places";
 import { PLACE_TYPES } from "../../../models/placeTypes";
 import { GeneralInformationInputs } from "./generalInformationInputs";
+import { LocationInputs } from "./locationInputs";
 import { SpotCommoditiesInput } from "./spotCommoditiesInput";
 import { SpotKnownForInput } from "./spotKnownForInput";
 import { SpotMultimediaInput } from "./spotMultimediaInput";
@@ -34,6 +35,12 @@ export const DiscoveredPlaceForm: React.FC<{
 
   const [spotName, setSpotName] = useState<string>("");
   const [spotDescription, setSpotDescription] = useState<string>("");
+
+  const [openingTime, setOpeningTime] = useState<string>("");
+  const [closingTime, setClosingTime] = useState<string>("");
+
+  const [spotZone, setSpotZone] = useState<string>("");
+  const [spotCity, setSpotCity] = useState<string>("");
 
   const [spotTypeID, setSpotTypeID] = useState<PLACE_TYPES>();
   const [spotKnownFor, setSpotKnownFor] = useState<MINDSETS>();
@@ -108,35 +115,35 @@ export const DiscoveredPlaceForm: React.FC<{
 
   function handleGetSpotData(): DiscoverSpotDTO {
     return {
-        name: spotName,
-        description: spotDescription,
-        type: [],
-        knownFor: spotKnownFor,
-        rules: {
-            closedAt: "",
-            openAt: "",
-            petFriendly: selectedRules.includes(1),
-            smoking: selectedRules.includes(2),
-            underAge: selectedRules.includes(3),
-        },
-        location: {
-            latitude: 0,
-            longitude: 0,
-            zone: "",
-            city: "",
-            country: "",
-        },
-        commodities: {
-            plugsAmount: 0,
-            wifiSpeed: 0,
-            coworkSpace: selectedCommodities.includes(1),
-            parking: selectedCommodities.includes(2),
-            publicPlugs: selectedCommodities.includes(3),
-            publicWifi: selectedCommodities.includes(4),
-            publicBathrooms: selectedCommodities.includes(5),
-        },
-        multimedia: []
-    }
+      name: spotName,
+      description: spotDescription,
+      type: [],
+      knownFor: spotKnownFor,
+      rules: {
+        closedAt: closingTime,
+        openAt: openingTime,
+        petFriendly: selectedRules.includes(1),
+        smoking: selectedRules.includes(2),
+        underAge: selectedRules.includes(3),
+      },
+      location: {
+        latitude: 0,
+        longitude: 0,
+        zone: spotZone,
+        city: spotCity,
+        country: "COLOMBIA",
+      },
+      commodities: {
+        plugsAmount: 0,
+        wifiSpeed: 0,
+        coworkSpace: selectedCommodities.includes(1),
+        parking: selectedCommodities.includes(2),
+        publicPlugs: selectedCommodities.includes(3),
+        publicWifi: selectedCommodities.includes(4),
+        publicBathrooms: selectedCommodities.includes(5),
+      },
+      multimedia: [],
+    };
   }
 
   return (
@@ -144,7 +151,7 @@ export const DiscoveredPlaceForm: React.FC<{
       <h2 className="font-bold text-2xl mb-1 text-start">
         Tell us about the Spot
       </h2>
-      <p>
+      <p className="text-sm font-light">
         Please, provide us with the following information about the place you
         discovered.
       </p>
@@ -155,34 +162,43 @@ export const DiscoveredPlaceForm: React.FC<{
           onSpotNameChange={(val) => setSpotName(val)}
           spotDescription={spotDescription}
           onSpotDescriptionChange={(val) => setSpotDescription(val)}
+          onOpeningTimeChange={(val) => setOpeningTime(val)}
+          onClosingTimeChange={(val) => setClosingTime(val)}
         />
 
-        <SpotTypeInput 
-            onSpotType={(spotType) => setSpotTypeID(spotType)}
-            selectedSpotType={spotTypeID}
+        <LocationInputs
+          spotZone={spotZone}
+          onSpotZoneChange={(val) => setSpotZone(val)}
+          spotCity={spotCity}
+          onSpotCityChange={(val) => setSpotCity(val)}
+        />
+
+        <SpotTypeInput
+          onSpotType={(spotType) => setSpotTypeID(spotType)}
+          selectedSpotType={spotTypeID}
         />
 
         <SpotKnownForInput
-            onSpotKnownFor={(mindset) => setSpotKnownFor(mindset)}
-            selectedSpotKnownFor={spotKnownFor}
+          onSpotKnownFor={(mindset) => setSpotKnownFor(mindset)}
+          selectedSpotKnownFor={spotKnownFor}
         />
 
-        <SpotRulesInput 
-            onSpotRule={(rule) => handleRuleInput(rule)}
-            selectedSpotRules={selectedRules}
+        <SpotRulesInput
+          onSpotRule={(rule) => handleRuleInput(rule)}
+          selectedSpotRules={selectedRules}
         />
 
-        <SpotCommoditiesInput 
-            handleRuleWithDetailInput={handleRuleWithDetailInput}
-            onSpotCommodity={(commodity) => handleCommodityInput(commodity)}
-            selectedSpotCommodities={selectedCommodities}
+        <SpotCommoditiesInput
+          handleRuleWithDetailInput={handleRuleWithDetailInput}
+          onSpotCommodity={(commodity) => handleCommodityInput(commodity)}
+          selectedSpotCommodities={selectedCommodities}
         />
 
         <SpotMultimediaInput
-            files={files}
-            previews={previews} 
-            handleFileChange={handleFileChange}
-            handleRemoveFile={handleRemoveFile}
+          files={files}
+          previews={previews}
+          handleFileChange={handleFileChange}
+          handleRemoveFile={handleRemoveFile}
         />
       </form>
       <div className="my-5">

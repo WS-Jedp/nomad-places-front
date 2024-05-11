@@ -1,5 +1,7 @@
 import { Request } from "../../common/request";
-import { GetPlaceDetailDTO, PlacesWithQuickSessionDataDTO } from "../../dto/places";
+import { ConfirmNewSpotDiscoveredDTO, DiscoveredSpotByUserResponseDTO, DiscoverSpotDTO, GetPlaceDetailDTO, newSpotDiscoveredConfirmedDTO, newSpotDiscoveredRejectedDTO, PlacesWithQuickSessionDataDTO } from "../../dto/places";
+import { DiscoveredPlaceConfirmation } from "../../models/placeConfirmation";
+import { Place } from "../../models/places";
 
 export class placesServices {
   protected request: Request;
@@ -38,6 +40,47 @@ export class placesServices {
       `detail/${payload.placeID}`
     )
     return place
+  }
+
+
+  async newSpotDiscovered(spotDiscovered: DiscoverSpotDTO, token: string) {
+    const response = await this.request.withAuth(token).post<DiscoveredSpotByUserResponseDTO>('discover/new', spotDiscovered)
+    return response
+  }
+
+  async confirmNewSpotDiscovered(data: { token: string, payload: ConfirmNewSpotDiscoveredDTO }) {
+    const response = await this.request.withAuth(data.token).post<newSpotDiscoveredConfirmedDTO>(`discover/confirm`, data.payload)
+    return response
+  }
+
+  async rejectNewSpotDiscovered(data: { token: string, payload: ConfirmNewSpotDiscoveredDTO }) {
+    const response = await this.request.withAuth(data.token).post<newSpotDiscoveredRejectedDTO>(`discover/reject`, data.payload)
+    return response
+  }
+
+  async getAuthUserDiscoveredPlaces(data: { token: string }) {
+    const resp = await this.request.withAuth(data.token).get<{ discoveredPlaces: Place[] }>(`discovered/me`)
+    return resp.discoveredPlaces
+  }
+
+  async getAuthUserConfirmedPlaces(data: { token: string }) {
+    const resp = await this.request.withAuth(data.token).get<{ confirmedPlaces: Place[] }>(`confirmed/me`)
+    return resp.confirmedPlaces
+  }
+
+  async getDiscoveredPlacesByUser(data: { userID: string }) {
+    const resp = await this.request.get<{ discoveredPlaces: Place[] }>(`discovered/by/${data.userID}`)
+    return resp.discoveredPlaces
+  }
+
+  async getConfirmedPlacesByUser(data: { userID: string }) {
+    const resp = await this.request.get<{ confirmedPlaces: Place[] }>(`confirmed/by/${data.userID}`)
+    return resp.confirmedPlaces
+  }
+
+  async getAllSpotReviews(data: { spotID: string, token: string }) {
+    const resp = await this.request.withAuth(data.token).get<{ spotReviews: DiscoveredPlaceConfirmation[] }>(`discover/reviews/${data.spotID}`)
+    return resp.spotReviews
   }
 }
 

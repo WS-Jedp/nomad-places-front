@@ -34,7 +34,7 @@ export const PlaceInformationDetail: React.FC = () => {
     [key: string]: boolean | string | null;
   } {
     return {
-      [rule]: currentPlace?.rules[rule] || null,
+      [rule]: Boolean(currentPlace?.rules[rule]) || false,
     };
   }
 
@@ -96,6 +96,7 @@ export const PlaceInformationDetail: React.FC = () => {
                           : false
                         : false
                     }
+                    value={optValue}
                   />
                 </IonCol>
               );

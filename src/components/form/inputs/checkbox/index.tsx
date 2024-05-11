@@ -5,6 +5,8 @@ type SimpleCheckboxProps = {
   callback: () => void;
   isSelected?: boolean;
   withInputValue?: boolean;
+  inputValue?: string;
+  inputPlaceholder?: string;
   onChangeInputValue?: (value: string) => void;
   small?: boolean;
 };
@@ -16,6 +18,8 @@ export const SimpleCheckbox: React.FC<SimpleCheckboxProps> = ({
   small,
   onChangeInputValue,
   withInputValue = false,
+  inputPlaceholder = "Ej. 320kbps",
+  inputValue = "",
 }) => {
   return (
     <article
@@ -56,8 +60,9 @@ export const SimpleCheckbox: React.FC<SimpleCheckboxProps> = ({
         <input
           type="text"
           className="w-auto max-w-[60px] bg-transparent border-b-[1px] text-xs text-end z-30"
-          placeholder="Ej. 320kbps"
+          placeholder={inputPlaceholder}
           onChange={(ev) => onChangeInputValue(ev.target.value)}
+          defaultValue={inputValue}
         />
       )}
     </article>

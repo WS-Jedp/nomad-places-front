@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { ControlledError } from "../../../../common/controlledError";
-import { getAllPlaces, getNearestPlaces } from "../places";
+import { confirmNewSpotDiscovered, getAllPlaces, getNearestPlaces, newSpotDiscover } from "../places";
 import { ControlledErrorType } from "../../../../common/controlledError/types";
 import { authUser, getUserData, getUserGeoLocation, registerUser } from "../user";
 
@@ -88,6 +88,28 @@ export const controlledErrorsSlice = createSlice({
       );
     })
 
+    // === Discovered Spots Errors ===
+    // - Discover spot
+    builder.addCase(newSpotDiscover.rejected, (state, action) => {
+      state.errors.push(
+        new ControlledError(
+          action.error.message || "Error discovering new spot",
+          ControlledErrorType.REQUEST
+        )
+      );
+    })
+
+    // - Confirm spot
+    builder.addCase(confirmNewSpotDiscovered.rejected, (state, action) => {
+      state.errors.push(
+        new ControlledError(
+          action.error.message || "Error confirming new spot",
+          ControlledErrorType.REQUEST
+        )
+      );
+    })
+
+
     // =======================
     // === Handling Alerts ===
     builder.addCase(getUserData.rejected, (state, action) => {
@@ -98,6 +120,7 @@ export const controlledErrorsSlice = createSlice({
         )
       );
     })
+
   },
 });
 

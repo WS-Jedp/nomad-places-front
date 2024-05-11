@@ -15,7 +15,7 @@ export interface Place {
     commodities?: Commodities
     rules: PlaceRules
     discoveredBy?: UserRequestDTO
-    discoveredByID?: string[]
+    discoveredByID?: string
     confirmedBy?: UserRequestDTO[]
     confirmedByIDs?: string[]
     discoveredDate?: string

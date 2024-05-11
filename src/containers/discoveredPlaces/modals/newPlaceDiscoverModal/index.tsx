@@ -14,10 +14,12 @@ import { SharingDiscovery } from "../../information";
 
 export interface NewPlaceDiscoverModalProps {
   closeCallback: () => void;
+  onSuccess: () => void;
 }
 
 export const NewPlaceDiscoveredModal: React.FC<NewPlaceDiscoverModalProps> = ({
   closeCallback,
+  onSuccess
 }) => {
   const history = useHistory();
   const { t } = useTranslation();
@@ -66,12 +68,11 @@ export const NewPlaceDiscoveredModal: React.FC<NewPlaceDiscoverModalProps> = ({
 
             ) : (
                 <DiscoveredPlaceForm
-                    onSave={() => {}}
-                    onCancel={() => {}}
+                    onSave={onSuccess}
+                    onCancel={closeCallback}
                 />
             )
         }
-
       </section>
     </AppModal>
   );

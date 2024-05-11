@@ -14,14 +14,15 @@ export const HandleRuleRender:React.FC<HandleRuleRenderProps> = ({ rule }) => {
 
     switch (ruleKey) {
         case PLACE_RULES_ENUM.PET_FRIENDLY:
+
             return (
                 <PetFriendlyRuleCard state={rule[ruleKey]} />
             )
-        case PLACE_RULES_ENUM.SMOKING:
+        case PLACE_RULES_ENUM.UNDER_AGE:
             return (
                 <UnderAgeFriendlyRuleCard state={rule[ruleKey]} />
             )
-        case PLACE_RULES_ENUM.UNDER_AGE:
+        case PLACE_RULES_ENUM.SMOKING:
             return (
                 <SmokingFriendlyRuleCard state={rule[ruleKey]} />
             )

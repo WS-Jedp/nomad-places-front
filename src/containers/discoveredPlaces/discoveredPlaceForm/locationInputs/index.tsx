@@ -1,18 +1,32 @@
+import { IonLabel } from "@ionic/react";
 import { TextInput } from "../../../../components/form/inputs/text";
+import { ReviewValueAmountOptions } from "../confirmSpotForm";
 
 export interface LocationInputsProps {
-    spotZone: string;
-    onSpotZoneChange: (value: string) => void;
-    spotCity: string;
-    onSpotCityChange: (value: string) => void;
+  spotZone: string;
+  onSpotZoneChange: (value: string) => void;
+  reviewsZoneOptions?: ReviewValueAmountOptions<string>[];
+  spotCity: string;
+  onSpotCityChange: (value: string) => void;
+  reviewsCityOptions?: ReviewValueAmountOptions<string>[];
 }
 
-export const LocationInputs: React.FC<LocationInputsProps> = ({ spotZone,  onSpotZoneChange,  spotCity, onSpotCityChange }) => {
+export const LocationInputs: React.FC<LocationInputsProps> = ({
+  spotZone,
+  onSpotZoneChange,
+  spotCity,
+  onSpotCityChange,
+  reviewsCityOptions = [],
+  reviewsZoneOptions = [],
+}) => {
   return (
     <section className="w-full mt-1 mb-5">
       <h2 className="font-bold text-lg">Location</h2>
       <p className="text-sm mb-1">
-        Please, provide us with the following information about the location of the spot. Have in mind, that you're current location will be used as the spot's location, so make sure be at the spot's location before submitting. 
+        Please, provide us with the following information about the location of
+        the spot. Have in mind, that you're current location will be used as the
+        spot's location, so make sure be at the spot's location before
+        submitting.
       </p>
       <div className="w-full my-2 flex flex-col md:flex-row">
         <div className="w-full md:w-6/12 md:mr-1">
@@ -22,6 +36,24 @@ export const LocationInputs: React.FC<LocationInputsProps> = ({ spotZone,  onSpo
             value={spotZone}
             callback={onSpotZoneChange}
           />
+          {reviewsZoneOptions.length > 0 && (
+            <div className="flex flex-row py-2 w-fll overflow-x-auto">
+              {reviewsZoneOptions.map((option, index) => (
+                <div
+                  key={index}
+                  className="bg-gray-200 rounded-md px-2 relative cursor-pointer hover:bg-gray-300 mr-1"
+                  onClick={() => onSpotZoneChange(option.value)}
+                >
+                  <IonLabel className="text-xs">{option.value}</IonLabel>
+                  {option.amount > 1 && (
+                    <IonLabel className="text-xs absolute  bg-gray-400 flex items-center justify-center text-center rounded-full w-[18px] h-[18px] top-[-6px] right-[-6px]">
+                      {option.amount}
+                    </IonLabel>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
         <div className="w-full md:w-6/12 md:ml-1">
           <TextInput
@@ -30,6 +62,25 @@ export const LocationInputs: React.FC<LocationInputsProps> = ({ spotZone,  onSpo
             value={spotCity}
             callback={onSpotCityChange}
           />
+
+          {reviewsCityOptions.length > 0 && (
+            <div className="flex flex-row py-2 w-fll overflow-x-auto">
+              {reviewsCityOptions.map((option, index) => (
+                <div
+                  key={index}
+                  className="bg-gray-200 rounded-md px-2 relative cursor-pointer hover:bg-gray-300 mr-1"
+                  onClick={() => onSpotZoneChange(option.value)}
+                >
+                  <IonLabel className="text-xs">{option.value}</IonLabel>
+                  {option.amount > 1 && (
+                    <IonLabel className="text-xs absolute  bg-gray-400 flex items-center justify-center text-center rounded-full w-[18px] h-[18px] top-[-6px] right-[-6px]">
+                      {option.amount}
+                    </IonLabel>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 

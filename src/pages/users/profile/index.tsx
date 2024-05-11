@@ -95,7 +95,8 @@ export const ProfilePage: React.FC = () => {
       return `${t(`filters.users.industries.${industries[0]}`)} ${t('messages.utils.and')} ${t(`filters.users.industries.${industries[1]}`)}`
     }
 
-    const lastIndustry = t(`filters.users.industries.${industries.pop()}`)
+    
+    const lastIndustry = t(`filters.users.industries.${industries[industries.length - 1]}`)
     const currentLangIndustries = industries.map(industry => t(`filters.users.industries.${industry}`))
     return `${currentLangIndustries.join(', ')} ${t('messages.utils.and')} ${lastIndustry}`
   }

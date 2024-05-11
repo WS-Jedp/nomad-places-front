@@ -83,6 +83,21 @@ export const GeneralHeader: React.FC = () => {
     dispatch(hideAuthModal());
   }
 
+  const [spotDiscovered, setDiscoveredSpot] = useState(false); 
+
+  function closeDiscoveredSpot() {
+    setDiscoveredSpot(false);
+  }
+
+  function successfulSpotDiscovered() {
+    setDiscoveredSpot(true);
+  }
+
+  function handlingSpotDiscovered() {
+    setDiscoveredSpot(false);
+    successfulSpotDiscovered()
+  }
+
   function handleUserMenuOptions(option: UserMenuOptions) {
     setShowUserOptiosn(false);
     switch (option) {
@@ -362,9 +377,43 @@ export const GeneralHeader: React.FC = () => {
       {/* Discovering place modal */}
       {
         showDiscoveringPlace && (
-          <NewPlaceDiscoveredModal closeCallback={closeDiscoveringPlaceModal} />
+          <NewPlaceDiscoveredModal closeCallback={closeDiscoveringPlaceModal} onSuccess={handlingSpotDiscovered} />
         )
       }
+
+      {spotDiscovered && (
+        <AppModal>
+          <section
+            className="
+                                    relative flex flex-col items-center justify-center
+                                    w-[90%] max-w-xl
+                                    bg-white 
+                                    rounded-lg
+                                    p-6 shadow-xl 
+                                    text-black 
+                                "
+          >
+            <h2 className="text-2xl font-bold">
+              🌟 Thank you for sharing your discovery!
+
+            </h2>
+            <div className="w-full h-[2px] my-3 bg-gray-300"></div>
+            <p>
+              Your spot is now up for community review.
+            </p>
+            <p>
+              It needs 6 thumbs-ups within 3 weeks to be permanently added.
+            </p>
+            <p className="mb-6">
+              Keep an eye on its progress and we'll let you know anything about it.
+            </p>
+            <SimpleButton
+              action={closeDiscoveredSpot}
+              text={t("actions.navigation.continue")}
+            />
+          </section>
+        </AppModal>
+      )}
     </IonHeader>
   );
 };

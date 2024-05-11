@@ -2,14 +2,16 @@ import React, { useEffect, useState } from 'react';
 
 interface TimePickerProps {
     onTimePick: (value: string) => void;
-    label: string
+    label: string,
+    defaultDatTime?: 'AM' | 'PM'
+    defaultTime?: string
 }
 
-const TimePicker: React.FC<TimePickerProps> = ({ onTimePick, label }) => {
+const TimePicker: React.FC<TimePickerProps> = ({ onTimePick, label, defaultDatTime = 'AM', defaultTime }) => {
 
-    const [hour, setHour] = useState('');
-    const [minutes, setMinutes] = useState('');
-    const [dayTime, setDayTime] = useState('');
+    const [hour, setHour] = useState('09');
+    const [minutes, setMinutes] = useState('00');
+    const [dayTime, setDayTime] = useState<string>(defaultDatTime);
 
     // Helper function to generate time options
     const generate12Hours = () => {
@@ -36,6 +38,28 @@ const TimePicker: React.FC<TimePickerProps> = ({ onTimePick, label }) => {
         const time = `${hour24}:${minutes}`;
         return time
     }
+
+    function setTimeValues(time: string) {
+        const [hour, minutes] = time.split(':');
+        if(Number(hour) > 12) {
+            setDayTime('PM');
+            setHour((parseInt(hour) - 12).toString());
+        }
+        else {
+            
+            setHour(Number(hour) < 10 ? `0${hour}` : hour);
+            setDayTime('AM');
+        }
+        setMinutes(minutes);
+    }
+
+    useEffect(() => {
+        if(defaultTime && defaultTime !== getTime24Format()) setTimeValues(defaultTime)
+    }, [])
+
+    useEffect(() => {
+        onTimePick(getTime24Format());
+    }, [])
 
     useEffect(() => {
         onTimePick(getTime24Format());

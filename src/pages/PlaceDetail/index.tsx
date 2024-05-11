@@ -3,7 +3,10 @@ import { IonRow, IonText } from "@ionic/react";
 import { useEffect } from "react";
 
 import { DetailAndSessionActionsLayout } from "../../layouts/DetailAndSessionActionsLayout";
-import { useAppDispatch, useAppSelector } from "../../common/hooks/useTypedSelectors";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../common/hooks/useTypedSelectors";
 import { findPlace } from "../../store/redux/slices/places";
 import PlacesService from "../../services/places";
 import { PlaceInformationDetail } from "../../containers/placeInformationDetail";
@@ -15,17 +18,16 @@ import { BackNavigationHeader } from "../../components/header/backNavigation";
 import { createSocket } from "../../store/redux/slices/userSession";
 import { getSpotCachedSession } from "../../store/redux/slices/spotSession";
 import { useDistanceToSpot } from "../../common/hooks/useDistanceToSpot";
-
+import { PLACE_CONFIRMATION_STATUS } from "../../models/places";
 
 export const PlaceDetailPage = () => {
   const history = useHistory();
   const { currentPlace } = useAppSelector((state) => state.places);
   const { cachedSession } = useAppSelector((state) => state.spotSession);
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
   const [isMobile] = useIsMobile();
-  const [ distanceToSpot ] = useDistanceToSpot(currentPlace?.location)
-
+  const [distanceToSpot] = useDistanceToSpot(currentPlace?.location);
 
   function handlePlaceLocation() {
     if (!currentPlace) return null;
@@ -37,7 +39,7 @@ export const PlaceDetailPage = () => {
     if (currentPlace.location.country)
       location += `, ${currentPlace.location.country}`;
 
-    return location.length > 0 ? location + ' - ' : location;
+    return location.length > 0 ? location + " - " : location;
   }
 
   function handleEmptyCurrentPlace() {
@@ -55,27 +57,26 @@ export const PlaceDetailPage = () => {
   }
 
   async function getCachedSession() {
-    if(!currentPlace || !currentPlace.id) return
-    await dispatch( getSpotCachedSession({ spotID: currentPlace.id }) )
+    if (!currentPlace || !currentPlace.id) return;
+    await dispatch(getSpotCachedSession({ spotID: currentPlace.id }));
   }
 
   useEffect(() => {
-    handleCreateComponent()
-    getCachedSession()
+    handleCreateComponent();
+    getCachedSession();
   }, []);
-
 
   return (
     <IonRow className="relative h-screen w-screen overflow-y-hidden bg-white text-black">
       {isMobile && <BackNavigationHeader />}
       <IonRow className={`w-full h-auto ${isMobile ? "p-3" : ""}`}>
         {isMobile && (
-            <IonText>
-              <h2 className="font-bold text-3xl">{currentPlace?.name}</h2>
-              <p className="pt-1">
-                {handlePlaceLocation()} {distanceToSpot}km
-              </p>
-            </IonText>
+          <IonText>
+            <h2 className="font-bold text-3xl">{currentPlace?.name}</h2>
+            <p className="pt-1">
+              {handlePlaceLocation()} {distanceToSpot}km
+            </p>
+          </IonText>
         )}
       </IonRow>
       <DetailAndSessionActionsLayout secondTab={<PlaceSessionDetail />}>

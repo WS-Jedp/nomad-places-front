@@ -3,13 +3,15 @@ import { useTranslation } from "react-i18next";
 import { useAppSelector } from "../../../../common/hooks/useTypedSelectors";
 import { SimpleMindsetCard } from "../../../../components/mindsets/cards/simpleCardMindset";
 import { MINDSETS } from "../../../../models/mindsets";
+import { ReviewValueAmountOptions } from "../confirmSpotForm";
 
 export interface SpotKnownForProps {
     onSpotKnownFor: (mindset: MINDSETS) => void
     selectedSpotKnownFor?: MINDSETS
+    reviewsSpotKnownForOptions?: ReviewValueAmountOptions<MINDSETS>[]
 }
 
-export const SpotKnownForInput: React.FC<SpotKnownForProps> = ({ onSpotKnownFor, selectedSpotKnownFor }) => {
+export const SpotKnownForInput: React.FC<SpotKnownForProps> = ({ onSpotKnownFor, selectedSpotKnownFor, reviewsSpotKnownForOptions = [] }) => {
     const { t } = useTranslation()
     const { spotMindsetFilter } = useAppSelector(state => state.filters)
   return (
@@ -27,6 +29,8 @@ export const SpotKnownForInput: React.FC<SpotKnownForProps> = ({ onSpotKnownFor,
               callback={() => onSpotKnownFor(mindset.name)}
               mindset={mindset.name}
               isSelected={selectedSpotKnownFor === mindset.name}
+              withBadge
+              badgeValue={reviewsSpotKnownForOptions.find(type => type.value === mindset.name)?.amount}
             />
           </div>
         ))}

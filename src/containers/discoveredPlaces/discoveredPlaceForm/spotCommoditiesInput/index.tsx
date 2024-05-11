@@ -9,9 +9,10 @@ import { PLACE_COMMODITIES_ENUM } from "../../../../models/places";
 export interface SpotCommoditiesProps {
   onSpotCommodity: (spotCommodity: number) => void;
   selectedSpotCommodities: number[];
-  handleRuleWithDetailInput: (commodity: SpotCommoditiesFilters, value: string) => void;
+  handleCommodityWithDetailInput: (commodity: SpotCommoditiesFilters, value: string) => void;
+  commiditiesWithDetail?: { [key: string]: string };
 }
-export const SpotCommoditiesInput: React.FC<SpotCommoditiesProps> = ({ onSpotCommodity, selectedSpotCommodities, handleRuleWithDetailInput }) => {
+export const SpotCommoditiesInput: React.FC<SpotCommoditiesProps> = ({ onSpotCommodity, selectedSpotCommodities, handleCommodityWithDetailInput, commiditiesWithDetail }) => {
     const { t }  = useTranslation()
     const { spotCommoditiesFilter } = useAppSelector(state => state.filters)
   return (
@@ -31,8 +32,17 @@ export const SpotCommoditiesInput: React.FC<SpotCommoditiesProps> = ({ onSpotCom
                 (commodity.commodity === PLACE_COMMODITIES_ENUM.PUBLIC_PLUGS &&
                   selectedSpotCommodities.includes(commodity.id))
               }
+              inputValue={
+                commiditiesWithDetail &&
+                commiditiesWithDetail[commodity.commodity]
+              }
+              inputPlaceholder={
+                commodity.commodity === PLACE_COMMODITIES_ENUM.PUBLIC_WIFI
+                  ? "Ej. 120mbps"
+                  : commodity.commodity === PLACE_COMMODITIES_ENUM.PUBLIC_PLUGS ? "Ej. 9" : ""
+              }
               onChangeInputValue={(value) =>
-                handleRuleWithDetailInput(commodity, value)
+                handleCommodityWithDetailInput(commodity, value)
               }
             />
           </IonCol>

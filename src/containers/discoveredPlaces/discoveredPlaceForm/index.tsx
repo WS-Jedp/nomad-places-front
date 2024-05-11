@@ -1,14 +1,15 @@
 import { IonCol, IonRow } from "@ionic/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { MdAddAPhoto, MdClose } from "react-icons/md";
-import { useAppSelector } from "../../../common/hooks/useTypedSelectors";
+import { useAppDispatch, useAppSelector } from "../../../common/hooks/useTypedSelectors";
 import { handleSpotTypeIcon } from "../../../common/utils/icons/icons";
 import { SimpleButton } from "../../../components/buttons/simple";
 import { SimpleDropdown } from "../../../components/dropdowns/simple";
 import { SimpleCheckbox } from "../../../components/form/inputs/checkbox";
 import { TextInput } from "../../../components/form/inputs/text";
 import { TextAreaInput } from "../../../components/form/inputs/textarea";
+import { LoaderSpinner } from "../../../components/loaders/spinner";
 import { SimpleMindsetCard } from "../../../components/mindsets/cards/simpleCardMindset";
 import { SimplePlaceTypeCard } from "../../../components/places/types/cards/simple";
 import { DiscoverSpotDTO } from "../../../dto/places";
@@ -17,8 +18,11 @@ import {
   SpotRulesFilters,
 } from "../../../models/filters";
 import { MINDSETS } from "../../../models/mindsets";
-import { PLACE_COMMODITIES_ENUM } from "../../../models/places";
+import { PLACE_RULES } from "../../../models/placeRules";
+import { PLACE_COMMODITIES_ENUM, PLACE_RULES_ENUM } from "../../../models/places";
 import { PLACE_TYPES } from "../../../models/placeTypes";
+import { newSpotDiscover } from "../../../store/redux/slices/places";
+import { getUserGeoLocation } from "../../../store/redux/slices/user";
 import { GeneralInformationInputs } from "./generalInformationInputs";
 import { LocationInputs } from "./locationInputs";
 import { SpotCommoditiesInput } from "./spotCommoditiesInput";
@@ -32,6 +36,11 @@ export const DiscoveredPlaceForm: React.FC<{
   onCancel: () => void;
 }> = ({ onCancel, onSave }) => {
   const { t } = useTranslation();
+  const { spotRulesFilters, spotCommoditiesFilter } = useAppSelector(state => state.filters)
+  const { location: userLocation, auth, userData  } = useAppSelector(state => state.user)
+  const dispatch = useAppDispatch()
+
+  const [isSaving, setIsSaving] = useState<boolean>(false);
 
   const [spotName, setSpotName] = useState<string>("");
   const [spotDescription, setSpotDescription] = useState<string>("");
@@ -68,15 +77,16 @@ export const DiscoveredPlaceForm: React.FC<{
   const [wifiSpeed, setWifiSpeed] = useState<string>();
   const [plugsAmount, setPlugsAmonunt] = useState<string>();
 
-  function handleRuleWithDetailInput(
-    rule: SpotCommoditiesFilters,
+  function handleCommodityWithDetailInput(
+    commodity: SpotCommoditiesFilters,
     value: string
   ) {
-    if (rule.name === PLACE_COMMODITIES_ENUM.PUBLIC_WIFI) {
+
+    if (commodity.commodity === PLACE_COMMODITIES_ENUM.PUBLIC_WIFI) {
       setWifiSpeed(value);
     }
 
-    if (rule.name === PLACE_COMMODITIES_ENUM.PLUGS_AMOUNT) {
+    if (commodity.commodity === PLACE_COMMODITIES_ENUM.PLUGS_AMOUNT) {
       setPlugsAmonunt(value);
     }
   }
@@ -114,37 +124,92 @@ export const DiscoveredPlaceForm: React.FC<{
   };
 
   function handleGetSpotData(): DiscoverSpotDTO {
+    if(!userLocation || !userLocation.latitude || !userLocation.longitude) {
+      throw new Error("User location not found")
+    }
+
+    if(!auth || !userData || !userData.id) {
+      throw new Error("User data not found")
+    }
+
+    if(!spotName || !spotDescription || !spotTypeID || !spotKnownFor || !spotZone || !spotCity) {
+      throw new Error("Missing required fields")
+    }
+
+    const currentRules = {
+      petFriendly: selectedRules.includes(spotRulesFilters.find(rule => rule.rule === PLACE_RULES_ENUM.PET_FRIENDLY)?.id || 0),
+      smoking: selectedRules.includes(spotRulesFilters.find(rule => rule.rule === PLACE_RULES_ENUM.SMOKING)?.id || 0),
+      underAge: selectedRules.includes(spotRulesFilters.find(rule => rule.rule === PLACE_RULES_ENUM.UNDER_AGE)?.id || 0),
+    }
+
+    const advancedCommodities = {
+      plugs: {
+        public: selectedCommodities.includes(spotCommoditiesFilter.find(commodity => commodity.commodity === PLACE_COMMODITIES_ENUM.PUBLIC_PLUGS)?.id || 0),
+        amount: selectedCommodities.includes(spotCommoditiesFilter.find(commodity => commodity.commodity === PLACE_COMMODITIES_ENUM.PUBLIC_PLUGS)?.id || 0) ? typeof Number(plugsAmount) === 'number' ? Number(plugsAmount) : null : null,
+      },
+      wifi: {
+        public: selectedCommodities.includes(spotCommoditiesFilter.find(commodity => commodity.commodity === PLACE_COMMODITIES_ENUM.PUBLIC_WIFI)?.id || 0),
+        speed: selectedCommodities.includes(spotCommoditiesFilter.find(commodity => commodity.commodity === PLACE_COMMODITIES_ENUM.PUBLIC_WIFI)?.id || 0) ? typeof Number(wifiSpeed) === 'number' ? Number(wifiSpeed) : null : null,
+      },
+    }
+
     return {
       name: spotName,
       description: spotDescription,
-      type: [],
+      type: [ spotTypeID ],
       knownFor: spotKnownFor,
       rules: {
         closedAt: closingTime,
         openAt: openingTime,
-        petFriendly: selectedRules.includes(1),
-        smoking: selectedRules.includes(2),
-        underAge: selectedRules.includes(3),
+        ...currentRules,
       },
       location: {
-        latitude: 0,
-        longitude: 0,
+        latitude: userLocation.latitude,
+        longitude: userLocation.longitude,
         zone: spotZone,
         city: spotCity,
         country: "COLOMBIA",
       },
       commodities: {
-        plugsAmount: 0,
-        wifiSpeed: 0,
-        coworkSpace: selectedCommodities.includes(1),
-        parking: selectedCommodities.includes(2),
-        publicPlugs: selectedCommodities.includes(3),
-        publicWifi: selectedCommodities.includes(4),
-        publicBathrooms: selectedCommodities.includes(5),
+        publicPlugs: advancedCommodities.plugs.public,
+        plugsAmount: advancedCommodities.plugs.amount ? advancedCommodities.plugs.amount : null,
+        publicWifi: advancedCommodities.wifi.public,
+        wifiSpeed: advancedCommodities.wifi.speed ? advancedCommodities.wifi.speed : null,
+        parking: selectedCommodities.includes(spotCommoditiesFilter.find(commodity => commodity.commodity === PLACE_COMMODITIES_ENUM.PARKING)?.id || 0),
+        coworkSpace: selectedCommodities.includes(spotCommoditiesFilter.find(commodity => commodity.commodity === PLACE_COMMODITIES_ENUM.COWORK_SPACE)?.id || 0),
+        publicBathrooms: selectedCommodities.includes(spotCommoditiesFilter.find(commodity => commodity.commodity === PLACE_COMMODITIES_ENUM.PUBLIC_BATHROOMS)?.id || 0),
       },
-      multimedia: [],
+      multimedia: files || [],
+      discoveredByID: userData.id,
     };
   }
+
+  async function handleUserGeoLocation() {
+    await dispatch(getUserGeoLocation());
+  }
+  
+  useEffect(() => {
+    if(!userLocation || !userLocation.latitude || !userLocation.longitude) {
+      handleUserGeoLocation()
+      return
+    }
+  }, [userLocation])
+
+  async function handleSaveSpot() {
+    try {
+      setIsSaving(true)
+      const spot = handleGetSpotData()
+      const resp = await dispatch( newSpotDiscover({ spot }) )
+      if(resp.payload) {
+        console.log(resp.payload)
+        onSave()
+      }
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setIsSaving(false)
+    }
+  } 
 
   return (
     <section className="flex flex-col items-start justify-start w-full p-5 overflow-y-auto text-start">
@@ -189,7 +254,7 @@ export const DiscoveredPlaceForm: React.FC<{
         />
 
         <SpotCommoditiesInput
-          handleRuleWithDetailInput={handleRuleWithDetailInput}
+          handleCommodityWithDetailInput={handleCommodityWithDetailInput}
           onSpotCommodity={(commodity) => handleCommodityInput(commodity)}
           selectedSpotCommodities={selectedCommodities}
         />
@@ -202,7 +267,9 @@ export const DiscoveredPlaceForm: React.FC<{
         />
       </form>
       <div className="my-5">
-        <SimpleButton text="Save" action={() => {}} />
+        {
+          isSaving ? <LoaderSpinner /> : <SimpleButton text="Save" action={handleSaveSpot} />
+        }
       </div>
     </section>
   );

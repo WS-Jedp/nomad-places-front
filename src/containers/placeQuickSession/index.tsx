@@ -29,6 +29,9 @@ import { createSocket } from "../../store/redux/slices/userSession";
 import { computeDistanceToSpot } from "../../common/utils/geoLocation";
 import { useDistanceToSpot } from "../../common/hooks/useDistanceToSpot";
 import { useTranslation } from "react-i18next";
+import { PLACE_CONFIRMATION_STATUS } from "../../models/places";
+import { IoIosInformation, IoIosInformationCircle, IoIosInformationCircleOutline } from "react-icons/io";
+import { ConfirmPlaceDiscoveredModal } from "../discoveredPlaces/modals/confirmPlaceDiscovered";
 
 interface PlaceQuickSessionProps {
   changePageCallback: Function;
@@ -47,15 +50,22 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
   const { currentPlace } = useAppSelector((state) => state.places);
   const { userData, location: userLocation } = useAppSelector((state) => state.user);
   const { socket } = useAppSelector((state) => state.userSession);
+  const [confirmSpot, setConfirmSpot] = useState<boolean>(false);
   const [isRecentActivity, setIsRecentActivity] = useState<boolean>(false);
 
   const [ distanceToSpot ] = useDistanceToSpot(currentPlace?.location)
+
+  function handleConfirmSpot() {
+    setConfirmSpot(!confirmSpot);
+  }
+  function closeConfirmSpot() {
+    setConfirmSpot(false);
+  }
 
   function handleNoCurrentPlace() {
     return history.goBack();
   }
   
-
   async function handleUserSession() {
     if (!userData || !currentPlace) return;
 
@@ -73,7 +83,7 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
 
     await socket.quickReview();
     await socket.onQuickReviewUpdate((quickReview) => {
-      console.log(quickReview, "THIS IS THE QUICK REVIEW");
+      // console.log(quickReview, "THIS IS THE QUICK REVIEW");
     });
   }
 
@@ -154,6 +164,23 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
       </IonRow>
 
       {/* Place Headers */}
+      {
+        currentPlace?.confirmationStatus && currentPlace?.confirmationStatus === PLACE_CONFIRMATION_STATUS.RECOMMENDED && (
+          <IonRow class="w-full px-3 py-2 ion-no-padding border-b border-gray-300 shadow-sm">
+            <IonCol size="12">
+              <IonRow className="h-full flex flex-col justify-center">
+                  <h1 className="font-light text-sm flex flex-row items-center bg-indigo-100 px-3 py-2 rounded-md">
+                    <IoIosInformationCircleOutline size={21} className="mr-1" />
+                    <span>
+                      Spot in recommended stage. <span className="underline font-semibold cursor-pointer" onClick={handleConfirmSpot}>Wanna help us to confirm it?</span>
+                    </span>
+                  </h1>
+              </IonRow>
+            </IonCol>
+          </IonRow>
+        )
+      }
+      
       {/* Place information */}
       <IonRow class="w-full p-3 ion-no-padding border-b border-gray-300 shadow-sm">
         <IonCol size="8">
@@ -292,6 +319,15 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
           )}
         </IonRow>
       </IonRow>
+
+      {
+        confirmSpot && (
+          <ConfirmPlaceDiscoveredModal 
+            closeCallback={closeConfirmSpot}
+            onSuccess={closeConfirmSpot}
+          />
+        )
+      }
     </section>
   );
 };

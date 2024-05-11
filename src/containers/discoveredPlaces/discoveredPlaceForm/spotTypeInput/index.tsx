@@ -4,13 +4,15 @@ import { useAppSelector } from "../../../../common/hooks/useTypedSelectors";
 import { handleSpotTypeIcon } from "../../../../common/utils/icons/icons";
 import { SimplePlaceTypeCard } from "../../../../components/places/types/cards/simple";
 import { PLACE_TYPES } from "../../../../models/placeTypes";
+import { ReviewValueAmountOptions } from "../confirmSpotForm";
 
 export interface SpotTypeInputProps {
     onSpotType: (spotType: PLACE_TYPES) => void
     selectedSpotType?: PLACE_TYPES
+    reviewsSpotTypeOptions?: ReviewValueAmountOptions<PLACE_TYPES>[]
 }
 
-export const SpotTypeInput: React.FC<SpotTypeInputProps> = ({ onSpotType, selectedSpotType }) => {
+export const SpotTypeInput: React.FC<SpotTypeInputProps> = ({ onSpotType, selectedSpotType, reviewsSpotTypeOptions }) => {
     const { t } = useTranslation()
     const { spotTypesFilter } = useAppSelector(state => state.filters)
   return (
@@ -28,6 +30,8 @@ export const SpotTypeInput: React.FC<SpotTypeInputProps> = ({ onSpotType, select
               icon={handleSpotTypeIcon(spotType.name)}
               callback={() => onSpotType(spotType.name)}
               isSelected={selectedSpotType === spotType.name}
+              withBadge
+              badgeValue={reviewsSpotTypeOptions?.find(type => type.value === spotType.name)?.amount}
             />
           </div>
         ))}

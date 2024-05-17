@@ -69,7 +69,7 @@ export const LocationInputs: React.FC<LocationInputsProps> = ({
                 <div
                   key={index}
                   className="bg-indigo-50 text-indigo-700 font-semibold rounded-md px-2 relative cursor-pointer hover:bg-indigo-200 mr-1"
-                  onClick={() => onSpotZoneChange(option.value)}
+                  onClick={() => onSpotCityChange(option.value)}
                 >
                   <IonLabel className="text-xs">{option.value}</IonLabel>
                   {option.amount > 1 && (

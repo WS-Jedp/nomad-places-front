@@ -12,7 +12,7 @@ import {
   newSpotDiscoveredConfirmedDTO,
 } from "../../../../dto/places";
 import { PlaceConfirmationStatus } from "../../../../models/placeConfirmation";
-import { PLACE_CONFIRMATION_STATUS } from "../../../../models/places";
+import { Place, PLACE_CONFIRMATION_STATUS } from "../../../../models/places";
 
 export const getNearestPlaces = createAsyncThunk<
   PlaceWithCachedSession[] | null,
@@ -162,6 +162,10 @@ export const placesSlice = createSlice({
     approvedCurrentPlace: (state) => {
       if (!state.currentPlace) return;
       state.currentPlace.confirmationStatus = PLACE_CONFIRMATION_STATUS.APPROVED;
+    },
+    updateCurrentPlace: (state, action: PayloadAction<Place>) => {
+      if (!state.currentPlace) return;
+      state.currentPlace = {...state.currentPlace, ...action.payload};
     }
   },
   extraReducers: (builder) => {
@@ -196,7 +200,8 @@ export const {
   resetFilteredPlaces,
   startDiscoveringPlace,
   stopDiscoveringPlace,
-  approvedCurrentPlace
+  approvedCurrentPlace,
+  updateCurrentPlace
 } = placesSlice.actions;
 
 export default placesSlice.reducer;

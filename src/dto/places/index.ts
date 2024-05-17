@@ -46,6 +46,7 @@ export type newSpotDiscoveredConfirmedDTO = {
     placeApproved: boolean
     userConfirmations: string[]
     placeConfirmations: string[]
+    place: Place
 } 
 
 export type newSpotDiscoveredRejectedDTO = {

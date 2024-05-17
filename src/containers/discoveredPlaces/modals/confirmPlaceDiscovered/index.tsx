@@ -15,10 +15,11 @@ import { ControlledErrorType } from "../../../../common/controlledError/types";
 import { LoaderSpinner } from "../../../../components/loaders/spinner";
 import { ConfirmDiscoveredSpotForm } from "../../discoveredPlaceForm/confirmSpotForm";
 import { DiscoveredPlaceConfirmation } from "../../../../models/placeConfirmation";
+import { newSpotDiscoveredConfirmedDTO } from "../../../../dto/places";
 
 export interface ConfirmPlaceDiscoveredProps {
   closeCallback: () => void;
-  onSuccess: () => void;
+  onSuccess: (spotState: newSpotDiscoveredConfirmedDTO) => void;
 }
 
 export const ConfirmPlaceDiscoveredModal: React.FC<ConfirmPlaceDiscoveredProps> = ({

@@ -32,6 +32,10 @@ import { useTranslation } from "react-i18next";
 import { PLACE_CONFIRMATION_STATUS } from "../../models/places";
 import { IoIosInformation, IoIosInformationCircle, IoIosInformationCircleOutline } from "react-icons/io";
 import { ConfirmPlaceDiscoveredModal } from "../discoveredPlaces/modals/confirmPlaceDiscovered";
+import { newSpotDiscoveredConfirmedDTO } from "../../dto/places";
+import { SpotApprovedSuccessfulModal } from "../discoveredPlaces/modals/spotApprovedSuccessful";
+import { SpotConfirmedSuccessfulModal } from "../discoveredPlaces/modals/spotConfirmedSuccessful";
+import { approvedCurrentPlace } from "../../store/redux/slices/places";
 
 interface PlaceQuickSessionProps {
   changePageCallback: Function;
@@ -51,6 +55,8 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
   const { userData, location: userLocation } = useAppSelector((state) => state.user);
   const { socket } = useAppSelector((state) => state.userSession);
   const [confirmSpot, setConfirmSpot] = useState<boolean>(false);
+  const [isSpotConfirmed, setIsSpotConfirmed] = useState<boolean>(false);
+  const [isSpotApproved, setIsSpotApproved] = useState<boolean>(false);
   const [isRecentActivity, setIsRecentActivity] = useState<boolean>(false);
 
   const [ distanceToSpot ] = useDistanceToSpot(currentPlace?.location)
@@ -58,6 +64,15 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
   function handleConfirmSpot() {
     setConfirmSpot(!confirmSpot);
   }
+  async function handleOnConfirmSpot(spotState: newSpotDiscoveredConfirmedDTO) {
+    closeConfirmSpot()
+    if(spotState.placeApproved) {
+      await dispatch( approvedCurrentPlace() )
+      return setIsSpotApproved(true)
+    }
+    setIsSpotConfirmed(true)  
+  }
+
   function closeConfirmSpot() {
     setConfirmSpot(false);
   }
@@ -324,8 +339,20 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
         confirmSpot && (
           <ConfirmPlaceDiscoveredModal 
             closeCallback={closeConfirmSpot}
-            onSuccess={closeConfirmSpot}
+            onSuccess={handleOnConfirmSpot}
           />
+        )
+      }
+
+      {
+        isSpotApproved && (
+          <SpotApprovedSuccessfulModal closeDiscoveredSpot={() => setIsSpotApproved(false)} />
+        )
+      }
+
+      {
+        isSpotConfirmed && (
+          <SpotConfirmedSuccessfulModal closeDiscoveredSpot={() => setIsSpotConfirmed(false)} />
         )
       }
     </section>

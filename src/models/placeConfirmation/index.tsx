@@ -7,6 +7,7 @@ import { PLACE_TYPES } from "../placeTypes"
 export enum PlaceConfirmationStatus {
     RECOMMENDED = "RECOMMENDED",
     CONFIRMED = "CONFIRMED",
+    APPROVED = "APPROVED",
     REJECTED = "REJECTED"
 }
 

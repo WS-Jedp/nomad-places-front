@@ -67,10 +67,10 @@ export const GeneralInformationInputs: React.FC<
         {reviewsNameOptions.length > 0 && (
           <div className="flex flex-row py-2 w-fll overflow-x-auto">
             {reviewsNameOptions.map((option, index) => (
-              <div key={index} className="bg-gray-200 rounded-md px-2 relative cursor-pointer hover:bg-gray-300 mr-1" onClick={() => handleOnNameOption(option.value)}>
+              <div key={index} className="bg-indigo-50 text-indigo-700 font-semibold rounded-md px-2 relative cursor-pointer hover:bg-indigo-200 mr-1" onClick={() => handleOnNameOption(option.value)}>
                 <IonLabel className="text-xs">{option.value}</IonLabel>
                 {option.amount > 1 && (
-                  <IonLabel className="text-xs absolute  bg-gray-400 flex items-center justify-center text-center rounded-full w-[18px] h-[18px] top-[-6px] right-[-6px]">
+                  <IonLabel className="text-xs absolute bg-indigo-400 text-white flex items-center justify-center text-center rounded-full w-[18px] h-[18px] top-[-6px] right-[-6px]">
                     {option.amount}
                   </IonLabel>
                 )}
@@ -100,7 +100,7 @@ export const GeneralInformationInputs: React.FC<
                     <div key={index} className="inline-flex border border-gray-200 rounded-md p-2 min-h-full min-w-[180px] w-5/6  relative cursor-pointer hover:bg-gray-300 mr-2" onClick={() => onSpotDescriptionChange(option.value)}>
                       <IonLabel className="text-xs">{option.value}</IonLabel>
                       {option.amount > 1 && (
-                        <IonLabel className="text-xs absolute  bg-gray-400 flex items-center justify-center text-center rounded-full w-[18px] h-[18px] top-[-6px] right-[-6px]">
+                        <IonLabel className="text-xs absolute bg-indigo-400 text-white flex items-center justify-center text-center rounded-full w-[18px] h-[18px] top-[-6px] right-[-6px]">
                           {option.amount}
                         </IonLabel>
                       )}
@@ -124,10 +124,10 @@ export const GeneralInformationInputs: React.FC<
             reviewsOpenAtOptions.length > 0 && (
               <div className="flex flex-row py-2 w-fll overflow-x-auto">
                 {reviewsOpenAtOptions.map((option, index) => (
-                  <div key={index} className="bg-gray-200 rounded-md px-2 relative cursor-pointer hover:bg-gray-300 mr-1" onClick={() => onOpeningTimeChange(option.value)}>
+                  <div key={index} className="bg-indigo-50 text-indigo-700 font-semibold rounded-md px-2 relative cursor-pointer hover:bg-indigo-200 mr-1" onClick={() => onOpeningTimeChange(option.value)}>
                     <IonLabel className="text-xs">{option.value}</IonLabel>
                     {option.amount > 1 && (
-                      <IonLabel className="text-xs absolute  bg-gray-400 flex items-center justify-center text-center rounded-full w-[18px] h-[18px] top-[-6px] right-[-6px]">
+                      <IonLabel className="text-xs absolute bg-indigo-400 text-white flex items-center justify-center text-center rounded-full w-[18px] h-[18px] top-[-6px] right-[-6px]">
                         {option.amount}
                       </IonLabel>
                     )}
@@ -148,10 +148,10 @@ export const GeneralInformationInputs: React.FC<
             reviewsCloseAtOptions.length > 0 && (
               <div className="flex flex-row py-2 w-fll overflow-x-auto">
                 {reviewsCloseAtOptions.map((option, index) => (
-                  <div key={index} className="bg-gray-200 rounded-md px-2 relative cursor-pointer hover:bg-gray-300 mr-1" onClick={() => onClosingTimeChange(option.value)}>
+                  <div key={index} className="bg-indigo-50 text-indigo-700 font-semibold rounded-md px-2 relative cursor-pointer hover:bg-indigo-200 mr-1" onClick={() => onClosingTimeChange(option.value)}>
                     <IonLabel className="text-xs">{option.value}</IonLabel>
                     {option.amount > 1 && (
-                      <IonLabel className="text-xs absolute  bg-gray-400 flex items-center justify-center text-center rounded-full w-[18px] h-[18px] top-[-6px] right-[-6px]">
+                      <IonLabel className="text-xs absolute bg-indigo-400 text-white flex items-center justify-center text-center rounded-full w-[18px] h-[18px] top-[-6px] right-[-6px]">
                         {option.amount}
                       </IonLabel>
                     )}

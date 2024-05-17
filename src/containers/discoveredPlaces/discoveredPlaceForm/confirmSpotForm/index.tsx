@@ -1,31 +1,22 @@
-import { IonCol, IonRow } from "@ionic/react";
-import { use } from "i18next";
+import { PayloadAction } from "@reduxjs/toolkit";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { MdAddAPhoto, MdClose } from "react-icons/md";
+import { AiFillLike } from "react-icons/ai";
+import { IoMdInformationCircleOutline } from "react-icons/io";
 import { ControlledError } from "../../../../common/controlledError";
 import { ControlledErrorType } from "../../../../common/controlledError/types";
 import {
   useAppDispatch,
   useAppSelector,
 } from "../../../../common/hooks/useTypedSelectors";
-import { handleSpotTypeIcon } from "../../../../common/utils/icons/icons";
 import { SimpleButton } from "../../../../components/buttons/simple";
-import { SimpleDropdown } from "../../../../components/dropdowns/simple";
-import { SimpleCheckbox } from "../../../../components/form/inputs/checkbox";
-import { TextInput } from "../../../../components/form/inputs/text";
-import { TextAreaInput } from "../../../../components/form/inputs/textarea";
 import { LoaderSpinner } from "../../../../components/loaders/spinner";
-import { SimpleMindsetCard } from "../../../../components/mindsets/cards/simpleCardMindset";
-import { SimplePlaceTypeCard } from "../../../../components/places/types/cards/simple";
-import { DiscoverSpotDTO } from "../../../../dto/places";
+import { DiscoverSpotDTO, newSpotDiscoveredConfirmedDTO } from "../../../../dto/places";
 import {
   SpotCommoditiesFilters,
-  SpotRulesFilters,
 } from "../../../../models/filters";
 import { MINDSETS } from "../../../../models/mindsets";
 import { DiscoveredPlaceConfirmation } from "../../../../models/placeConfirmation";
-import { PLACE_RULES } from "../../../../models/placeRules";
 import {
   PLACE_COMMODITIES_ENUM,
   PLACE_RULES_ENUM,
@@ -34,14 +25,12 @@ import { PLACE_TYPES } from "../../../../models/placeTypes";
 import { addError } from "../../../../store/redux/slices/controlledErrors";
 import {
   confirmNewSpotDiscovered,
-  newSpotDiscover,
 } from "../../../../store/redux/slices/places";
 import { getUserGeoLocation } from "../../../../store/redux/slices/user";
 import { GeneralInformationInputs } from "../generalInformationInputs";
 import { LocationInputs } from "../locationInputs";
 import { SpotCommoditiesInput } from "../spotCommoditiesInput";
 import { SpotKnownForInput } from "../spotKnownForInput";
-import { SpotMultimediaInput } from "../spotMultimediaInput";
 import { SpotRulesInput } from "../spotRulesInput";
 import { SpotTypeInput } from "../spotTypeInput";
 
@@ -51,7 +40,7 @@ export type ReviewValueAmountOptions<T> = {
 };
 
 export const ConfirmDiscoveredSpotForm: React.FC<{
-  onSave: () => void;
+  onSave: (spotState: newSpotDiscoveredConfirmedDTO) => void;
   onCancel: () => void;
   reviews: DiscoveredPlaceConfirmation[];
 }> = ({ onCancel, onSave, reviews }) => {
@@ -217,9 +206,11 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
       }
     });
 
-    if(currentPlace?.name) {
-      const currentPlaceName = nameOptions.find((option) => option.value === currentPlace.name);
-      if(currentPlaceName) {
+    if (currentPlace?.name) {
+      const currentPlaceName = nameOptions.find(
+        (option) => option.value === currentPlace.name
+      );
+      if (currentPlaceName) {
         currentPlaceName.amount++;
       } else {
         nameOptions.push({
@@ -227,7 +218,6 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
           amount: 1,
         });
       }
-      
     }
     return nameOptions;
   };
@@ -235,8 +225,8 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
   const countSpotDescriptions = (
     places: DiscoveredPlaceConfirmation[]
   ): ReviewValueAmountOptions<string>[] => {
-    const descriptionOptions: ReviewValueAmountOptions<string>[] = []
-    
+    const descriptionOptions: ReviewValueAmountOptions<string>[] = [];
+
     places.forEach((place) => {
       if (!place.description) return;
       const description = descriptionOptions.find(
@@ -252,9 +242,11 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
       }
     });
 
-    if(currentPlace?.description) {
-      const currentPlaceDescription = descriptionOptions.find((option) => option.value === currentPlace.description);
-      if(currentPlaceDescription) {
+    if (currentPlace?.description) {
+      const currentPlaceDescription = descriptionOptions.find(
+        (option) => option.value === currentPlace.description
+      );
+      if (currentPlaceDescription) {
         currentPlaceDescription.amount++;
       } else {
         descriptionOptions.push({
@@ -286,9 +278,11 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
       }
     });
 
-    if(currentPlace?.rules.openAt) {
-      const currentPlaceOpenAt = openAtOptions.find((option) => option.value === currentPlace.rules.openAt);
-      if(currentPlaceOpenAt) {
+    if (currentPlace?.rules.openAt) {
+      const currentPlaceOpenAt = openAtOptions.find(
+        (option) => option.value === currentPlace.rules.openAt
+      );
+      if (currentPlaceOpenAt) {
         currentPlaceOpenAt.amount++;
       } else {
         openAtOptions.push({
@@ -319,9 +313,11 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
       }
     });
 
-    if(currentPlace?.rules.closedAt) {
-      const currentPlaceClosedAt = closedAtOptions.find((option) => option.value === currentPlace.rules.closedAt);
-      if(currentPlaceClosedAt) {
+    if (currentPlace?.rules.closedAt) {
+      const currentPlaceClosedAt = closedAtOptions.find(
+        (option) => option.value === currentPlace.rules.closedAt
+      );
+      if (currentPlaceClosedAt) {
         currentPlaceClosedAt.amount++;
       } else {
         closedAtOptions.push({
@@ -339,7 +335,9 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
     const zoneOptions: ReviewValueAmountOptions<string>[] = [];
     places.forEach((place) => {
       if (!place.location.zone) return;
-      const zone = zoneOptions.find((option) => option.value === place.location.zone);
+      const zone = zoneOptions.find(
+        (option) => option.value === place.location.zone
+      );
       if (zone) {
         zone.amount++;
       } else {
@@ -350,9 +348,11 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
       }
     });
 
-    if(currentPlace?.location.zone) {
-      const currentPlaceZone = zoneOptions.find((option) => option.value === currentPlace.location.zone);
-      if(currentPlaceZone) {
+    if (currentPlace?.location.zone) {
+      const currentPlaceZone = zoneOptions.find(
+        (option) => option.value === currentPlace.location.zone
+      );
+      if (currentPlaceZone) {
         currentPlaceZone.amount++;
       } else {
         zoneOptions.push({
@@ -370,7 +370,9 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
     const cityOptions: ReviewValueAmountOptions<string>[] = [];
     places.forEach((place) => {
       if (!place.location.city) return;
-      const city = cityOptions.find((option) => option.value === place.location.city);
+      const city = cityOptions.find(
+        (option) => option.value === place.location.city
+      );
       if (city) {
         city.amount++;
       } else {
@@ -381,9 +383,11 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
       }
     });
 
-    if(currentPlace?.location.city) {
-      const currentPlaceCity = cityOptions.find((option) => option.value === currentPlace.location.city);
-      if(currentPlaceCity) {
+    if (currentPlace?.location.city) {
+      const currentPlaceCity = cityOptions.find(
+        (option) => option.value === currentPlace.location.city
+      );
+      if (currentPlaceCity) {
         currentPlaceCity.amount++;
       } else {
         cityOptions.push({
@@ -593,16 +597,16 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
       if (!currentPlace) {
         throw new Error("No place selected");
       }
-      await dispatch(
+      const resp = await dispatch(
         confirmNewSpotDiscovered({
           confirmmedSpot: {
             spotID: currentPlace?.id,
             discoveredSpotReview: handleGetSpotData(),
           },
         })
-      );
+      ) as PayloadAction<newSpotDiscoveredConfirmedDTO>;
 
-      onSave();
+      onSave(resp.payload);
     } catch (error) {
       dispatch(
         addError(
@@ -628,29 +632,44 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
 
   return (
     <section className="flex flex-col items-start justify-start w-full p-5 overflow-y-auto text-start">
-      <div className="flex flex-row w-full items-center justify-between">
+      {isRecommendByAuthUser && (
+        <div className="bg-gray-100 p-2 px-3 my-1 rounded-md shadow-sm">
+          <p className="text-xs font-light flex flex-row items-center">
+            <IoMdInformationCircleOutline
+              size={18}
+              className="inline-flex mr-1"
+            />
+            You discovered this spot
+          </p>
+        </div>
+      )}
+
+      {alreadyConfirmed && (
+        <div className="bg-emerald-100 text-emerald-700 p-2 px-3 my-1 rounded-md shadow-sm">
+          <p className="text-xs font-light flex flex-row items-center">
+            <IoMdInformationCircleOutline
+              size={18}
+              className="inline-flex mr-1"
+            />
+            You already confirmed this spot
+          </p>
+        </div>
+      )}
+
+      <div className="flex flex-row w-full items-center justify-between border-b border-slate-400 pb-2 mb-2">
         <h2 className="font-bold text-2xl mb-1 text-start">
           Help us to confirm the Spot
         </h2>
-        <span className="bg-slate-300 px-3 rounded-md flex items-center justify-center text-center text-sm font-bold">
-          {spotReviews.length}/6
-        </span>
+        {spotReviews.length > 0 && (
+          <span className="bg-emerald-100 rounded-md px-3 py-1 flex items-center justify-center text-center text-xs font-bold text-emerald-700">
+            {spotReviews.length}
+            <AiFillLike size={15} className="ml-1" />
+          </span>
+        )}
       </div>
       <p className="text-sm font-light">
         Please, agree or disagree with the following information about the spot
       </p>
-
-      {alreadyConfirmed && (
-        <div className="bg-emerald-100 p-3 my-3 rounded-md">
-          <p className="text-sm font-light">You already confirmed this spot</p>
-        </div>
-      )}
-
-      {isRecommendByAuthUser && (
-        <div className="bg-gray-100 p-2 my-3 rounded-md">
-          <p className="text-xs font-light">You discovered this spot</p>
-        </div>
-      )}
 
       <form className="py-3 w-full">
         <GeneralInformationInputs

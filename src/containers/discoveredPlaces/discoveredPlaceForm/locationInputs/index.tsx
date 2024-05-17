@@ -41,12 +41,12 @@ export const LocationInputs: React.FC<LocationInputsProps> = ({
               {reviewsZoneOptions.map((option, index) => (
                 <div
                   key={index}
-                  className="bg-gray-200 rounded-md px-2 relative cursor-pointer hover:bg-gray-300 mr-1"
+                  className="bg-indigo-50 text-indigo-700 font-semibold rounded-md px-2 relative cursor-pointer hover:bg-indigo-200 mr-1"
                   onClick={() => onSpotZoneChange(option.value)}
                 >
                   <IonLabel className="text-xs">{option.value}</IonLabel>
                   {option.amount > 1 && (
-                    <IonLabel className="text-xs absolute  bg-gray-400 flex items-center justify-center text-center rounded-full w-[18px] h-[18px] top-[-6px] right-[-6px]">
+                    <IonLabel className="text-xs absolute bg-indigo-400 text-white flex items-center justify-center text-center rounded-full w-[18px] h-[18px] top-[-6px] right-[-6px]">
                       {option.amount}
                     </IonLabel>
                   )}
@@ -68,12 +68,12 @@ export const LocationInputs: React.FC<LocationInputsProps> = ({
               {reviewsCityOptions.map((option, index) => (
                 <div
                   key={index}
-                  className="bg-gray-200 rounded-md px-2 relative cursor-pointer hover:bg-gray-300 mr-1"
+                  className="bg-indigo-50 text-indigo-700 font-semibold rounded-md px-2 relative cursor-pointer hover:bg-indigo-200 mr-1"
                   onClick={() => onSpotZoneChange(option.value)}
                 >
                   <IonLabel className="text-xs">{option.value}</IonLabel>
                   {option.amount > 1 && (
-                    <IonLabel className="text-xs absolute  bg-gray-400 flex items-center justify-center text-center rounded-full w-[18px] h-[18px] top-[-6px] right-[-6px]">
+                    <IonLabel className="text-xs absolute bg-indigo-400 text-white flex items-center justify-center text-center rounded-full w-[18px] h-[18px] top-[-6px] right-[-6px]">
                       {option.amount}
                     </IonLabel>
                   )}

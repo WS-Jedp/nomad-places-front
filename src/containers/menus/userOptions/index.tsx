@@ -1,4 +1,3 @@
-import { useEffect } from "react"
 import { useTranslation } from "react-i18next"
 import { useAppSelector } from "../../../common/hooks/useTypedSelectors"
 
@@ -8,7 +7,7 @@ export enum UserMenuOptions {
     recommend = 'recommend',
     about = 'about',
     logout = 'logout',
-    profile = 'profile'
+    profile = 'profile',
 }
 
 type UserOptionsMenuProps = {
@@ -17,7 +16,7 @@ type UserOptionsMenuProps = {
 
 export const UserOptionsMenu:React.FC<UserOptionsMenuProps> = ({ callback }) => {
 
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
 
     const { followRequests } = useAppSelector((state) => state.social);
     const { isAuth } = useAppSelector(state => state.user.auth)
@@ -25,6 +24,10 @@ export const UserOptionsMenu:React.FC<UserOptionsMenuProps> = ({ callback }) => 
 
     function handleAction(option: UserMenuOptions) {
         callback(option)
+    }
+
+    function chooseLanguage(lang: 'en' | 'es') {
+        i18n.changeLanguage(lang)
     }
 
     return (
@@ -79,6 +82,18 @@ export const UserOptionsMenu:React.FC<UserOptionsMenuProps> = ({ callback }) => 
                 <button className="px-6 py-3 w-full h-auto text-start hover:bg-gray-50" onClick={() => handleAction(UserMenuOptions.about)}>
                     <h2 className="font-regular text-sm">{t('titles.general.aboutSpots')}</h2>
                 </button>
+                <hr />
+
+                <div className="px-6 py-3 w-full h-auto text-start text-sm" onClick={() => handleAction(UserMenuOptions.about)}>
+                    <h2 className="font-regular text-sm mb-3">Choose a language</h2>
+                    <button className={`mr-2 underline ${i18n.language === 'en' ? 'font-bold' : ''}`} onClick={() => chooseLanguage('en')}>
+                        En
+                    </button>
+                    <button className={`underline ${i18n.language === 'es' ? 'font-bold' : ''}`} onClick={() => chooseLanguage('es')}>
+                        Es
+                    </button>
+                </div>
+                
         </article>
     )
 }

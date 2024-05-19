@@ -17,7 +17,7 @@ export const ListSearchPlaces:React.FC<ListSearchPlacesProps> = ({ children }) =
 
             <IonList className="
                 relative flex flex-col md:flex-row md:flex-wrap
-                w-full
+                w-full h-[90%]
                 p-6
                 md:bg-white
                 overflow-y-auto

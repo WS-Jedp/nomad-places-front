@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { MdAddAPhoto, MdClose } from "react-icons/md";
 
 export interface SpotMultimediaInputProps {
@@ -13,9 +14,12 @@ export const SpotMultimediaInput: React.FC<SpotMultimediaInputProps> = ({
   handleRemoveFile,
   previews,
 }) => {
+  const { t } = useTranslation()
   return (
     <div className="w-full">
-      <label className="text-sm font-semibold my-1">Spot Multimedia</label>
+      <label className="text-sm font-semibold my-1">
+        { t("forms.inputs.spot.multimedia.label") }
+      </label>
 
       {files.length == 0 && (
         <label
@@ -34,7 +38,9 @@ export const SpotMultimediaInput: React.FC<SpotMultimediaInputProps> = ({
 
           <div className="bg-zinc-100 flex flex-col items-center justify-center rounded-md h-24 cursor-pointer">
             <MdAddAPhoto size={30} />
-            <p>Add multimedia content to the spot</p>
+            <p>
+              { t("forms.inputs.spot.multimedia.placeholder") }
+            </p>
           </div>
         </label>
       )}

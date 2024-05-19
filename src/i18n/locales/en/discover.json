@@ -2,6 +2,7 @@
     "titles": {
         "newPlace": "Discovering a new place?",
         "spotsJourney": "Your Spot’s Journey to Stardom",
+        "aboutTheSpot": "Tell us about the Spot",
         "communityCheck": "Community Check-In",
         "stayTuned": "Stay Tuned",
         "finalVeredict": "Final Verdict",
@@ -17,6 +18,20 @@
         "spotProgress": "Keep an eye on the progress of your discovery in the app. Share it with your friends to have faster progress.",
         "toConfirmSpot": "With 6 confirmations before time’s up, it’ll be officially on the map!",
         "encourageExploring": "Keep exploring, keep sharing, and let’s make every nomad’s journey amazing together!",
-        "cheersToMoreAdventures": "Cheers to more adventures!"
+        "cheersToMoreAdventures": "Cheers to more adventures!",
+        "provideSpotInformation": "Please, provide us with the following information about the place you discovered."
+    },
+    "discovered": {
+        "confirm": {
+            "title": "Confirm spot discovered"
+        },
+        "generalInformation": {
+            "title": "General Information",
+            "message": "Provide the following information about the place you discovered."
+        },
+        "location": {
+            "title": "Location",
+            "message": "Provide the following information about the location of the spot discovered. Have in mind, that you're current location will be used as the spot's location, so make sure be at the spot's location before submitting."
+        }
     }
 }

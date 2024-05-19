@@ -88,7 +88,7 @@ export const ConfirmPlaceDiscoveredModal: React.FC<ConfirmPlaceDiscoveredProps> 
           />
 
           <h2 className="font-bold text-md">
-            Confirm Place Discovered
+            {t("discover.discovered.confirm.title")}
           </h2>
         </IonRow>
         {

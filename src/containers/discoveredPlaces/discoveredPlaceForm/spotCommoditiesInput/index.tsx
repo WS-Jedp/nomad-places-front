@@ -17,7 +17,9 @@ export const SpotCommoditiesInput: React.FC<SpotCommoditiesProps> = ({ onSpotCom
     const { spotCommoditiesFilter } = useAppSelector(state => state.filters)
   return (
     <div className="w-full">
-      <label className="text-sm font-semibold my-1">Spot Commodities</label>
+      <label className="text-sm font-semibold my-1">
+        { t("forms.inputs.spot.commodities.label") }
+      </label>
       <IonRow>
         {spotCommoditiesFilter.map((commodity) => (
           <IonCol size="12" sizeMd="6" key={commodity.id}>

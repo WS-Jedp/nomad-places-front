@@ -16,7 +16,9 @@ export const SpotKnownForInput: React.FC<SpotKnownForProps> = ({ onSpotKnownFor,
     const { spotMindsetFilter } = useAppSelector(state => state.filters)
   return (
     <div className="w-full">
-      <label className="text-sm font-semibold my-1">Know for</label>
+      <label className="text-sm font-semibold my-1">
+        { t("forms.inputs.spot.knownFor.label") }
+      </label>
       <IonRow
         className="relative
                     w-full overflow-x-auto overflow-y-hidden py-1

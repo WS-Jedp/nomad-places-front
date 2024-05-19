@@ -4,8 +4,8 @@ import { useAppSelector } from "../../../../common/hooks/useTypedSelectors";
 import { SimpleCheckbox } from "../../../../components/form/inputs/checkbox";
 
 export interface SpotRulesProps {
-    onSpotRule: (spotRule: number) => void;
-    selectedSpotRules: number[];
+  onSpotRule: (spotRule: number) => void;
+  selectedSpotRules: number[];
 }
 
 export const SpotRulesInput: React.FC<SpotRulesProps> = ({
@@ -16,7 +16,9 @@ export const SpotRulesInput: React.FC<SpotRulesProps> = ({
   const { spotRulesFilters } = useAppSelector((state) => state.filters);
   return (
     <div className="w-full">
-      <label className="text-sm font-semibold my-1">Spot Rules</label>
+      <label className="text-sm font-semibold my-1">
+        {t("forms.inputs.spot.rules.label")}
+      </label>
       <IonRow>
         {spotRulesFilters.map((rule) => (
           <IonCol size="12" sizeMd="6" key={rule.id}>

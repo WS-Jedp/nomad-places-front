@@ -51,6 +51,7 @@
         "shareDiscovery": "Compartir descubrimiento",
         "suggest": {
             "spot": "Sugerir un Spot"
-        }
+        },
+        "confirmSpot": "Confirmar Spot"
     }
 }

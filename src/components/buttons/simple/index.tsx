@@ -1,5 +1,6 @@
 import { MouseEventHandler } from "react";
 import { LoaderSpinner } from "../../loaders/spinner";
+import './index.css'
 
 interface SimpleButtonProps {
   text: string;
@@ -15,8 +16,8 @@ export const SimpleButton: React.FC<SimpleButtonProps> = ({ text, action, disabl
       className={`
           w-full max-w-[300px]
           flex items-center justify-center
-          bg-blue-500 text-white rounded-full py-1 px-6 mx-1 shadow-md hover:bg-blue-400
-          ${disabled ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'}
+          bg-gradient-to-tr from-blue-400 to-indigo-500 text-white rounded-lg py-1 px-6 mx-1 shadow-md shadow-indigo-500 hover:bg-blue-300
+          ${disabled ? 'cursor-not-allowed opacity-60' : 'cursor-pointer gradient-shadow'}
       `}
                   onClick={!disabled && !loading ? action : () => {}}
     >
@@ -35,7 +36,7 @@ export const SimpleButtonOutline: React.FC<SimpleButtonProps> = ({ text, action 
   return (
     <button
       className="
-                  bg-white-500 border-solid border border-gray-400 text-black rounded-full py-1 px-6 mx-1 shadow-md hover:bg-gray-100
+                  bg-white-500 border-solid border border-gray-400 text-black rounded-lg py-1 px-6 mx-1 shadow-md hover:bg-gray-100
                 "
       onClick={action}
     >

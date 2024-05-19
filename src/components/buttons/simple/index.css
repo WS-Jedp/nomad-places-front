@@ -1,0 +1,9 @@
+.gradient-shadow {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out, background-size 0.3s ease;
+}
+
+.gradient-shadow:hover {
+    box-shadow: 0 10px 15px -3px rgba(63, 94, 251, 0.3), 0 4px 6px -4px rgba(63, 94, 251, 0.3);
+    background-size: 200% 200%;
+}

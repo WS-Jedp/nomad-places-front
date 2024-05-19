@@ -185,10 +185,10 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
           <IonRow class="w-full px-3 py-2 ion-no-padding border-b border-gray-300 shadow-sm">
             <IonCol size="12">
               <IonRow className="h-full flex flex-col justify-center">
-                  <h1 className="font-light text-sm flex flex-row items-center bg-indigo-100 px-3 py-2 rounded-md">
+                  <h1 className="font-light text-sm flex flex-row items-center bg-indigo-50 px-3 py-3 rounded-md">
                     <IoIosInformationCircleOutline size={21} className="mr-1" />
                     <span>
-                      Spot in recommended stage. <span className="underline font-semibold cursor-pointer" onClick={handleConfirmSpot}>Wanna help us to confirm it?</span>
+                      {t("messages.discover.spot.stage.recommendation")}. <span className="underline font-semibold cursor-pointer" onClick={handleConfirmSpot}>{t("messages.discover.spot.actions.wannaHelpConfirm")}</span>
                     </span>
                   </h1>
               </IonRow>

@@ -11,10 +11,11 @@ import {
 } from "../../../../common/hooks/useTypedSelectors";
 import { SimpleButton } from "../../../../components/buttons/simple";
 import { LoaderSpinner } from "../../../../components/loaders/spinner";
-import { DiscoverSpotDTO, newSpotDiscoveredConfirmedDTO } from "../../../../dto/places";
 import {
-  SpotCommoditiesFilters,
-} from "../../../../models/filters";
+  DiscoverSpotDTO,
+  newSpotDiscoveredConfirmedDTO,
+} from "../../../../dto/places";
+import { SpotCommoditiesFilters } from "../../../../models/filters";
 import { MINDSETS } from "../../../../models/mindsets";
 import { DiscoveredPlaceConfirmation } from "../../../../models/placeConfirmation";
 import {
@@ -23,9 +24,7 @@ import {
 } from "../../../../models/places";
 import { PLACE_TYPES } from "../../../../models/placeTypes";
 import { addError } from "../../../../store/redux/slices/controlledErrors";
-import {
-  confirmNewSpotDiscovered,
-} from "../../../../store/redux/slices/places";
+import { confirmNewSpotDiscovered } from "../../../../store/redux/slices/places";
 import { getUserGeoLocation } from "../../../../store/redux/slices/user";
 import { GeneralInformationInputs } from "../generalInformationInputs";
 import { LocationInputs } from "../locationInputs";
@@ -597,14 +596,14 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
       if (!currentPlace) {
         throw new Error("No place selected");
       }
-      const resp = await dispatch(
+      const resp = (await dispatch(
         confirmNewSpotDiscovered({
           confirmmedSpot: {
             spotID: currentPlace?.id,
             discoveredSpotReview: handleGetSpotData(),
           },
         })
-      ) as PayloadAction<newSpotDiscoveredConfirmedDTO>;
+      )) as PayloadAction<newSpotDiscoveredConfirmedDTO>;
 
       onSave(resp.payload);
     } catch (error) {
@@ -639,7 +638,7 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
               size={18}
               className="inline-flex mr-1"
             />
-            You discovered this spot
+            {t("messages.discover.actions.discoveredSpot")}
           </p>
         </div>
       )}
@@ -651,14 +650,14 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
               size={18}
               className="inline-flex mr-1"
             />
-            You already confirmed this spot
+            {t("messages.discover.actions.alreadyConfirmed")}
           </p>
         </div>
       )}
 
       <div className="flex flex-row w-full items-center justify-between border-b border-slate-400 pb-2 mb-2">
         <h2 className="font-bold text-2xl mb-1 text-start">
-          Help us to confirm the Spot
+          {t("messages.discover.actions.helpToConfirm")}
         </h2>
         {spotReviews.length > 0 && (
           <span className="bg-emerald-100 rounded-md px-3 py-1 flex items-center justify-center text-center text-xs font-bold text-emerald-700">
@@ -668,7 +667,7 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
         )}
       </div>
       <p className="text-sm font-light">
-        Please, agree or disagree with the following information about the spot
+        {t("messages.discover.actions.confirmCorrectData")}
       </p>
 
       <form className="py-3 w-full">
@@ -730,7 +729,7 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
             <LoaderSpinner />
           ) : (
             <SimpleButton
-              text="Confirm place"
+              text={t('actions.discover.confirmSpot')}
               action={handleConfirmSpotRecommendation}
             />
           )}

@@ -70,8 +70,51 @@
             }
         }
     },
+    "general": {
+        "confirmation": {
+            "success": "Spot confirmed!",
+            "approved": "Spot approved!"
+        },
+        "thanks": {
+            "thumbsUp": "Thanks for your thumbs-up!",
+            "approvedSpot": "We're grateful for your help to shape our community's map"
+        }
+    },
+    "discover": {
+        "spot": {
+            "confirmation": {
+                "positiveReview": "Your confirmation has brought this spot one step closer to becoming a permanent part of our community’s map.",
+                "itsOfficial": "Your confirmation has made it official!",
+                "approvedReview": "Your approval has made this spot become a permanent part of our community’s map."
+            },
+            "stillOnReview": "It still needs more approvals, so stay tuned!",
+            "actions": {
+                "alreadyConfirmed": "You've already confirmed this spot",
+                "discoveredSpot": "You've discovered this spot",
+                "helpToConfirm": "Help us confirm this spot",
+                "confirmCorrectData": "Please, confirm or input the correct data for you",
+                "wannaHelpConfirm": "Wanna help us confirm this spot?"
+            },
+            "stage": {
+                "recommendation": "This spot it's in recommendation stage"
+            },
+            "discovered": {
+                "thanksForSharing": "Thank you for sharing your discovery!",
+                "spotInReviewForCommunity": "Your spot is now up for community review.",
+                "howToApprove": "It needs 6 thumbs-ups within 3 weeks to be permanently added.",
+                "keepAnEyeOnIt": "Keep an eye on its progress and we'll let you know anything about it."
+            }
+        },
+        "user": {
+            "insight": {
+                "matter": "Your insights matter!"
+            },
+            "keepExploring": "Keep exploring and sharing"
+        }
+    },
     "spotsTeam": {
-        "yours": "Your Spots team"
+        "yours": "Your Spots team",
+        "we": "The Spots Team"
     },
     "utils": {
         "and": "and"

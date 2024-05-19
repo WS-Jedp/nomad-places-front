@@ -70,8 +70,57 @@
             }
         }
     },
+    "general": {
+        "confirmation": {
+            "success": "¡Lugar confirmado!",
+            "approved": "¡Lugar aprobado!"
+        },
+        "thanks": {
+            "thumbsUp": "¡Gracias por tu aprobación!",
+            "approvedSpot": "Estamos agradecidos por tu ayuda a formar el mapa de la comunidad de Spots"
+        }
+    },
+    "discover": {
+        "spot": {
+            "confirmation": {
+                "positiveReview": "Tu confirmación ha acercado este spot a ser parte permanente del mapa de la comunidad de Spots. ¡Gracias!",
+                "itsOfficial": "¡Tu confirmación lo ha hecho oficial!",
+                "approvedReview": "Tu aprobación ha hecho que este spot sea parte permanente del mapa de la comunidad de Spots. ¡Gracias!"
+            },
+            "stillOnReview": "Este spot aún está en revisión, mantente atento a su confirmación",
+            "actions": {
+                "alreadyConfirmed": "Ya has confirmado este spot",
+                "discoveredSpot": "Este spot ha sido descubierto por ti",
+                "helpToConfirm": "Ayudanos a confirmar este spot",
+                "confirmCorrectData": "Por favor, confirma o corrige la información de este spot",
+                "wannaHelpConfirm": "¿Quieres ayudar a confirmar este spot?"
+            },
+            "stage": {
+                "recommendation": "Este lugar esta en etapa de recomendación"
+            },
+            "discovered": {
+                "thanksForSharing": "¡Gracias por compartir tu descubrimiento!",
+                "spotInReviewForCommunity": "Este spot ahora está en revisión por la comunidad.",
+                "howToApprove": "Necesita 6 confirmaciones para ser parte permanente del mapa de la comunidad de Spots.",
+                "keepAnEyeOnIt": "Mantente atento a su progreso y te dejaremos saber cuando sea aprobado."
+            }
+        },
+        "user": {
+            "insight": {
+                "matter": "Tu opinión importa!"
+            },
+            "keepExploring": "¡Sigue explorando y compartiendo!"
+        },
+        "actions": {
+            "alreadyConfirmed": "Ya has confirmado este spot",
+            "discoveredSpot": "Este spot ha sido descubierto por ti",
+            "helpToConfirm": "Ayudanos a confirmar este spot",
+            "confirmCorrectData": "Por favor, confirma o corrige la información de este spot"
+        }
+    },
     "spotsTeam": {
-        "yours": "El equipo de Spots"
+        "yours": "El equipo de Spots",
+        "we": "El equipo de Spots"
     },
     "utils": {
         "and": "y"

@@ -214,11 +214,10 @@ export const DiscoveredPlaceForm: React.FC<{
   return (
     <section className="flex flex-col items-start justify-start w-full p-5 overflow-y-auto text-start">
       <h2 className="font-bold text-2xl mb-1 text-start">
-        Tell us about the Spot
+        { t("discover.titles.aboutTheSpot") }
       </h2>
       <p className="text-sm font-light">
-        Please, provide us with the following information about the place you
-        discovered.
+        { t("discover.texts.provideSpotInformation") }
       </p>
 
       <form className="py-3 w-full">
@@ -268,7 +267,7 @@ export const DiscoveredPlaceForm: React.FC<{
       </form>
       <div className="my-5">
         {
-          isSaving ? <LoaderSpinner /> : <SimpleButton text="Save" action={handleSaveSpot} />
+          isSaving ? <LoaderSpinner /> : <SimpleButton text={t("actions.discover.shareDiscovery")} action={handleSaveSpot} />
         }
       </div>
     </section>

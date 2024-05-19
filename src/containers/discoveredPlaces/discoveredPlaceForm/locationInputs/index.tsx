@@ -1,4 +1,5 @@
 import { IonLabel } from "@ionic/react";
+import { useTranslation } from "react-i18next";
 import { TextInput } from "../../../../components/form/inputs/text";
 import { ReviewValueAmountOptions } from "../confirmSpotForm";
 
@@ -19,20 +20,20 @@ export const LocationInputs: React.FC<LocationInputsProps> = ({
   reviewsCityOptions = [],
   reviewsZoneOptions = [],
 }) => {
+  const { t } = useTranslation();
   return (
     <section className="w-full mt-1 mb-5">
-      <h2 className="font-bold text-lg">Location</h2>
+      <h2 className="font-bold text-lg">
+        {t("discover.discovered.location.title")}
+      </h2>
       <p className="text-sm mb-1">
-        Please, provide us with the following information about the location of
-        the spot. Have in mind, that you're current location will be used as the
-        spot's location, so make sure be at the spot's location before
-        submitting.
+        {t("discover.discovered.location.message")}
       </p>
       <div className="w-full my-2 flex flex-col md:flex-row">
         <div className="w-full md:w-6/12 md:mr-1">
           <TextInput
-            label="Zone"
-            placeholder="Write the zone of the spot"
+            label={t("forms.inputs.spot.zone.label")}
+            placeholder={t("forms.inputs.spot.zone.placeholder")}
             value={spotZone}
             callback={onSpotZoneChange}
           />
@@ -57,8 +58,8 @@ export const LocationInputs: React.FC<LocationInputsProps> = ({
         </div>
         <div className="w-full md:w-6/12 md:ml-1">
           <TextInput
-            label="City"
-            placeholder="Write the city of the spot"
+            label={t("forms.inputs.spot.city.label")}
+            placeholder={t("forms.inputs.spot.city.placeholder")}
             value={spotCity}
             callback={onSpotCityChange}
           />

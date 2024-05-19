@@ -23,16 +23,23 @@ export const SpotConfirmedSuccessfulModal: React.FC<
                                     text-black 
                                 "
       >
-        <h2 className="text-2xl font-bold">🌟 Confirmation Successful!</h2>
+        <h2 className="text-2xl font-bold">
+          🌟 {t("messages.general.confirmation.success")}
+        </h2>
         <div className="w-full h-[2px] my-3 bg-gray-300"></div>
         <p className="font-bold my-1">
-            Thanks for your thumbs-up!
+        {t("messages.general.thanks.thumbsUp")}
         </p>
         <p className="font-light">
-            Your confirmation has brought this spot one step closer to becoming a permanent part of our community’s map.
+        {t("messages.discover.spot.confirmation.positiveReview")}
+          </p>
+        <p className="font-light">
+          {t("messages.discover.spot.stillOnReview")}
         </p>
-        <p className="font-light">It still needs more approvals, so stay tuned!</p>
-        <p className="mt-3 mb-6 font-extralight text-sm">Your insights matter! <br /> - The Spots Team ✨</p>
+        <p className="mt-3 mb-6 font-extralight text-sm">
+          {t("messages.discover.user.insight.matter")} <br /> -{" "}
+          {t("messages.spotsTeam.we")} ✨
+        </p>
         <SimpleButton
           action={closeDiscoveredSpot}
           text={t("actions.navigation.continue")}

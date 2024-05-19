@@ -43,6 +43,52 @@
                 "placeholder": "Tell us about yourself",
                 "label": "About you"
             }
+        },
+        "spot": {
+            "name": {
+                "placeholder": "Enter the name of the spot",
+                "label": "Name of the spot"
+            },
+            "description": {
+                "placeholder": "Enter a description of the spot",
+                "label": "Description of the spot"
+            },
+            "openingTime": {
+                "placeholder": "Pick the opening time",
+                "label": "Opening time"
+            },
+            "closingTime": {
+                "placeholder": "Pick the closing time",
+                "label": "Closing time"
+            },
+            "zone": {
+                "placeholder": "Ex. Laureles, El Poblado, Envigado...",
+                "label": "Zone"
+            },
+            "city": {
+                "placeholder": "Ex. Medellín, Bogotá, Cali...",
+                "label": "City"
+            },
+            "type": {
+                "placeholder": "Ex. Coffee Shop, Restaurant, Bar...",
+                "label": "Spot type"
+            },
+            "knownFor": {
+                "placeholder": "Ex. For study, work...",
+                "label": "Known for"
+            },
+            "rules": {
+                "placeholder": "Ex. No smoking, No pets...",
+                "label": "Rules"
+            },
+            "commodities": {
+                "placeholder": "Ex. Wifi, Outlets, Food...",
+                "label": "Commodities"
+            },
+            "multimedia": {
+                "placeholder": "Add photos or videos of the spot",
+                "label": "Multimedia"
+            }
         }
     },
     "messages": {

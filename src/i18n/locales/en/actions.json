@@ -52,6 +52,7 @@
         "shareDiscovery": "Share discovery",
         "suggest": {
             "spot": "Suggest a spot"
-        }
+        },
+        "confirmSpot": "Confirm spot"
     }
 }

@@ -2,6 +2,7 @@
     "titles": {
         "newPlace": "¿Descubriste un nuevo lugar?",
         "spotsJourney": "El viaje de descubrir un lugar",
+        "aboutTheSpot": "Cuentanos sobre el lugar",
         "communityCheck": "Revisión de la comunidad",
         "stayTuned": "Mantente atento",
         "finalVeredict": "Veredicto final",
@@ -17,6 +18,20 @@
         "spotProgress": "Revisa el progreso de tu descubrimiento en la aplicación. Compartelo con tus amigos para tener un progreso más rápido.",
         "toConfirmSpot": "Con 6 confirmaciones antes de que se acabe el tiempo, ¡estará oficialmente en el mapa!",
         "encourageExploring": "Sigue explorando, sigue compartiendo y hagamos que cada viaje de un nómada digital sea increíble juntos!",
-        "cheersToMoreAdventures": "¡Salud a más aventuras!"
+        "cheersToMoreAdventures": "¡Salud a más aventuras!",
+        "provideSpotInformation": "Por favor, proporciona la siguiente información sobre el lugar que descubriste."
+    },
+    "discovered": {
+        "confirm": {
+            "title": "Confirmar el lugar descubierto"
+        },
+        "generalInformation": {
+            "title": "Información general",
+            "message": "Ingrese la siguiente información sobre este lugar descubierto."
+        },
+        "location": {
+            "title": "Ubicación",
+            "message": "Ingrese información relacionada sobre la ubicación de este lugar descubierto. Tenga en cuenta que su ubicación actual se utilizará como la ubicación del lugar, así que asegúrese de estar en la ubicación del lugar antes de confirmarlo."
+        }
     }
 }

@@ -42,7 +42,52 @@
             "about": {
                 "placeholder": "Escribe algo sobre ti",
                 "label": "Acerca de ti"
-            
+            }
+        },
+        "spot": {
+            "name": {
+                "placeholder": "Ingresa el nombre del lugar",
+                "label": "Nombre del lugar"
+            },
+            "description": {
+                "placeholder": "Ingresa la descripción del lugar",
+                "label": "Descripción del lugar"
+            },
+            "openingTime": {
+                "placeholder": "Escoge la hora de apertura",
+                "label": "Hora de apertura"
+            },
+            "closingTime": {
+                "placeholder": "Escoge la hora de cierre",
+                "label": "Hora de cierre"
+            },
+            "zone": {
+                "placeholder": "Ej. Laureles, El Poblado, Centro...",
+                "label": "Zona"
+            },
+            "city": {
+                "placeholder": "Ej. Medellín, Bogotá, Cali...",
+                "label": "Ciudad"
+            },
+            "type": {
+                "placeholder": "Ej. Café, Coworking, Biblioteca...",
+                "label": "Tipo de lugar"
+            },
+            "knownFor": {
+                "placeholder": "Ej. Para estudiar, Para trabajar...",
+                "label": "Conocido por"
+            },
+            "rules": {
+                "placeholder": "Ej. No fumar, No mascotas...",
+                "label": "Reglas"
+            },
+            "commodities": {
+                "placeholder": "Ej. Wifi, Parqueadero, Comida...",
+                "label": "Comodidades"
+            },
+            "multimedia": {
+                "placeholder": "Agrega fotos o videos del lugar",
+                "label": "Multimedia"
             }
         }
     },

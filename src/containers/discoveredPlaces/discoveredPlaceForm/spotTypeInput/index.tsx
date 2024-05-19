@@ -17,7 +17,9 @@ export const SpotTypeInput: React.FC<SpotTypeInputProps> = ({ onSpotType, select
     const { spotTypesFilter } = useAppSelector(state => state.filters)
   return (
     <div className="w-full">
-      <label className="text-sm font-semibold my-1">Spot type</label>
+      <label className="text-sm font-semibold my-1">
+        { t("forms.inputs.spot.type.label") }
+      </label>
       <IonRow
         className="relative
                     w-full overflow-x-auto overflow-y-hidden py-1

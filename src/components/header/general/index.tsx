@@ -30,20 +30,25 @@ import { useTranslation } from "react-i18next";
 import { ResetPasswordModal } from "../../../containers/auth/resetPasswordModal";
 import { getUserFollowRequests } from "../../../store/redux/slices/social";
 import { NewPlaceDiscoveredModal } from "../../../containers/discoveredPlaces/modals/newPlaceDiscoverModal";
-import { startDiscoveringPlace, stopDiscoveringPlace } from "../../../store/redux/slices/places";
+import {
+  startDiscoveringPlace,
+  stopDiscoveringPlace,
+} from "../../../store/redux/slices/places";
 
 export const GeneralHeader: React.FC = () => {
   const { t } = useTranslation();
 
-  const location = useLocation()
+  const location = useLocation();
   const history = useHistory();
 
-  const showDiscoveringPlace = useAppSelector((state) => state.places.discoveringPlace);
+  const showDiscoveringPlace = useAppSelector(
+    (state) => state.places.discoveringPlace
+  );
   function closeDiscoveringPlaceModal() {
-    dispatch(stopDiscoveringPlace())
+    dispatch(stopDiscoveringPlace());
   }
   function openDiscoveringPlaceModal() {
-    dispatch(startDiscoveringPlace())
+    dispatch(startDiscoveringPlace());
   }
 
   const userLocation = useAppSelector((state) => state.user.location);
@@ -71,11 +76,13 @@ export const GeneralHeader: React.FC = () => {
   }
 
   const userData = useAppSelector((state) => state.user.userData);
-  const { modal: authModal, isAuth } = useAppSelector((state) => state.user.auth);
+  const { modal: authModal, isAuth } = useAppSelector(
+    (state) => state.user.auth
+  );
   const [registered, setRegistered] = useState<boolean>(false);
 
   function successfulRegister() {
-    dispatch( hideAuthModal() )
+    dispatch(hideAuthModal());
     setRegistered(true);
   }
 
@@ -83,7 +90,7 @@ export const GeneralHeader: React.FC = () => {
     dispatch(hideAuthModal());
   }
 
-  const [spotDiscovered, setDiscoveredSpot] = useState(false); 
+  const [spotDiscovered, setDiscoveredSpot] = useState(false);
 
   function closeDiscoveredSpot() {
     setDiscoveredSpot(false);
@@ -95,27 +102,27 @@ export const GeneralHeader: React.FC = () => {
 
   function handlingSpotDiscovered() {
     setDiscoveredSpot(false);
-    successfulSpotDiscovered()
+    successfulSpotDiscovered();
   }
 
   function handleUserMenuOptions(option: UserMenuOptions) {
     setShowUserOptiosn(false);
     switch (option) {
       case UserMenuOptions.register:
-        dispatch( showAuthModal() )
+        dispatch(showAuthModal());
         break;
       case UserMenuOptions.login:
-        dispatch(showAuthModal())
+        dispatch(showAuthModal());
         break;
       case UserMenuOptions.logout:
         dispatch(logout());
-        history.push("/home");  
+        history.push("/home");
         break;
       case UserMenuOptions.about:
         console.log("Go to about page");
         break;
       case UserMenuOptions.recommend:
-        openDiscoveringPlaceModal()
+        openDiscoveringPlaceModal();
         break;
       case UserMenuOptions.profile:
         history.push("/profile/me");
@@ -165,7 +172,7 @@ export const GeneralHeader: React.FC = () => {
     const token = localStorage.getItem(TOKEN_KEY);
     if (token) {
       await dispatch(getUserData({ token }));
-      await dispatch(getUserFollowRequests())
+      await dispatch(getUserFollowRequests());
     }
   }
 
@@ -174,7 +181,9 @@ export const GeneralHeader: React.FC = () => {
     automaticallyAuthUser();
   }, []);
 
-  const [recoverPasswordToken, setRecoverPasswordToken] = useState<string | null>(null);
+  const [recoverPasswordToken, setRecoverPasswordToken] = useState<
+    string | null
+  >(null);
   const [recoverEmail, setRecoverEmail] = useState<string | null>(null);
 
   function closeRecoveredPasswordModal() {
@@ -184,14 +193,14 @@ export const GeneralHeader: React.FC = () => {
 
   useEffect(() => {
     const query = new URLSearchParams(location.search);
-    const recoverToken = query.get('recover_password');
-    const email = query.get('email');
+    const recoverToken = query.get("recover_password");
+    const email = query.get("email");
 
     if (recoverToken && email) {
       setRecoverPasswordToken(recoverToken);
-      setRecoverEmail(email)
+      setRecoverEmail(email);
     }
-  }, [])
+  }, []);
 
   return (
     <IonHeader
@@ -300,17 +309,13 @@ export const GeneralHeader: React.FC = () => {
             onClick={handleShowUserOptions}
           >
             <FaUserAlt size={13} color="gray" />
-            {
-                isAuth ? (
-                    <span className="font-light mx-1 text-sm text-black">
-                      {
-                        userData?.username
-                      }
-                    </span>
-                ) : (
-                    <IoMdMenu size={18} color="gray" className="ml-1" />
-                )
-            }
+            {isAuth ? (
+              <span className="font-light mx-1 text-sm text-black">
+                {userData?.username}
+              </span>
+            ) : (
+              <IoMdMenu size={18} color="gray" className="ml-1" />
+            )}
           </div>
 
           {showUserOptions && (
@@ -362,24 +367,23 @@ export const GeneralHeader: React.FC = () => {
         </AppModal>
       )}
 
-      {
-        (recoverPasswordToken && recoverEmail)  && (
-          <AppModal>
-            <ResetPasswordModal 
-              email={recoverEmail}
-              token={recoverPasswordToken}
-              closeCallback={closeRecoveredPasswordModal}
-            />
-          </AppModal>
-        )
-      }
+      {recoverPasswordToken && recoverEmail && (
+        <AppModal>
+          <ResetPasswordModal
+            email={recoverEmail}
+            token={recoverPasswordToken}
+            closeCallback={closeRecoveredPasswordModal}
+          />
+        </AppModal>
+      )}
 
       {/* Discovering place modal */}
-      {
-        showDiscoveringPlace && (
-          <NewPlaceDiscoveredModal closeCallback={closeDiscoveringPlaceModal} onSuccess={handlingSpotDiscovered} />
-        )
-      }
+      {showDiscoveringPlace && (
+        <NewPlaceDiscoveredModal
+          closeCallback={closeDiscoveringPlaceModal}
+          onSuccess={handlingSpotDiscovered}
+        />
+      )}
 
       {spotDiscovered && (
         <AppModal>
@@ -394,18 +398,13 @@ export const GeneralHeader: React.FC = () => {
                                 "
           >
             <h2 className="text-2xl font-bold">
-              🌟 Thank you for sharing your discovery!
-
+              🌟 {t("messages.discover.spot.discovered.thanksForSharing")}
             </h2>
             <div className="w-full h-[2px] my-3 bg-gray-300"></div>
-            <p>
-              Your spot is now up for community review.
-            </p>
-            <p>
-              It needs 6 thumbs-ups within 3 weeks to be permanently added.
-            </p>
+            <p>{t("messages.discover.spot.discovered.spotInReviewForCommunity")}</p>
+            <p>{t("messages.discover.spot.discovered.howToApprove")}</p>
             <p className="mb-6">
-              Keep an eye on its progress and we'll let you know anything about it.
+              {t("messages.discover.spot.discovered.keepAnEyeOnIt")}
             </p>
             <SimpleButton
               action={closeDiscoveredSpot}

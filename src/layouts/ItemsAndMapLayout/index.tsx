@@ -69,8 +69,8 @@ export const ItemsAndMapLayout: React.FC<{
 
                   <IonList
                     className="
-                        relative flex flex-col
-                        overflow-y-auto bg-white
+                        relative flex flex-col items-start justify-start
+                        overflow-y-auto bg-white h-[75%]
                     "
                   >
                       {children}

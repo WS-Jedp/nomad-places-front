@@ -6,6 +6,7 @@ import Forms from './forms.json'
 import Spots from './spot.json'
 import Discover from './discover.json'
 import Translation from './translation.json'
+import Gamification from './gamification.json'
 
 export default {
     actions: Actions,
@@ -15,5 +16,6 @@ export default {
     forms: Forms,
     spots: Spots,
     discover: Discover,
-    translation: Translation
+    translations: Translation,
+    gamification: Gamification
 } 

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { MdClose } from "react-icons/md";
 import { useTranslation } from "react-i18next";
-import { INDUSTRIES, INDUSTRIES_LIST } from '../../../models/industries'
+import { INDUSTRIES, INDUSTRIES_LIST } from "../../../models/industries";
 import { ControlledError } from "../../../common/controlledError";
 import { ControlledErrorType } from "../../../common/controlledError/types";
 import {
@@ -15,6 +15,9 @@ import { addError } from "../../../store/redux/slices/controlledErrors";
 import { authUser, registerUser } from "../../../store/redux/slices/user";
 import { IonChip, IonLabel } from "@ionic/react";
 import { getUserFollowRequests } from "../../../store/redux/slices/social";
+import { toast } from "react-toastify";
+import { PayloadAction } from "@reduxjs/toolkit";
+import { LoginDTO } from "../../../dto/auth";
 
 type AuthFormModalProps = {
   closeCallback: () => void;
@@ -25,9 +28,8 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
   closeCallback,
   successfulRegisterCallback,
 }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const { userData, auth } = useAppSelector((state) => state.user);
   const [error, setError] = useState<string | null>();
 
   const authServices = new AuthServices();
@@ -89,7 +91,7 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
     setIsForgotPassword(false);
     setIsLogin(false);
     setIsRegister(false);
-    setCurrentAuthStep(0)
+    setCurrentAuthStep(0);
   }
 
   async function handleNextAuthStep() {
@@ -115,9 +117,14 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
   async function handleLogin() {
     try {
       setIsLoadingRequest(true);
-      await dispatch(authUser({ username: email, password }));
-      await dispatch( getUserFollowRequests() )
+      const user = (await dispatch(
+        authUser({ username: email, password })
+      )) as PayloadAction<LoginDTO>;
+      await dispatch(getUserFollowRequests());
       setIsLoadingRequest(false);
+      toast.success(
+        t("messages.auth.success.login", { name: user.payload.user.firstName })
+      );
       closeCallback();
     } catch (error) {
       // dispatch( addError(new ControlledError(String(error), ControlledErrorType.REQUEST)) )
@@ -130,7 +137,7 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
   async function handleRegister() {
     try {
       setIsLoadingRequest(true);
-      await dispatch(
+      const registerResp = await dispatch(
         registerUser({
           payload: {
             personData: {
@@ -145,7 +152,11 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
           },
         })
       );
+      if(!registerResp.payload) {
+        throw new Error("Error registering user")
+      }
       setIsLoadingRequest(false);
+      toast.success(t("messages.auth.success.register", {name: firstName}));
       successfulRegisterCallback();
     } catch (error) {
       // dispatch( addError(new ControlledError(String(error), ControlledErrorType.REQUEST)) )
@@ -159,7 +170,7 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
   async function handleRecoverPassword() {
     try {
       setIsLoadingRequest(true);
-      await authServices.recoverPassword(email, 'es');
+      await authServices.recoverPassword(email, "es");
       setIsLoadingRequest(false);
       setIsRecoverEmailSent(true);
     } catch (error) {
@@ -176,14 +187,14 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
       return (
         <form
           action=""
-          className="w-full"
+          className="w-full mb-6"
           onSubmit={(ev) => ev.preventDefault()}
         >
           <div className="mb-2">
             <TextInput
               type="email"
-              label={t('forms.inputs.auth.email.label')}
-              placeholder={t('forms.inputs.auth.email.placeholder')}
+              label={t("forms.inputs.auth.email.label")}
+              placeholder={t("forms.inputs.auth.email.placeholder")}
               callback={handleEmailChange}
               value={email}
             />
@@ -192,8 +203,8 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
           <div className="mb-2">
             <TextInput
               type="text"
-              label={t('forms.inputs.auth.username.label')}
-              placeholder={t('forms.inputs.auth.username.placeholder')}
+              label={t("forms.inputs.auth.username.label")}
+              placeholder={t("forms.inputs.auth.username.placeholder")}
               callback={handleUsername}
               value={username}
             />
@@ -202,8 +213,8 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
           <div className="mb-2">
             <TextInput
               type="text"
-              label={t('forms.inputs.auth.firstName.label')}
-              placeholder={t('forms.inputs.auth.firstName.placeholder')}
+              label={t("forms.inputs.auth.firstName.label")}
+              placeholder={t("forms.inputs.auth.firstName.placeholder")}
               callback={handleFirstName}
               value={firstName}
             />
@@ -212,8 +223,8 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
           <div className="mb-2">
             <TextInput
               type="password"
-              label={t('forms.inputs.auth.password.label')}
-              placeholder={t('forms.inputs.auth.password.placeholder')}
+              label={t("forms.inputs.auth.password.label")}
+              placeholder={t("forms.inputs.auth.password.placeholder")}
               callback={handlePasswordChange}
               value={password}
             />
@@ -221,33 +232,48 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
           <div className="mb-2">
             <TextInput
               type="password"
-              label={t('forms.inputs.auth.passwordConfirmation.label')}
-              placeholder={t('forms.inputs.auth.passwordConfirmation.placeholder')}
+              label={t("forms.inputs.auth.passwordConfirmation.label")}
+              placeholder={t(
+                "forms.inputs.auth.passwordConfirmation.placeholder"
+              )}
               callback={handleConfirmPasswordChange}
               value={confirmPassword}
               isError={!isConfirmPasswordValid()}
               feedbackMessage={
-                isConfirmPasswordValid() ? undefined : t('forms.messages.auth.passwordMatch.error')
+                isConfirmPasswordValid()
+                  ? undefined
+                  : t("forms.messages.auth.passwordMatch.error")
               }
             />
           </div>
           {/* Industry tag options */}
 
-            <div className="flex flex-col align-start justify-start text-start">
-              <label className="text-sm font-semibold my-1">Selecciona la industria con las que te identifiques (Opcional):</label>
-              <div className="flex flex-row flex-wrap align-start justify-start">
-                {
-                  INDUSTRIES_LIST.map((industry, index) => (
-                    <IonChip onClick={() => handleOnIndustry(industry)} outline key={index} className={`cursor-pointer px-3 my-1 mr-1 py-1 ${isIndustrySelected(industry) ? 'bg-indigo-100 text-indigo-500' : 'bg-gray-200 text-gray-500' } `}>
-                      <IonLabel className="text-sm lowercase font-medium">{industry}</IonLabel>
-                    </IonChip>
-                  ))
-                }
-              </div>
+          <div className="flex flex-col align-start justify-start text-start">
+            <label className="text-sm font-semibold my-1">
+              Selecciona la industria con las que te identifiques (Opcional):
+            </label>
+            <div className="flex flex-row flex-wrap align-start justify-start">
+              {INDUSTRIES_LIST.map((industry, index) => (
+                <IonChip
+                  onClick={() => handleOnIndustry(industry)}
+                  outline
+                  key={index}
+                  className={`cursor-pointer px-3 my-1 mr-1 py-1 ${
+                    isIndustrySelected(industry)
+                      ? "bg-indigo-100 text-indigo-500"
+                      : "bg-gray-200 text-gray-500"
+                  } `}
+                >
+                  <IonLabel className="text-sm font-medium capitalize">
+                    { t(`filters.users.industries.${industry.toUpperCase()}`) }
+                  </IonLabel>
+                </IonChip>
+              ))}
             </div>
+          </div>
           <div className="w-full relative mt-5">
             <InputButton
-              text={t('actions.auth.register')}
+              text={t("actions.auth.register")}
               action={handleRegister}
               isLoading={isLoadingRequest}
             />
@@ -265,14 +291,14 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
         >
           <TextInput
             type="password"
-            label={t('forms.inputs.auth.password.label')}
-            placeholder={t('forms.inputs.auth.password.placeholder')}
+            label={t("forms.inputs.auth.password.label")}
+            placeholder={t("forms.inputs.auth.password.placeholder")}
             callback={handlePasswordChange}
             value={password}
           />
           <div className="w-full relative mt-5">
             <InputButton
-              text={t('actions.auth.login')}
+              text={t("actions.auth.login")}
               action={handleLogin}
               isLoading={isLoadingRequest}
             />
@@ -283,8 +309,8 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
   }
 
   return (
-    <article className="bg-white rounded-lg p-6 shadow-xl text-black w-[90%] max-w-xl">
-      <section className="w-full relative flex flex-row flex-nowrap items-center justify-between bg-white border-b border-solid border-gray-300 pb-3">
+    <article className="bg-white relative rounded-lg shadow-xl text-black w-[90%] max-w-xl overflow-hidden min-h-min max-h-[510px] overflow-y-auto">
+      <section className="w-full sticky p-6 shadow-sm top-0 left-0  flex flex-row flex-nowrap items-center justify-between bg-white border-b border-solid border-gray-300 pb-3 z-50">
         <button
           className="flex items-center justify-center border border-white rounded-full"
           onClick={closeCallback}
@@ -292,68 +318,67 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
           <MdClose size={24} />
         </button>
 
-        
         <h2 className="font-bold text-2xl">
-            {
-                forgotPassword ? t('messages.forgotPassword.title') : t('messages.auth.loginOrRegister')
-            }
+          {forgotPassword
+            ? t("messages.forgotPassword.title")
+            : t("messages.auth.loginOrRegister")}
         </h2>
       </section>
 
       {forgotPassword ? (
-        <section className="relative flex flex-col items-start justify-start py-3">
-            <h2 className="font-bold text-base">
-              { t('messages.resetPassword.title') }
-            </h2>
-            <p className="text-start text-sm mb-3">
-              { t('messages.resetPassword.message') }
-            </p>
-            <form
-              action=""
-              className="w-full"
-              onSubmit={(ev) => ev.preventDefault()}
-            >
-              <TextInput
-                type="text"
-                label={t('forms.inputs.auth.email.label')}
-                placeholder={t('forms.inputs.auth.email.placeholder')}
-                callback={handleEmailChange}
-                value={email}
-                isValid
-                feedbackMessage={t('forms.messages.email.invalid')}
-              />
-              {error && (
-                <div className="w-full mt-1 text-start">
-                  <span className="text-red-500 text-xs">*{error}</span>
-                </div>
-              )}
-              <div className="w-full relative mt-5 mb-1">
-                {
-                  !isRecoverEmailSent ? (
-                    <InputButton
-                      text={t('actions.auth.sendLink')}
-                      disabled={!email}
-                      action={handleRecoverPassword}
-                      isLoading={isLoadingRequest}
-                    />
-                  ) : (
-                    <span className="text-green-500 text-sm">
-                      { t('messages.resetPassword.emailSent') }
-                    </span>
-                  )
-                }
+        <section className="relative flex flex-col items-start justify-start px-6 py-3">
+          <h2 className="font-bold text-base">
+            {t("messages.resetPassword.title")}
+          </h2>
+          <p className="text-start text-sm mb-3">
+            {t("messages.resetPassword.message")}
+          </p>
+          <form
+            action=""
+            className="w-full h-full"
+            onSubmit={(ev) => ev.preventDefault()}
+          >
+            <TextInput
+              type="text"
+              label={t("forms.inputs.auth.email.label")}
+              placeholder={t("forms.inputs.auth.email.placeholder")}
+              callback={handleEmailChange}
+              value={email}
+              isValid
+              feedbackMessage={t("forms.messages.email.invalid")}
+            />
+            {error && (
+              <div className="w-full mt-1 text-start">
+                <span className="text-red-500 text-xs">*{error}</span>
               </div>
-              <small
-                className="underline text-xs text-gray-400 cursor-pointer"
-                onClick={handleCancelForgotPassword}
-              >
-                { t('actions.general.cancel') }
-              </small>
-            </form>
+            )}
+            <div className="w-full relative mt-5 mb-1">
+              {!isRecoverEmailSent ? (
+                <InputButton
+                  text={t("actions.auth.sendLink")}
+                  disabled={!email}
+                  action={handleRecoverPassword}
+                  isLoading={isLoadingRequest}
+                />
+              ) : (
+                <span className="text-green-500 text-sm">
+                  {t("messages.resetPassword.emailSent")}
+                </span>
+              )}
+            </div>
+            <small
+              className="underline text-xs text-gray-400 cursor-pointer"
+              onClick={handleCancelForgotPassword}
+            >
+              {t("actions.general.cancel")}
+            </small>
+          </form>
         </section>
       ) : (
-        <section className="relative flex flex-col items-start justify-start py-3">
-          <h2 className="text-lg font-bold mb-3">{t('messages.welcome.title')}</h2>
+        <section className="relative flex flex-col items-start justify-start px-6 py-3 h-full overflow-y-auto">
+          <h2 className="text-lg font-bold mb-3">
+            {t("messages.welcome.title")}
+          </h2>
 
           {currentAuthStep === 0 && (
             <form
@@ -363,12 +388,12 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
             >
               <TextInput
                 type="text"
-                label={t('forms.inputs.auth.email.label')}
-                placeholder={t('forms.inputs.auth.email.placeholder')}
+                label={t("forms.inputs.auth.email.label")}
+                placeholder={t("forms.inputs.auth.email.placeholder")}
                 callback={handleEmailChange}
                 value={email}
                 isValid
-                feedbackMessage={t('forms.messages.email.invalid')}
+                feedbackMessage={t("forms.messages.email.invalid")}
               />
               {error && (
                 <div className="w-full mt-1 text-start">
@@ -377,7 +402,7 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
               )}
               <div className="w-full relative mt-5 mb-1">
                 <InputButton
-                  text={t('actions.navigation.continue')}
+                  text={t("actions.navigation.continue")}
                   action={handleNextAuthStep}
                   isLoading={isLoadingRequest}
                 />
@@ -387,7 +412,7 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
                 className="underline text-xs text-gray-400 cursor-pointer"
                 onClick={handleForgotPassword}
               >
-                { t('messages.forgotPassword.title') }
+                {t("messages.forgotPassword.title")}
               </small>
             </form>
           )}

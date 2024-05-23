@@ -44,9 +44,11 @@ export const UserOptionsMenu:React.FC<UserOptionsMenuProps> = ({ callback }) => 
             {
                 isAuth ? (
                     <>
-                        <div className="px-6 py-3 w-full h-auto text-start bg-gray-50">
-                            <h2 className="font-medium text-sm">Hello {userData?.personalInformation?.firstName}</h2>
+                        <div className="px-6 pt-3 pb-2 w-full h-auto text-start bg-gray-50">
+                            <h2 className="font-medium text-md mb-1">{t('messages.utils.hello')} {userData?.personalInformation?.firstName}</h2>
+                            <span className="font-semibold bg-indigo-50 p-1 rounded-md text-indigo-600 text-xs">{ userData?.gamification.points || 0 } {t('gamification.utils.points')}</span> 
                         </div>
+
                         <button className="px-6 py-3 w-full h-auto text-start hover:bg-gray-50 flex flex-row flex-nowrap items-center justify-between" onClick={() => handleAction(UserMenuOptions.profile)}>
                             <h2 className="font-medium text-sm">{t('actions.auth.seeProfile')}</h2>
                             {
@@ -85,7 +87,7 @@ export const UserOptionsMenu:React.FC<UserOptionsMenuProps> = ({ callback }) => 
                 <hr />
 
                 <div className="px-6 py-3 w-full h-auto text-start text-sm" onClick={() => handleAction(UserMenuOptions.about)}>
-                    <h2 className="font-regular text-sm mb-3">Choose a language</h2>
+                    <h2 className="font-regular text-sm mb-3">{t('translations.chooseLanguage')}</h2>
                     <button className={`mr-2 underline ${i18n.language === 'en' ? 'font-bold' : ''}`} onClick={() => chooseLanguage('en')}>
                         En
                     </button>

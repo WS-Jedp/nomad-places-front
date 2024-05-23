@@ -1,7 +1,5 @@
 import { IonList } from "@ionic/react"
-import { RouteComponentProps } from "react-router"
 import { RowPlacesFilterOptions } from "../../components/filters/rowPlacesFilterOptions"
-import { LocationBasicInformation } from "../../components/Location/LocationBasicInformation"
 
 interface ListSearchPlacesProps {
     children?: JSX.Element

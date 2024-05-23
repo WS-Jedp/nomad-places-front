@@ -223,7 +223,9 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
         <ItemsAndMapLayout map={<GoogleMapWrapper />}>
           <>
             {isSearchingPlaces ? (
-              <SatelliteLoader text={t('actions.general.searching')} />
+              <div className="w-full flex items-center justify-center p-5">
+                <SatelliteLoader text={t('actions.general.searching')} />
+              </div>
             ) : places.filteredPlaces.length ? (
               places.filteredPlaces.map((place) => (
                 <HandlePlaceCardListItem

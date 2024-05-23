@@ -4,6 +4,11 @@
         "notLoggedIn": "No has iniciado sesión",
         "required": {
             "message": "Necesitas iniciar sesión para poder acceder a esta funcionalidad"
+        },
+        "success": {
+            "login": "¡Iniciaste sesión exitosamente! Bienvenido de vuelta {{name}} 🎉",
+            "register": "¡Te has registrado exitosamente! Bienvenido a Spots {{name}}",
+            "logout": "Has cerrado sesión exitosamente"
         }
     },
     "welcome": {
@@ -123,6 +128,7 @@
         "we": "El equipo de Spots"
     },
     "utils": {
-        "and": "y"
+        "and": "y",
+        "hello": "Hola"
     }
 }

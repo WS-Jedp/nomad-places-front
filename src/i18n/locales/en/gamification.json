@@ -1,0 +1,24 @@
+{
+    "general": {
+        "earned": {
+            "points": "You have earned {{points}} points! Keep it up! 🎉"
+        }
+    },
+    "discovery": {
+        "earned": {
+            "share": "You have earned {{points}} points for discovering a new place! 🎉",
+            "confirm": "You have earned {{points}} points for confirming a place! 🎉"
+        }
+    },
+    "session": {
+        "earned": {
+            "agreeAction": "You have earned {{points}} points for confirm an update! 🎉",
+            "generalUpdate": "You have earned {{points}} points for updating the community! 🎉",
+            "specificUpdate": "You have earned {{points}} points for updating the sesion information! 🎉"
+        }
+    },
+    "utils": {
+        "points": "Points",
+        "point": "Point"
+    }
+}

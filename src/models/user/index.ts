@@ -11,6 +11,9 @@ export interface User {
     createdDate?: string
     confirmedPlacesIDs?: string[]
     discoveredPlacesIDs?: string[]
+    gamification: {
+        points: number
+    }
 }
 
 export interface Person {

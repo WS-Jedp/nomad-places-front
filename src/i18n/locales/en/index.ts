@@ -1,11 +1,12 @@
 import Action from './actions.json';
 import Messages from './messages.json';
-import Filters from './messages.json';
+import Filters from './filters.json';
 import Titles from './titles.json';
 import Forms from './forms.json';
 import Spots from './spot.json';
 import Discover from './discover.json';
 import Translation from './translation.json';
+import Gamification from './gamification.json';
 
 export default {
     actions: Action,
@@ -15,5 +16,6 @@ export default {
     forms: Forms,
     spots: Spots,
     discover: Discover,
-    translation: Translation
+    translations: Translation,
+    gamification: Gamification
 }

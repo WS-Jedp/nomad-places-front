@@ -5,6 +5,7 @@ import { FaUserAlt } from "react-icons/fa";
 import { IoIosArrowDown, IoMdMenu } from "react-icons/io";
 import { MdArrowBack } from "react-icons/md";
 import { useHistory } from "react-router";
+import { toast } from "react-toastify";
 import {
   useAppDispatch,
   useAppSelector,
@@ -59,6 +60,7 @@ export const BackNavigationHeader: React.FC = () => {
         break;
       case UserMenuOptions.logout:
         dispatch(logout());
+        toast.success(t("messages.auth.success.logout"));
         break;
       case UserMenuOptions.about:
         console.log("Go to about page");

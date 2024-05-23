@@ -34,6 +34,7 @@ import {
   startDiscoveringPlace,
   stopDiscoveringPlace,
 } from "../../../store/redux/slices/places";
+import { toast } from "react-toastify";
 
 export const GeneralHeader: React.FC = () => {
   const { t } = useTranslation();
@@ -116,6 +117,7 @@ export const GeneralHeader: React.FC = () => {
         break;
       case UserMenuOptions.logout:
         dispatch(logout());
+        toast.success(t("messages.auth.success.logout"));
         history.push("/home");
         break;
       case UserMenuOptions.about:

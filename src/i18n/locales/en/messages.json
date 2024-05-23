@@ -4,6 +4,11 @@
         "notLoggedIn": "Your're not logged in",
         "required": {
             "message": "You need to login or register to access this feature"
+        },
+        "success": {
+            "login": "Successfully logged in! Welcome back {{name}} 🎉",
+            "register": "You have successfully registered! Welcome to Spots {{name}}",
+            "logout": "You have successfully logged out"
         }
     },
     "welcome": {
@@ -117,6 +122,7 @@
         "we": "The Spots Team"
     },
     "utils": {
-        "and": "and"
+        "and": "and",
+        "hello": "Hello"
     }
 }

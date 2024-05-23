@@ -11,6 +11,9 @@ export type UserRequestDTO = {
     confirmedPlacesIDs?: string[]
     discoveredPlacesIDs?: string[]
     createdDate?: string
+    gamification: {
+        points: number
+    }
 }
 
 export type ProfileDTO = UserRequestDTO & {

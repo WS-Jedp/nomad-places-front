@@ -65,7 +65,7 @@ export const PlaceCardListItemDesktop: React.FC<PlaceCardListItemProps> = ({
     <IonRow
       className={`
             bg-none bg-white-300 cursor-pointer rounded-md
-            flex items-center p-2 my-1 mx-0 w-4/12 border-1 border-black md:bg-white
+            flex items-center p-2 my-1 mx-0 w-4/12 max-h-[300px] border-1 border-black md:bg-white
             transition-all duration-300 ease-in-out
             ${placeOnFocus === place.id ? "shadow-md border-black" : ""}
             hover:shadow-md hover:border-black

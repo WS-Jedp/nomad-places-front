@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { AiFillLike } from "react-icons/ai";
 import { IoMdInformationCircleOutline } from "react-icons/io";
+import { toast } from "react-toastify";
 import { ControlledError } from "../../../../common/controlledError";
 import { ControlledErrorType } from "../../../../common/controlledError/types";
 import {
@@ -25,7 +26,10 @@ import {
 import { PLACE_TYPES } from "../../../../models/placeTypes";
 import { addError } from "../../../../store/redux/slices/controlledErrors";
 import { confirmNewSpotDiscovered } from "../../../../store/redux/slices/places";
-import { getUserGeoLocation } from "../../../../store/redux/slices/user";
+import {
+  getUserGeoLocation,
+  setPointsToUser,
+} from "../../../../store/redux/slices/user";
 import { GeneralInformationInputs } from "../generalInformationInputs";
 import { LocationInputs } from "../locationInputs";
 import { SpotCommoditiesInput } from "../spotCommoditiesInput";
@@ -605,6 +609,25 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
         })
       )) as PayloadAction<newSpotDiscoveredConfirmedDTO>;
 
+      if (resp.payload.userGamification) {
+        if (resp.payload.placeApproved)
+          toast.success(
+            t("gamification.discovery.earned.lastConfirmation", {
+              points: resp.payload.userGamification.earnedPoints,
+            })
+          );
+        else
+          toast.success(
+            t("gamification.discovery.earned.confirm", {
+              points: resp.payload.userGamification.earnedPoints,
+            })
+          );
+
+        dispatch(
+          setPointsToUser({ points: resp.payload.userGamification.points })
+        );
+      }
+
       onSave(resp.payload);
     } catch (error) {
       dispatch(
@@ -729,7 +752,7 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
             <LoaderSpinner />
           ) : (
             <SimpleButton
-              text={t('actions.discover.confirmSpot')}
+              text={t("actions.discover.confirmSpot")}
               action={handleConfirmSpotRecommendation}
             />
           )}

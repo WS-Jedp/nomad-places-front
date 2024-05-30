@@ -7,7 +7,8 @@
     "discovery": {
         "earned": {
             "share": "You have earned {{points}} points for discovering a new place! 🎉",
-            "confirm": "You have earned {{points}} points for confirming a place! 🎉"
+            "confirm": "You have earned {{points}} points for confirming a place! 🎉",
+            "lastConfirmation": "You have earned {{points}} points! Thanks to you now the place it's official in the map! 🎉"
         }
     },
     "session": {

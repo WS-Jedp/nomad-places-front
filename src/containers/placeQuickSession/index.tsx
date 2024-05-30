@@ -35,7 +35,7 @@ import { ConfirmPlaceDiscoveredModal } from "../discoveredPlaces/modals/confirmP
 import { newSpotDiscoveredConfirmedDTO } from "../../dto/places";
 import { SpotApprovedSuccessfulModal } from "../discoveredPlaces/modals/spotApprovedSuccessful";
 import { SpotConfirmedSuccessfulModal } from "../discoveredPlaces/modals/spotConfirmedSuccessful";
-import { approvedCurrentPlace, updateCurrentPlace } from "../../store/redux/slices/places";
+import { addDiscoverSpotIntoNearPlaces, approvedCurrentPlace, updateCurrentPlace } from "../../store/redux/slices/places";
 
 interface PlaceQuickSessionProps {
   changePageCallback: Function;
@@ -46,7 +46,6 @@ interface PlaceQuickSessionProps {
 export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
   changePageCallback,
 }) => {
-
   const { t } = useTranslation();
 
   const history = useHistory();
@@ -71,7 +70,7 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
       await dispatch( updateCurrentPlace( spotState.place ) )
       return setIsSpotApproved(true)
     }
-    setIsSpotConfirmed(true)  
+    setIsSpotConfirmed(true)
   }
 
   function closeConfirmSpot() {

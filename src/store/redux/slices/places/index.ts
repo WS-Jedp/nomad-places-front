@@ -166,6 +166,23 @@ export const placesSlice = createSlice({
     updateCurrentPlace: (state, action: PayloadAction<Place>) => {
       if (!state.currentPlace) return;
       state.currentPlace = {...state.currentPlace, ...action.payload};
+    },
+    addDiscoverSpotIntoNearPlaces: (state, action: PayloadAction<Place>) => {
+      const place = {
+        ...action.payload,
+        sessionCachedData: {
+          amountOfPeople: [],
+          bestMindsetTo: [],
+          lastActions: [],
+          lastRecentlyActivities: [],
+          lastUpdate: '',
+          usersInSession: [],
+          placeStatus: []
+        }
+      }
+
+      state.nearPlaces.push(place);
+      state.filteredPlaces.push(place)
     }
   },
   extraReducers: (builder) => {
@@ -201,7 +218,8 @@ export const {
   startDiscoveringPlace,
   stopDiscoveringPlace,
   approvedCurrentPlace,
-  updateCurrentPlace
+  updateCurrentPlace,
+  addDiscoverSpotIntoNearPlaces
 } = placesSlice.actions;
 
 export default placesSlice.reducer;

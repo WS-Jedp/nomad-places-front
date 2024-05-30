@@ -57,10 +57,12 @@ export const PlaceSessionDetail: React.FC = () => {
   } = useAppSelector((state) => state.user);
   const { socket, sessionID } = useAppSelector((state) => state.userSession);
 
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
   const [recentActivityOpen, setRecentActivityOpen] = useState<boolean>(false);
   const [mediaSelectedIndex, setMediaSelectedIndex] = useState<number>(0);
-  const [userInSession, setUserInSession] = useState(false);
-  const [joiningSessionLoader, setJoiningSessionLoader] = useState(false);
+  const [userInSession, setUserInSession] = useState<boolean>(false);
+  const [joiningSessionLoader, setJoiningSessionLoader] = useState<boolean>(true);
 
   const [leaveSessionModal, setLeaveSessionModal] = useState(false);
   const [updateSessionModal, setUpdateSessionModal] = useState(false);
@@ -77,6 +79,7 @@ export const PlaceSessionDetail: React.FC = () => {
   // ACCESS TO SESSION METHODS
   // =========================
   async function connectUserToSession(placeID: string) {
+    setJoiningSessionLoader(true);
     if (!socket && userData) {
       await dispatch(
         createSocket({
@@ -86,9 +89,14 @@ export const PlaceSessionDetail: React.FC = () => {
         })
       );
     }
-    if (!socket) return;
+    if (!socket) {
+      setJoiningSessionLoader(false);
+      return;
+    }
 
     await socket?.joinSession();
+
+    setJoiningSessionLoader(false);
   }
 
   async function handleJoinSession() {
@@ -97,19 +105,34 @@ export const PlaceSessionDetail: React.FC = () => {
     if (!currentPlace) return;
 
     if (!userLocation.latitude || !userLocation.longitude) {
-      dispatch( addError(new ControlledError(t('spots.messages.session.unallowed.userLocation'), ControlledErrorType.FRONTEND_SYSTEM)) )
+      dispatch(
+        addError(
+          new ControlledError(
+            t("spots.messages.session.unallowed.userLocation"),
+            ControlledErrorType.FRONTEND_SYSTEM
+          )
+        )
+      );
       setJoiningSessionLoader(false);
       return;
     }
+
     if (
       !userInAllowedRange(
         { latitude: userLocation.latitude, longitude: userLocation.longitude },
         currentPlace.location
       )
     ) {
-        dispatch( addError(new ControlledError(t('spots.messages.session.unallowed.locationRange'), ControlledErrorType.FRONTEND_SYSTEM)) )
-        setJoiningSessionLoader(false);
-        return
+      dispatch(
+        addError(
+          new ControlledError(
+            t("spots.messages.session.unallowed.locationRange"),
+            ControlledErrorType.FRONTEND_SYSTEM
+          )
+        )
+      );
+      setJoiningSessionLoader(false);
+      return;
     }
 
     await connectUserToSession(currentPlace.id);
@@ -170,8 +193,7 @@ export const PlaceSessionDetail: React.FC = () => {
     if (
       cachedSession?.usersInSession?.find((user) => user.id === userData?.id)
     ) {
-      if (!currentPlace || !userData) return;
-      const sessionID = cachedSession.lastActions[0].placeSessionID;
+      if (!currentPlace || !userData || !sessionID) return;
       await dispatch(userJoinedSession({ sessionID: sessionID }));
       await dispatch(
         createSocket({
@@ -280,8 +302,6 @@ export const PlaceSessionDetail: React.FC = () => {
               {t("actions.session.leave")}
             </span>
           </article>
-        ) : joiningSessionLoader ? (
-            <SatelliteLoader />
         ) : (
           // JOIN SESSION BUTTON
           <SimpleButton

@@ -4,6 +4,7 @@ import { DiscoveredPlaceConfirmation } from "../../models/placeConfirmation";
 import { Commodities, Place, PlaceRules } from "../../models/places";
 import { PLACE_TYPES } from "../../models/placeTypes";
 import { PlaceSession, PlaceSessionCachedDataDTO } from "../../models/session";
+import { UserEarnedPoints } from "../gamification/userEarnedPoints";
 
 export type PlaceWithQuickSessionDataDTO = {
     place: Place,
@@ -34,6 +35,7 @@ export type DiscoverSpotDTO = {
 export type DiscoveredSpotByUserResponseDTO = {
     discoveredPlace: Place,
     userDiscoveredPlacesIDs: string[]
+    userGamification: UserEarnedPoints
 }
 
 export type ConfirmNewSpotDiscoveredDTO = {
@@ -47,6 +49,7 @@ export type newSpotDiscoveredConfirmedDTO = {
     userConfirmations: string[]
     placeConfirmations: string[]
     place: Place
+    userGamification: UserEarnedPoints
 } 
 
 export type newSpotDiscoveredRejectedDTO = {

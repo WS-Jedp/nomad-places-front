@@ -278,6 +278,14 @@ export const userSlice = createSlice({
     hideAuthModal(state) {
       state.auth.modal = false;
     },
+    addPointsToUser(state, action: PayloadAction<{ points: number }>) {
+      if (!state.userData) return;
+      state.userData.gamification.points += action.payload.points;
+    },
+    setPointsToUser(state, action: PayloadAction<{ points: number }>) {
+      if (!state.userData) return;
+      state.userData.gamification.points = action.payload.points;
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(getUserGeoLocation.fulfilled, (state, action) => {
@@ -433,6 +441,9 @@ export const {
   resetErros,
   removeError,
   logout,
+  addPointsToUser,
+  setPointsToUser,
+  updateProfilePicture
 } = userSlice.actions;
 
 export default userSlice.reducer;

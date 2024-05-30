@@ -1,7 +1,9 @@
 import { IonCol, IonRow } from "@ionic/react";
+import { PayloadAction } from "@reduxjs/toolkit";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { MdAddAPhoto, MdClose } from "react-icons/md";
+import { toast } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "../../../common/hooks/useTypedSelectors";
 import { handleSpotTypeIcon } from "../../../common/utils/icons/icons";
 import { SimpleButton } from "../../../components/buttons/simple";
@@ -12,7 +14,7 @@ import { TextAreaInput } from "../../../components/form/inputs/textarea";
 import { LoaderSpinner } from "../../../components/loaders/spinner";
 import { SimpleMindsetCard } from "../../../components/mindsets/cards/simpleCardMindset";
 import { SimplePlaceTypeCard } from "../../../components/places/types/cards/simple";
-import { DiscoverSpotDTO } from "../../../dto/places";
+import { DiscoveredSpotByUserResponseDTO, DiscoverSpotDTO } from "../../../dto/places";
 import {
   SpotCommoditiesFilters,
   SpotRulesFilters,
@@ -21,8 +23,8 @@ import { MINDSETS } from "../../../models/mindsets";
 import { PLACE_RULES } from "../../../models/placeRules";
 import { PLACE_COMMODITIES_ENUM, PLACE_RULES_ENUM } from "../../../models/places";
 import { PLACE_TYPES } from "../../../models/placeTypes";
-import { newSpotDiscover } from "../../../store/redux/slices/places";
-import { getUserGeoLocation } from "../../../store/redux/slices/user";
+import { addDiscoverSpotIntoNearPlaces, newSpotDiscover } from "../../../store/redux/slices/places";
+import { getUserGeoLocation, setPointsToUser } from "../../../store/redux/slices/user";
 import { GeneralInformationInputs } from "./generalInformationInputs";
 import { LocationInputs } from "./locationInputs";
 import { SpotCommoditiesInput } from "./spotCommoditiesInput";
@@ -199,13 +201,19 @@ export const DiscoveredPlaceForm: React.FC<{
     try {
       setIsSaving(true)
       const spot = handleGetSpotData()
-      const resp = await dispatch( newSpotDiscover({ spot }) )
+      const resp = await dispatch( newSpotDiscover({ spot }) ) as PayloadAction<DiscoveredSpotByUserResponseDTO>
       if(resp.payload) {
-        console.log(resp.payload)
+        const { userGamification } = resp.payload
+        if(userGamification.earnedPoints) {
+          toast.success(t("gamification.discovery.earned.share", { points: userGamification.earnedPoints }))
+          dispatch( setPointsToUser({ points: userGamification.points }) )
+        }
+        dispatch( addDiscoverSpotIntoNearPlaces( resp.payload.discoveredPlace ) )
         onSave()
       }
     } catch (error) {
       console.error(error)
+      toast.error(String(error))
     } finally {
       setIsSaving(false)
     }

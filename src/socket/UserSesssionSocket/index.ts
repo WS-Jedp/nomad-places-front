@@ -104,9 +104,9 @@ export class UserSessionSocket {
     // This string payload it's actually a JSON stringified object
     // with the following structure:
     // PlaceSessionAction && User types
-    onSessionUpdated(callback: (payload: PlaceSessionAction[]) => void) {
+    onSessionUpdated(callback: (payload: PlaceSessionAction[] | { error: { type: string, message: string } }) => void) {
         this.socket.on('place-session-update', (message:string) => {
-            const payload: PlaceSessionAction[] = JSON.parse(message)
+            const payload: PlaceSessionAction[] | { error: { type: string, message: string } } = JSON.parse(message)
             callback(payload)
         })
     }

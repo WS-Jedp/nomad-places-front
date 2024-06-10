@@ -15,7 +15,8 @@
         "earned": {
             "agreeAction": "You have earned {{points}} points for confirm an update! 🎉",
             "generalUpdate": "You have earned {{points}} points for updating the community! 🎉",
-            "specificUpdate": "You have earned {{points}} points for updating the sesion information! 🎉"
+            "specificUpdate": "You have earned {{points}} points for updating the sesion information! 🎉",
+            "joinSession": "You have earned {{points}} points for join a session! 🎉"
         }
     },
     "utils": {

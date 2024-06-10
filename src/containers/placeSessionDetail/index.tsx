@@ -35,12 +35,15 @@ import { AmountOfPeopleActionsAmount } from "../../components/amountOfPeople/con
 import { HandleMindsetTags } from "../../components/tags/mindsets";
 import { useTranslation } from "react-i18next";
 import { FaLock } from "react-icons/fa";
-import { showAuthModal } from "../../store/redux/slices/user";
+import { setPointsToUser, showAuthModal } from "../../store/redux/slices/user";
 import { userInAllowedRange } from "../../common/utils/geoLocation";
 import { SatelliteLoader } from "../../components/loaders/satellite";
 import { addError } from "../../store/redux/slices/controlledErrors";
 import { ControlledError } from "../../common/controlledError";
 import { ControlledErrorType } from "../../common/controlledError/types";
+import { getLocalISODate } from "../../common/utils/dates";
+import { format, parseISO } from "date-fns";
+import { toast } from "react-toastify";
 
 export const PlaceSessionDetail: React.FC = () => {
   const { t } = useTranslation();
@@ -50,6 +53,15 @@ export const PlaceSessionDetail: React.FC = () => {
   const { currentSessionActions, cachedSession } = useAppSelector(
     (state) => state.spotSession
   );
+
+  function getCurrentSessionActionsOrderByDate() {
+    if(!currentSessionActions || currentSessionActions.length === 0) return []
+
+    return currentSessionActions.slice().sort((a, b) => {
+      return new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime();
+    });
+  }
+
   const {
     userData,
     auth,
@@ -57,12 +69,10 @@ export const PlaceSessionDetail: React.FC = () => {
   } = useAppSelector((state) => state.user);
   const { socket, sessionID } = useAppSelector((state) => state.userSession);
 
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
   const [recentActivityOpen, setRecentActivityOpen] = useState<boolean>(false);
   const [mediaSelectedIndex, setMediaSelectedIndex] = useState<number>(0);
   const [userInSession, setUserInSession] = useState<boolean>(false);
-  const [joiningSessionLoader, setJoiningSessionLoader] = useState<boolean>(true);
+  const [joiningSessionLoader, setJoiningSessionLoader] = useState<boolean>(false);
 
   const [leaveSessionModal, setLeaveSessionModal] = useState(false);
   const [updateSessionModal, setUpdateSessionModal] = useState(false);
@@ -95,8 +105,6 @@ export const PlaceSessionDetail: React.FC = () => {
     }
 
     await socket?.joinSession();
-
-    setJoiningSessionLoader(false);
   }
 
   async function handleJoinSession() {
@@ -136,7 +144,6 @@ export const PlaceSessionDetail: React.FC = () => {
     }
 
     await connectUserToSession(currentPlace.id);
-    setJoiningSessionLoader(false);
   }
 
   async function disconnectUserFromSession(sessionID: string) {
@@ -145,7 +152,6 @@ export const PlaceSessionDetail: React.FC = () => {
     await dispatch(userLeftSession());
     await dispatch(removeUserFromCachedSession({ userID: userData.id }));
     await socket.leaveSession(sessionID);
-    setJoiningSessionLoader(false);
   }
 
   async function handleLeaveSession() {
@@ -155,6 +161,8 @@ export const PlaceSessionDetail: React.FC = () => {
     setUserInSession(false);
   }
 
+  // ======================================
+  // ====== UPDATE COMMUNITY ACTIONS ======
   useEffect(() => {
     if (!socket) return;
     socket?.onSessionMessage(async (payload) => {
@@ -163,6 +171,11 @@ export const PlaceSessionDetail: React.FC = () => {
           await dispatch(userJoinedSession({ sessionID: payload.sessionID }));
           await dispatch(addUserIntoCachedSession({ user: userData }));
           setUserInSession(true);
+          console.log(payload)
+          if(payload.action.userGamification?.earnedPoints) {
+            toast.success(t("gamification.session.earned.joinSession", { points: payload.action.userGamification.earnedPoints }))
+            dispatch( setPointsToUser({ points: payload.action.userGamification.points }) )
+          }
         }
       } else if (payload.type === PLACE_SESSION_ACTIONS_ENUM.LEAVE) {
         if (userData?.id === payload.userID) {
@@ -171,15 +184,29 @@ export const PlaceSessionDetail: React.FC = () => {
         }
       }
       if (payload.action) {
-        dispatch(addActionToCurrentSession({ action: payload.action }));
+        await dispatch(addActionToCurrentSession({ action: payload.action }));
       }
+
+      setJoiningSessionLoader(false)
     });
   }, [socket]);
 
   useEffect(() => {
     if (!socket) return;
     socket?.onSessionUpdated(async (payload) => {
-      dispatch(addMultipleActionsToCurrentSession(payload));
+      if(!Array.isArray(payload)) {
+        toast.error(t(`messages.session.update.errors.${payload.error.type}`))
+      } else {
+        payload.forEach(action => {
+          if(action.userGamification?.earnedPoints) {
+            toast.success(t("gamification.session.earned.specificUpdate", { points: action.userGamification.earnedPoints }))
+            dispatch( setPointsToUser({ points: action.userGamification.points }) )
+          }
+        })
+       
+        await dispatch(addMultipleActionsToCurrentSession(payload));
+      }
+      setJoiningSessionLoader(false)
     });
   }, [socket]);
 
@@ -194,6 +221,7 @@ export const PlaceSessionDetail: React.FC = () => {
       cachedSession?.usersInSession?.find((user) => user.id === userData?.id)
     ) {
       if (!currentPlace || !userData || !sessionID) return;
+
       await dispatch(userJoinedSession({ sessionID: sessionID }));
       await dispatch(
         createSocket({
@@ -211,7 +239,8 @@ export const PlaceSessionDetail: React.FC = () => {
 
   useEffect(() => {
     isUserInSession();
-  }, [cachedSession?.usersInSession]);
+  }, [cachedSession?.usersInSession, sessionID]);
+
 
   // ============================
   // QUICK UPDATE ACTIONS METHODS
@@ -234,6 +263,17 @@ export const PlaceSessionDetail: React.FC = () => {
     setQuickActionValue(value);
   }
 
+  function handleUpdateMultipleActions(actions: { type: UPDATE_ACTIONS, data: any  }[]) {
+    setJoiningSessionLoader(true);
+    setUpdateSessionModal(false);
+    if(!sessionID) {
+      setJoiningSessionLoader(false);
+      return;
+    }
+
+    socket?.updateSessionMultipleActions({ sessionID: sessionID, actions: actions });
+  }
+
   if (!currentPlace) return null;
 
   return (
@@ -247,13 +287,12 @@ export const PlaceSessionDetail: React.FC = () => {
       )}
 
       <IonRow className="w-full h-3/6 p-3 pb-5 relative flex flex-col flex-nowrap border-b border-gray-300">
-        {cachedSession?.lastUpdate && (
+        {cachedSession && cachedSession.lastActions.length > 0 && cachedSession?.lastUpdate && (
           <section className="my-1">
             <h2 className="text-xs font-light">
               {t("spots.messages.session.lastUpdateAt")}{" "}
               <span className="font-light">
-                {" "}
-                {new Date(cachedSession?.lastUpdate).toISOString()}{" "}
+                - { format(parseISO(getLocalISODate( cachedSession.lastUpdate )), 'p') }
               </span>
             </h2>
           </section>
@@ -267,6 +306,7 @@ export const PlaceSessionDetail: React.FC = () => {
           ) : (
             <HandleMindsetTags mindset={MINDSETS.UNKNOWN} />
           )}
+          
         </section>
 
         <IonRow className="relative w-full flex flex-row mb-3">
@@ -293,6 +333,7 @@ export const PlaceSessionDetail: React.FC = () => {
               <SimpleButton
                 action={() => setUpdateSessionModal(true)}
                 text={t("actions.session.update")}
+                loading={joiningSessionLoader}
               />
             </div>
             <span
@@ -322,7 +363,8 @@ export const PlaceSessionDetail: React.FC = () => {
         <section className="relative h-full flex flex-col flex-nowrap mb-3">
           <ol className="w-full min-h-full h-auto my-3">
             {currentSessionActions.length > 0 ? (
-              currentSessionActions.map((action, index) => {
+              // Order by date, last action first
+              getCurrentSessionActionsOrderByDate().map((action, index) => {
                 return (
                   <li key={index}>
                     <HandleActionCardType action={action} />
@@ -356,6 +398,7 @@ export const PlaceSessionDetail: React.FC = () => {
         <BlurAppModal>
           <UserActionsModal
             closeCallback={() => setUpdateSessionModal(false)}
+            onSaveCallback={handleUpdateMultipleActions}
           />
         </BlurAppModal>
       )}
@@ -364,6 +407,7 @@ export const PlaceSessionDetail: React.FC = () => {
         <AppModal>
           <QuickActionModal
             onCancel={() => setQuickActionModal(false)}
+            onUpdate={() => setJoiningSessionLoader(true)}
             actionType={quickActionType}
             value={quickActionValue}
           />

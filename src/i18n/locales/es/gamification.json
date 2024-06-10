@@ -15,7 +15,8 @@
         "earned": {
             "agreeAction": "¡Has ganado {{points}} puntos por estar de acuerdo con una actualización! 🎉",
             "generalUpdate": "¡Has ganado {{points}} puntos por mantener actualizada a la comunidad! 🎉",
-            "specificUpdate": "¡Has ganado {{points}} puntos por actualizar la información de la sesión! 🎉"
+            "specificUpdate": "¡Has ganado {{points}} puntos por actualizar la información de la sesión! 🎉",
+            "joinSession": "¡Has ganado {{points}} puntos por unirte a una sesión! 🎉"
         }
     },
     "utils": {

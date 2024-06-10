@@ -1,5 +1,6 @@
 import { DAY_TIME_SECTION_ENUM, PlaceSessionActionDataPayload, PLACE_SESSION_ACTIONS_ENUM } from ".."
 import { UserRequestDTO } from "../../../dto/user"
+import { UserGamification } from "../../gamification"
 import { PLACE_STATUS } from "../../placeStatus"
 
 type PlaceSesssionActionPayload = PlaceSessionActionDataPayload['MESSAGE'] | PlaceSessionActionDataPayload['UPDATE'] | PlaceSessionActionDataPayload['RECENT_ACTIVITY']
@@ -14,6 +15,9 @@ export type PlaceSessionAction = {
     user?: UserRequestDTO
     userID: string
     username: string
+    userGamification?: UserGamification & {
+        earnedPoints: number,
+    }
 }
 
 export enum PLACE_SESSION_ACTION_TYPE_ENUM {

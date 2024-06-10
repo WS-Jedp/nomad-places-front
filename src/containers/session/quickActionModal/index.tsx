@@ -11,11 +11,12 @@ import { PlaceSessionAction, PLACE_AMOUNT_OF_PEOPLE_ACTION_OPTION, PLACE_AMOUNT_
 
 interface QuickActionModalProps {
     onCancel: () => void
+    onUpdate: () => void
     actionType: UPDATE_ACTIONS
     value: string
 }
 
-export const QuickActionModal:React.FC<QuickActionModalProps> = ({ onCancel, actionType, value }) => {
+export const QuickActionModal:React.FC<QuickActionModalProps> = ({ onCancel, onUpdate, actionType, value }) => {
 
     const { t } = useTranslation();
     const { sessionID, socket } = useAppSelector(state => state.userSession)
@@ -69,6 +70,7 @@ export const QuickActionModal:React.FC<QuickActionModalProps> = ({ onCancel, act
 
     async function uploadAction() {
         if(!socket || !sessionID) return
+        onUpdate()
         setIsLoading(true)
         const data: PlaceSessionActionDataPayload['UPDATE'] = {
             type: actionType,

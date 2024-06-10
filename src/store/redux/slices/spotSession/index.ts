@@ -52,21 +52,21 @@ export const SpotSessionSlice = createSlice({
 
                         switch (payload.type) {
                             case UPDATE_ACTIONS.PLACE_MINDSET:
-                                const currMindsetAction = cachedSession.bestMindsetTo.find(opt => opt.mindset === payload.data.data)
+                                const currMindsetAction = cachedSession.bestMindsetTo?.find(opt => opt.mindset === payload.data.data)
                                 if(currMindsetAction) {
                                     currMindsetAction.actions.push(currAction)
                                 }
                                 return
                             case UPDATE_ACTIONS.PLACE_AMOUNT_OF_PEOPLE:
                                 const amountPeopleData = payload.data.data as { amount: string }
-                                const currAmountPeople = cachedSession.amountOfPeople.find(opt => opt.amount === amountPeopleData.amount)
+                                const currAmountPeople = cachedSession.amountOfPeople?.find(opt => opt.amount === amountPeopleData.amount)
                                 if(currAmountPeople) {
                                     currAmountPeople.actions.push(currAction)
                                 }
                                 break
                             case UPDATE_ACTIONS.PLACE_STATUS:
                                 const statusData = payload.data.data as { type: string } 
-                                const currPlaceStatus = cachedSession.placeStatus.find(opt => opt.type === statusData.type)
+                                const currPlaceStatus = cachedSession.placeStatus?.find(opt => opt.type === statusData.type)
                                 if(currPlaceStatus) {
                                     currPlaceStatus.actions.push(currAction)
                                 }
@@ -110,6 +110,7 @@ export const SpotSessionSlice = createSlice({
     builder.addCase(getSpotCachedSession.fulfilled, (state, action) => {
         state.cachedSession = action.payload
         state.currentSessionActions = action.payload?.lastActions || []
+        state.sessionID = action.payload?.sessionID || null
     });
   }
 });

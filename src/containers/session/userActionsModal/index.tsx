@@ -13,8 +13,9 @@ import { HandleActionForm } from '../actions/forms/handleActionForm'
 
 type UserActionsModalProps = {
     closeCallback: () => void
+    onSaveCallback: (actions: { type: UPDATE_ACTIONS, data: any  }[]) => void
 }
-export const UserActionsModal: React.FC<UserActionsModalProps> = ({ closeCallback }) => {
+export const UserActionsModal: React.FC<UserActionsModalProps> = ({ closeCallback, onSaveCallback }) => {
 
     const { t } = useTranslation();
 
@@ -67,7 +68,7 @@ export const UserActionsModal: React.FC<UserActionsModalProps> = ({ closeCallbac
         }
 
         if(sessionID) {
-            socket?.updateSessionMultipleActions({ sessionID: sessionID, actions: actionsUpdateForm })
+            onSaveCallback(actionsUpdateForm)
         }
     }
 
@@ -87,7 +88,7 @@ export const UserActionsModal: React.FC<UserActionsModalProps> = ({ closeCallbac
                 return fileType?.toLowerCase() || null
 
             case PLACE_SESSION_ACTION_TYPE_ENUM.PLACE_STATUS:
-                return actionsState.sessionMindsetAction.payload && t(`spots.session.${actionsState.sessionPlaceStatusAction.payload?.type.toLowerCase()}`)
+                return actionsState.sessionPlaceStatusAction.payload && t(`spots.session.${actionsState.sessionPlaceStatusAction.payload?.type.toLowerCase()}`)
         }
     }
 
@@ -151,7 +152,7 @@ export const UserActionsModal: React.FC<UserActionsModalProps> = ({ closeCallbac
 
                             {
                                 isUpdateAvailable && (
-                                    <IonCol size='12'>
+                                    <IonCol size='12' className='flex items-center justify-center'>
                                         <SimpleButton 
                                             text={t('actions.general.update')}
                                             action={onUpdateSession}

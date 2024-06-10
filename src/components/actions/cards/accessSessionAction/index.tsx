@@ -1,8 +1,9 @@
+import { format, formatDate, parseISO } from "date-fns"
 import { useEffect, useState } from "react"
 import { useTranslation } from 'react-i18next'
+import { getLocalISODate } from "../../../../common/utils/dates"
 import { PlaceSessionActionDataPayload, PLACE_SESSION_ACTIONS_ENUM } from "../../../../models/session"
-import { PlaceSessionAction, PLACE_SESSION_ACTIONS_TYPE } from "../../../../models/session/actions"
-
+import { PlaceSessionAction } from "../../../../models/session/actions"
 interface AccessSessionActionProps {
     action: PlaceSessionAction
 }
@@ -41,7 +42,8 @@ export const AccessSessionAction: React.FC<AccessSessionActionProps> = ({ action
             </div>
 
             <span className="font-extralight text-gray-600 text-xs">
-                { new Date(action.createdDate).toDateString() }
+                {/* Time of the actions accroding to the date */}
+                { format(parseISO(getLocalISODate(action.createdDate)), 'p') }
             </span>
 
         </article>

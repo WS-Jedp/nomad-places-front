@@ -1,4 +1,6 @@
+import { format, parseISO } from "date-fns"
 import { useEffect, useState } from "react"
+import { getLocalISODate } from "../../../../common/utils/dates"
 import { PlaceSessionActionDataPayload } from "../../../../models/session"
 import { PlaceSessionAction } from "../../../../models/session/actions"
 import { UpdateActionType } from "../../updateActionType"
@@ -64,7 +66,7 @@ export const CommunityCardAction:React.FC<CommunityCardActionProps> = ({ action 
                 </div>
             </div>
             <span className="font-extralight text-gray-600 text-xs">
-                { new Date(action.createdDate).toISOString() }
+                { format(parseISO(getLocalISODate(action.createdDate)), 'p') }
             </span>
         </article>
     )

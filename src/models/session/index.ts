@@ -35,6 +35,7 @@ import { User } from '../user'
   }
 
   export type PlaceSessionCachedDataDTO = {
+    sessionID?: string;
     placeID: string;
     lastUpdate: string;
     amountOfPeople: {

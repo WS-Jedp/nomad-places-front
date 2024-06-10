@@ -123,6 +123,13 @@
             "confirmCorrectData": "Por favor, confirma o corrige la información de este spot"
         }
     },
+    "session": {
+        "update": {
+            "errors": {
+                "UPDATE_ACTION_LIMIT": "Ya actualizaste esta información anteriormente. Intenta de nuevo más tarde."
+            }
+        }
+    },
     "spotsTeam": {
         "yours": "El equipo de Spots",
         "we": "El equipo de Spots"

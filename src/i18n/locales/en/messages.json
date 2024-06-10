@@ -117,6 +117,13 @@
             "keepExploring": "Keep exploring and sharing"
         }
     },
+    "session": {
+        "update": {
+            "errors": {
+                "UPDATE_ACTION_LIMIT": "You already update this information earlier. Try again later."
+            }
+        }
+    },
     "spotsTeam": {
         "yours": "Your Spots team",
         "we": "The Spots Team"

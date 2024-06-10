@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 import { UserSessionSocket } from "../../../../socket/UserSesssionSocket";
+import { getSpotCachedSession } from "../spotSession";
 
 export interface UserSessionState {
     socket: UserSessionSocket | null;
@@ -44,6 +45,11 @@ export const UserSessionSlice = createSlice({
     userLeftSession(state) {
         state.sessionID = null
     }
+  },
+  extraReducers(builder) {
+    builder.addCase(getSpotCachedSession.fulfilled, (state, action) => {
+        state.sessionID = action.payload?.sessionID || null
+    })
   },
 });
 

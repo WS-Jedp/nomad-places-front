@@ -1,3 +1,5 @@
+import { formatInTimeZone } from "date-fns-tz";
+
 export const getCurrentMonth = (currentDate: Date): string => {
   const currMonth = currentDate.getMonth() + 1;
   if (currMonth <= 9) return `0${currMonth}`;
@@ -39,3 +41,8 @@ export const getCurrentISODate = () => {
     )}${COLOMBIAN_ZERO_TIME}`
   );
 };
+
+export const getLocalISODate = (utcDate: string) => {
+  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  return formatInTimeZone(utcDate, timeZone, "yyyy-MM-dd HH:mm:ssXXX");
+}

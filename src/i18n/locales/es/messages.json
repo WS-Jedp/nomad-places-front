@@ -115,12 +115,6 @@
                 "matter": "Tu opinión importa!"
             },
             "keepExploring": "¡Sigue explorando y compartiendo!"
-        },
-        "actions": {
-            "alreadyConfirmed": "Ya has confirmado este spot",
-            "discoveredSpot": "Este spot ha sido descubierto por ti",
-            "helpToConfirm": "Ayudanos a confirmar este spot",
-            "confirmCorrectData": "Por favor, confirma o corrige la información de este spot"
         }
     },
     "session": {

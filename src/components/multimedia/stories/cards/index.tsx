@@ -13,35 +13,28 @@ export const StoryMultimediaCard: React.FC<StoryMultimediaCardProps> = ({
   user,
   multimediaType,
   multimediaUrl,
-  callback
+  callback,
 }) => {
-
-
   function handleMediaType() {
-
-    if(multimediaType === MULTIMEDIA_TYPE.IMAGE) {
+    if (multimediaType === MULTIMEDIA_TYPE.IMAGE) {
       return (
-          <figure className="relative w-full h-full">
-            <img
-              src={multimediaUrl}
-              alt="Story multimedia"
-              className="object-cover w-full h-full rounded-xl"
-            />
-          </figure>
-      )
+        <figure className="relative w-full h-full overflow-hidden rounded-xl">
+          <img
+            src={multimediaUrl}
+            alt="Story multimedia"
+            className="object-cover w-full h-full  hover:scale-125  transition duration-500 ease-in-out"
+          />
+        </figure>
+      );
     }
 
-    if(multimediaType === MULTIMEDIA_TYPE.VIDEO) {
+    if (multimediaType === MULTIMEDIA_TYPE.VIDEO) {
       return (
-          <figure className="relative w-full h-full">
-            <video
-              src={multimediaUrl}
-              className="object-cover w-full h-full rounded-xl"
-            />
-          </figure>
-      )
+        <figure className="relative w-full h-full rounded-xl overflow-hidden">
+          <video src={multimediaUrl} className="object-cover w-full h-full" />
+        </figure>
+      );
     }
-    
   }
 
   return (
@@ -53,6 +46,7 @@ export const StoryMultimediaCard: React.FC<StoryMultimediaCardProps> = ({
                 rounded-xl
                 shadow-md
                 bg-gray-200
+                cursor-pointer
             "
       onClick={callback}
     >
@@ -66,9 +60,7 @@ export const StoryMultimediaCard: React.FC<StoryMultimediaCardProps> = ({
           </IonText>
         </IonRow>
       )}
-      {
-        handleMediaType()
-      }
+      {handleMediaType()}
     </article>
   );
 };

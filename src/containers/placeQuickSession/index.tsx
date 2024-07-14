@@ -36,6 +36,8 @@ import { newSpotDiscoveredConfirmedDTO } from "../../dto/places";
 import { SpotApprovedSuccessfulModal } from "../discoveredPlaces/modals/spotApprovedSuccessful";
 import { SpotConfirmedSuccessfulModal } from "../discoveredPlaces/modals/spotConfirmedSuccessful";
 import { addDiscoverSpotIntoNearPlaces, approvedCurrentPlace, updateCurrentPlace } from "../../store/redux/slices/places";
+import { AppModal } from "../../components/modals/container";
+import { MultimediaSliderModal } from "../multimediaSliderModal";
 
 interface PlaceQuickSessionProps {
   changePageCallback: Function;
@@ -57,6 +59,14 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
   const [isSpotConfirmed, setIsSpotConfirmed] = useState<boolean>(false);
   const [isSpotApproved, setIsSpotApproved] = useState<boolean>(false);
   const [isRecentActivity, setIsRecentActivity] = useState<boolean>(false);
+
+  const [ multimediaModalOpen, setMultimediaModalOpen ] = useState<boolean>(false)
+  const [ multimediaSelected, setMultimediaSelected ] = useState<number>()
+
+  function handleOnMultimediaSelected(index: number) {
+    setMultimediaSelected(index)
+    setMultimediaModalOpen(true)
+  }
 
   const [ distanceToSpot ] = useDistanceToSpot(currentPlace?.location)
 
@@ -330,6 +340,7 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
           ) : (
             <MultimediaMasonryGrid
               multimedia={currentPlace?.multimedia || []}
+              onMultimedia={handleOnMultimediaSelected}
             />
           )}
         </IonRow>
@@ -355,6 +366,17 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
           <SpotConfirmedSuccessfulModal closeDiscoveredSpot={() => setIsSpotConfirmed(false)} />
         )
       }
+
+      {/* Multimedia detail view with app modal */}
+      {multimediaModalOpen && (
+        <AppModal>
+          <MultimediaSliderModal
+            images={currentPlace?.multimedia || []}
+            closeCallback={() => setMultimediaModalOpen(false)}
+            currentImage={multimediaSelected}
+          />
+        </AppModal>
+      )}
     </section>
   );
 };

@@ -4,6 +4,7 @@ import { MdArrowBackIos, MdArrowForwardIos, MdClose } from "react-icons/md";
 import { PlaceMultimedia, RecentActivity } from "../../models/multimedia";
 import { HandleMultimediaCard } from "../../components/multimedia/cards/helpers/handleMultimediaCard";
 import { AvatarSingleCircle } from "../../components/avatar/singleCircle";
+import { useIsMobile } from "../../common/hooks/useIsMobile";
 
 interface MultimediaSliderModalProps {
   images: PlaceMultimedia[] | RecentActivity[];
@@ -46,8 +47,10 @@ export const MultimediaSliderModal: React.FC<MultimediaSliderModalProps> = ({
     return hours;
   }
 
+  const [isMobile] = useIsMobile()
+
   return (
-    <IonCol size="12" className="w-full h-full bg-black">
+    <IonCol size="12" className="w-full h-full bg-black/[.84]">
       <IonRow className="h-6 p-9">
         <IonCol size="6" className="flex items-start justify-start">
           <button
@@ -68,16 +71,21 @@ export const MultimediaSliderModal: React.FC<MultimediaSliderModalProps> = ({
 
       {/* Images container */}
       {currentImages.length > 0 && (
-        <IonRow className="h-screen felx items-center justify-center">
-          <IonCol size="2" className="flex items-center justify-center">
-            <button
-              className="border-1 border-gray-400 rounded-full outline outline-gray-300 outline-1 p-3"
-              onClick={handlePrevImage}
-              disabled={currentImageIndex === 0}
-            >
-              <MdArrowBackIos />
-            </button>
-          </IonCol>
+        <IonRow className="h-[81%] md:h-[90%] flex items-center justify-center">
+          {
+            !isMobile && (
+              <IonCol size="2" className="flex items-center justify-center">
+                <button
+                  className="border-solid border border-white rounded-full h-[39px] w-[39px] flex items-center justify-center cursor-pointer text-center"
+                  onClick={handlePrevImage}
+                  disabled={currentImageIndex === 0}
+                >
+                  <MdArrowBackIos color="white" size={15} className='ml-1' />
+                </button>
+              </IonCol>
+            )
+          }
+
           <IonCol size="8" sizeMd="6" className="flex flex-col items-center justify-center">
 
             {/* --------------------------------- */}
@@ -97,24 +105,52 @@ export const MultimediaSliderModal: React.FC<MultimediaSliderModalProps> = ({
             {/* User who made the recent activity */}
             {/* --------------------------------- */
             }
-              <IonRow className="h-[500px] min-h-[500px] md:min-h-auto md:h-auto">
+              <IonRow className="h-[690px] md:h-[500px] w-[390px] md:w-[720px]">
                 <HandleMultimediaCard
                   type={currentImages[currentImageIndex].type}
                   url={currentImages[currentImageIndex].url}
                 />
               </IonRow>
           </IonCol>
-          <IonCol size="2" className="flex items-center justify-center">
-            <button
-              className="border-1 border-gray-400 rounded-full outline outline-gray-300 outline-1 p-3"
-              onClick={handleNextImage}
-              disabled={!(currentImageIndex < currentImages.length - 1)}
-            >
-              <MdArrowForwardIos />
-            </button>
-          </IonCol>
+
+            {
+              !isMobile && (
+                <IonCol size="2" className="flex items-center justify-center">
+                  <button
+                    className="border-solid border border-white rounded-full h-[39px] w-[39px] flex items-center justify-center cursor-pointer text-center"
+                    onClick={handleNextImage}
+                    disabled={!(currentImageIndex < currentImages.length - 1)}
+                  >
+                    <MdArrowForwardIos size={15} color="white" />
+                  </button>
+                </IonCol>
+              )
+            }
         </IonRow>
       )}
+
+      {
+        isMobile && (
+          <IonRow>
+            <IonCol size="12" className="flex items-center justify-center">
+              <button
+                className="border-solid border border-white rounded-full h-[42px] w-[42px] flex items-center justify-center cursor-pointer text-center"
+                onClick={handlePrevImage}
+                disabled={currentImageIndex === 0}
+              >
+                <MdArrowBackIos color="white" size={21} className='ml-2' />
+              </button>
+              <button
+                className="border-solid border border-white rounded-full h-[42px] w-[42px] flex items-center justify-center cursor-pointer text-center ml-3"
+                onClick={handleNextImage}
+                disabled={!(currentImageIndex < currentImages.length - 1)}
+              >
+                <MdArrowForwardIos size={21} color="white" />
+              </button>
+            </IonCol>
+          </IonRow>
+        )
+      }
     </IonCol>
   );
 };

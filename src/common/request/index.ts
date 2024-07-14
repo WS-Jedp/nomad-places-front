@@ -89,8 +89,8 @@ export class Request {
       data.status === 503 ||
       data.status === 400
     ) {
-        const errorResp = await data.json();
-        throw new Error(errorResp.message);
+      const errorResp = await data.json();
+      throw new Error(errorResp.message);
     }
     const resp = (await data.json()) as ReponseDTO<Content>;
 
@@ -117,6 +117,62 @@ export class Request {
       {
         method: "post",
         body: this.getBodyFromObject(body),
+        headers: {
+          ...defaultHeaders,
+          ...headers,
+        },
+      }
+    );
+
+    return data.then(async (res) => {
+      if (
+        res.status === 401 ||
+        res.status === 403 ||
+        res.status === 404 ||
+        res.status === 500 ||
+        res.status === 502 ||
+        res.status === 503 ||
+        res.status === 400
+      ) {
+        const errorResp = await res.json();
+        throw new Error(errorResp.message);
+      }
+      const resp = (await res.json()) as ReponseDTO<Content>;
+
+      if (resp.error || !resp.content) throw new Error(resp.error);
+
+      return resp.content;
+    });
+  }
+
+  public postWithMultiPartMultipleFiles<Content>(
+    endpoint: string,
+    body: { [key: string]: any },
+    headers?: HeadersInit,
+    baseURL?: string
+  ): Promise<Content> {
+    const defaultHeaders = this.getDefaultHeaders();
+    delete defaultHeaders["Content-Type"];
+
+    if (this.auth) {
+      defaultHeaders.Authorization = `Bearer ${this.token}`;
+    }
+
+    const { files, ...rest } = body;
+
+    const formData = this.getBodyFromObject(rest);
+
+    if (files && files.length > 0) {
+      Array.from(files).forEach((file: any) => {
+        formData.append("files", file);
+      });
+    }
+
+    const data = fetch(
+      `${baseURL ? baseURL : this.baseUrl}${this.domain}/${endpoint}`,
+      {
+        method: "post",
+        body: formData,
         headers: {
           ...defaultHeaders,
           ...headers,

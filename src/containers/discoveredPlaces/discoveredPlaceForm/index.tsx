@@ -181,7 +181,7 @@ export const DiscoveredPlaceForm: React.FC<{
         coworkSpace: selectedCommodities.includes(spotCommoditiesFilter.find(commodity => commodity.commodity === PLACE_COMMODITIES_ENUM.COWORK_SPACE)?.id || 0),
         publicBathrooms: selectedCommodities.includes(spotCommoditiesFilter.find(commodity => commodity.commodity === PLACE_COMMODITIES_ENUM.PUBLIC_BATHROOMS)?.id || 0),
       },
-      multimedia: files || [],
+      multimedia: files.map((file) => file.slice(0, file.size, file.type)),
       discoveredByID: userData.id,
     };
   }
@@ -201,7 +201,7 @@ export const DiscoveredPlaceForm: React.FC<{
     try {
       setIsSaving(true)
       const spot = handleGetSpotData()
-      const resp = await dispatch( newSpotDiscover({ spot }) ) as PayloadAction<DiscoveredSpotByUserResponseDTO>
+      const resp = await dispatch( newSpotDiscover({ spot, files: spot.multimedia || [] }) ) as PayloadAction<DiscoveredSpotByUserResponseDTO>
       if(resp.payload) {
         const { userGamification } = resp.payload
         if(userGamification.earnedPoints) {

@@ -28,7 +28,7 @@ export type DiscoverSpotDTO = {
     location: GeoLocation
     commodities: Commodities
     rules: PlaceRules
-    multimedia: File[]
+    multimedia: Blob[]
     discoveredByID: string
 }
 

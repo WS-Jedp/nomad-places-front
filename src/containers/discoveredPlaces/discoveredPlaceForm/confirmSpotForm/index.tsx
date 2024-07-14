@@ -661,7 +661,7 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
               size={18}
               className="inline-flex mr-1"
             />
-            {t("messages.discover.actions.discoveredSpot")}
+            {t("messages.discover.spot.actions.discoveredSpot")}
           </p>
         </div>
       )}
@@ -673,14 +673,14 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
               size={18}
               className="inline-flex mr-1"
             />
-            {t("messages.discover.actions.alreadyConfirmed")}
+            {t("messages.discover.spot.actions.alreadyConfirmed")}
           </p>
         </div>
       )}
 
       <div className="flex flex-row w-full items-center justify-between border-b border-slate-400 pb-2 mb-2">
         <h2 className="font-bold text-2xl mb-1 text-start">
-          {t("messages.discover.actions.helpToConfirm")}
+          {t("messages.discover.spot.actions.helpToConfirm")}
         </h2>
         {spotReviews.length > 0 && (
           <span className="bg-emerald-100 rounded-md px-3 py-1 flex items-center justify-center text-center text-xs font-bold text-emerald-700">
@@ -690,7 +690,7 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
         )}
       </div>
       <p className="text-sm font-light">
-        {t("messages.discover.actions.confirmCorrectData")}
+        {t("messages.discover.spot.actions.confirmCorrectData")}
       </p>
 
       <form className="py-3 w-full">

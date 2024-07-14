@@ -62,7 +62,7 @@ export const getAllPlaces = createAsyncThunk<PlaceWithCachedSession[] | null>(
 
 export const newSpotDiscover = createAsyncThunk<
   DiscoveredSpotByUserResponseDTO,
-  { spot: DiscoverSpotDTO },
+  { spot: DiscoverSpotDTO, files: Blob[] },
   { state: RootState }
 >("places/newSpotDiscover", async (params, thunkAPI) => {
   try {
@@ -70,6 +70,7 @@ export const newSpotDiscover = createAsyncThunk<
     if (!token) throw new Error("User not authenticated");
     const discoveredSpot = await placesServices.newSpotDiscovered(
       params.spot,
+      params.files,
       token
     );
     return discoveredSpot;

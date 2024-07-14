@@ -43,8 +43,8 @@ export class placesServices {
   }
 
 
-  async newSpotDiscovered(spotDiscovered: DiscoverSpotDTO, token: string) {
-    const response = await this.request.withAuth(token).post<DiscoveredSpotByUserResponseDTO>('discover/new', spotDiscovered)
+  async newSpotDiscovered(spotDiscovered: DiscoverSpotDTO, multimedia: Blob[], token: string) {
+    const response = await this.request.withAuth(token).postWithMultiPartMultipleFiles<DiscoveredSpotByUserResponseDTO>('discover/new', { spotDiscovered: JSON.stringify(spotDiscovered), files: multimedia })
     return response
   }
 

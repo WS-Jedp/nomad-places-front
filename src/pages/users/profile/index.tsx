@@ -190,7 +190,7 @@ export const ProfilePage: React.FC = () => {
               </span>
             </button>
             <article className="flex flex-col items-center justify-center text-center p-2 w-5/12">
-              <strong className="text-2xl font-semibold my-0 py-0">320</strong>
+              <strong className="text-2xl font-semibold my-0 py-0">{userData?.gamification.points || 0}</strong>
               <span className="font-light text-md my-0 py-0">Points</span>
             </article>
           </IonRow>

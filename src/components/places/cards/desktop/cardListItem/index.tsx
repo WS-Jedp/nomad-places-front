@@ -5,6 +5,7 @@ import {
   useAppSelector,
 } from "../../../../../common/hooks/useTypedSelectors";
 import { computeDistanceToSpot } from "../../../../../common/utils/geoLocation";
+import { handleCardColor, handleMindsetIcon } from "../../../../../common/utils/icons/icons";
 import { Place } from "../../../../../models/places";
 import { PlaceWithCachedSession } from "../../../../../models/session";
 import {
@@ -56,8 +57,7 @@ export const PlaceCardListItemDesktop: React.FC<PlaceCardListItemProps> = ({
     );
   }
 
-  function handleClick(ev: React.MouseEvent<HTMLIonRowElement, MouseEvent>) {
-    ev.preventDefault();
+  function handleClick() {
     action();
   }
 
@@ -70,7 +70,6 @@ export const PlaceCardListItemDesktop: React.FC<PlaceCardListItemProps> = ({
             ${placeOnFocus === place.id ? "shadow-md border-black" : ""}
             hover:shadow-md hover:border-black
         `}
-      onClick={handleClick}
       onMouseEnter={handleOnPlaceHover}
       onMouseLeave={handleOnLeavingHover}
     >
@@ -85,11 +84,22 @@ export const PlaceCardListItemDesktop: React.FC<PlaceCardListItemProps> = ({
         <PlaceCardMultimediaSlider
           place={place}
           multimedia={place.multimedia}
+          onImage={() => handleClick()}
         />
+
+        {/* Known for */}
+        {place.knownFor && (
+          <article className="absolute bottom-0 right-5 p-1 z-[999]">
+            <div className={`opacity-90 rounded-full flex items-center justify-center p-1 ${handleCardColor(place.knownFor)} z`}>
+              {place.knownFor && handleMindsetIcon(place.knownFor, 9)}
+            </div>
+          </article>
+        )}
       </IonRow>
       <IonItem
         className="relative w-full p-0 ion-no-padding flex flex-col border-none"
         color="none"
+        onClick={handleClick}
       >
         <IonRow className="relative w-full p-3">
           <IonRow class="w-full mb-3 ion-no-padding">

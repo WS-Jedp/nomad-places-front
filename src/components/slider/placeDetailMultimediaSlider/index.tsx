@@ -31,7 +31,7 @@ PlaceDetailMultimediaSliderProps
   return (
     <swiper-container
       ref={swiperElRef}
-      class="relative  mr-1 w-full h-full rounded-md"
+      class="relative  mr-1 w-full h-full rounded-md gap-3"
       slides-per-view={slidesPerView}
       centered-slides="false"
       scrollbar="true"
@@ -41,7 +41,7 @@ PlaceDetailMultimediaSliderProps
         multimedia.map((media, index) => (
           <swiper-slide
             key={index}
-            class="relative w-full h-fulloverflow-hidden"
+            class="relative w-full h-full overflow-hidden mr-3"
           >
             <StoryMultimediaCard multimediaType={media.type}  multimediaUrl={media.url} callback={() => handleCallback(index)} />
           </swiper-slide>

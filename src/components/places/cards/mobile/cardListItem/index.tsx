@@ -24,12 +24,13 @@ export const PlaceCardListItemMobile: React.FC<PlaceCardListItemProps> = ({ plac
     }
 
     function getAmountOfPeopleState() {
+        if (!place.sessionCachedData?.amountOfPeople?.length) return;
         const mostAmountOfPeople = place.sessionCachedData.amountOfPeople.reduce(
           (prev, curr) => (prev.actions.length > curr.actions.length ? prev : curr)
         );
         if (mostAmountOfPeople.actions.length === 0) return null;
         return mostAmountOfPeople.amount;
-    }
+      }
 
     function getDistanceToSpot(spot: PlaceWithCachedSession) {
         if(!userLocation || !userLocation.latitude || !userLocation.longitude) return null

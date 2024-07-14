@@ -166,15 +166,15 @@ export const filtersSlice = createSlice({
     reducers: {
         // ----------------
         // Mindset filters 
-        selectNearPlaceFilter: (state, action: PayloadAction<{ placeFilterID: number }>) => {
-            state.selectedSpotMindsetFilter = [...state.selectedSpotMindsetFilter, action.payload.placeFilterID]
+        selectMindsetFilter: (state, action: PayloadAction<{ mindsetFilterID: number }>) => {
+            state.selectedSpotMindsetFilter = [...state.selectedSpotMindsetFilter, action.payload.mindsetFilterID]
         },
-        removeNearPlaceFilter: (state, action: PayloadAction<{ placeFilterID: number }>) => {
+        removeMindsetFilter: (state, action: PayloadAction<{ mindsetFilterID: number }>) => {
             if(!state.selectedSpotMindsetFilter.length) return
 
-            state.selectedSpotMindsetFilter = state.selectedSpotMindsetFilter.filter(id => id !== action.payload.placeFilterID)
+            state.selectedSpotMindsetFilter = state.selectedSpotMindsetFilter.filter(id => id !== action.payload.mindsetFilterID)
         },
-        resetSelectedNearPlaceFilters: (state) => {
+        resetMindsetlaceFilters: (state) => {
             state.selectedSpotMindsetFilter = initialFiltersState.selectedSpotMindsetFilter
         },
         
@@ -233,7 +233,7 @@ export const filtersSlice = createSlice({
 
 
 export const { 
-    selectNearPlaceFilter, removeNearPlaceFilter, resetSelectedNearPlaceFilters,
+    selectMindsetFilter, removeMindsetFilter, resetMindsetlaceFilters,
     selectSpotTypeFilter, removeSpotTypeFilter, resetSelectedSpotTypeFilters,
     selectCommodityFilter, removeCommodityFilter, resetSelectedCommodityFilters,
     selectSpotRuleFilter, removeSpotRuleFilter, resetSelectedSpotRuleFilters,

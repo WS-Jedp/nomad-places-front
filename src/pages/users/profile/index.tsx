@@ -1,5 +1,5 @@
 import { IonCol, IonRow } from "@ionic/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   MdHome,
@@ -94,8 +94,6 @@ export const ProfilePage: React.FC = () => {
     if(industries.length === 2) {
       return `${t(`filters.users.industries.${industries[0]}`)} ${t('messages.utils.and')} ${t(`filters.users.industries.${industries[1]}`)}`
     }
-
-    
     const lastIndustry = t(`filters.users.industries.${industries[industries.length - 1]}`)
     const currentLangIndustries = industries.map(industry => t(`filters.users.industries.${industry}`))
     return `${currentLangIndustries.join(', ')} ${t('messages.utils.and')} ${lastIndustry}`

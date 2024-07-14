@@ -23,12 +23,12 @@ export class AuthServices {
     }
 
     async updateUserInformation(payload: { token: string, payload: UpdatePersonalInformationDTO }) {
-        const response = await this.request.withAuth(payload.token).post<{
+        const response = await this.request.withAuth(payload.token).postWithMultiPart<{
             data: {
                 user: User,
-                person: Person
+                person: Person,
             }
-        }>('profile/update', payload.payload)
+        }>('profile/update', { userData: JSON.stringify(payload.payload.userData), personData: JSON.stringify(payload.payload.personData), profilePicture: payload.payload.userData.profilePicture, })
         return response
     }
 

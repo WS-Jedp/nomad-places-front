@@ -171,7 +171,6 @@ export const PlaceSessionDetail: React.FC = () => {
           await dispatch(userJoinedSession({ sessionID: payload.sessionID }));
           await dispatch(addUserIntoCachedSession({ user: userData }));
           setUserInSession(true);
-          console.log(payload)
           if(payload.action.userGamification?.earnedPoints) {
             toast.success(t("gamification.session.earned.joinSession", { points: payload.action.userGamification.earnedPoints }))
             dispatch( setPointsToUser({ points: payload.action.userGamification.points }) )

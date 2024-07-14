@@ -13,7 +13,7 @@ import { TextAreaInput } from "../../../components/form/inputs/textarea";
 import { LoaderSpinner } from "../../../components/loaders/spinner";
 import { AppModal } from "../../../components/modals/container";
 import { INDUSTRIES, INDUSTRIES_LIST } from "../../../models/industries";
-import { updateUserInformation, updateUserPersonalInformation } from "../../../store/redux/slices/user";
+import { updateProfilePicture, updateUserInformation, updateUserPersonalInformation } from "../../../store/redux/slices/user";
 
 type EditProfileModalProps = {
   closeCallback: () => void;
@@ -53,7 +53,8 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
 
   function handleOnPicture(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files![0];
-    // const imageFile = URL.createObjectURL(file);
+    const imageFile = URL.createObjectURL(file);
+    dispatch(updateProfilePicture({ profilePicture: imageFile }))
     setProfilePicture(file.slice(0, file.size, file.type));
   }
 
@@ -133,7 +134,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
 
         <section className="relative w-full h-full overflow-y-auto">
           <IonRow class="flex flex-col items-center justify-start my-5">
-            <label htmlFor="profilePicture">
+            <label htmlFor="profilePicture" className="cursor-pointer">
               <input
                 type="file"
                 name="profilePicture"
@@ -151,7 +152,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
                     className="w-full h-full object-cover rounded-full"
                   />
                 ) : (
-                  <img src="" alt="" />
+                  <img src="" alt="No profile picture" />
                 )}
 
                 <span className="absolute bottom-0 right-0 bg-white shadow-md rounded-full p-3">

@@ -159,7 +159,7 @@ export const SearchSpotsGeneralFilters:React.FC<SearchSpotsGeneralFiltersProps> 
                 </SimpleDropdown>
                 
                 {/* Filter by amount of people in the spot - Example: +10 people, -10 people */}
-                <SimpleDropdown 
+                {/* <SimpleDropdown 
                     title={t('filters.labels.peopleAmount')}
                     currentValue={handlPeopleAmountFilterCurrentValue()}
                     badge={selectedSpotAmountPeopleFilter !== null}
@@ -168,7 +168,7 @@ export const SearchSpotsGeneralFilters:React.FC<SearchSpotsGeneralFiltersProps> 
                     closeCallback={() => setCurrentFilter(GeneralFiltersEnum.none)}
                 >
                         <SpotAmountPeopleFilter />
-                </SimpleDropdown>
+                </SimpleDropdown> */}
                 
                 {/* Filter by distance from current location */}
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { toast } from 'react-toastify'
+import { toast } from "react-toastify";
 
 import { ItemsAndMapLayout } from "../../layouts/ItemsAndMapLayout";
 import { GoogleMapWrapper } from "../../components/maps/googleMapWrapper";
@@ -25,8 +25,7 @@ import { useTranslation } from "react-i18next";
 interface SearchPlacesProps {}
 
 export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
-
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   const history = useHistory();
   const dispatch = useAppDispatch();
@@ -44,6 +43,7 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
     spotRulesFilters,
     spotTypesFilter,
   } = useAppSelector((state) => state.filters);
+  const allFilters = useAppSelector((state) => state.filters);
   const [isSearchingPlaces, setIsSearchingPlaces] = useState(false);
 
   async function selectPlace(placeID: string) {
@@ -59,12 +59,12 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
     // temporal change while I'm outside of Medellin
     // await dispatch(getNearestPlaces()) // Original
     try {
-      setIsSearchingPlaces(true)
+      setIsSearchingPlaces(true);
       await dispatch(getAllPlaces());
     } catch (err) {
-      toast.error(String(err))
+      toast.error(String(err));
     } finally {
-      setIsSearchingPlaces(false); 
+      setIsSearchingPlaces(false);
     }
   }
 
@@ -72,22 +72,26 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
     const filteredPlaces = places.nearPlaces.filter((place) => {
       let isValid = true;
 
+      // ---------------------------------
       // Filtering for the spot type
       if (
         selectedSpotTypesFilter.length > 0 &&
         selectedSpotTypesFilter.length < spotTypesFilter.length
       ) {
-        selectedSpotTypesFilter.forEach((typeID) => {
-          const spotTypeName = spotTypesFilter.find(
-            (type) => type.id === typeID
-          )?.name;
-          if (!spotTypeName || !place.type.includes(spotTypeName)) {
-            isValid = false;
-            return;
-          }
+        // Search for at least one match between array selectedSpotTypesFilter and place.type
+        const hasMatch = selectedSpotTypesFilter.some((typeID) => {
+          return place.type.some((type) => {
+            const spotType = spotTypesFilter.find(
+              (spotType) => spotType.id === typeID
+            );
+            return spotType?.name === type;
+          });
         });
+
+        if (!hasMatch) isValid = false;
       }
 
+      // ---------------------------------
       // Filtering for the spot mindset
       if (
         selectedSpotMindsetFilter.length > 0 &&
@@ -100,33 +104,35 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
           }
         );
 
-        const cachedBestMindsetTo =
-          place.sessionCachedData.bestMindsetTo.reduce((prev, curr) =>
-            prev.actions.length > curr.actions.length ? prev : curr
-          );
-
-        if (cachedBestMindsetTo && cachedBestMindsetTo.actions.length > 0) {
-          if (
-            !selectedSpotMindsetsFilter.includes(cachedBestMindsetTo.mindset)
-          ) {
-            isValid = false;
-            return;
-          }
-        } else {
-          if (selectedSpotMindsetsFilter.length > 0) {
-            if (!selectedSpotMindsetsFilter.includes(place.knownFor)) {
-              isValid = false;
-              return;
-            }
-          }
+        if (!selectedSpotMindsetsFilter.includes(place.knownFor)) {
+          isValid = false;
         }
+
+        // This code it's for the real time filtering (Premium service, not implemented yet)
+        // const cachedBestMindsetTo =
+        //   place.sessionCachedData.bestMindsetTo.reduce((prev, curr) =>
+        //     prev.actions.length > curr.actions.length ? prev : curr
+        //   );
+
+        // if (cachedBestMindsetTo && cachedBestMindsetTo.actions.length > 0) {
+        //   if (
+        //     !selectedSpotMindsetsFilter.includes(cachedBestMindsetTo.mindset)
+        //   ) {
+        //     isValid = false;
+        //     return;
+        //   }
+        // } else {
+        //   if (selectedSpotMindsetsFilter.length > 0) {
+        //     if (!selectedSpotMindsetsFilter.includes(place.knownFor)) {
+        //       isValid = false;
+        //       return;
+        //     }
+        //   }
+        // }
       }
 
       // Filtering by commodities
-      if (
-        selectedSpotCommoditiesFilter.length > 0 &&
-        selectedSpotCommoditiesFilter.length < spotCommoditiesFilter.length
-      ) {
+      if (selectedSpotCommoditiesFilter.length > 0) {
         const selectedSpotCommodities = selectedSpotCommoditiesFilter.map(
           (commodityID) => {
             return spotCommoditiesFilter.find(
@@ -144,10 +150,7 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
       }
 
       // Filtering by rules
-      if (
-        selectedSpotRulesFilter.length > 0 &&
-        selectedSpotRulesFilter.length < spotRulesFilters.length
-      ) {
+      if (selectedSpotRulesFilter.length > 0) {
         const selectedSpotRules = selectedSpotRulesFilter.map((ruleID) => {
           return spotRulesFilters.find((rule) => rule.id === ruleID)?.rule;
         });
@@ -160,30 +163,32 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
         });
       }
 
+      // This feature for premium users (Not implemented yet)
       // Filtering by Amount of people
-      if (
-        selectedSpotAmountPeopleFilter &&
-        place.sessionCachedData.amountOfPeople
-      ) {
-        const amountOfPeopleFilter = spotAmountPeopleFilter.find(
-          (amount) => amount.id === selectedSpotAmountPeopleFilter
-        );
-        if (!place.sessionCachedData) return;
-        const mostAmountOfPeopleInCachedSession =
-          place.sessionCachedData.amountOfPeople.reduce((prev, curr) =>
-            prev.actions.length > curr.actions.length ? prev : curr
-          );
-        if (
-          mostAmountOfPeopleInCachedSession.actions.length === 0 ||
-          mostAmountOfPeopleInCachedSession.amount !==
-            amountOfPeopleFilter?.text
-        ) {
-          isValid = false;
-          return;
-        }
-      }
+      // if (
+      //   selectedSpotAmountPeopleFilter &&
+      //   place.sessionCachedData.amountOfPeople
+      // ) {
+      //   const amountOfPeopleFilter = spotAmountPeopleFilter.find(
+      //     (amount) => amount.id === selectedSpotAmountPeopleFilter
+      //   );
+      //   if (!place.sessionCachedData) return;
+      //   const mostAmountOfPeopleInCachedSession =
+      //     place.sessionCachedData.amountOfPeople.reduce((prev, curr) =>
+      //       prev.actions.length > curr.actions.length ? prev : curr
+      //     );
+      //   if (
+      //     mostAmountOfPeopleInCachedSession.actions.length === 0 ||
+      //     mostAmountOfPeopleInCachedSession.amount !==
+      //       amountOfPeopleFilter?.text
+      //   ) {
+      //     isValid = false;
+      //     return;
+      //   }
+      // }
       return isValid;
     });
+
     dispatch(setFilteredPlaces(filteredPlaces));
   }
 
@@ -224,7 +229,7 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
           <>
             {isSearchingPlaces ? (
               <div className="w-full flex items-center justify-center p-5">
-                <SatelliteLoader text={t('actions.general.searching')} />
+                <SatelliteLoader text={t("actions.general.searching")} />
               </div>
             ) : places.filteredPlaces.length ? (
               places.filteredPlaces.map((place) => (
@@ -235,9 +240,7 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
                 />
               ))
             ) : (
-              <h2 className="p-3">
-                { t('filters.messages.reduceFilters') }
-              </h2>
+              <h2 className="p-3">{t("filters.messages.reduceFilters")}</h2>
             )}
           </>
         </ItemsAndMapLayout>

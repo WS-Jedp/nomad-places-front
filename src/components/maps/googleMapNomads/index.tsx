@@ -50,16 +50,15 @@ export function GoogleMapNomadsComponent({
 }, [placeOnFocus])
 
 // Panning to user location
-// Commented while we are in dev and international mode
-// useEffect(() => {
-//   if(!map || !userLocation || !userLocation.latitude || !userLocation.longitude) return
+useEffect(() => {
+  if(!map || !userLocation || !userLocation.latitude || !userLocation.longitude) return
 
-//   map.panTo({
-//     lat: userLocation.latitude,
-//     lng: userLocation.longitude,
-//   })
-//   dispatch( setZoomMap({ zoom: 11 }) )
-// }, [userLocation])
+  map.panTo({
+    lat: userLocation.latitude,
+    lng: userLocation.longitude,
+  })
+  dispatch( setZoomMap({ zoom: 12 }) )
+}, [userLocation])
 
   useEffect(() => {
     // if(!refMap || !refMap.current) return

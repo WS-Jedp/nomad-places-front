@@ -250,7 +250,11 @@ export const userSlice = createSlice({
     updateProfilePicture(
       state,
       action: PayloadAction<{ profilePicture: User["profilePicture"] }>
-    ) {},
+    ) {
+      if (state.userData) {
+        state.userData.profilePicture = action.payload.profilePicture;
+      }
+    },
     logout(state) {
       state.auth.isAuth = false;
       state.auth.token = null;
@@ -387,6 +391,7 @@ export const userSlice = createSlice({
         confirmedPlacesIDs: action.payload.confirmedPlacesIDs || [],
         discoveredPlacesIDs: action.payload.discoveredPlacesIDs || [],
         createdDate: action.payload.createdDate,
+        profilePicture: action.payload.profilePicture,
         personalInformation: {
           ...action.payload.person,
         },

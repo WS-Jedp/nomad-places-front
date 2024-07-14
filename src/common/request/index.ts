@@ -99,6 +99,52 @@ export class Request {
     return resp.content;
   }
 
+  public postWithMultiPart<Content>(
+    endpoint: string,
+    body: { [key: string]: any },
+    headers?: HeadersInit,
+    baseURL?: string
+  ): Promise<Content> {
+    const defaultHeaders = this.getDefaultHeaders();
+    delete defaultHeaders["Content-Type"];
+
+    if (this.auth) {
+      defaultHeaders.Authorization = `Bearer ${this.token}`;
+    }
+
+    const data = fetch(
+      `${baseURL ? baseURL : this.baseUrl}${this.domain}/${endpoint}`,
+      {
+        method: "post",
+        body: this.getBodyFromObject(body),
+        headers: {
+          ...defaultHeaders,
+          ...headers,
+        },
+      }
+    );
+
+    return data.then(async (res) => {
+      if (
+        res.status === 401 ||
+        res.status === 403 ||
+        res.status === 404 ||
+        res.status === 500 ||
+        res.status === 502 ||
+        res.status === 503 ||
+        res.status === 400
+      ) {
+        const errorResp = await res.json();
+        throw new Error(errorResp.message);
+      }
+      const resp = (await res.json()) as ReponseDTO<Content>;
+
+      if (resp.error || !resp.content) throw new Error(resp.error);
+
+      return resp.content;
+    });
+  }
+
   private getDefaultHeaders() {
     const defaultHeaders: HeadersInit = {
       Accept: "application/json",

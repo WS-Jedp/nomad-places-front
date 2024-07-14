@@ -1,6 +1,6 @@
 import { IonRow } from "@ionic/react"
 import { HandleMindsetTags } from "../../tags/mindsets"
-import { selectNearPlaceFilter, removeNearPlaceFilter, resetSelectedNearPlaceFilters } from '../../../store/redux/slices/filters'
+import { selectMindsetFilter, removeMindsetFilter, resetMindsetlaceFilters } from '../../../store/redux/slices/filters'
 
 import { AllMindsetTag } from "../../tags/mindsets/all"
 import { useAppDispatch, useAppSelector } from "../../../common/hooks/useTypedSelectors"
@@ -13,9 +13,9 @@ export const RowPlacesFilterOptions: React.FC<{ chilren?: JSX.Element}> = ({ chi
 
     const handleAction = (filterID: number) => {
         if(selectedFilters.some(id => id === filterID)) {
-            dispatch( removeNearPlaceFilter({ placeFilterID: filterID }) )
+            dispatch( removeMindsetFilter({ mindsetFilterID: filterID }) )
         } else {
-            dispatch( selectNearPlaceFilter({ placeFilterID: filterID }) )
+            dispatch( selectMindsetFilter({ mindsetFilterID: filterID }) )
         }
     }
 
@@ -23,7 +23,7 @@ export const RowPlacesFilterOptions: React.FC<{ chilren?: JSX.Element}> = ({ chi
 
     const handleAllTagActions = () => {
         if(selectedFilters.length === filters.length) return
-        dispatch( resetSelectedNearPlaceFilters() )
+        dispatch( resetMindsetlaceFilters() )
     }
 
     return (

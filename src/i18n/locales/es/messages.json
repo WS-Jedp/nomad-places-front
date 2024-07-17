@@ -108,19 +108,36 @@
                 "spotInReviewForCommunity": "Este spot ahora está en revisión por la comunidad.",
                 "howToApprove": "Necesita 6 confirmaciones para ser parte permanente del mapa de la comunidad de Spots.",
                 "keepAnEyeOnIt": "Mantente atento a su progreso y te dejaremos saber cuando sea aprobado."
-            }
+            },
+            "discoveredAt": "Descubierto el {{date}}"
         },
         "user": {
             "insight": {
                 "matter": "Tu opinión importa!"
             },
             "keepExploring": "¡Sigue explorando y compartiendo!"
+        },
+        "byUser": {
+            "external": {
+                "discovered": "Lugares descubiertos por el usuario",
+                "empty": "El usuario aún no ha compartido ningún lugar aún"
+            },
+            "empty": "Todavía no has compartido ningún lugar"
         }
     },
     "session": {
         "update": {
             "errors": {
                 "UPDATE_ACTION_LIMIT": "Ya actualizaste esta información anteriormente. Intenta de nuevo más tarde."
+            }
+        }
+    },
+    "visited": {
+        "byUser": {
+            "empty": "No ha registrado ninguna visita a un lugar aún",
+            "external": {
+                "visited": "Lugares visitados por el usuario",
+                "empty": "El usuario aún no ha registrado ninguna visita a un lugar aún"
             }
         }
     },

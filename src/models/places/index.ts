@@ -24,6 +24,19 @@ export interface Place {
     confirmationStatus: PLACE_CONFIRMATION_STATUS
 }
 
+export interface VisitedPlaceDTO {
+  id: string
+  name: string
+  multimedia: PlaceMultimedia[]
+}
+
+export interface DiscoveredPlaceByUserDTO {
+  id: string
+  name: string
+  multimedia: PlaceMultimedia[]
+  discoveredDate: string
+}
+
 /**
  * Model Commodities
  * 

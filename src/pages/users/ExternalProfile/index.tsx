@@ -236,7 +236,7 @@ export const ExternalProfilePage: React.FC = () => {
                   {userData?.person.about ? (
                     <>{userData?.person.about}</>
                   ) : (
-                    t('messages.social.externalProfile.empty.personalDescription')
+                    t('messages.social.externalProfile.empty.personalDescription', { name: userData?.person.firstName })
                   )}
                 </p>
               </IonRow>
@@ -269,10 +269,10 @@ export const ExternalProfilePage: React.FC = () => {
                   onClick={onSpotsDiscovered}
                 >
                   <strong className="text-2xl font-semibold my-0 py-0">
-                    21
+                    { userData?.visitedPlacesIDs?.length || 0 }
                   </strong>
                   <span className="font-light text-md my-0 py-0">
-                    Spots Discovered
+                  { t('visited.titles.visited') }
                   </span>
                 </button>
                 <button
@@ -280,17 +280,17 @@ export const ExternalProfilePage: React.FC = () => {
                   onClick={onSpotsRecommended}
                 >
                   <strong className="text-2xl font-semibold my-0 py-0">
-                    2
+                    { userData?.discoveredPlacesIDs?.length || 0 }
                   </strong>
                   <span className="font-light text-md my-0 py-0">
-                    Spots Recommended
+                    { t('discover.titles.discoveredPlaces') }
                   </span>
                 </button>
                 <article className="flex flex-col items-center justify-center text-center p-2 w-5/12">
                   <strong className="text-2xl font-semibold my-0 py-0">
-                    320
+                    { userData?.gamification.points || 0 }
                   </strong>
-                  <span className="font-light text-md my-0 py-0">Points</span>
+                  <span className="font-light text-md my-0 py-0">{ t('gamification.utils.points') }</span>
                 </article>
               </IonRow>
 
@@ -316,7 +316,7 @@ export const ExternalProfilePage: React.FC = () => {
                       </p>
                     ) : (
                       <p className="font-light text-md">
-                        {t('messages.social.externalProfile.empty.speaks')}
+                        {t('messages.social.externalProfile.empty.languages', { name: userData?.person.firstName })}
                       </p>
                     )}
                   </div>
@@ -331,7 +331,7 @@ export const ExternalProfilePage: React.FC = () => {
                       </p>
                     ) : (
                       <p className="font-light text-md">
-                        {t('messages.social.externalProfile.empty.country')}
+                        {t('messages.social.externalProfile.empty.country', { name: userData?.person.firstName })}
                       </p>
                     )}
                   </div>
@@ -361,11 +361,11 @@ export const ExternalProfilePage: React.FC = () => {
       </IonRow>
       {/* Modals */}
       {spotsDiscoveredModal && (
-        <SpotsDiscoveredModal closeCallback={closeSpotsDiscovered} />
+        <SpotsDiscoveredModal closeCallback={closeSpotsDiscovered} externalProfileID={userID} />
       )}
 
       {spotsRecommendedModal && (
-        <SpotsRecommendedModal closeCallback={closeSpotsRecommended} />
+        <SpotsRecommendedModal closeCallback={closeSpotsRecommended} externalProfileID={userID} />
       )}
     </AppLayout>
   );

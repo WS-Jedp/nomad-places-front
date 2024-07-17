@@ -175,23 +175,23 @@ export const ProfilePage: React.FC = () => {
               className="flex flex-col items-center justify-center text-center p-2 w-5/12 cursor-pointer hover:underline"
               onClick={onSpotsDiscovered}
             >
-              <strong className="text-2xl font-semibold my-0 py-0">21</strong>
+              <strong className="text-2xl font-semibold my-0 py-0">{userData?.visitedPlacesIDs?.length || 0}</strong>
               <span className="font-light text-md my-0 py-0">
-                Spots Discovered
+                { t('visited.titles.visited') }
               </span>
             </button>
             <button
               className="flex flex-col items-center justify-center text-center p-2 w-5/12 cursor-pointer hover:underline"
               onClick={onSpotsRecommended}
             >
-              <strong className="text-2xl font-semibold my-0 py-0">2</strong>
+              <strong className="text-2xl font-semibold my-0 py-0">{userData?.discoveredPlacesIDs?.length || 0}</strong>
               <span className="font-light text-md my-0 py-0">
-                Spots Recommended
+                { t('discover.titles.discoveredPlaces') }
               </span>
             </button>
             <article className="flex flex-col items-center justify-center text-center p-2 w-5/12">
               <strong className="text-2xl font-semibold my-0 py-0">{userData?.gamification.points || 0}</strong>
-              <span className="font-light text-md my-0 py-0">Points</span>
+              <span className="font-light text-md my-0 py-0">{ t('gamification.utils.points') }</span>
             </article>
           </IonRow>
 

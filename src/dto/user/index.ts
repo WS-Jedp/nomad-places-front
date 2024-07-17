@@ -10,6 +10,7 @@ export type UserRequestDTO = {
     followers?: string[]
     confirmedPlacesIDs?: string[]
     discoveredPlacesIDs?: string[]
+    visitedPlacesIDs?: string[]
     createdDate?: string
     gamification: {
         points: number

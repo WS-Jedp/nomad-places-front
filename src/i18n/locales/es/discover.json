@@ -7,7 +7,9 @@
         "stayTuned": "Mantente atento",
         "finalVeredict": "Veredicto final",
         "shareSpot": "Comparte un nuevo lugar",
-        "shareToCommunity": "Compartelo con la comunidad"
+        "shareToCommunity": "Compartelo con la comunidad",
+        "discoveredPlaces": "Lugares descubiertos",
+        "discoveredPlacesByUser": "Lugares que has compartido"
     },
     "texts": {
         "spot": "¡Hola, aventurero! Parece que has descubierto un nuevo lugar que aún no está en el mapa.",

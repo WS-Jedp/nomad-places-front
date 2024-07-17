@@ -390,6 +390,7 @@ export const userSlice = createSlice({
         following: action.payload.following || [],
         confirmedPlacesIDs: action.payload.confirmedPlacesIDs || [],
         discoveredPlacesIDs: action.payload.discoveredPlacesIDs || [],
+        visitedPlacesIDs: action.payload.visitedPlacesIDs || [],
         createdDate: action.payload.createdDate,
         profilePicture: action.payload.profilePicture,
         personalInformation: {

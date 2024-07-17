@@ -7,7 +7,9 @@
         "stayTuned": "Stay Tuned",
         "finalVeredict": "Final Verdict",
         "shareSpot": "Share a new Spot",
-        "shareToCommunity": "Share it to the Community"
+        "shareToCommunity": "Share it to the Community",
+        "discoveredPlaces": "Discovered Places",
+        "discoveredPlacesByUser": "Places you have shared"
     },
     "texts": {
         "spot": "Hey there, Adventurer! It looks like you have discovered a new place that still isn’t on the map.",

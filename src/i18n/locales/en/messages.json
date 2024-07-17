@@ -108,19 +108,36 @@
                 "spotInReviewForCommunity": "Your spot is now up for community review.",
                 "howToApprove": "It needs 6 thumbs-ups within 3 weeks to be permanently added.",
                 "keepAnEyeOnIt": "Keep an eye on its progress and we'll let you know anything about it."
-            }
+            },
+            "discoveredAt": "Discovered at {{date}}"
         },
         "user": {
             "insight": {
                 "matter": "Your insights matter!"
             },
             "keepExploring": "Keep exploring and sharing"
+        },
+        "byUser": {
+            "external": {
+                "discovered": "Spots discovered by user",
+                "empty": "The user haven't shared any spots yet"
+            },
+            "empty": "You haven't shared any spots yet"
         }
     },
     "session": {
         "update": {
             "errors": {
                 "UPDATE_ACTION_LIMIT": "You already update this information earlier. Try again later."
+            }
+        }
+    },
+    "visited": {
+        "byUser": {
+            "empty": "You haven't registered any visits yet",
+            "external": {
+                "visited": "Spots visited by user",
+                "empty": "The user haven't visited any spot yet"
             }
         }
     },

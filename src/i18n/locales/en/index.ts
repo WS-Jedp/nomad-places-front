@@ -7,6 +7,7 @@ import Spots from './spot.json';
 import Discover from './discover.json';
 import Translation from './translation.json';
 import Gamification from './gamification.json';
+import Visited from './visited.json';
 
 export default {
     actions: Action,
@@ -17,5 +18,6 @@ export default {
     spots: Spots,
     discover: Discover,
     translations: Translation,
-    gamification: Gamification
+    gamification: Gamification,
+    visited: Visited
 }

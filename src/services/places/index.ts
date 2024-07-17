@@ -1,7 +1,7 @@
 import { Request } from "../../common/request";
 import { ConfirmNewSpotDiscoveredDTO, DiscoveredSpotByUserResponseDTO, DiscoverSpotDTO, GetPlaceDetailDTO, newSpotDiscoveredConfirmedDTO, newSpotDiscoveredRejectedDTO, PlacesWithQuickSessionDataDTO } from "../../dto/places";
 import { DiscoveredPlaceConfirmation } from "../../models/placeConfirmation";
-import { Place } from "../../models/places";
+import { DiscoveredPlaceByUserDTO, Place, VisitedPlaceDTO } from "../../models/places";
 
 export class placesServices {
   protected request: Request;
@@ -58,8 +58,8 @@ export class placesServices {
     return response
   }
 
-  async getAuthUserDiscoveredPlaces(data: { token: string }) {
-    const resp = await this.request.withAuth(data.token).get<{ discoveredPlaces: Place[] }>(`discovered/me`)
+  async getAuthUserDiscoveredSpots(data: { token: string }) {
+    const resp = await this.request.withAuth(data.token).get<{ discoveredPlaces: DiscoveredPlaceByUserDTO[] }>(`discovered/me`)
     return resp.discoveredPlaces
   }
 
@@ -69,7 +69,7 @@ export class placesServices {
   }
 
   async getDiscoveredPlacesByUser(data: { userID: string }) {
-    const resp = await this.request.get<{ discoveredPlaces: Place[] }>(`discovered/by/${data.userID}`)
+    const resp = await this.request.get<{ discoveredPlaces: DiscoveredPlaceByUserDTO[] }>(`discovered/by/${data.userID}`)
     return resp.discoveredPlaces
   }
 
@@ -81,6 +81,16 @@ export class placesServices {
   async getAllSpotReviews(data: { spotID: string, token: string }) {
     const resp = await this.request.withAuth(data.token).get<{ spotReviews: DiscoveredPlaceConfirmation[] }>(`discover/reviews/${data.spotID}`)
     return resp.spotReviews
+  }
+
+  async getAuthUserVisitedSpots(data: { token: string }) {
+    const resp = await this.request.withAuth(data.token).get<{ visitedPlaces: VisitedPlaceDTO[] }>(`visited/me`)
+    return resp.visitedPlaces
+  }
+
+  async getVisitedSpotsByUser(data: { token: string, userID: string }) {
+    const resp = await this.request.withAuth(data.token).get<{ visitedPlaces: VisitedPlaceDTO[] }>(`visited/by/${data.userID}`)
+    return resp.visitedPlaces
   }
 }
 

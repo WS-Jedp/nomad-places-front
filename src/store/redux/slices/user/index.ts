@@ -11,7 +11,6 @@ import { TOKEN_KEY } from "../../../../common/constants/localstorage";
 import { ControlledError } from "../../../../common/controlledError";
 import { ControlledErrorType } from "../../../../common/controlledError/types";
 import { SocialServices } from "../../../../services/social";
-import { getUserFollowRequests } from "../social";
 import { UserFollowRequest } from "../../../../models/userFollowRequest";
 
 export interface UserState {

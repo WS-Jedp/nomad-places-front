@@ -4,7 +4,6 @@ import {
   useAppDispatch,
   useAppSelector,
 } from "../../../../common/hooks/useTypedSelectors";
-import { MINDSETS } from "../../../../models/mindsets";
 import {
   findPlace,
   resetPlaceOnFocus,
@@ -13,8 +12,11 @@ import {
 import { GoogleMapCustomMaker } from "../../googleMapsMarker";
 import "./styles.css";
 import { PlaceWithCachedSession } from "../../../../models/session";
-import { PLACE_TYPES } from "../../../../models/placeTypes";
-import { handleCardColor, handleMindsetIcon, handleSpotTypeIcon } from "../../../../common/utils/icons/icons";
+import {
+  handleCardColor,
+  handleMindsetIcon,
+  handleSpotTypeIcon,
+} from "../../../../common/utils/icons/icons";
 
 interface NomadPlacesMarkersProps {
   map: google.maps.Map;
@@ -52,7 +54,6 @@ export const NomadPlacesMakers: React.FC<NomadPlacesMarkersProps> = ({
     return "scale-50";
   }
 
-
   function handleIconToRender(place: PlaceWithCachedSession) {
     if (place.knownFor) {
       return handleMindsetIcon(place.knownFor);
@@ -67,30 +68,27 @@ export const NomadPlacesMakers: React.FC<NomadPlacesMarkersProps> = ({
 
   return (
     <>
-    {
-      // User location markerk
-      (userLocation && userLocation.latitude && userLocation.longitude) && ( 
-        <GoogleMapCustomMaker
-          map={map}
-          position={{
-            lat: userLocation.latitude,
-            lng: userLocation.longitude
-          }}
-          onClick={() => {}}
-        >
-          <article className="flex flex-col items-center justify-center text-center">
+      {
+        // User location markerk
+        userLocation && userLocation.latitude && userLocation.longitude && (
+          <GoogleMapCustomMaker
+            map={map}
+            position={{
+              lat: userLocation.latitude,
+              lng: userLocation.longitude,
+            }}
+            onClick={() => {}}
+          >
+            <article className="flex flex-col items-center justify-center text-center">
               <div
-                className={`relative bg-indigo-600 rounded-full p-[9px] font-bold shadow shadow-lg border-[3px] border-white
+                className={`relative bg-indigo-600 rounded-full p-[9px] font-bold shadow-lg border-[3px] border-white
                   ${getPinScale()}
               `}
-              >
-                  
-              </div>
-          </article>
-        </GoogleMapCustomMaker>
-      )
-
-    }
+              ></div>
+            </article>
+          </GoogleMapCustomMaker>
+        )
+      }
       {places.map((place) => {
         return (
           <GoogleMapCustomMaker
@@ -102,11 +100,14 @@ export const NomadPlacesMakers: React.FC<NomadPlacesMarkersProps> = ({
             key={place.id}
             onClick={() => handleClickInPlace(place.id)}
           >
-            <article  className="flex flex-col items-center justify-center text-center">
-              
+            <article className="flex flex-col items-center justify-center text-center">
               <div
                 className={`nomad-place-makers relative
-                  ${placeHovered === place.id ? "nomad-place-marker--detail  scale-125 z-[999999]" : ""}
+                  ${
+                    placeHovered === place.id
+                      ? "nomad-place-marker--detail  scale-125 z-[999999]"
+                      : ""
+                  }
                   hover:scale-125 hover:z-[999999]
                   ${currentZoomInMap >= 15 ? "p-[21px]" : "p-[12px]"}
                   ${getPinScale()}
@@ -120,17 +121,26 @@ export const NomadPlacesMakers: React.FC<NomadPlacesMarkersProps> = ({
                   handleHoverOutPlace();
                 }}
               >
-                  {
-                    currentZoomInMap >= 15 && placeHovered === place.id ? (
-                      <span className="absolute top-[-60%] max-w-none min-w-max w-auto font-normal text-xs">{handleIconToRender(place)}</span>
-                      ) : placeHovered === place.id && (
-                      <span className={`absolute top-[-60%] max-w-none min-w-max w-auto font-semibold text-[9px] px-3 rounded-sm ${handleCardColor(place.knownFor)}`}>{place.name}</span>
-                    )
-                  }
-                  { currentZoomInMap >= 15 ? place.name : handleIconToRender(place)}
+                {currentZoomInMap >= 15 && placeHovered === place.id ? (
+                  <span className="absolute top-[-60%] max-w-none min-w-max w-auto font-normal text-xs">
+                    {handleIconToRender(place)}
+                  </span>
+                ) : (
+                  placeHovered === place.id && (
+                    <span
+                      className={`absolute top-[-60%] max-w-none min-w-max w-auto font-semibold text-[9px] px-3 rounded-sm ${handleCardColor(
+                        place.knownFor
+                      )}`}
+                    >
+                      {place.name}
+                    </span>
+                  )
+                )}
+                {currentZoomInMap >= 15
+                  ? place.name
+                  : handleIconToRender(place)}
               </div>
             </article>
-            
           </GoogleMapCustomMaker>
         );
       })}

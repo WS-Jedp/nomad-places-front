@@ -26,4 +26,5 @@ export interface Person {
     country?: string
     languages?: string[]
     industry?: INDUSTRIES[]
+    genre?: string;
 }

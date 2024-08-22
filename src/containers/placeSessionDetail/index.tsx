@@ -171,7 +171,7 @@ export const PlaceSessionDetail: React.FC = () => {
           await dispatch(userJoinedSession({ sessionID: payload.sessionID }));
           await dispatch(addUserIntoCachedSession({ user: userData }));
           setUserInSession(true);
-          if(payload.action.userGamification?.earnedPoints) {
+          if(payload.action?.userGamification?.earnedPoints) {
             toast.success(t("gamification.session.earned.joinSession", { points: payload.action.userGamification.earnedPoints }))
             dispatch( setPointsToUser({ points: payload.action.userGamification.points }) )
           }
@@ -216,6 +216,7 @@ export const PlaceSessionDetail: React.FC = () => {
   // Method to check if the user is in the session
   // If the user is in the session, then we need to add the user into the session
   async function isUserInSession() {
+    console.log(cachedSession, "CACHED SESSION")
     if (
       cachedSession?.usersInSession?.find((user) => user.id === userData?.id)
     ) {

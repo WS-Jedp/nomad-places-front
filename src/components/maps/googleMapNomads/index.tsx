@@ -66,7 +66,7 @@ useEffect(() => {
     const ref = new window.google.maps.Map(refMap.current, {
       center,
       zoom,
-      mapId: "3f38a0ee04c48235",
+      mapId: process.env.REACT_APP_GOOGLE_MAP_ID,
       zoomControl: false,
       streetViewControl: false,
       mapTypeControl: false,

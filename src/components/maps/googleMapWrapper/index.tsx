@@ -26,11 +26,20 @@ const Render = (status: Status) => {
 };
 
 // We need to hide the api key
-export const GoogleMapWrapper = () => (
-  <Wrapper
-    version="beta"
-    apiKey={"AIzaSyA_KOtPw9DvhlbdDvdy689sRNA_NPNtzmc"}
-    render={Render}
-    libraries={['marker']}
-  />
-);
+export const GoogleMapWrapper = () => {
+
+  const API_KEY = process.env.REACT_APP_GOOGLE_MAP_API_KEY
+
+  if (!API_KEY) {
+    throw new Error('API_KEY is not defined')
+  }
+
+  return (
+    <Wrapper
+      version="beta"
+      apiKey={API_KEY}
+      render={Render}
+      libraries={['marker']}
+    />
+  )
+}

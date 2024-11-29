@@ -24,6 +24,7 @@ import { useTranslation } from "react-i18next";
 import { getUserLastSession } from "../../store/redux/slices/userSession";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { UserLastSession } from "../../dto/session";
+import LeafletMap from "../../components/maps/leaflet/container";
 
 interface SearchPlacesProps {}
 
@@ -242,7 +243,7 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
           p-0 bg-white
       "
       >
-        <ItemsAndMapLayout map={<GoogleMapWrapper />}>
+        <ItemsAndMapLayout map={<LeafletMap />}>
           <>
             {isSearchingPlaces ? (
               <div className="w-full flex items-center justify-center p-5">

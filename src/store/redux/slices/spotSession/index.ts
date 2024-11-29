@@ -1,10 +1,13 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
-import { PlaceSession, PlaceSessionActionDataPayload, PlaceSessionCachedDataDTO, PLACE_SESSION_ACTIONS_ENUM, UPDATE_ACTIONS } from "../../../../models/session";
+import { PlaceSession, PlaceSessionActionDataPayload, PlaceSessionCachedDataDTO, PLACE_SESSION_ACTIONS_ENUM, UPDATE_ACTIONS, PlaceSessionRecentAcitivityResp } from "../../../../models/session";
 import { PlaceSessionAction } from "../../../../models/session/actions";
 import SpotSessionServices from "../../../../services/spotSession";
 import { RootState } from "../..";
 import { User } from "../../../../models/user";
+import { UserGamification } from "../../../../models/gamification";
+import { MULTIMEDIA_TYPE, RecentActivity } from "../../../../models/multimedia";
+import { PlaceSessionActionMessageDTO } from "../../../../dto/session/sockets";
 
 export interface SpotSessionState {
     sessionID: string | null;
@@ -21,6 +24,16 @@ export const getSpotCachedSession = createAsyncThunk<
     return spotSession
 });
 
+export const uploadRecentActivity = createAsyncThunk<
+    PlaceSessionRecentAcitivityResp,
+    { sessionID: string, spotID: string, multimedia: Blob, token: string },
+    {   state: RootState }> (
+    "spotSession/uploadRecentActivity",
+    async (params) => {
+        const response = await SpotSessionServices.uploadRecentActivity(params)
+        return response
+    });
+
 const initialUserSessionState: SpotSessionState = {
     cachedSession: null,
     sessionID: null,
@@ -36,7 +49,6 @@ export const SpotSessionSlice = createSlice({
     },
     addActionToCurrentSession(state, action: PayloadAction<{ action: PlaceSessionAction }>) {
         if(state.currentSessionActions.find(act => act.id === action.payload.action.id)) return
-
         state.currentSessionActions.push(action.payload.action)
     },
     addMultipleActionsToCurrentSession(state, action: PayloadAction<PlaceSessionAction[]>) {
@@ -104,6 +116,10 @@ export const SpotSessionSlice = createSlice({
         if(user) {
             state.cachedSession.usersInSession = users.filter(currUser => currUser.id !== user.id)
         }
+    },
+    addRecentActivityAction(state, action: PayloadAction<RecentActivity>) {
+        if(!state.cachedSession) return
+        state.cachedSession.lastRecentlyActivities.push(action.payload)
     }
   },
   extraReducers: (builder) => {
@@ -112,13 +128,22 @@ export const SpotSessionSlice = createSlice({
         state.currentSessionActions = action.payload?.lastActions || []
         state.sessionID = action.payload?.sessionID || null
     });
+
+    // TODO: Verify if this is necessary for the sockets gateway
+    // builder.addCase(shareRecentActivity.fulfilled, (state, action) => {
+    //     if(state.cachedSession) {
+    //         state.cachedSession.lastActions.push(action.payload.action)
+    //     }
+    //     state.currentSessionActions.push(action.payload.action)
+    // });
   }
 });
 
 export const {
     resetCachedSession,
     addActionToCurrentSession, addMultipleActionsToCurrentSession,
-    addUserIntoCachedSession, removeUserFromCachedSession
+    addUserIntoCachedSession, removeUserFromCachedSession,
+    addRecentActivityAction
 } = SpotSessionSlice.actions;
 
 export default SpotSessionSlice.reducer;

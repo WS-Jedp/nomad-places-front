@@ -18,5 +18,5 @@ export interface RecentActivity {
     username: string
     userID: string
     userPhotoURL: string
-    createdDate: Date
+    createdDate: string
 }

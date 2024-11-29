@@ -42,6 +42,10 @@
             "about": {
                 "placeholder": "Tell us about yourself",
                 "label": "About you"
+            },
+            "gender": {
+                "placeholder": "Select your gender",
+                "label": "Gender (Optional)"
             }
         },
         "spot": {

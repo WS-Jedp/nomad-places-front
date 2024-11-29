@@ -42,6 +42,10 @@
             "about": {
                 "placeholder": "Escribe algo sobre ti",
                 "label": "Acerca de ti"
+            },
+            "gender": {
+                "placeholder": "Selecciona tu género",
+                "label": "Género (Opcional)"
             }
         },
         "spot": {

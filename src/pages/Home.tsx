@@ -16,7 +16,7 @@ const Home: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           <IonTitle className="text-8xl">
-            Hello world
+            Coffi
           </IonTitle>
         </IonToolbar>
       </IonHeader>

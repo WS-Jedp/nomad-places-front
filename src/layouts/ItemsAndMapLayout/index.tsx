@@ -8,32 +8,37 @@ import {
   IonRouterOutlet,
   IonRow,
 } from "@ionic/react";
-import {  Route, useHistory } from "react-router-dom";
+import { Route, useHistory } from "react-router-dom";
 
 import { RowPlacesFilterOptions } from "../../components/filters/rowPlacesFilterOptions";
 import { LocationBasicInformation } from "../../components/Location/LocationBasicInformation";
 import { useIsMobile } from "../../common/hooks/useIsMobile";
 import { ListSearchPlaces } from "../../containers/listSearchPlaces";
 import { PlaceQuickSession } from "../../containers/placeQuickSession";
+import { useAppSelector } from "../../common/hooks/useTypedSelectors";
+import { useTranslation } from "react-i18next";
 
 export const ItemsAndMapLayout: React.FC<{
   children: JSX.Element;
   map: JSX.Element;
 }> = ({ children, map }) => {
-  const history = useHistory()
+  const history = useHistory();
   const modal = useRef<HTMLIonModalElement>(null);
+  const { t } = useTranslation();
+
+  const userSession = useAppSelector((state) => state.userSession);
 
   const [isMobile] = useIsMobile();
 
-  const [shouldModalBeOpen, setShouldModalBeOpen] = useState<boolean>(false)
+  const [shouldModalBeOpen, setShouldModalBeOpen] = useState<boolean>(false);
 
   const goToPlaceSession = async (id: string) => {
-    await setShouldModalBeOpen(false)
-    history.push(`/place/${id}/session`)
-  }
+    await setShouldModalBeOpen(false);
+    history.push(`/place/${id}/session`);
+  };
 
   useEffect(() => {
-    if(isMobile) setShouldModalBeOpen(isMobile)
+    if (isMobile) setShouldModalBeOpen(isMobile);
   }, [isMobile]);
 
   return (
@@ -57,36 +62,35 @@ export const ItemsAndMapLayout: React.FC<{
       >
         <IonContent className="no-padding bg-white">
           <IonRouterOutlet>
-              <Route path="/home/detail/:id">
-                  <IonRow class="h-full w-full">
-                    <PlaceQuickSession changePageCallback={goToPlaceSession} />
-                  </IonRow>
-                </Route>
+            <Route path="/home/detail/:id">
+              <IonRow class="h-full w-full">
+                <PlaceQuickSession changePageCallback={goToPlaceSession} />
+              </IonRow>
+            </Route>
 
-                <Route exact path="/home">
-                  {/* <LocationBasicInformation /> */}
-                  <RowPlacesFilterOptions />
-
-                  <IonList
-                    className="
+            <Route exact path="/home">
+              <>
+                {/* <LocationBasicInformation /> */}
+                <RowPlacesFilterOptions />
+                <IonList
+                  className="
                         relative flex flex-col items-start justify-start
-                        overflow-y-auto bg-white h-[75%]
+                        overflow-y-auto bg-white 
                     "
-                  >
-                      {children}
-                  </IonList>
-                </Route>
+                >
+                  {children}
+                </IonList>
+              </>
+            </Route>
           </IonRouterOutlet>
         </IonContent>
-
       </IonModal>
 
       {!isMobile && (
-
         <IonCol
-        size="12"
-        sizeMd="7"
-        className="
+          size="12"
+          sizeMd="7"
+          className="
                   relative
                   flex flex-col
                   w-full min-w-full md:w-7/12 md:min-w-min
@@ -96,21 +100,16 @@ export const ItemsAndMapLayout: React.FC<{
               "
         >
           <IonRouterOutlet>
-              <Route path="/home/detail/:id">
-                  <PlaceQuickSession changePageCallback={goToPlaceSession} />
-              </Route>
-              <Route exact path="/home">
-                <ListSearchPlaces>
-                    {
-                      children
-                    }
-                </ListSearchPlaces>
-              </Route>
+            <Route path="/home/detail/:id">
+              <PlaceQuickSession changePageCallback={goToPlaceSession} />
+            </Route>
+            <Route exact path="/home">
+              <ListSearchPlaces>{children}</ListSearchPlaces>
+            </Route>
           </IonRouterOutlet>
         </IonCol>
       )}
 
-      
       {/* Map */}
       <IonCol
         size="12"
@@ -127,6 +126,4 @@ export const ItemsAndMapLayout: React.FC<{
       </IonCol>
     </IonPage>
   );
-
- 
 };

@@ -93,7 +93,7 @@ export const SpotsRecommendedModal: React.FC<SpotsRecommendedModalProps> = ({
                 relative
                 flex flex-col
                 bg-white text-black
-                w-full max-w-sm md:max-w-xl h-[720px] max-h-[720px] md:max-h-[600px]
+                w-full max-w-sm md:max-w-xl h-[720px] max-h-[72%] md:max-h-[600px]
                 rounded-lg shadow-md
                 overflow-hidden
             "

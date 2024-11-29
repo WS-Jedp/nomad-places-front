@@ -37,6 +37,7 @@
             "updateAmountOfPeople": "There is between {{firstAmount}} to {{lastAmount}} people in the spot",
             "updatePerfectTo": "This spot is perfect to",
             "updateStatus": "The spot it's",
+            "recentActivity": "Has share an image of the spot",
             "confirmation": {
                 "amountOfPeople": "Is this the amount of people in the spot?",
                 "perfectTo": "Is this the environfment to of the spot?",

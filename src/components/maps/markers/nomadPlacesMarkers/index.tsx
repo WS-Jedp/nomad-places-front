@@ -45,9 +45,7 @@ export const NomadPlacesMakers: React.FC<NomadPlacesMarkersProps> = ({
   }
 
   function getPinScale() {
-    if (currentZoomInMap >= 16) {
-      return "scale-100";
-    }
+   
     if (currentZoomInMap >= 14) {
       return "scale-75";
     }
@@ -108,10 +106,11 @@ export const NomadPlacesMakers: React.FC<NomadPlacesMarkersProps> = ({
                       ? "nomad-place-marker--detail  scale-125 z-[999999]"
                       : ""
                   }
-                  hover:scale-125 hover:z-[999999]
-                  ${currentZoomInMap >= 15 ? "p-[21px]" : "p-[12px]"}
+                  hover:scale-[.9] hover:z-50
+                  ${currentZoomInMap >= 15 ? "p-[18px]" : "p-[12px]"}
                   ${getPinScale()}
                   ${handleCardColor(place.knownFor)}
+                  shadow-lg
               `}
                 // Simulate the hover in the marker
                 onMouseEnter={() => {
@@ -122,8 +121,10 @@ export const NomadPlacesMakers: React.FC<NomadPlacesMarkersProps> = ({
                 }}
               >
                 {currentZoomInMap >= 15 && placeHovered === place.id ? (
-                  <span className="absolute top-[-60%] max-w-none min-w-max w-auto font-normal text-xs">
-                    {handleIconToRender(place)}
+                  <span
+                    className={`absolute top-[-60%] max-w-none min-w-max w-auto font-bold text-xs px-3 rounded-sm bg-white text-black shadow-md`}
+                  >
+                    {place.name}
                   </span>
                 ) : (
                   placeHovered === place.id && (
@@ -136,9 +137,10 @@ export const NomadPlacesMakers: React.FC<NomadPlacesMarkersProps> = ({
                     </span>
                   )
                 )}
-                {currentZoomInMap >= 15
+                {/* {currentZoomInMap >= 15
                   ? place.name
-                  : handleIconToRender(place)}
+                  : handleIconToRender(place)} */}
+                {handleIconToRender(place)}
               </div>
             </article>
           </GoogleMapCustomMaker>

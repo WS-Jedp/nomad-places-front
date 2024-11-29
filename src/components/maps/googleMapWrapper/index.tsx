@@ -1,6 +1,7 @@
 import { Status, Wrapper } from "@googlemaps/react-wrapper";
 import { useAppSelector } from "../../../common/hooks/useTypedSelectors";
 import { GoogleMapNomadsComponent } from "../googleMapNomads";
+import { ScreenLoaderSatellite } from "../../../containers/loaders/screenSpinner";
 
 const Render = (status: Status) => {
 
@@ -10,7 +11,7 @@ const Render = (status: Status) => {
 
   switch (status) {
     case Status.LOADING:
-      return <h1>Loading...</h1>;
+      return <ScreenLoaderSatellite />
     case Status.FAILURE:
       return <h1>Error</h1>;
     case Status.SUCCESS:

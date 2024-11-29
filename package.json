@@ -4,11 +4,13 @@
   "private": true,
   "dependencies": {
     "@capacitor/app": "4.1.1",
-    "@capacitor/core": "4.7.0",
+    "@capacitor/camera": "^6.1.0",
+    "@capacitor/core": "^6.1.2",
     "@capacitor/geolocation": "^4.1.0",
     "@capacitor/haptics": "4.1.0",
     "@capacitor/keyboard": "4.1.1",
     "@capacitor/status-bar": "4.1.1",
+    "@googlemaps/markerclusterer": "^2.5.3",
     "@googlemaps/react-wrapper": "^1.1.35",
     "@ionic/core": "^7.7.0",
     "@ionic/pwa-elements": "^3.1.1",
@@ -29,10 +31,12 @@
     "history": "^4.9.0",
     "i18next": "^23.9.0",
     "ionicons": "^6.0.3",
+    "leaflet": "^1.9.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-i18next": "^14.0.5",
     "react-icons": "^4.8.0",
+    "react-leaflet": "^4.2.1",
     "react-redux": "^8.0.5",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
@@ -83,7 +87,7 @@
     ]
   },
   "devDependencies": {
-    "@capacitor/cli": "4.7.0",
+    "@capacitor/cli": "^6.1.2",
     "@types/google.maps": "^3.52.0",
     "@types/swiper": "^6.0.0",
     "tailwindcss": "^3.2.7"

@@ -12,21 +12,23 @@ import {
 import { UserActionsModal } from "../session/userActionsModal";
 import { BlurAppModal } from "../../components/modals/blurContainer";
 import {
-  addUserIntoSession,
   createSocket,
   userJoinedSession,
   userLeftSession,
 } from "../../store/redux/slices/userSession";
 import {
   PLACE_SESSION_ACTIONS_ENUM,
+  PlaceSessionRecentAcitivityResp,
   UPDATE_ACTIONS,
 } from "../../models/session";
 import { HandleActionCardType } from "../../components/actions/cards/handleActionType";
 import {
   addActionToCurrentSession,
   addMultipleActionsToCurrentSession,
+  addRecentActivityAction,
   addUserIntoCachedSession,
   removeUserFromCachedSession,
+  uploadRecentActivity,
 } from "../../store/redux/slices/spotSession";
 import { AmountMindsetActions } from "../../components/mindsets/containers/amountMindsetActions";
 import { QuickActionModal } from "../session/quickActionModal";
@@ -34,7 +36,7 @@ import { MINDSETS } from "../../models/mindsets";
 import { AmountOfPeopleActionsAmount } from "../../components/amountOfPeople/containers";
 import { HandleMindsetTags } from "../../components/tags/mindsets";
 import { useTranslation } from "react-i18next";
-import { FaLock } from "react-icons/fa";
+import { FaLock, FaPlus } from "react-icons/fa";
 import { setPointsToUser, showAuthModal } from "../../store/redux/slices/user";
 import { userInAllowedRange } from "../../common/utils/geoLocation";
 import { SatelliteLoader } from "../../components/loaders/satellite";
@@ -44,6 +46,12 @@ import { ControlledErrorType } from "../../common/controlledError/types";
 import { getLocalISODate } from "../../common/utils/dates";
 import { format, parseISO } from "date-fns";
 import { toast } from "react-toastify";
+import { MULTIMEDIA_TYPE } from "../../models/multimedia";
+import { RecentActivityButton } from "../../components/buttons/recentActivityButton";
+import { RecentActivityFileModal } from "../session/recentActivityFileModal";
+import { PayloadAction } from "@reduxjs/toolkit";
+import { PlaceSessionAction } from "../../models/session/actions";
+import { UserGamification } from "../../models/gamification";
 
 export const PlaceSessionDetail: React.FC = () => {
   const { t } = useTranslation();
@@ -55,10 +63,12 @@ export const PlaceSessionDetail: React.FC = () => {
   );
 
   function getCurrentSessionActionsOrderByDate() {
-    if(!currentSessionActions || currentSessionActions.length === 0) return []
+    if (!currentSessionActions || currentSessionActions.length === 0) return [];
 
     return currentSessionActions.slice().sort((a, b) => {
-      return new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime();
+      return (
+        new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime()
+      );
     });
   }
 
@@ -70,9 +80,11 @@ export const PlaceSessionDetail: React.FC = () => {
   const { socket, sessionID } = useAppSelector((state) => state.userSession);
 
   const [recentActivityOpen, setRecentActivityOpen] = useState<boolean>(false);
+  const [recentActivityOpened, setRecentActivityOpened] = useState<number[]>([])
   const [mediaSelectedIndex, setMediaSelectedIndex] = useState<number>(0);
   const [userInSession, setUserInSession] = useState<boolean>(false);
-  const [joiningSessionLoader, setJoiningSessionLoader] = useState<boolean>(false);
+  const [joiningSessionLoader, setJoiningSessionLoader] =
+    useState<boolean>(false);
 
   const [leaveSessionModal, setLeaveSessionModal] = useState(false);
   const [updateSessionModal, setUpdateSessionModal] = useState(false);
@@ -83,6 +95,11 @@ export const PlaceSessionDetail: React.FC = () => {
   function handleRecentActivityOpen(index: number) {
     setMediaSelectedIndex(index);
     setRecentActivityOpen(true);
+    setRecentActivityOpened([...recentActivityOpened, index]);
+  }
+
+  function onRecentActivitySelectionChange(index: number) {
+    setRecentActivityOpened([...recentActivityOpened, index])
   }
 
   // =========================
@@ -171,9 +188,17 @@ export const PlaceSessionDetail: React.FC = () => {
           await dispatch(userJoinedSession({ sessionID: payload.sessionID }));
           await dispatch(addUserIntoCachedSession({ user: userData }));
           setUserInSession(true);
-          if(payload.action?.userGamification?.earnedPoints) {
-            toast.success(t("gamification.session.earned.joinSession", { points: payload.action.userGamification.earnedPoints }))
-            dispatch( setPointsToUser({ points: payload.action.userGamification.points }) )
+          if (payload.action?.userGamification?.earnedPoints) {
+            toast.success(
+              t("gamification.session.earned.joinSession", {
+                points: payload.action.userGamification.earnedPoints,
+              })
+            );
+            dispatch(
+              setPointsToUser({
+                points: payload.action.userGamification.points,
+              })
+            );
           }
         }
       } else if (payload.type === PLACE_SESSION_ACTIONS_ENUM.LEAVE) {
@@ -182,30 +207,55 @@ export const PlaceSessionDetail: React.FC = () => {
           setUserInSession(false);
         }
       }
-      if (payload.action) {
+
+      if (payload.type === PLACE_SESSION_ACTIONS_ENUM.RECENT_ACTIVITY) {
+        const recentActivityPayload = JSON.parse(payload.action.payload) as {
+          createdDateISO: string;
+          type: MULTIMEDIA_TYPE;
+          url: string;
+          userID: string;
+          username: string;
+          userPhotoURL: string;
+        };
+        await dispatch(addRecentActivityAction({
+          id: payload.action.id,
+          createdDate: getLocalISODate(payload.action.createdDate),
+          type: recentActivityPayload.type,
+          url: recentActivityPayload.url,
+          userID: payload.action.userID,
+          username: payload.action.username,
+          userPhotoURL: recentActivityPayload.userPhotoURL
+         }));
+
+      } else if (payload.action) {
         await dispatch(addActionToCurrentSession({ action: payload.action }));
       }
-
-      setJoiningSessionLoader(false)
+      setJoiningSessionLoader(false);
     });
   }, [socket]);
 
   useEffect(() => {
     if (!socket) return;
     socket?.onSessionUpdated(async (payload) => {
-      if(!Array.isArray(payload)) {
-        toast.error(t(`messages.session.update.errors.${payload.error.type}`))
+      if (!Array.isArray(payload)) {
+        toast.error(t(`messages.session.update.errors.${payload.error.type}`));
       } else {
-        payload.forEach(action => {
-          if(action.userGamification?.earnedPoints) {
-            toast.success(t("gamification.session.earned.specificUpdate", { points: action.userGamification.earnedPoints }))
-            dispatch( setPointsToUser({ points: action.userGamification.points }) )
+        payload.forEach((action) => {
+          if (action.userGamification?.earnedPoints) {
+            toast.success(
+              t("gamification.session.earned.specificUpdate", {
+                points: action.userGamification.earnedPoints,
+              })
+            );
+            dispatch(
+              setPointsToUser({ points: action.userGamification.points })
+            );
           }
-        })
-       
+        });
+
         await dispatch(addMultipleActionsToCurrentSession(payload));
       }
-      setJoiningSessionLoader(false)
+      setJoiningSessionLoader(false);
     });
   }, [socket]);
 
@@ -216,7 +266,6 @@ export const PlaceSessionDetail: React.FC = () => {
   // Method to check if the user is in the session
   // If the user is in the session, then we need to add the user into the session
   async function isUserInSession() {
-    console.log(cachedSession, "CACHED SESSION")
     if (
       cachedSession?.usersInSession?.find((user) => user.id === userData?.id)
     ) {
@@ -241,7 +290,6 @@ export const PlaceSessionDetail: React.FC = () => {
     isUserInSession();
   }, [cachedSession?.usersInSession, sessionID]);
 
-
   // ============================
   // QUICK UPDATE ACTIONS METHODS
   // ============================
@@ -263,40 +311,121 @@ export const PlaceSessionDetail: React.FC = () => {
     setQuickActionValue(value);
   }
 
-  function handleUpdateMultipleActions(actions: { type: UPDATE_ACTIONS, data: any  }[]) {
+  function handleUpdateMultipleActions(
+    actions: { type: UPDATE_ACTIONS; data: any }[]
+  ) {
     setJoiningSessionLoader(true);
     setUpdateSessionModal(false);
-    if(!sessionID) {
+    if (!sessionID) {
       setJoiningSessionLoader(false);
       return;
     }
 
-    socket?.updateSessionMultipleActions({ sessionID: sessionID, actions: actions });
+    socket?.updateSessionMultipleActions({
+      sessionID: sessionID,
+      actions: actions,
+    });
+  }
+
+  const [recentActivityFile, setRecentActivityFile] = useState<File | null>(
+    null
+  );
+  const [recentActivityLoading, setRecentActivityLoading] =
+    useState<boolean>(false);
+  const [recentActivityError, setRecentActivityError] = useState<string | null>(
+    null
+  );
+
+  async function onRecentActivityFileChange(file: File) {
+    setRecentActivityFile(file);
+  }
+
+  function onRecentActivityFileError(error: string) {
+    setRecentActivityError(error);
+  }
+
+  function onRecentActivityFileSuccess(file: File) {
+    setRecentActivityFile(file);
+  }
+
+  async function shareRecentActivirtyMedia() {
+    if (!recentActivityFile || !sessionID || !currentPlace?.id || !auth.token)
+      return;
+    setRecentActivityLoading(true);
+
+    // Send the file to the backend
+    const resp = (await dispatch(
+      uploadRecentActivity({
+        multimedia: recentActivityFile,
+        sessionID: sessionID,
+        spotID: currentPlace.id,
+        token: auth.token,
+      })
+    )) as PayloadAction<PlaceSessionRecentAcitivityResp>;
+
+    // Send URL to the socket and share with users
+    if (resp.payload && resp.payload.data.url) {
+      socket?.shareRecentActivity({
+        sessionID: sessionID,
+        url: resp.payload.data.url,
+        type: resp.payload.data.type,
+        userProfilePicture: userData?.profilePicture|| "",
+      });
+    }
+
+    await setTimeout(() => {
+      setRecentActivityLoading(false);
+      setRecentActivityFile(null);
+    }, 3000);
   }
 
   if (!currentPlace) return null;
 
   return (
     <IonRow className="relative w-full h-full overflow-hidden">
-      {currentPlace?.sessionCachedData?.lastRecentlyActivities?.length > 0 && (
-        <section className="w-full border-b-[1px] border-gray-300 p-3">
-          <div className="inline mr-4">
-            <RecentActivityCard callback={() => handleRecentActivityOpen(0)} />
-          </div>
+      {userInSession && (
+        <section className="realtive w-full h-auto
+            px-3 py-1
+            flex flex-row items-center justify-start
+            overflow-hidden overflow-x-auto
+            border-b-[1px] border-gray-300 
+          ">
+            <div className="border-solid border-r-[1px] border-gray-300 mr-3">
+              <RecentActivityButton
+                onError={onRecentActivityFileError}
+                onSuccess={onRecentActivityFileSuccess}
+              />
+            </div>
+          {cachedSession?.lastRecentlyActivities?.map(
+            (activity, index) => (
+              <RecentActivityCard
+                key={index}
+                callback={() => handleRecentActivityOpen(index)}
+                isImage={activity.type === MULTIMEDIA_TYPE.IMAGE}
+                checked={recentActivityOpened.includes(index)}
+              />
+            )
+          )}
         </section>
       )}
 
-      <IonRow className="w-full h-3/6 p-3 pb-5 relative flex flex-col flex-nowrap border-b border-gray-300">
-        {cachedSession && cachedSession.lastActions.length > 0 && cachedSession?.lastUpdate && (
-          <section className="my-1">
-            <h2 className="text-xs font-light">
-              {t("spots.messages.session.lastUpdateAt")}{" "}
-              <span className="font-light">
-                - { format(parseISO(getLocalISODate( cachedSession.lastUpdate )), 'p') }
-              </span>
-            </h2>
-          </section>
-        )}
+      <IonRow className="w-full p-3 pb-5 relative flex flex-col flex-nowrap border-b border-gray-300">
+        {cachedSession &&
+          cachedSession.lastActions.length > 0 &&
+          cachedSession?.lastUpdate && (
+            <section className="my-1">
+              <h2 className="text-xs font-light">
+                {t("spots.messages.session.lastUpdateAt")}{" "}
+                <span className="font-light">
+                  -{" "}
+                  {format(
+                    parseISO(getLocalISODate(cachedSession.lastUpdate)),
+                    "p"
+                  )}
+                </span>
+              </h2>
+            </section>
+          )}
         <section className="mb-3">
           <h2 className="font-bold text-lg mb-1">
             {t("spots.session.perfectTo")}
@@ -306,7 +435,6 @@ export const PlaceSessionDetail: React.FC = () => {
           ) : (
             <HandleMindsetTags mindset={MINDSETS.UNKNOWN} />
           )}
-          
         </section>
 
         <IonRow className="relative w-full flex flex-row mb-3">
@@ -386,10 +514,23 @@ export const PlaceSessionDetail: React.FC = () => {
         <AppModal>
           <MultimediaSliderModal
             images={
-              currentPlace?.sessionCachedData?.lastRecentlyActivities || []
+              cachedSession?.lastRecentlyActivities || []
             }
             closeCallback={() => setRecentActivityOpen(false)}
             currentImage={mediaSelectedIndex}
+            recentActivity
+            onChangeRecentActivity={onRecentActivitySelectionChange}
+          />
+        </AppModal>
+      )}
+
+      {recentActivityFile && (
+        <AppModal>
+          <RecentActivityFileModal
+            file={recentActivityFile}
+            onSave={shareRecentActivirtyMedia}
+            onCancel={() => setRecentActivityFile(null)}
+            isLoading={recentActivityLoading}
           />
         </AppModal>
       )}

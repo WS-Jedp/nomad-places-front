@@ -23,8 +23,8 @@ export interface UserFollowingModalProps {
 export const UserFollowingModal: React.FC<UserFollowingModalProps> = ({
   closeCallback,
 }) => {
-  const history = useHistory()
-  const { t } = useTranslation()
+  const history = useHistory();
+  const { t } = useTranslation();
   const { token } = useAppSelector((state) => state.user.auth);
   const dispatch = useAppDispatch();
 
@@ -32,18 +32,25 @@ export const UserFollowingModal: React.FC<UserFollowingModalProps> = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   function handleOnUser(userID: string) {
-    history.push(`/profile/${userID}`)
+    history.push(`/profile/${userID}`);
   }
 
   async function handleUnfollow(userID: string) {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      await dispatch( unfollowUser({ userToUnfollowID: userID }) )
-      setFollowing(old => old.filter(user => user.id !== userID))      
+      await dispatch(unfollowUser({ userToUnfollowID: userID }));
+      setFollowing((old) => old.filter((user) => user.id !== userID));
     } catch (error) {
-      dispatch( addError( new ControlledError(String(error), ControlledErrorType.FRONTEND_SYSTEM) ) )
+      dispatch(
+        addError(
+          new ControlledError(
+            String(error),
+            ControlledErrorType.FRONTEND_SYSTEM
+          )
+        )
+      );
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
@@ -91,7 +98,7 @@ export const UserFollowingModal: React.FC<UserFollowingModalProps> = ({
                 relative
                 flex flex-col
                 bg-white text-black
-                w-full max-w-sm md:max-w-xl h-[720px] max-h-[720px] md:max-h-[600px]
+                w-full max-w-sm md:max-w-xl h-[720px] max-h-[72%] md:max-h-[600px]
                 rounded-lg shadow-md
                 overflow-hidden
             "
@@ -104,15 +111,13 @@ export const UserFollowingModal: React.FC<UserFollowingModalProps> = ({
           />
 
           <h2 className="font-bold text-md">
-            { t('messages.social.general.following') }
+            {t("messages.social.general.following")}
           </h2>
         </IonRow>
 
         <section className="flex flex-col items-start justify-start w-full p-5 overflow-y-auto">
           <h2 className="font-bold text-lg mb-3">
-            {
-              t('messages.social.follows.who')
-            }
+            {t("messages.social.follows.who")}
           </h2>
           {isLoading ? (
             <LoaderSpinner />
@@ -121,7 +126,10 @@ export const UserFollowingModal: React.FC<UserFollowingModalProps> = ({
               {following.length > 0 ? (
                 following.map((user) => (
                   <li className="flex flex-row items-center justify-between w-full h-auto border-t-[1px] border-zinc-200 py-2">
-                    <button onClick={() => handleOnUser(user.id)} className="flex flex-row items-center justify-start hover:underline">
+                    <button
+                      onClick={() => handleOnUser(user.id)}
+                      className="flex flex-row items-center justify-start hover:underline"
+                    >
                       <figure className="w-6 h-6 bg-zinc-300 rounded-full overflow-hidden">
                         <img
                           src={user.profilePicture}
@@ -129,7 +137,9 @@ export const UserFollowingModal: React.FC<UserFollowingModalProps> = ({
                           className="w-full h-full object-cover rounded-full"
                         />
                       </figure>
-                      <h2 className="font-semibold text-sm ml-3">{ user.username }</h2>
+                      <h2 className="font-semibold text-sm ml-3">
+                        {user.username}
+                      </h2>
                     </button>
 
                     <button
@@ -139,13 +149,13 @@ export const UserFollowingModal: React.FC<UserFollowingModalProps> = ({
                                       text-xs md:text-md font-light px-3 py-1 underline
                                   "
                     >
-                      { t('actions.social.unfollow') }
+                      {t("actions.social.unfollow")}
                     </button>
                   </li>
                 ))
               ) : (
                 <p className="text-sm font-light text-start">
-                  { t('messages.social.follows.empty') }
+                  {t("messages.social.follows.empty")}
                 </p>
               )}
             </ul>

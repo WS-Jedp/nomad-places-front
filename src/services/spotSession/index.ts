@@ -1,6 +1,6 @@
 import { Request } from "../../common/request";
-import { GetPlaceDetailDTO, PlacesWithQuickSessionDataDTO } from "../../dto/places";
-import { PlaceSession, PlaceSessionCachedDataDTO } from "../../models/session";
+import { UserLastSession } from "../../dto/session";
+import { PlaceSession, PlaceSessionCachedDataDTO, PlaceSessionRecentAcitivityResp } from "../../models/session";
 
 export class SpotSessionServices {
   protected request: Request;
@@ -11,26 +11,41 @@ export class SpotSessionServices {
     });
   }
 
- async getSpotCurrentSession(spotID: string) {
+  async getSpotCurrentSession(spotID: string) {
     const spotSession = await this.request.get<PlaceSession>(
       `current/${spotID}`
-    )
-      return spotSession
- }
+    );
+    return spotSession;
+  }
 
- async getSpotCachedSession(spotID: string) {
+  async getSpotCachedSession(spotID: string) {
     const spotSession = await this.request.get<PlaceSessionCachedDataDTO>(
       `cache/current/${spotID}`
-    )
-    return spotSession
- }
+    );
+    return spotSession;
+  }
 
- getSessionDetail(sessionID: string) {
-    const spotSession = this.request.get<PlaceSession>(
-      `detail/${sessionID}`
-    )
-    return spotSession
- }
+  getSessionDetail(sessionID: string) {
+    const spotSession = this.request.get<PlaceSession>(`detail/${sessionID}`);
+    return spotSession;
+  }
+
+  async uploadRecentActivity(data: {
+    sessionID: string;
+    spotID: string;
+    multimedia: Blob;
+    token: string;
+  }) {
+    const response = await this.request.withAuth(data.token).postWithMultiPartMultipleFiles<PlaceSessionRecentAcitivityResp>(`share/recent-activity`, { sessionID: data.sessionID, spotID: data.spotID, files: [data.multimedia] });
+    return response;
+  }
+
+  async getUserLastSession(token: string) {
+    const spotSession = await this.request.withAuth(token).get<UserLastSession>(
+      `user/current`
+    );
+    return spotSession;
+  }
 }
 
-export default new SpotSessionServices()
+export default new SpotSessionServices();

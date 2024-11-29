@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { MdClose } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import { INDUSTRIES, INDUSTRIES_LIST } from "../../../models/industries";
@@ -16,8 +16,9 @@ import { authUser, registerUser } from "../../../store/redux/slices/user";
 import { IonChip, IonLabel } from "@ionic/react";
 import { getUserFollowRequests } from "../../../store/redux/slices/social";
 import { toast } from "react-toastify";
-import { PayloadAction } from "@reduxjs/toolkit";
+import { current, PayloadAction } from "@reduxjs/toolkit";
 import { LoginDTO } from "../../../dto/auth";
+import { PERSON_GENDER, PERSON_GENDER_LIST } from "../../../models/user";
 
 type AuthFormModalProps = {
   closeCallback: () => void;
@@ -59,9 +60,11 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
     setConfirmPassword(value);
   }
 
-  function isConfirmPasswordValid() {
+  const isConfirmPasswordValid = useMemo(() => {
+    if(!password || !confirmPassword) return false
+    
     return password === confirmPassword;
-  }
+  }, [password, confirmPassword])
 
   const [personIndustries, setPersonIndustries] = useState<INDUSTRIES[]>([]);
   function isIndustrySelected(industry: INDUSTRIES) {
@@ -76,10 +79,169 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
     }
   }
 
+  const [personGender, setPersonGender] = useState<PERSON_GENDER>();
+  function onGenderChange(gender: PERSON_GENDER) {
+    setPersonGender(gender);
+  }
+
+  function isGenderSelected(gender: PERSON_GENDER) {
+    return personGender === gender;
+  }
+
+  const AUTH_STEPS = 2;
+  const [registerAuthStep, setCurrentRegisterAuthStep] = useState<number>(0);
   const [currentAuthStep, setCurrentAuthStep] = useState<number>(0);
   const [isRegister, setIsRegister] = useState<boolean>(false);
   const [isLogin, setIsLogin] = useState<boolean>(false);
   const [forgotPassword, setIsForgotPassword] = useState(false);
+
+  function renderCurrentRegisterAuthStep() {
+    switch (registerAuthStep) {
+      case 0:
+        return (
+          <>
+            <div className="mb-2">
+              <TextInput
+                type="email"
+                label={t("forms.inputs.auth.email.label")}
+                placeholder={t("forms.inputs.auth.email.placeholder")}
+                callback={handleEmailChange}
+                value={email}
+              />
+            </div>
+
+            <div className="mb-2">
+              <TextInput
+                type="text"
+                label={t("forms.inputs.auth.username.label")}
+                placeholder={t("forms.inputs.auth.username.placeholder")}
+                callback={handleUsername}
+                value={username}
+              />
+            </div>
+
+            <div className="mb-2">
+              <TextInput
+                type="text"
+                label={t("forms.inputs.auth.firstName.label")}
+                placeholder={t("forms.inputs.auth.firstName.placeholder")}
+                callback={handleFirstName}
+                value={firstName}
+              />
+            </div>
+          </>
+        );
+
+      case 1:
+        return (
+          <>
+            <div className="mb-2">
+              <TextInput
+                type="password"
+                label={t("forms.inputs.auth.password.label")}
+                placeholder={t("forms.inputs.auth.password.placeholder")}
+                callback={handlePasswordChange}
+                value={password}
+              />
+            </div>
+            <div className="mb-2">
+              <TextInput
+                type="password"
+                label={t("forms.inputs.auth.passwordConfirmation.label")}
+                placeholder={t(
+                  "forms.inputs.auth.passwordConfirmation.placeholder"
+                )}
+                callback={handleConfirmPasswordChange}
+                value={confirmPassword}
+                isError={!isConfirmPasswordValid}
+                feedbackMessage={
+                  isConfirmPasswordValid
+                    ? undefined
+                    : t("forms.messages.auth.passwordMatch.error")
+                }
+              />
+            </div>
+          </>
+        );
+
+      case 2:
+        return (
+          <>
+            {/* Industry tag options */}
+            <div className="flex flex-col align-start justify-start text-start">
+              <label className="text-sm font-semibold my-1">
+                {t("forms.inputs.personalInformation.industry.label")}
+              </label>
+              <div className="flex flex-row flex-wrap align-start justify-start">
+                {INDUSTRIES_LIST.map((industry, index) => (
+                  <IonChip
+                    onClick={() => handleOnIndustry(industry)}
+                    outline
+                    key={index}
+                    className={`cursor-pointer px-3 my-1 mr-1 py-1 ${
+                      isIndustrySelected(industry)
+                        ? "bg-indigo-100 text-indigo-500"
+                        : "bg-gray-200 text-gray-500"
+                    } `}
+                  >
+                    <IonLabel className="text-sm font-medium capitalize">
+                      {t(`filters.users.industries.${industry.toUpperCase()}`)}
+                    </IonLabel>
+                  </IonChip>
+                ))}
+              </div>
+            </div>
+
+            {/* Gender tags options */}
+            <div className="flex flex-col align-start justify-start text-start">
+              <label className="text-sm font-semibold my-1">
+                {t("forms.inputs.personalInformation.gender.label")}
+              </label>
+              <div className="flex flex-row flex-wrap align-start justify-start">
+                {PERSON_GENDER_LIST.map((gender, index) => (
+                  <IonChip
+                    onClick={() => onGenderChange(gender)}
+                    outline
+                    key={index}
+                    className={`cursor-pointer px-3 my-1 mr-1 py-1 ${
+                      isGenderSelected(gender)
+                        ? "bg-indigo-100 text-indigo-500"
+                        : "bg-gray-200 text-gray-500"
+                    } `}
+                  >
+                    <IonLabel className="text-sm font-medium capitalize">
+                      {t(`filters.users.genders.${gender.toUpperCase()}`)}
+                    </IonLabel>
+                  </IonChip>
+                ))}
+              </div>
+            </div>
+          </>
+        );
+
+      default:
+        <>
+          <p>Oops! Something went wrong, try again later.</p>
+        </>;
+        break;
+    }
+  }
+
+  const isAbleToPrevStepRegister = useMemo(() => {
+    return registerAuthStep > 0;
+  }, [registerAuthStep]);
+
+  const isAbleToNextStepRegister = useMemo(() => {
+    if(registerAuthStep === 0) {
+      return (email && username && firstName) ? true : false
+    }
+
+    if(registerAuthStep === 1) {
+      return isConfirmPasswordValid
+    }
+
+    return true
+  }, [email, username, firstName, password, confirmPassword, registerAuthStep]);
 
   function handleForgotPassword() {
     setIsForgotPassword(true);
@@ -152,11 +314,11 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
           },
         })
       );
-      if(!registerResp.payload) {
-        throw new Error("Error registering user")
+      if (!registerResp.payload) {
+        throw new Error("Error registering user");
       }
       setIsLoadingRequest(false);
-      toast.success(t("messages.auth.success.register", {name: firstName}));
+      toast.success(t("messages.auth.success.register", { name: firstName }));
       successfulRegisterCallback();
     } catch (error) {
       // dispatch( addError(new ControlledError(String(error), ControlledErrorType.REQUEST)) )
@@ -190,93 +352,29 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
           className="w-full mb-6"
           onSubmit={(ev) => ev.preventDefault()}
         >
-          <div className="mb-2">
-            <TextInput
-              type="email"
-              label={t("forms.inputs.auth.email.label")}
-              placeholder={t("forms.inputs.auth.email.placeholder")}
-              callback={handleEmailChange}
-              value={email}
-            />
-          </div>
+          {renderCurrentRegisterAuthStep()}
 
-          <div className="mb-2">
-            <TextInput
-              type="text"
-              label={t("forms.inputs.auth.username.label")}
-              placeholder={t("forms.inputs.auth.username.placeholder")}
-              callback={handleUsername}
-              value={username}
-            />
-          </div>
-
-          <div className="mb-2">
-            <TextInput
-              type="text"
-              label={t("forms.inputs.auth.firstName.label")}
-              placeholder={t("forms.inputs.auth.firstName.placeholder")}
-              callback={handleFirstName}
-              value={firstName}
-            />
-          </div>
-
-          <div className="mb-2">
-            <TextInput
-              type="password"
-              label={t("forms.inputs.auth.password.label")}
-              placeholder={t("forms.inputs.auth.password.placeholder")}
-              callback={handlePasswordChange}
-              value={password}
-            />
-          </div>
-          <div className="mb-2">
-            <TextInput
-              type="password"
-              label={t("forms.inputs.auth.passwordConfirmation.label")}
-              placeholder={t(
-                "forms.inputs.auth.passwordConfirmation.placeholder"
-              )}
-              callback={handleConfirmPasswordChange}
-              value={confirmPassword}
-              isError={!isConfirmPasswordValid()}
-              feedbackMessage={
-                isConfirmPasswordValid()
-                  ? undefined
-                  : t("forms.messages.auth.passwordMatch.error")
-              }
-            />
-          </div>
-          {/* Industry tag options */}
-
-          <div className="flex flex-col align-start justify-start text-start">
-            <label className="text-sm font-semibold my-1">
-              Selecciona la industria con las que te identifiques (Opcional):
-            </label>
-            <div className="flex flex-row flex-wrap align-start justify-start">
-              {INDUSTRIES_LIST.map((industry, index) => (
-                <IonChip
-                  onClick={() => handleOnIndustry(industry)}
-                  outline
-                  key={index}
-                  className={`cursor-pointer px-3 my-1 mr-1 py-1 ${
-                    isIndustrySelected(industry)
-                      ? "bg-indigo-100 text-indigo-500"
-                      : "bg-gray-200 text-gray-500"
-                  } `}
-                >
-                  <IonLabel className="text-sm font-medium capitalize">
-                    { t(`filters.users.industries.${industry.toUpperCase()}`) }
-                  </IonLabel>
-                </IonChip>
-              ))}
+          <div className="relative w-full flex flex-row items-center justify-between mt-6 text-sm">
+            <button className={`text-sm font-light ${registerAuthStep === 0 ? 'opacity-0' : '' }`} onClick={() => setCurrentRegisterAuthStep(registerAuthStep - 1)} disabled={!isAbleToPrevStepRegister}>Anterior</button>
+            <div className="font-light">
+              {registerAuthStep+1} / {AUTH_STEPS + 1}
             </div>
-          </div>
-          <div className="w-full relative mt-5">
-            <InputButton
-              text={t("actions.auth.register")}
-              action={handleRegister}
-              isLoading={isLoadingRequest}
-            />
+
+            <div>
+              {registerAuthStep === AUTH_STEPS ? (
+                <InputButton
+                  text={t("actions.auth.register")}
+                  action={handleRegister}
+                  isLoading={isLoadingRequest}
+                />
+              ) : (
+                <InputButton 
+                  text="Siguiente"
+                  action={() => setCurrentRegisterAuthStep(registerAuthStep + 1)}
+                  disabled={!isAbleToNextStepRegister}
+                />
+              )}
+            </div>
           </div>
         </form>
       );

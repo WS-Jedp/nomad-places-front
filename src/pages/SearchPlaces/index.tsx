@@ -21,6 +21,9 @@ import { AppLayout } from "../../layouts/AppLayout";
 import { SatelliteLoader } from "../../components/loaders/satellite";
 import { IonRow } from "@ionic/react";
 import { useTranslation } from "react-i18next";
+import { getUserLastSession } from "../../store/redux/slices/userSession";
+import { PayloadAction } from "@reduxjs/toolkit";
+import { UserLastSession } from "../../dto/session";
 
 interface SearchPlacesProps {}
 
@@ -31,6 +34,8 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
   const dispatch = useAppDispatch();
   const places = useAppSelector((state) => state.places);
   const userLocation = useAppSelector((state) => state.user.location);
+  const authUser = useAppSelector((state) => state.user.auth);
+  const userSession = useAppSelector((state) => state.userSession);
   const {
     selectedSpotMindsetFilter,
     selectedSpotAmountPeopleFilter,
@@ -192,6 +197,17 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
     dispatch(setFilteredPlaces(filteredPlaces));
   }
 
+  async function fetchUserLastSession() {
+    if (!authUser.token) return;
+    const lastSession = (await dispatch(
+      getUserLastSession({ token: authUser.token })
+    )) as PayloadAction<UserLastSession>;
+  }
+
+  useEffect(() => {
+    fetchUserLastSession();
+  }, [authUser.token]);
+
   useEffect(() => {
     getUserLocation();
   }, []);
@@ -217,6 +233,7 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
 
   return (
     <AppLayout>
+     
       <IonRow
         className="
           relative

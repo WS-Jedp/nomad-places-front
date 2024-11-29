@@ -3,16 +3,38 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 import { UserSessionSocket } from "../../../../socket/UserSesssionSocket";
 import { getSpotCachedSession } from "../spotSession";
+import { UserLastSession } from "../../../../dto/session";
+import { RootState } from "../..";
+import { SpotSessionServices } from "../../../../services/spotSession";
 
 export interface UserSessionState {
     socket: UserSessionSocket | null;
     sessionID: string | null;
+    inSession: boolean;
+    placeID: string | null;
 }
 
 const initialUserSessionState: UserSessionState = {
     socket: null,
-    sessionID: null
+    sessionID: null,
+    inSession: false,
+    placeID: null
 };
+
+export const getUserLastSession = createAsyncThunk<
+    UserLastSession,
+    { token: string },
+    {
+        state: RootState;
+    }
+>("userSession/getUserLastSession", async (params) => {
+    try {
+        const userLastSession = await new SpotSessionServices().getUserLastSession(params.token);
+        return userLastSession;
+    } catch (error) {
+        throw new Error(String(error));
+    }
+})
 
 export const UserSessionSlice = createSlice({
   name: "userSession",
@@ -50,6 +72,13 @@ export const UserSessionSlice = createSlice({
     builder.addCase(getSpotCachedSession.fulfilled, (state, action) => {
         state.sessionID = action.payload?.sessionID || null
     })
+
+    builder.addCase(getUserLastSession.fulfilled, (state, action) => {
+        state.sessionID = action.payload?.lastSession?.id || null
+        state.inSession = action.payload?.inSession || false
+        state.placeID = action.payload?.lastSession.placeID || null
+    })
+    
   },
 });
 

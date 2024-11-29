@@ -29,7 +29,6 @@ export const AmountMindsetActions:React.FC<AmountMindsetActionsProps> = ({ minds
     // }
 
     function getMindsetUpdateActionsSortered() {
-        console.log(cachedSession)
         if(!cachedSession || !cachedSession.bestMindsetTo) return []
         setMindsetOptions(new Array(...cachedSession?.bestMindsetTo).sort((a,b) => a.actions.length < b.actions.length ? 1 : -1))
     }

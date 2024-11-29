@@ -15,6 +15,9 @@ export const HandleActionCardType: React.FC<{ action: PlaceSessionAction }> = ({
         case PLACE_SESSION_ACTIONS_ENUM.UPDATE:
             return <CommunityCardAction action={action} />
 
+        case PLACE_SESSION_ACTIONS_ENUM.RECENT_ACTIVITY:
+            return <CommunityCardAction action={action} />
+
     }
 
     return null

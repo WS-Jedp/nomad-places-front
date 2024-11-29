@@ -46,6 +46,7 @@ export const RowPlacesFilterOptions: React.FC<{ chilren?: JSX.Element}> = ({ chi
                     </div>
                 ))
             }
+            
 
         </IonRow>
     )

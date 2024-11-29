@@ -220,7 +220,7 @@ export const GeneralHeader: React.FC = () => {
         className="block font-bold text-black text-xl cursor-pointer"
         onClick={onLogo}
       >
-        Spots
+        Coffi
       </h1>
 
       <div

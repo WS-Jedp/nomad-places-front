@@ -37,6 +37,7 @@
             "updateAmountOfPeople": "Hay entre {{firstAmount}} y {{lastAmount}} personas en el spot.",
             "updatePerfectTo": "El spot es perfecto para",
             "updateStatus": "El spot está",
+            "recentActivity": "Ha compartido una imagen del spot",
             "confirmation": {
                 "amountOfPeople": "¿Es esta la cantidad de personas en el spot?",
                 "perfectTo": "¿Es este el ambiente del spot?",

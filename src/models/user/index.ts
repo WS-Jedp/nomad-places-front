@@ -26,5 +26,17 @@ export interface Person {
     country?: string
     languages?: string[]
     industry?: INDUSTRIES[]
-    genre?: string;
+    genre?: PERSON_GENDER;
 }
+
+export enum PERSON_GENDER {
+    MALE = 'MALE',
+    FEMALE = 'FEMALE',
+    OTHER = 'OTHER'
+}
+
+export const PERSON_GENDER_LIST = [
+    PERSON_GENDER.FEMALE,
+    PERSON_GENDER.MALE,
+    PERSON_GENDER.OTHER
+]

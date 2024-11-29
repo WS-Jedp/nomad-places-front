@@ -1,8 +1,8 @@
 import { ReponseDTO } from "../response";
 
 export class Request {
-  private SERVER_BASE_URL = "http://localhost:3000/";
-  protected baseUrl: string = this.SERVER_BASE_URL;
+  private SERVER_BASE_URL = process.env.REACT_APP_SERVER_BASE_URL;
+  protected baseUrl?: string = this.SERVER_BASE_URL;
   protected domain: string;
   protected auth: boolean = false;
   protected token: string = "";

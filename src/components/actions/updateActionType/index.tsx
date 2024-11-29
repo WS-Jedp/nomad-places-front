@@ -39,6 +39,16 @@ export const UpdateActionType: React.FC<{ payload: PlaceSessionActionDataPayload
                     </p>
                 </div>
             )
+            
+        case UPDATE_ACTIONS.RECENT_ACTIVITY:
+            if(!payloadValue) return null
+            return (
+                <div>
+                    <p className="font-light text-sm">
+                        {t('spots.messages.session.recentActivity')}
+                    </p>
+                </div>
+            )
     }
 
    return null

@@ -12,7 +12,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
         <>
            <GeneralHeader />
 
-            <IonContent>
+            <IonContent className='bg-white'>
                 {
                     children
                 }

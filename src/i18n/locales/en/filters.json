@@ -83,6 +83,11 @@
             "ENGINEER": "Engineer",
             "ARCHITECT": "Architect",
             "OTHER": "Other"
+        },
+        "genders": {
+            "FEMALE": "Woman",
+            "MALE": "Man",
+            "OTHER": "Other"
         }
     },
     "messages": {

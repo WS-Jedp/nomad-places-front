@@ -2,6 +2,7 @@ import ReactDOM from "react-dom/server";
 import {
   handleCardColor,
   handleMindsetIcon,
+  handleShadowCardColor,
   handleSpotTypeIcon,
 } from "../../../../common/utils/icons/icons";
 import { PlaceWithCachedSession } from "../../../../models/session";
@@ -31,8 +32,8 @@ const CustomPlaceMarkerContent: React.FC<{
                       hover:z-50
                     rounded-full p-2
                     ${handleCardColor(place.knownFor)}
+                    ${handleShadowCardColor(place.knownFor)}
                     ${scale ? scale : ""}
-                    shadow-lg
                 `}
     >
       <span

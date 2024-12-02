@@ -144,7 +144,7 @@ export const GeneralHeader: React.FC = () => {
     );
     if (!spotPeopleAmountOption) return t("filters.labels.howManyPeople?");
 
-    return `${spotPeopleAmountOption.text} ${t("filters.title.people")}`;
+    return `${spotPeopleAmountOption.text} ${t("filters.titles.people")}`;
   }
 
   function handleSpotCommoditiesFilterValue() {

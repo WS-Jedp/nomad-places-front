@@ -38,7 +38,8 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
   const authUser = useAppSelector((state) => state.user.auth);
   const userSession = useAppSelector((state) => state.userSession);
   const {
-    selectedSpotMindsetFilter,
+    spotKnownForFilter,
+    selectedSpotKnownForFilter,
     selectedSpotAmountPeopleFilter,
     selectedSpotCommoditiesFilter,
     selectedSpotRulesFilter,
@@ -48,6 +49,7 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
     spotMindsetFilter,
     spotRulesFilters,
     spotTypesFilter,
+    selectedSpotMindsetFilter,
   } = useAppSelector((state) => state.filters);
   const allFilters = useAppSelector((state) => state.filters);
   const [isSearchingPlaces, setIsSearchingPlaces] = useState(false);
@@ -100,36 +102,36 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
       // ---------------------------------
       // Filtering for the spot mindset
       if (
-        selectedSpotMindsetFilter.length > 0 &&
-        selectedSpotMindsetFilter.length < spotMindsetFilter.length
+        selectedSpotKnownForFilter.length > 0 &&
+        selectedSpotKnownForFilter.length < spotKnownForFilter.length
       ) {
-        const selectedSpotMindsetsFilter = selectedSpotMindsetFilter.map(
+        const currentSpotKnownForFilter = selectedSpotKnownForFilter.map(
           (typeID) => {
-            return spotMindsetFilter.find((mindset) => mindset.id === typeID)
+            return spotKnownForFilter.find((mindset) => mindset.id === typeID)
               ?.name;
           }
         );
 
-        if (!selectedSpotMindsetsFilter.includes(place.knownFor)) {
+        if (!currentSpotKnownForFilter.includes(place.knownFor)) {
           isValid = false;
         }
 
         // This code it's for the real time filtering (Premium service, not implemented yet)
         // const cachedBestMindsetTo =
-        //   place.sessionCachedData.bestMindsetTo.reduce((prev, curr) =>
+        //   place.sessionCachedData.bestMindsetTo?.reduce((prev, curr) =>
         //     prev.actions.length > curr.actions.length ? prev : curr
         //   );
 
         // if (cachedBestMindsetTo && cachedBestMindsetTo.actions.length > 0) {
         //   if (
-        //     !selectedSpotMindsetsFilter.includes(cachedBestMindsetTo.mindset)
+        //     !currentSpotKnownForFilter.includes(cachedBestMindsetTo.mindset)
         //   ) {
         //     isValid = false;
         //     return;
         //   }
         // } else {
-        //   if (selectedSpotMindsetsFilter.length > 0) {
-        //     if (!selectedSpotMindsetsFilter.includes(place.knownFor)) {
+        //   if (currentSpotKnownForFilter.length > 0) {
+        //     if (!currentSpotKnownForFilter.includes(place.knownFor)) {
         //       isValid = false;
         //       return;
         //     }
@@ -169,29 +171,60 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
         });
       }
 
-      // This feature for premium users (Not implemented yet)
-      // Filtering by Amount of people
-      // if (
-      //   selectedSpotAmountPeopleFilter &&
-      //   place.sessionCachedData.amountOfPeople
-      // ) {
-      //   const amountOfPeopleFilter = spotAmountPeopleFilter.find(
-      //     (amount) => amount.id === selectedSpotAmountPeopleFilter
-      //   );
-      //   if (!place.sessionCachedData) return;
-      //   const mostAmountOfPeopleInCachedSession =
-      //     place.sessionCachedData.amountOfPeople.reduce((prev, curr) =>
-      //       prev.actions.length > curr.actions.length ? prev : curr
-      //     );
-      //   if (
-      //     mostAmountOfPeopleInCachedSession.actions.length === 0 ||
-      //     mostAmountOfPeopleInCachedSession.amount !==
-      //       amountOfPeopleFilter?.text
-      //   ) {
-      //     isValid = false;
-      //     return;
-      //   }
-      // }
+      // Filtering by current amount of people from cached data (Only for paid users)
+      if (
+        selectedSpotAmountPeopleFilter &&
+        place.sessionCachedData.amountOfPeople
+      ) {
+        const amountOfPeopleFilter = spotAmountPeopleFilter.find(
+          (amount) => amount.id === selectedSpotAmountPeopleFilter
+        );
+        if (!place.sessionCachedData) return;
+        const mostAmountOfPeopleInCachedSession =
+          place.sessionCachedData.amountOfPeople.reduce((prev, curr) =>
+            prev.actions.length > curr.actions.length ? prev : curr
+          );
+        if (
+          mostAmountOfPeopleInCachedSession.actions.length === 0 ||
+          mostAmountOfPeopleInCachedSession.amount !==
+            amountOfPeopleFilter?.text
+        ) {
+          isValid = false;
+          return;
+        }
+      }
+
+      // Filtering by current mindset from cached data (Only for paid users)
+      if (
+        selectedSpotMindsetFilter.length > 0 &&
+        place.sessionCachedData.bestMindsetTo
+      ) {
+        const selectedSpotMindset = selectedSpotMindsetFilter.map(
+          (mindsetID) => {
+            return spotMindsetFilter.find((mindset) => mindset.id === mindsetID)
+              ?.name;
+          }
+        );
+
+        if (!place.sessionCachedData) return;
+        const mostMindsetInCachedSession =
+          place.sessionCachedData.bestMindsetTo.reduce((prev, curr) =>
+            prev.actions.length > curr.actions.length ? prev : curr
+          );
+
+        // If there is no real time data, we should use the knownFor data
+        if (mostMindsetInCachedSession.actions.length === 0) {
+          if (!selectedSpotMindset.includes(place.knownFor)) {
+            isValid = false;
+            return;
+          }
+        } else if (
+          !selectedSpotMindset.includes(mostMindsetInCachedSession.mindset)
+        ) {
+          isValid = false;
+          return;
+        }
+      }
       return isValid;
     });
 
@@ -216,7 +249,7 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
   useEffect(() => {
     getFilteredPlaces();
   }, [
-    selectedSpotMindsetFilter,
+    selectedSpotKnownForFilter,
     selectedSpotAmountPeopleFilter,
     selectedSpotCommoditiesFilter,
     selectedSpotRulesFilter,
@@ -226,6 +259,8 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
     spotMindsetFilter,
     spotRulesFilters,
     spotTypesFilter,
+    spotMindsetFilter,
+    selectedSpotMindsetFilter,
   ]);
 
   useEffect(() => {
@@ -234,7 +269,6 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
 
   return (
     <AppLayout>
-     
       <IonRow
         className="
           relative

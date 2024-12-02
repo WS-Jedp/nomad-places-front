@@ -1,42 +1,40 @@
-
 import ReactDOM from "react-dom/server";
 import L from "leaflet";
 
+const CustomClusterMarker: React.FC<{ count: number }> = ({ count }) => {
+  function handleAmountColor() {
+    if (count <= 5)
+      return "bg-blue-300 text-white border-blue-600 hover:bg-blue-200";
+    if (count <= 10)
+      return "bg-indigo-500 text-white border-indigo-500 hover:bg-indigo-600";
 
-const CustomClusterMarker:React.FC<{count: number}> = ({ count }) => {
+    return "bg-amber-300 text-white border-amber-500 hover:bg-amber-500";
+  }
 
-    function handleAmountColor() {
-        if (count < 10) {
-            return "bg-green-500 text-white";
-        } else if (count < 50) {
-            return "bg-yellow-500 text-white";
-        } else {
-            return "bg-red-500 text-white";
-        }
-    }
-
-    return (
-        <article className="flex flex-col items-center justify-center text-center">
-            <div
-            className={`
-                            relative
-                            hover:z-50
-                            rounded-full p-2
-                            ${handleAmountColor()}
-                            font-bold
-                        `}
-            >
-            {count}
-            </div>
-        </article>
-    )
-}
+  return (
+    <article className="flex flex-col items-center justify-center text-center">
+      <div
+        className={`
+            custom-cluster-marker
+            relative
+            hover:z-50
+            rounded-full p-2
+            shamdw
+            ${handleAmountColor()}
+            font-bold
+        `}
+      >
+        {count}
+      </div>
+    </article>
+  );
+};
 
 export const createCustomClusterIcon = (cluster: L.MarkerCluster) => {
-    const count = cluster.getChildCount();
-  
-    return L.divIcon({
-      html: ReactDOM.renderToString(<CustomClusterMarker count={count} />),
-      className: "custom-cluster-icon",
-    });
-  };
+  const count = cluster.getChildCount();
+
+  return L.divIcon({
+    html: ReactDOM.renderToString(<CustomClusterMarker count={count} />),
+    className: "custom-cluster-icon",
+  });
+};

@@ -17,6 +17,8 @@ export interface FiltersState {
     selectedSpotRulesFilter: Number[]
     spotAmountPeopleFilter: SpotAmountPeopleFilter[]
     selectedSpotAmountPeopleFilter: number | null
+    spotKnownForFilter: PlaceMindsetsFilter[]
+    selectedSpotKnownForFilter: Number[]
 }
 
 const mindsetsFilters = [
@@ -27,6 +29,14 @@ const mindsetsFilters = [
     {
         id: 2,
         name: MINDSETS.WORK,
+    },
+    {
+        id: 3,
+        name: MINDSETS.VIBE,
+    },
+    {
+        id: 4,
+        name: MINDSETS.ROMANTIC,
     },
 ]
 
@@ -46,11 +56,11 @@ const spotTypesFilters:PlaceTypesFilter[] = [
     //     name: PLACE_TYPES.LOOKOUT,
     //     title: 'Lookout'
     // },
-    // {
-    //     id: 4,
-    //     name: PLACE_TYPES.PARK,
-    //     title: 'Park'
-    // },
+    {
+        id: 4,
+        name: PLACE_TYPES.PARK,
+        title: 'Park'
+    },
     // {
     //     id: 5,
     //     name: PLACE_TYPES.RESTAURANT,
@@ -149,7 +159,7 @@ const spotAmountPeople: SpotAmountPeopleFilter[] = [
 
 const initialFiltersState: FiltersState = {
     spotMindsetFilter: mindsetsFilters,
-    selectedSpotMindsetFilter: mindsetsFilters.map(filter => filter.id),
+    selectedSpotMindsetFilter: [],
     spotTypesFilter: spotTypesFilters,
     selectedSpotTypesFilter: spotTypesFilters.filter(filter => filter.id === 1 || filter.id === 2).map(filter => filter.id),
     spotCommoditiesFilter: spotCommoditiesFilters,
@@ -157,7 +167,9 @@ const initialFiltersState: FiltersState = {
     spotRulesFilters: spotRulesFilters,
     selectedSpotRulesFilter: [],
     spotAmountPeopleFilter: spotAmountPeople,
-    selectedSpotAmountPeopleFilter: null
+    selectedSpotAmountPeopleFilter: null,
+    selectedSpotKnownForFilter: mindsetsFilters.map(filter => filter.id),
+    spotKnownForFilter: mindsetsFilters
 }
 
 export const filtersSlice = createSlice({
@@ -228,6 +240,20 @@ export const filtersSlice = createSlice({
         removeSpotAmountPeopleFilter: (state) => {
             state.selectedSpotAmountPeopleFilter = null
         },
+
+        // ----------------
+        // Spot known for filters
+        selectSpotKnownForFilter: (state, action: PayloadAction<{ spotKnownForFilterID: number }>) => {
+            state.selectedSpotKnownForFilter = [...state.selectedSpotKnownForFilter, action.payload.spotKnownForFilterID]
+        },
+        removeSpotKnownForFilter: (state, action: PayloadAction<{ spotKnownForFilterID: number }>) => {
+            if(!state.selectedSpotKnownForFilter.length) return
+
+            state.selectedSpotKnownForFilter = state.selectedSpotKnownForFilter.filter(id => id !== action.payload.spotKnownForFilterID)
+        },
+        resetSpotKnownForFilters: (state) => {
+            state.selectedSpotKnownForFilter = initialFiltersState.selectedSpotKnownForFilter
+        }
     },
 })
 
@@ -237,7 +263,8 @@ export const {
     selectSpotTypeFilter, removeSpotTypeFilter, resetSelectedSpotTypeFilters,
     selectCommodityFilter, removeCommodityFilter, resetSelectedCommodityFilters,
     selectSpotRuleFilter, removeSpotRuleFilter, resetSelectedSpotRuleFilters,
-    selectSpotAmountPeopleFilter, removeSpotAmountPeopleFilter
+    selectSpotAmountPeopleFilter, removeSpotAmountPeopleFilter,
+    removeSpotKnownForFilter, selectSpotKnownForFilter, resetSpotKnownForFilters
 } = filtersSlice.actions 
 
 export default filtersSlice.reducer

@@ -4,6 +4,8 @@
         "message": "Select the filters you want to apply"
     },
     "labels": {
+        "knownFor": "A place to",
+        "mindset": "Perfect to",
         "howManyPeople?": "How many people?",
         "whatDoYouNeed?": "What do you need?",
         "whatTypeOfSpot?": "What type of spot?",
@@ -49,7 +51,8 @@
         "coffee": "Coffee",
         "library": "Library",
         "rooftop": "Rooftop",
-        "cowork_zone": "Cowork Zone"
+        "cowork_zone": "Cowork Zone",
+        "park": "Park"
     },
     "mindsets": {
         "work": "Work",

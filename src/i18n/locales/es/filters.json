@@ -4,6 +4,8 @@
         "message": "Selecciona los filtros que necesitas para encontrar el spot perfecto"
     },
     "labels": {
+        "knownFor": "Un lugar para",
+        "mindset": "Perfecto para",
         "howManyPeople?": "¿Cuántas personas?",
         "whatDoYouNeed?": "¿Que necesitas?",
         "whatTypeOfSpot?": "¿Qué tipo de spot?",
@@ -49,7 +51,8 @@
         "coffee": "Café",
         "library": "Librería",
         "rooftop": "Azotea",
-        "cowork_zone": "Coworking"
+        "cowork_zone": "Coworking",
+        "park": "Parque"
     },
     "mindsets": {
         "work": "Trabajar",

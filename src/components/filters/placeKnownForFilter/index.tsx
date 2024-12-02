@@ -1,24 +1,24 @@
 import { IonRow } from "@ionic/react"
-import { resetMindsetlaceFilters, removeMindsetFilter, selectMindsetFilter } from '../../../store/redux/slices/filters'
+import { resetMindsetlaceFilters, removeSpotKnownForFilter, selectSpotKnownForFilter, resetSpotKnownForFilters } from '../../../store/redux/slices/filters'
 
 import { SimpleMindsetCard } from "../../mindsets/cards/simpleCardMindset"
 import { MINDSETS } from "../../../models/mindsets"
 import { useAppDispatch, useAppSelector } from "../../../common/hooks/useTypedSelectors"
 import { useTranslation } from "react-i18next"
 
-export const PlaceMindsetsFilters: React.FC = ()  => {
+export const PlaceKnownForFilter: React.FC = ()  => {
 
     const { t } = useTranslation()
 
     const dispatch = useAppDispatch()
 
-    const { spotMindsetFilter: filters, selectedSpotMindsetFilter: selectedFilters } = useAppSelector(state => state.filters)
+    const { spotKnownForFilter: filters, selectedSpotKnownForFilter: selectedFilters } = useAppSelector(state => state.filters)
 
     const handleAction = (filterID: number) => {
         if(selectedFilters.some(id => id === filterID)) {
-            dispatch( removeMindsetFilter({ mindsetFilterID: filterID }) )
+            dispatch( removeSpotKnownForFilter({ spotKnownForFilterID: filterID }) )
         } else {
-            dispatch( selectMindsetFilter({ mindsetFilterID: filterID }) )
+            dispatch( selectSpotKnownForFilter({ spotKnownForFilterID: filterID }) )
         }
     }
 
@@ -26,7 +26,7 @@ export const PlaceMindsetsFilters: React.FC = ()  => {
 
     const handleAllTagActions = () => {
         if(selectedFilters.length === filters.length) return
-        dispatch( resetMindsetlaceFilters() )
+        dispatch( resetSpotKnownForFilters() )
     }
 
     return (

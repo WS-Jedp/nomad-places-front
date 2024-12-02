@@ -9,6 +9,7 @@ export type PlaceMindsetsFilter = {
 export enum GeneralFiltersEnum {
     type = 'type',
     mindset = 'mindset',
+    knownFor = 'knownFor',
     commodities = 'commodities',
     rules = 'rules',
     people = 'people',

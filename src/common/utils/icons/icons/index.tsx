@@ -66,3 +66,22 @@ export function handleCardColor(mindset: MINDSETS) {
         return 'bg-white text-black border-black'
   }
 }
+
+export function handleShadowCardColor(mindset: MINDSETS) {
+
+  switch (mindset) {
+    case MINDSETS.ALL:
+      return "shadow-lg shadow-amber-400/50";
+    case MINDSETS.STUDY:
+      return "shadow-lg shadow-indigo-400/50";
+    case MINDSETS.WORK:
+      return "shadow-lg shadow-blue-400/50";
+    case MINDSETS.ROMANTIC:
+      return "shadow-lg shadow-pink-400/50";
+    case MINDSETS.VIBE:
+      return "shadow-lg shadow-amber-400/50";
+    default:
+        return 'shadow-lg'
+  }
+
+}

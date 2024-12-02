@@ -108,6 +108,7 @@ export const PlaceCardListItemDesktop: React.FC<PlaceCardListItemProps> = ({
                 <h1 className="font-bold text-black">{place.name}</h1>
               </IonText>
               <IonText>
+                {/* If user have at least the basic subscription plan */}
                 {isAuth && getAmountOfPeopleState() && (
                   <span className="flex flex-row flex-nowrap items-center justify-center font-sans font-regular text-[12px] capitalize mt-1 px-3 border border-black rounded-lg">
                     {getAmountOfPeopleState()}{" "}
@@ -115,6 +116,8 @@ export const PlaceCardListItemDesktop: React.FC<PlaceCardListItemProps> = ({
                   </span>
                 )}
               </IonText>
+              {/* TODO: Add for at least basic subscription current mood of the place */}
+              {/* TODO: Add for at least basic subscription friends that are in the sesion and if not, how many users are in the session */}
               <IonText>
                 <span className="text-xs text-black font-light">
                   {getDistanceToSpot(place)} km{" "}

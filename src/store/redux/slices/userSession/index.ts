@@ -76,7 +76,7 @@ export const UserSessionSlice = createSlice({
     builder.addCase(getUserLastSession.fulfilled, (state, action) => {
         state.sessionID = action.payload?.lastSession?.id || null
         state.inSession = action.payload?.inSession || false
-        state.placeID = action.payload?.lastSession.placeID || null
+        state.placeID = action.payload?.lastSession?.placeID || null
     })
     
   },

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Marker, Popup, useMap } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import {
@@ -23,6 +23,7 @@ import {
 import { MdCoffee } from "react-icons/md";
 import { createCustomPlaceMarker } from "./placeMarker";
 import { createCustomClusterIcon } from "./clusterPlaceMarker";
+import { createUserMarker } from "./userLocationMarker";
 
 
 const CustomProfileMarkerContent: React.FC<{
@@ -38,7 +39,7 @@ const CustomProfileMarkerContent: React.FC<{
 export const LeafletMapMarkers: React.FC = () => {
   const map = useMap();
   const userLocation = useAppSelector((state) => state.user.location);
-  const places = useAppSelector((state) => state.places.nearPlaces);
+  const places = useAppSelector((state) => state.places.filteredPlaces);
   const placeHovered = useAppSelector((state) => state.places.placeOnFocus);
   const currentPlace = useAppSelector((state) => state.places.currentPlace);
   const placeOnFocus = useAppSelector((state) => state.places.placeOnFocus);
@@ -111,36 +112,50 @@ export const LeafletMapMarkers: React.FC = () => {
     await dispatch(setPlaceOnFocus(id));
   }
 
+  const renderFilteredPlaces = useMemo(() => {
+    return places.map((place) => (
+      <Marker
+        key={place.id}
+        position={[place.location.latitude, place.location.longitude]}
+        icon={createCustomPlaceMarker(place, handleSizeAccordingToZoom())}
+        eventHandlers={{
+          click: () => handleClickInPlace(place.id),
+          mouseover: () => handleHoverInPlace(place.id),
+          mouseout: () => dispatch(setPlaceOnFocus("")),
+        }}
+      >
+        {placeOnFocus === place.id && (
+          <Popup closeButton={false} autoPan={false}>
+            <h3>{place.name}</h3>
+          </Popup>
+        )}
+      </Marker>
+    ));
+  }, [places])
+
   return (
     <>
-      {/* Render markers */}
+    {/* User location marker */}
+    {
+        userLocation.latitude && userLocation.longitude && (
+            <Marker
+                position={[userLocation.latitude, userLocation.longitude]}
+                icon={createUserMarker(handleSizeAccordingToZoom())}
+            />
+        )
+    }
 
+
+      {/* Render place markers */}
       <MarkerClusterGroup
         {...({} as any)}
         spiderfyOnMaxZoom={false}
         showCoverageOnHover={true}
         maxClusterRadius={40}
         chunkedLoading={true}
-        // iconCreateFunction={createCustomClusterIcon}
+        iconCreateFunction={createCustomClusterIcon}
       >
-        {places.map((place) => (
-          <Marker
-            key={place.id}
-            position={[place.location.latitude, place.location.longitude]}
-            icon={createCustomPlaceMarker(place, handleSizeAccordingToZoom())}
-            eventHandlers={{
-              click: () => handleClickInPlace(place.id),
-              mouseover: () => handleHoverInPlace(place.id),
-              mouseout: () => dispatch(setPlaceOnFocus("")),
-            }}
-          >
-            {placeOnFocus === place.id && (
-              <Popup closeButton={false} autoPan={false}>
-                <h3>{place.name}</h3>
-              </Popup>
-            )}
-          </Marker>
-        ))}
+        { renderFilteredPlaces }
       </MarkerClusterGroup>
     </>
   );

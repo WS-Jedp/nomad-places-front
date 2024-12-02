@@ -11,6 +11,7 @@ import { PlaceCommoditiesSelection } from "../../../../components/filters/placeC
 import { PlaceMindsetsFilters } from "../../../../components/filters/placeMindsetsFilter"
 import { SpotAmountPeopleFilter } from "../../../../components/filters/spotAmountPeopleFilter"
 import { useAppSelector } from "../../../../common/hooks/useTypedSelectors"
+import { PlaceKnownForFilter } from "../../../../components/filters/placeKnownForFilter"
 
 type SearchSpotsGeneralFiltersProps = {
     closeCallback: () => void
@@ -27,7 +28,8 @@ export const SearchSpotsGeneralFilters:React.FC<SearchSpotsGeneralFiltersProps> 
         spotAmountPeopleFilter, selectedSpotAmountPeopleFilter,
         spotCommoditiesFilter, selectedSpotCommoditiesFilter,
         spotRulesFilters, selectedSpotRulesFilter,
-        spotMindsetFilter, selectedSpotMindsetFilter
+        spotKnownForFilter, selectedSpotKnownForFilter,
+        selectedSpotMindsetFilter, spotMindsetFilter
      } = useAppSelector(state => state.filters)
 
     function handleSpotTypeFilterCurrentValue() {
@@ -58,6 +60,14 @@ export const SearchSpotsGeneralFilters:React.FC<SearchSpotsGeneralFiltersProps> 
         return t(`filters.mindsets.${mindsetOption.name.toLowerCase()}`)
     }
 
+    function handleKnownForFilterCurrentValue() {
+        if(!selectedSpotKnownForFilter.length) return t('filters.labels.none')
+        const mindsetOption = spotKnownForFilter.find(mindset => mindset.id === selectedSpotKnownForFilter[0])
+        if(!mindsetOption) return t('filters.labels.none')
+        if(selectedSpotKnownForFilter.length > 1) return `${t(`filters.mindsets.${mindsetOption.name.toLowerCase()}`)} +${selectedSpotKnownForFilter.length - 1}`
+        return t(`filters.mindsets.${mindsetOption.name.toLowerCase()}`)
+    }
+
     function handleCommoditiesFilterCurrentValue() {
         if(!selectedSpotCommoditiesFilter.length) return t('filters.labels.any')
         const commodityOption = spotCommoditiesFilter.find(commodity => commodity.id === selectedSpotCommoditiesFilter[0])
@@ -75,7 +85,6 @@ export const SearchSpotsGeneralFilters:React.FC<SearchSpotsGeneralFiltersProps> 
     }
 
     function handleOnSearch() {
-
         closeCallback()
     }
 
@@ -123,14 +132,14 @@ export const SearchSpotsGeneralFilters:React.FC<SearchSpotsGeneralFiltersProps> 
 
                 {/* Filter by mindset ambient - Example: For study, work, romantic, etc. */}
                 <SimpleDropdown 
-                    title={t('filters.labels.mindsetVibes')}
-                    currentValue={handleMindsetFilterCurrentValue()}
+                    title={t('filters.labels.knownFor')}
+                    currentValue={handleKnownForFilterCurrentValue()}
                     badge={selectedSpotTypesFilter.length >= 1}
-                    isOpen={currentFilter === GeneralFiltersEnum.mindset}
-                    openCallback={() => setCurrentFilter(GeneralFiltersEnum.mindset)}
+                    isOpen={currentFilter === GeneralFiltersEnum.knownFor}
+                    openCallback={() => setCurrentFilter(GeneralFiltersEnum.knownFor)}
                     closeCallback={() => setCurrentFilter(GeneralFiltersEnum.none)}
                 >
-                    <PlaceMindsetsFilters />
+                    <PlaceKnownForFilter />
                 </SimpleDropdown>
 
                 {/* Filter by commodities from the spot - Example: Public wifi, parking, cowork space, plugs, etc */}
@@ -146,7 +155,6 @@ export const SearchSpotsGeneralFilters:React.FC<SearchSpotsGeneralFiltersProps> 
                 </SimpleDropdown>
 
                 {/* Filter by rules from the spot - Example: closedAt, openAt, petFriendly, under age, smoking */}
-
                 <SimpleDropdown 
                     title={t('filters.titles.rules')}
                     currentValue={handleRulesFilterCurrentValue()}
@@ -159,19 +167,31 @@ export const SearchSpotsGeneralFilters:React.FC<SearchSpotsGeneralFiltersProps> 
                 </SimpleDropdown>
                 
                 {/* Filter by amount of people in the spot - Example: +10 people, -10 people */}
-                {/* <SimpleDropdown 
+                <SimpleDropdown 
                     title={t('filters.labels.peopleAmount')}
                     currentValue={handlPeopleAmountFilterCurrentValue()}
                     badge={selectedSpotAmountPeopleFilter !== null}
                     isOpen={currentFilter === GeneralFiltersEnum.people}
                     openCallback={() => setCurrentFilter(GeneralFiltersEnum.people)}
                     closeCallback={() => setCurrentFilter(GeneralFiltersEnum.none)}
+                    disabled
                 >
                         <SpotAmountPeopleFilter />
-                </SimpleDropdown> */}
+                </SimpleDropdown>
+
+                {/* Filter by amount of people in the spot - Example: +10 people, -10 people */}
+                <SimpleDropdown 
+                    title={t('filters.labels.mindset')}
+                    currentValue={handleMindsetFilterCurrentValue()}
+                    isOpen={currentFilter === GeneralFiltersEnum.mindset}
+                    openCallback={() => setCurrentFilter(GeneralFiltersEnum.mindset)}
+                    closeCallback={() => setCurrentFilter(GeneralFiltersEnum.none)}
+                    disabled
+                >
+                        <PlaceMindsetsFilters />
+                </SimpleDropdown>
                 
                 {/* Filter by distance from current location */}
-
 
             </IonRow>
 

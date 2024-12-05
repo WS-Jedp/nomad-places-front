@@ -1,5 +1,7 @@
 import { IonRow } from "@ionic/react"
+import { useTranslation } from "react-i18next"
 import { MdKeyboardArrowUp, MdLock } from "react-icons/md"
+import { useAppSelector } from "../../../common/hooks/useTypedSelectors"
 
 type SimpleDropdownProps = {
     title: string
@@ -13,6 +15,8 @@ type SimpleDropdownProps = {
 }
 
 export const SimpleDropdown: React.FC<SimpleDropdownProps> = ({ children, isOpen, title, currentValue, openCallback, closeCallback, badge = false, disabled = false }) => {
+    const { t } = useTranslation()
+    const { auth } = useAppSelector(state => state.user)
     return (
         <article className={`
                 relative
@@ -34,17 +38,17 @@ export const SimpleDropdown: React.FC<SimpleDropdownProps> = ({ children, isOpen
                 flex flex-row flex-nowrap items-center justify-between cursor-pointer
             `} onClick={!disabled && !isOpen ? openCallback : closeCallback}>
 
-                <h2 className={`font-bold ${!isOpen ? 'text-lg' : 'text-2xl'} transition-all ease-in-out duration-300 `}>
+                <h2 className={`font-bold ${!isOpen ? 'text-lg' : 'text-2xl'} transition-all ease-in-out duration-300 text-start`}>
                     {title}
                 </h2>
 
                 {
                     // The user must be subscribe at least to the basic plan to use this feature
                     disabled ? (
-                        <article className={`text-xs font-light text-black capitalize ${badge ? 'bg-gray-100 px-4 py-2 rounded-full' : ''}`}>
-                            <div className="flex flex-row flex-nowrap items-center justify-center">
+                        <article className={`text-sm font-light text-black ${badge ? 'bg-gray-100 px-4 py-2 rounded-full' : ''}`}>
+                            <div className="flex flex-row flex-nowrap items-center justify-end text-end">
                                 <span className="mr-2">
-                                    Only for subscribers
+                                     { auth.isAuth ? t('messages.permissions.needUpgradePlan') : t('messages.auth.required.message') }
                                 </span>
                                 <MdLock size={18} color="gray" />
                             </div>

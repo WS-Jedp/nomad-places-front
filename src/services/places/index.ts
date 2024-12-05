@@ -12,7 +12,14 @@ export class placesServices {
     });
   }
 
-  async getAllPlacesWithCachedSession(): Promise<PlacesWithQuickSessionDataDTO> {
+  async getAllPlacesWithCachedSession(token?: string | null): Promise<PlacesWithQuickSessionDataDTO> {
+    if(token) {
+      const places = await this.request.withAuth(token).get<PlacesWithQuickSessionDataDTO>(
+        'all'
+      )
+      return places
+    }
+
     const places = await this.request.get<PlacesWithQuickSessionDataDTO>(
       'all'
     )

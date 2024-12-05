@@ -35,12 +35,15 @@ import {
   stopDiscoveringPlace,
 } from "../../../store/redux/slices/places";
 import { toast } from "react-toastify";
+import { useUserPermissions } from "../../../common/hooks/useUserPermissions";
 
 export const GeneralHeader: React.FC = () => {
   const { t } = useTranslation();
 
   const location = useLocation();
   const history = useHistory();
+
+  const { canDiscoverPlaces } = useUserPermissions();
 
   const showDiscoveringPlace = useAppSelector(
     (state) => state.places.discoveringPlace
@@ -261,23 +264,25 @@ export const GeneralHeader: React.FC = () => {
       </div>
 
       <section className="flex flex-row flex-nowrap items-center justify-center">
-        <button
-          onClick={openDiscoveringPlaceModal}
-          className="
-                            hidden md:flex
-                            flex-items flex-nowrap 
-                            py-2 px-4 mr-3 
-                            items-center justify-center 
-                            outline outline-1 outline-gray-300 rounded-full 
-                            text-center 
-                            cursor-pointer
-                            hover:bg-gray-100
-                        "
-        >
-          <span className="text-black text-sm">
-            {t("actions.discover.suggest.spot")}
-          </span>
-        </button>
+        {canDiscoverPlaces() && (
+          <button
+            onClick={openDiscoveringPlaceModal}
+            className="
+                                hidden md:flex
+                                flex-items flex-nowrap 
+                                py-2 px-4 mr-3 
+                                items-center justify-center 
+                                outline outline-1 outline-gray-300 rounded-full 
+                                text-center 
+                                cursor-pointer
+                                hover:bg-gray-100
+                            "
+          >
+            <span className="text-black text-sm">
+              {t("actions.discover.suggest.spot")}
+            </span>
+          </button>
+        )}
 
         {/* Get geolocation from user */}
         <span
@@ -403,7 +408,9 @@ export const GeneralHeader: React.FC = () => {
               🌟 {t("messages.discover.spot.discovered.thanksForSharing")}
             </h2>
             <div className="w-full h-[2px] my-3 bg-gray-300"></div>
-            <p>{t("messages.discover.spot.discovered.spotInReviewForCommunity")}</p>
+            <p>
+              {t("messages.discover.spot.discovered.spotInReviewForCommunity")}
+            </p>
             <p>{t("messages.discover.spot.discovered.howToApprove")}</p>
             <p className="mb-6">
               {t("messages.discover.spot.discovered.keepAnEyeOnIt")}

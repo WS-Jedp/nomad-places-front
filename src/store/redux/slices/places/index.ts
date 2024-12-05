@@ -11,7 +11,6 @@ import {
   DiscoverSpotDTO,
   newSpotDiscoveredConfirmedDTO,
 } from "../../../../dto/places";
-import { PlaceConfirmationStatus } from "../../../../models/placeConfirmation";
 import { Place, PLACE_CONFIRMATION_STATUS } from "../../../../models/places";
 
 export const getNearestPlaces = createAsyncThunk<
@@ -42,12 +41,13 @@ export const getNearestPlaces = createAsyncThunk<
   }
 });
 
-export const getAllPlaces = createAsyncThunk<PlaceWithCachedSession[] | null>(
+export const getAllPlaces = createAsyncThunk<PlaceWithCachedSession[] | null, undefined, { state: RootState }>(
   "places/getAllPlaces",
   async (params, thunkAPI) => {
     try {
+      const token = thunkAPI.getState().user.auth.token;
       const allPlacesWithCachedSession =
-        await placesServices.getAllPlacesWithCachedSession();
+        await placesServices.getAllPlacesWithCachedSession(token);
       const placesWithSessionData =
         placeWithQuickSessionDTOIntoPlaceWithCachedSession(
           allPlacesWithCachedSession.placesWithQuickSessionData
@@ -189,6 +189,7 @@ export const placesSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getNearestPlaces.fulfilled, (state, action) => {
       if (!action.payload) return;
+      state.nearPlaces = action.payload;
       state.nearPlaces = action.payload;
     });
     builder.addCase(getAllPlaces.fulfilled, (state, action) => {

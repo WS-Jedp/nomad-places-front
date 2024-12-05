@@ -52,9 +52,12 @@ import { RecentActivityFileModal } from "../session/recentActivityFileModal";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { PlaceSessionAction } from "../../models/session/actions";
 import { UserGamification } from "../../models/gamification";
+import { useUserPermissions } from "../../common/hooks/useUserPermissions";
 
 export const PlaceSessionDetail: React.FC = () => {
   const { t } = useTranslation();
+
+  const { canAuthSession } = useUserPermissions()
 
   const dispatch = useAppDispatch();
   const currentPlace = useAppSelector((state) => state.places.currentPlace);
@@ -473,12 +476,14 @@ export const PlaceSessionDetail: React.FC = () => {
           </article>
         ) : (
           // JOIN SESSION BUTTON
-          <SimpleButton
-            action={handleJoinSession}
-            text={t("actions.session.join")}
-            loading={joiningSessionLoader}
-            disabled={!auth.isAuth}
-          />
+          canAuthSession() && (
+            <SimpleButton
+              action={handleJoinSession}
+              text={t("actions.session.join")}
+              loading={joiningSessionLoader}
+              disabled={!auth.isAuth}
+            />
+          )
         )}
       </IonRow>
 
@@ -587,21 +592,45 @@ export const PlaceSessionDetail: React.FC = () => {
         <section
           style={{
             background:
-              "linear-gradient(180deg, rgba(210, 210, 210, 0.90), rgba(210, 210, 210, 1))",
+              "linear-gradient(180deg, rgba(62, 40, 111, 0.961), #110226)",
           }}
-          className="absolute z-40 w-full h-full flex flex-col items-center justify-center text-center"
+          className="absolute z-40 w-full h-full flex flex-col items-center justify-center text-center text-white"
         >
-          <FaLock size={90} className="my-5" />
+          <FaLock size={90} className="my-5" color="white" />
           <h2 className="font-bold text-2xl">
             {t("messages.auth.notLoggedIn")}
           </h2>
-          <div className="w-4/6 h-[1px] bg-black my-3"></div>
+          <div className="w-4/6 h-[1px] bg-white my-3"></div>
           <p className="text-md font-light mx-3">
             {t("messages.auth.required.message")}
           </p>
           <div className="flex flex-col flex-nowrap w-full items-center justify-center mt-4">
             <SimpleButton action={handleLogin} text={t("actions.auth.login")} />
           </div>
+        </section>
+      )}
+
+      {/* User doens't have a plan with enough permissions modal */}
+      {auth.isAuth && !canAuthSession() && (
+        <section
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(62, 40, 111, 0.961), #110226)",
+          }}
+          className="absolute z-40 w-full h-full flex flex-col items-center justify-center text-center"
+        >
+          <article className="m-9 w-3/4 h-auto text-white">
+            <h2 className="font-bold text-2xl">
+              {t("messages.permissions.unlockRealTimeData")}
+            </h2>
+          <div className="w-full mx-auto h-[1px] bg-white my-3"></div>
+            <p className="text-md font-light mx-3">
+              {t("messages.auth.required.explorerPlan")}
+            </p>
+            <div className="flex flex-col flex-nowrap w-full items-center justify-center mt-4">
+              <SimpleButton action={handleLogin} text={t("actions.subscriptionPlan.upgrade")} />
+            </div>
+          </article>
         </section>
       )}
     </IonRow>

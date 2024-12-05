@@ -15,16 +15,10 @@ import {
 import "./custom-marker.css";
 import "react-leaflet-markercluster/dist/styles.min.css";
 import { PlaceWithCachedSession } from "../../../../models/session";
-import {
-  handleCardColor,
-  handleMindsetIcon,
-  handleSpotTypeIcon,
-} from "../../../../common/utils/icons/icons";
-import { MdCoffee } from "react-icons/md";
 import { createCustomPlaceMarker } from "./placeMarker";
 import { createCustomClusterIcon } from "./clusterPlaceMarker";
 import { createUserMarker } from "./userLocationMarker";
-
+import L from 'leaflet';
 
 const CustomProfileMarkerContent: React.FC<{
   place: PlaceWithCachedSession;
@@ -34,12 +28,12 @@ const CustomProfileMarkerContent: React.FC<{
   </div>
 );
 
-
-
 export const LeafletMapMarkers: React.FC = () => {
   const map = useMap();
   const userLocation = useAppSelector((state) => state.user.location);
-  const places = useAppSelector((state) => state.places.filteredPlaces);
+  const { filteredPlaces: places, nearPlaces } = useAppSelector(
+    (state) => state.places
+  );
   const placeHovered = useAppSelector((state) => state.places.placeOnFocus);
   const currentPlace = useAppSelector((state) => state.places.currentPlace);
   const placeOnFocus = useAppSelector((state) => state.places.placeOnFocus);
@@ -131,31 +125,30 @@ export const LeafletMapMarkers: React.FC = () => {
         )}
       </Marker>
     ));
-  }, [places])
+  }, [places]);
+
 
   return (
     <>
-    {/* User location marker */}
-    {
-        userLocation.latitude && userLocation.longitude && (
-            <Marker
-                position={[userLocation.latitude, userLocation.longitude]}
-                icon={createUserMarker(handleSizeAccordingToZoom())}
-            />
-        )
-    }
-
+      {/* User location marker */}
+      {userLocation.latitude && userLocation.longitude && (
+        <Marker
+          position={[userLocation.latitude, userLocation.longitude]}
+          icon={createUserMarker(handleSizeAccordingToZoom())}
+        />
+      )}
 
       {/* Render place markers */}
       <MarkerClusterGroup
+        key={places.length}
         {...({} as any)}
         spiderfyOnMaxZoom={false}
-        showCoverageOnHover={true}
+        showCoverageOnHover={false}
         maxClusterRadius={40}
         chunkedLoading={true}
         iconCreateFunction={createCustomClusterIcon}
       >
-        { renderFilteredPlaces }
+        {renderFilteredPlaces}
       </MarkerClusterGroup>
     </>
   );

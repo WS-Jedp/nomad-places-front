@@ -46,6 +46,9 @@
         "leave": "Abandonar la sesión",
         "update": "Actualizar la sesión"
     },
+    "subscriptionPlan": {
+        "upgrade": "Mejorar mi plan"
+    },
     "discover": {
         "shareSpot": "Compartir Spot",
         "shareDiscovery": "Compartir descubrimiento",

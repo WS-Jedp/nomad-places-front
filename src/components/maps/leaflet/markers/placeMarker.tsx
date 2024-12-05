@@ -17,7 +17,6 @@ function handleIconToRender(place: PlaceWithCachedSession) {
   if (place.type.length > 0 && place.type[0]) {
     return handleSpotTypeIcon(place.type[0]);
   }
-  // If doesn't exist any of both, we should return the rating or some real time data
   return <MdCoffee size={21} />;
 }
 

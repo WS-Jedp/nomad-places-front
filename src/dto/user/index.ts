@@ -1,4 +1,5 @@
 import { Person } from "../../models/user"
+import { Subscription } from "../subscription"
 
 export type UserRequestDTO = {
     id: string
@@ -15,6 +16,7 @@ export type UserRequestDTO = {
     gamification: {
         points: number
     }
+    subscription: Subscription
 }
 
 export type ProfileDTO = UserRequestDTO & {

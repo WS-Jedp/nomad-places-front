@@ -159,9 +159,9 @@ const spotAmountPeople: SpotAmountPeopleFilter[] = [
 
 const initialFiltersState: FiltersState = {
     spotMindsetFilter: mindsetsFilters,
-    selectedSpotMindsetFilter: [],
+    selectedSpotMindsetFilter: mindsetsFilters.map(filter => filter.id),
     spotTypesFilter: spotTypesFilters,
-    selectedSpotTypesFilter: spotTypesFilters.filter(filter => filter.id === 1 || filter.id === 2).map(filter => filter.id),
+    selectedSpotTypesFilter: spotTypesFilters.map(filter => filter.id),
     spotCommoditiesFilter: spotCommoditiesFilters,
     selectedSpotCommoditiesFilter: [],
     spotRulesFilters: spotRulesFilters,

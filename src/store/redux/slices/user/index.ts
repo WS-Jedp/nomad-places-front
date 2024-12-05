@@ -317,6 +317,7 @@ export const userSlice = createSlice({
         gamification: {
           points: action.payload.user.gamification.points || 0,
         },
+        subscription: action.payload.user.subscription,
       };
       state.auth.token = action.payload.access_token;
       state.auth.isAuth = true;
@@ -367,7 +368,8 @@ export const userSlice = createSlice({
         createdDate: action.payload.user.createdDate,
         gamification: {
           points: action.payload.user.gamification.points || 0
-        }
+        },
+        subscription: action.payload.user.subscription,
       };
       state.auth.token = action.payload.access_token;
       state.auth.isAuth = true;
@@ -397,7 +399,8 @@ export const userSlice = createSlice({
         },
         gamification: {
           points: action.payload.gamification.points || 0
-        }
+        },
+        subscription: action.payload.subscription,
       };
       state.auth.token = localStorage.getItem(TOKEN_KEY);
       state.auth.isAuth = true;

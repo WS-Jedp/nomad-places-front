@@ -1,3 +1,4 @@
+import { Subscription } from "../../dto/subscription"
 import { INDUSTRIES } from "../industries"
 
 export interface User {
@@ -14,7 +15,8 @@ export interface User {
     visitedPlacesIDs?: string[]
     gamification: {
         points: number
-    }
+    },
+    subscription: Subscription
 }
 
 export interface Person {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -25,6 +25,8 @@ import { getUserLastSession } from "../../store/redux/slices/userSession";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { UserLastSession } from "../../dto/session";
 import LeafletMap from "../../components/maps/leaflet/container";
+import { useUserPermissions } from "../../common/hooks/useUserPermissions";
+import { PLACE_CONFIRMATION_STATUS } from "../../models/places";
 
 interface SearchPlacesProps {}
 
@@ -37,6 +39,7 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
   const userLocation = useAppSelector((state) => state.user.location);
   const authUser = useAppSelector((state) => state.user.auth);
   const userSession = useAppSelector((state) => state.userSession);
+  const { canViewDiscoveredPlaces } = useUserPermissions();
   const {
     spotKnownForFilter,
     selectedSpotKnownForFilter,
@@ -76,9 +79,17 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
     }
   }
 
-  function getFilteredPlaces() {
+  async function getFilteredPlaces() {
     const filteredPlaces = places.nearPlaces.filter((place) => {
       let isValid = true;
+
+      if (
+        !canViewDiscoveredPlaces() &&
+        place.discoveredByID &&
+        place.confirmationStatus === PLACE_CONFIRMATION_STATUS.RECOMMENDED
+      ) {
+        isValid = false;
+      }
 
       // ---------------------------------
       // Filtering for the spot type
@@ -224,11 +235,27 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
           isValid = false;
           return;
         }
+      } else {
+        if (selectedSpotMindsetFilter.length !== 0) {
+          const currentSpotMindsetFilter = selectedSpotMindsetFilter.map(
+            (typeID) => {
+              return spotMindsetFilter.find((mindset) => mindset.id === typeID)
+                ?.name;
+            }
+          );
+
+          if (
+            selectedSpotMindsetFilter.length !== spotMindsetFilter.length &&
+            !currentSpotMindsetFilter.includes(place.knownFor)
+          ) {
+            isValid = false;
+          }
+        }
       }
       return isValid;
     });
 
-    dispatch(setFilteredPlaces(filteredPlaces));
+    await dispatch(setFilteredPlaces(filteredPlaces));
   }
 
   async function fetchUserLastSession() {
@@ -249,6 +276,7 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
   useEffect(() => {
     getFilteredPlaces();
   }, [
+    places.nearPlaces,
     selectedSpotKnownForFilter,
     selectedSpotAmountPeopleFilter,
     selectedSpotCommoditiesFilter,

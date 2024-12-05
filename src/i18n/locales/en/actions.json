@@ -34,6 +34,9 @@
         "removePicture": "Remove Profile Picture",
         "addPicture": "Add Profile Picture"    
     },
+    "subscriptionPlan": {
+        "upgrade": "Upgrade my plan"
+    },
     "social": {
         "follow": "Follow",
         "unfollow": "Unfollow"

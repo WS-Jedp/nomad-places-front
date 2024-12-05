@@ -1,4 +1,6 @@
 export enum PLACE_TYPES {
+    ALL = "ALL",
+    UNKNOWN = "UNKNOWN",
     COFFEE = "COFFEE",
     LIBRARY = "LIBRARY",
     SQUARE = "SQUARE",

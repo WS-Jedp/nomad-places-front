@@ -9,6 +9,8 @@ import { SimpleButton } from "../../components/buttons/simple";
 import { MdInfoOutline } from "react-icons/md";
 import { useHistory } from "react-router";
 import { createSocket } from "../../store/redux/slices/userSession";
+import { RowPlacesTypeFilterOptions } from "../../components/filters/rowPlaceTypeFilterOptions";
+import { useUserPermissions } from "../../common/hooks/useUserPermissions";
 
 interface ListSearchPlacesProps {
   children?: JSX.Element;
@@ -19,6 +21,7 @@ export const ListSearchPlaces: React.FC<ListSearchPlacesProps> = ({
 }) => {
   const { t } = useTranslation();
   const history = useHistory();
+  const { canUseRealTimeFilters } = useUserPermissions();
 
   const userSession = useAppSelector((state) => state.userSession);
   const {
@@ -29,7 +32,7 @@ export const ListSearchPlaces: React.FC<ListSearchPlacesProps> = ({
   const dispatch = useAppDispatch();
 
   const goToPlaceSession = async () => {
-    if(!userData || !userSession.placeID) return;
+    if (!userData || !userSession.placeID) return;
     await dispatch(
       createSocket({
         userID: userData.id,
@@ -45,7 +48,11 @@ export const ListSearchPlaces: React.FC<ListSearchPlacesProps> = ({
     <>
       {/* Filters */}
       {/* <LocationBasicInformation /> */}
-      <RowPlacesFilterOptions />
+      {canUseRealTimeFilters() ? (
+        <RowPlacesFilterOptions />
+      ) : (
+        <RowPlacesTypeFilterOptions />
+      )}
 
       {/* {userSession.inSession && (
         <IonRow className="w-full border-solid border-b-[1px] px-12 bg-indigo-100 ">

@@ -5,7 +5,10 @@ import {
   useAppSelector,
 } from "../../../../../common/hooks/useTypedSelectors";
 import { computeDistanceToSpot } from "../../../../../common/utils/geoLocation";
-import { handleCardColor, handleMindsetIcon } from "../../../../../common/utils/icons/icons";
+import {
+  handleCardColor,
+  handleMindsetIcon,
+} from "../../../../../common/utils/icons/icons";
 import { Place } from "../../../../../models/places";
 import { PlaceWithCachedSession } from "../../../../../models/session";
 import {
@@ -13,6 +16,7 @@ import {
   setPlaceOnFocus,
 } from "../../../../../store/redux/slices/places";
 import { PlaceCardMultimediaSlider } from "../../../../slider/placeCardMultimedia";
+import { useUserPermissions } from "../../../../../common/hooks/useUserPermissions";
 
 interface PlaceCardListItemProps {
   place: PlaceWithCachedSession;
@@ -27,6 +31,8 @@ export const PlaceCardListItemDesktop: React.FC<PlaceCardListItemProps> = ({
   const userLocation = useAppSelector((state) => state.user.location);
   const { isAuth } = useAppSelector((state) => state.user.auth);
   const dispatch = useAppDispatch();
+
+  const { canViewPlaceRealTimeData } = useUserPermissions();
 
   async function handleOnPlaceHover() {
     await dispatch(setPlaceOnFocus(place.id));
@@ -87,10 +93,14 @@ export const PlaceCardListItemDesktop: React.FC<PlaceCardListItemProps> = ({
           onImage={() => handleClick()}
         />
 
-        {/* Known for */}
-        {place.knownFor && (
+        {/* Perfect to (Real time data) or Known for */}
+        {canViewPlaceRealTimeData() && place.knownFor && (
           <article className="absolute bottom-0 right-5 p-1 z-[999]">
-            <div className={`opacity-90 rounded-full flex items-center justify-center p-1 ${handleCardColor(place.knownFor)} z`}>
+            <div
+              className={`opacity-90 rounded-full flex items-center justify-center p-1 ${handleCardColor(
+                place.knownFor
+              )} z`}
+            >
               {place.knownFor && handleMindsetIcon(place.knownFor, 9)}
             </div>
           </article>
@@ -107,9 +117,10 @@ export const PlaceCardListItemDesktop: React.FC<PlaceCardListItemProps> = ({
               <IonText>
                 <h1 className="font-bold text-black">{place.name}</h1>
               </IonText>
+
               <IonText>
                 {/* If user have at least the basic subscription plan */}
-                {isAuth && getAmountOfPeopleState() && (
+                {canViewPlaceRealTimeData() && getAmountOfPeopleState() && (
                   <span className="flex flex-row flex-nowrap items-center justify-center font-sans font-regular text-[12px] capitalize mt-1 px-3 border border-black rounded-lg">
                     {getAmountOfPeopleState()}{" "}
                     {<MdPeople className="mx-1" size={12} />}

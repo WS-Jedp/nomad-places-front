@@ -6,6 +6,7 @@ import { handleCardColor, handleMindsetIcon } from "../../../../../common/utils/
 import { Place } from "../../../../../models/places"
 import { PlaceWithCachedSession } from "../../../../../models/session"
 import { HandleMultimediaCard } from "../../../../multimedia/cards/helpers/handleMultimediaCard"
+import { useUserPermissions } from "../../../../../common/hooks/useUserPermissions"
 
 interface PlaceCardListItemProps {
     place: PlaceWithCachedSession
@@ -17,6 +18,7 @@ export const PlaceCardListItemMobile: React.FC<PlaceCardListItemProps> = ({ plac
 
     const userLocation = useAppSelector((state) => state.user.location);
     const { isAuth } = useAppSelector((state) => state.user.auth);
+    const { canViewPlaceRealTimeData } = useUserPermissions()
 
     function handleClick (ev: React.MouseEvent<HTMLIonRowElement, MouseEvent>)  {
         ev.preventDefault()
@@ -60,7 +62,7 @@ export const PlaceCardListItemMobile: React.FC<PlaceCardListItemProps> = ({ plac
                                 </IonText>
                                 <IonText>
                                     {
-                                        isAuth && (
+                                        canViewPlaceRealTimeData() && (
                                         getAmountOfPeopleState() && (
                                             <span className="flex flex-row flex-nowrap items-center justify-center font-sans font-regular text-[12px] capitalize mt-1 px-3 border border-black rounded-lg max-w-[90px]">
                                                 {getAmountOfPeopleState()}{" "}
@@ -77,7 +79,7 @@ export const PlaceCardListItemMobile: React.FC<PlaceCardListItemProps> = ({ plac
                             <IonCol size="3">
                                 <IonRow class="flex flex-row flex-nowrap items-end justify-end">
                                     {
-                                        place.knownFor && (
+                                        canViewPlaceRealTimeData() && place.knownFor && (
                                             <div className={`opacity-90 rounded-full flex items-center justify-center p-2 ${handleCardColor(place.knownFor)}`}>
                                                 {place.knownFor && handleMindsetIcon(place.knownFor, 15)}
                                             </div>

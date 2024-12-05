@@ -2,14 +2,20 @@
     "auth": {
         "loginOrRegister": "Login or Register",
         "notLoggedIn": "Your're not logged in",
+        "insufficientPermissions": "You don't have access to this feature",
         "required": {
-            "message": "You need to login or register to access this feature"
+            "message": "You need to login or register to access this feature",
+            "explorerPlan": "This feature is available for users with the Explorer plan or higher. Upgrade your plan now and discover what's happening in real-time at this spot! 🚀"
         },
         "success": {
             "login": "Successfully logged in! Welcome back {{name}} 🎉",
             "register": "You have successfully registered! Welcome to Spots {{name}}",
             "logout": "You have successfully logged out"
         }
+    },
+    "permissions": {
+        "unlockRealTimeData": "🎉 Unlock real-time access!",
+        "needUpgradePlan": "Upgrade your plan to access this feature"
     },
     "welcome": {
         "title": "Welcome to Spots"
@@ -60,7 +66,7 @@
                 "industry": "We don't know what {{name}} does for a living"
             },
             "socialRequest": {
-                "followSent": "Follow request sent" 
+                "followSent": "Follow request sent"
             }
         },
         "userProfile": {

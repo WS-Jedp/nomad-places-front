@@ -17,6 +17,8 @@ import { ListSearchPlaces } from "../../containers/listSearchPlaces";
 import { PlaceQuickSession } from "../../containers/placeQuickSession";
 import { useAppSelector } from "../../common/hooks/useTypedSelectors";
 import { useTranslation } from "react-i18next";
+import { useUserPermissions } from "../../common/hooks/useUserPermissions";
+import { RowPlacesTypeFilterOptions } from "../../components/filters/rowPlaceTypeFilterOptions";
 
 export const ItemsAndMapLayout: React.FC<{
   children: JSX.Element;
@@ -25,9 +27,10 @@ export const ItemsAndMapLayout: React.FC<{
   const history = useHistory();
   const modal = useRef<HTMLIonModalElement>(null);
   const { t } = useTranslation();
-
+  
   const userSession = useAppSelector((state) => state.userSession);
-
+  const { canUseRealTimeFilters } = useUserPermissions()
+  
   const [isMobile] = useIsMobile();
 
   const [shouldModalBeOpen, setShouldModalBeOpen] = useState<boolean>(false);
@@ -71,7 +74,13 @@ export const ItemsAndMapLayout: React.FC<{
             <Route exact path="/home">
               <>
                 {/* <LocationBasicInformation /> */}
-                <RowPlacesFilterOptions />
+                {
+                  canUseRealTimeFilters() ? (
+                    <RowPlacesFilterOptions />
+                  ) : (
+                    <RowPlacesTypeFilterOptions />
+                  )
+                }
                 <IonList
                   className="
                         relative flex flex-col items-start justify-start

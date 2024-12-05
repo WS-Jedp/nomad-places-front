@@ -4,13 +4,13 @@ import { useTranslation } from "react-i18next";
 import { useAppSelector } from "../../../../common/hooks/useTypedSelectors";
 import { useMemo } from "react";
 
-interface AllMindsetTagProps {
+interface AllPlaceTypesTagProps {
   onClick: Function;
 }
 
-export const AllMindsetTag: React.FC<AllMindsetTagProps> = ({ onClick }) => {
+export const AllPlaceTypesTag: React.FC<AllPlaceTypesTagProps> = ({ onClick }) => {
   const { t } = useTranslation();
-  const { selectedSpotMindsetFilter, spotMindsetFilter } = useAppSelector(
+  const { selectedSpotTypesFilter, spotTypesFilter } = useAppSelector(
     (state) => state.filters
   );
   const handleClick: React.MouseEventHandler<HTMLIonChipElement> = (ev) => {
@@ -20,25 +20,25 @@ export const AllMindsetTag: React.FC<AllMindsetTagProps> = ({ onClick }) => {
 
   // Is only able when all filters are selected or none filter is selected
   const isDisabled = useMemo(() => {
-    if (selectedSpotMindsetFilter.length === 0) return false;
-    if (selectedSpotMindsetFilter.length === spotMindsetFilter.length)
+    if (selectedSpotTypesFilter.length === 0) return false;
+    if (selectedSpotTypesFilter.length === spotTypesFilter.length)
       return false;
 
     return true;
-  }, [selectedSpotMindsetFilter, spotMindsetFilter]);
+  }, [selectedSpotTypesFilter, spotTypesFilter]);
   return (
     <IonChip
       outline
-      className={`px-3 py-1 ${isDisabled ? "bg-gray-200" : "bg-amber-100"}`}
+      className={`px-3 py-1 ${isDisabled ? "bg-gray-200" : "bg-blue-200"}`}
       onClick={handleClick}
     >
       <IonIcon
         icon={colorWandOutline}
-        className={`mr-2 ${isDisabled ? "text-gray-400" : "text-amber-400"}`}
+        className={`mr-2 ${isDisabled ? "text-gray-400" : "text-blue-600"}`}
       />
       <IonLabel
         className={`text-md font-medium ${
-          isDisabled ? "text-gray-400" : "text-amber-500"
+          isDisabled ? "text-gray-400" : "text-blue-600"
         }`}
       >
         {t("filters.labels.all")}

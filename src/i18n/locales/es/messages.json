@@ -2,14 +2,20 @@
     "auth": {
         "loginOrRegister": "Iniciar sesión o registrarse",
         "notLoggedIn": "No has iniciado sesión",
+        "insufficientPermissions": "No tienes acceso a esta funcionalidad",
         "required": {
-            "message": "Necesitas iniciar sesión para poder acceder a esta funcionalidad"
+            "message": "Necesitas iniciar sesión para poder acceder a esta funcionalidad",
+            "explorerPlan": "Esta funcionalidad está disponible para usuarios con el plan Explorador o superior. ¡Mejora tu plan ahora y descubre lo que está sucediendo en tiempo real en este lugar! 🚀"
         },
         "success": {
             "login": "¡Iniciaste sesión exitosamente! Bienvenido de vuelta {{name}} 🎉",
             "register": "¡Te has registrado exitosamente! Bienvenido a Spots {{name}}",
             "logout": "Has cerrado sesión exitosamente"
         }
+    },
+    "permissions": {
+        "unlockRealTimeData": "🎉 ¡Desbloquea el acceso en tiempo real!",
+        "needUpgradePlan": "Mejora tu plan para acceder a esta funcionalidad"
     },
     "welcome": {
         "title": "Bienvenido a Spots"

@@ -38,6 +38,7 @@ import { SpotConfirmedSuccessfulModal } from "../discoveredPlaces/modals/spotCon
 import { addDiscoverSpotIntoNearPlaces, approvedCurrentPlace, updateCurrentPlace } from "../../store/redux/slices/places";
 import { AppModal } from "../../components/modals/container";
 import { MultimediaSliderModal } from "../multimediaSliderModal";
+import { useUserPermissions } from "../../common/hooks/useUserPermissions";
 
 interface PlaceQuickSessionProps {
   changePageCallback: Function;
@@ -49,6 +50,8 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
   changePageCallback,
 }) => {
   const { t } = useTranslation();
+
+  const { canApproveDiscoveredPlaces, canAuthSession } = useUserPermissions()
 
   const history = useHistory();
   const dispatch = useAppDispatch();
@@ -190,7 +193,7 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
 
       {/* Place Headers */}
       {
-        currentPlace?.confirmationStatus && currentPlace?.confirmationStatus === PLACE_CONFIRMATION_STATUS.RECOMMENDED && (
+        canApproveDiscoveredPlaces() && currentPlace?.confirmationStatus && currentPlace?.confirmationStatus === PLACE_CONFIRMATION_STATUS.RECOMMENDED && (
           <IonRow class="w-full px-3 py-2 ion-no-padding border-b border-gray-300 shadow-sm">
             <IonCol size="12">
               <IonRow className="h-full flex flex-col justify-center">
@@ -249,16 +252,31 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
           {/* People in the sesion */}
           <article className="mb-3">
             <IonText>
-              <h3 className="text-lg font-bold">{ t('spots.session.usersInSession') }</h3>
+              <h3 className="text-lg font-bold">{ t('spots.information.description') }</h3>
             </IonText>
-            <IonRow className="w-full flex flex-row flex-nowrap items-center pt-3 md:pt-2">
-              <AvatarGroup
-                users={currentPlace?.sessionCachedData?.usersInSession || []}
-              />
-              {/* Button to join quickly to the session of the place, temporarily commented */}
-              {/* <SimpleButton text="Join" action={(ev) => {}} /> */}
+            <IonRow className="w-full flex flex-row flex-nowrap items-center pt-1">
+              <IonText className="text-md font-normal">
+                { currentPlace?.description }
+              </IonText>
             </IonRow>
           </article>
+
+          {
+            canAuthSession() && (
+              <article className="mb-3">
+                <IonText>
+                  <h3 className="text-lg font-bold">{ t('spots.session.usersInSession') }</h3>
+                </IonText>
+                <IonRow className="w-full flex flex-row flex-nowrap items-center pt-3 md:pt-2">
+                  <AvatarGroup
+                    users={currentPlace?.sessionCachedData?.usersInSession || []}
+                  />
+                  {/* Button to join quickly to the session of the place, temporarily commented */}
+                  {/* <SimpleButton text="Join" action={(ev) => {}} /> */}
+                </IonRow>
+              </article>
+            )
+          }
 
           {/* ------------------------- */}
           {/* Status of the place in the session */}
@@ -277,16 +295,20 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
 
             {/* ------------------------- */}
             {/* Mindset of the session */}
-            <IonCol size="6">
-              <IonText>
-                <h3 className="text-lg font-bold">{t('spots.session.knownFor')}</h3>
-              </IonText>
-              <IonRow className="w-full flex flex-row flex-nowrap items-center">
-                <HandleMindsetTags
-                  mindset={currentPlace?.knownFor || MINDSETS.UNKNOWN}
-                />
-              </IonRow>
-            </IonCol>
+            {
+              canAuthSession() && (
+                <IonCol size="6">
+                  <IonText>
+                    <h3 className="text-lg font-bold">{t('spots.session.knownFor')}</h3>
+                  </IonText>
+                  <IonRow className="w-full flex flex-row flex-nowrap items-center">
+                    <HandleMindsetTags
+                      mindset={currentPlace?.knownFor || MINDSETS.UNKNOWN}
+                    />
+                  </IonRow>
+                </IonCol>
+              )
+            }
           </IonRow>
         </IonRow>
 

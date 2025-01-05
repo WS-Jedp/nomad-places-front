@@ -36,10 +36,12 @@ import {
 } from "../../../store/redux/slices/places";
 import { toast } from "react-toastify";
 import { useUserPermissions } from "../../../common/hooks/useUserPermissions";
+import { useIsMobile } from "../../../common/hooks/useIsMobile";
 
 export const GeneralHeader: React.FC = () => {
   const { t } = useTranslation();
-
+  const [ isMobile ] = useIsMobile()
+ 
   const location = useLocation();
   const history = useHistory();
 
@@ -219,12 +221,19 @@ export const GeneralHeader: React.FC = () => {
                     z-[999]
                 "
     >
-      <h1
-        className="block font-bold text-black text-xl cursor-pointer"
-        onClick={onLogo}
-      >
-        Coffi
-      </h1>
+      <article className="flex flex-row flex-nowrap items-center" onClick={onLogo}>
+        <img src="/assets/images/coffi-logo-v2.svg" width={33} />
+        {
+          !isMobile && (
+            <div className="flex flex-col items-start jusitfy-center h-full border-l-[3px] border-solid border-black ml-3 pl-2">
+              <h1
+                className="block font-bold text-black text-2xl cursor-pointer my-0 py-0">
+                Coffi
+              </h1>
+            </div>
+          ) 
+        }
+      </article>
 
       <div
         className="

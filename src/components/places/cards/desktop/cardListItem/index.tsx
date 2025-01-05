@@ -63,15 +63,26 @@ export const PlaceCardListItemDesktop: React.FC<PlaceCardListItemProps> = ({
     );
   }
 
+  function getMindsetOrKnownForState() {
+    if (!place.sessionCachedData?.bestMindsetTo?.length)
+      return place?.knownFor || null;
+
+    const mostMindset = place.sessionCachedData.bestMindsetTo.reduce(
+      (prev, curr) => (prev.actions.length > curr.actions.length ? prev : curr)
+    );
+    if (mostMindset.actions.length === 0) return place.knownFor || null;
+    return mostMindset.mindset;
+  }
+
   function handleClick() {
     action();
   }
 
   return (
-    <IonRow
+    <IonCol
       className={`
             bg-none bg-white-300 cursor-pointer rounded-md
-            flex items-center p-2 my-1 mx-0 w-4/12 max-h-[300px] border-1 border-black md:bg-white
+            flex flex-col items-start justify-between py-5 px-2 my-1 mx-0 w-4/12 h-[240px] border-1 border-black md:bg-white
             transition-all duration-300 ease-in-out
             ${placeOnFocus === place.id ? "shadow-md border-black" : ""}
             hover:shadow-md hover:border-black
@@ -94,29 +105,32 @@ export const PlaceCardListItemDesktop: React.FC<PlaceCardListItemProps> = ({
         />
 
         {/* Perfect to (Real time data) or Known for */}
-        {canViewPlaceRealTimeData() && place.knownFor && (
+        {canViewPlaceRealTimeData() && getMindsetOrKnownForState() && (
           <article className="absolute bottom-0 right-5 p-1 z-[999]">
             <div
               className={`opacity-90 rounded-full flex items-center justify-center p-1 ${handleCardColor(
-                place.knownFor
+                getMindsetOrKnownForState()
               )} z`}
             >
-              {place.knownFor && handleMindsetIcon(place.knownFor, 9)}
+              {handleMindsetIcon(getMindsetOrKnownForState(), 9)}
             </div>
           </article>
         )}
       </IonRow>
       <IonItem
-        className="relative w-full p-0 ion-no-padding flex flex-col border-none"
+        className="relative w-full p-0 ion-no-padding flex flex-col border-none mt-2"
         color="none"
         onClick={handleClick}
       >
         <IonRow className="relative w-full p-3">
           <IonRow class="w-full mb-3 ion-no-padding">
-            <IonCol size="12" class="flex flex-col justify-center items-start">
-              <IonText>
-                <h1 className="font-bold text-black">{place.name}</h1>
-              </IonText>
+            <IonCol
+              size="12"
+              class="relative flex flex-col justify-start items-start"
+            >
+              <h1 className="truncate max-w-full overflow-ellipsis font-bold text-black">
+                {place.name}
+              </h1>
 
               <IonText>
                 {/* If user have at least the basic subscription plan */}
@@ -138,6 +152,6 @@ export const PlaceCardListItemDesktop: React.FC<PlaceCardListItemProps> = ({
           </IonRow>
         </IonRow>
       </IonItem>
-    </IonRow>
+    </IonCol>
   );
 };

@@ -8,6 +8,7 @@ import Discover from './discover.json';
 import Translation from './translation.json';
 import Gamification from './gamification.json';
 import Visited from './visited.json';
+import User from './user.json';
 
 export default {
     actions: Action,
@@ -19,5 +20,6 @@ export default {
     discover: Discover,
     translations: Translation,
     gamification: Gamification,
-    visited: Visited
+    visited: Visited,
+    user: User
 }

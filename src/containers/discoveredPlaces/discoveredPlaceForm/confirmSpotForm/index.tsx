@@ -16,12 +16,13 @@ import {
   DiscoverSpotDTO,
   newSpotDiscoveredConfirmedDTO,
 } from "../../../../dto/places";
-import { SpotCommoditiesFilters } from "../../../../models/filters";
+import { SpotCommoditiesFilters, SpotRulesFilters } from "../../../../models/filters";
 import { MINDSETS } from "../../../../models/mindsets";
 import { DiscoveredPlaceConfirmation } from "../../../../models/placeConfirmation";
 import {
   PLACE_COMMODITIES_ENUM,
   PLACE_RULES_ENUM,
+  WIFI_SPEED_COMMODITY_ENUM,
 } from "../../../../models/places";
 import { PLACE_TYPES } from "../../../../models/placeTypes";
 import { addError } from "../../../../store/redux/slices/controlledErrors";
@@ -157,25 +158,12 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
     setSelectedCommodities(allCommoditiesSelected);
   }
   //  Commodities with detail
-  const [wifiSpeed, setWifiSpeed] = useState<string>();
+  const [wifiSpeed, setWifiSpeed] = useState<WIFI_SPEED_COMMODITY_ENUM>();
   const [plugsAmount, setPlugsAmonunt] = useState<string>();
-
-  function handleCommodityWithDetailInput(
-    commodity: SpotCommoditiesFilters,
-    value: string
-  ) {
-    if (commodity.commodity === PLACE_COMMODITIES_ENUM.PUBLIC_WIFI) {
-      setWifiSpeed(value);
-    }
-
-    if (commodity.commodity === PLACE_COMMODITIES_ENUM.PLUGS_AMOUNT) {
-      setPlugsAmonunt(value);
-    }
-  }
 
   function getRecommendedCommoditiesWithDetail() {
     if (currentPlace?.commodities?.wifiSpeed) {
-      setWifiSpeed(currentPlace.commodities.wifiSpeed.toString());
+      setWifiSpeed(currentPlace.commodities.wifiSpeed);
     }
     if (currentPlace?.commodities?.plugsAmount) {
       setPlugsAmonunt(currentPlace.commodities.plugsAmount.toString());
@@ -526,11 +514,8 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
               commodity.commodity === PLACE_COMMODITIES_ENUM.PUBLIC_WIFI
           )?.id || 0
         )
-          ? typeof Number(wifiSpeed) === "number"
-            ? Number(wifiSpeed)
-            : null
-          : null,
-      },
+          ? wifiSpeed as WIFI_SPEED_COMMODITY_ENUM: null,
+      }
     };
 
     return {
@@ -541,6 +526,10 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
       rules: {
         closedAt: closingTime,
         openAt: openingTime,
+        consumptionPolicy: null,
+        noisePolicy: null,
+        privacyPolicy: null,
+        timeLimit: null,
         ...currentRules,
       },
       location: {
@@ -559,12 +548,7 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
         wifiSpeed: advancedCommodities.wifi.speed
           ? advancedCommodities.wifi.speed
           : null,
-        parking: selectedCommodities.includes(
-          spotCommoditiesFilter.find(
-            (commodity) =>
-              commodity.commodity === PLACE_COMMODITIES_ENUM.PARKING
-          )?.id || 0
-        ),
+        parking: null,
         coworkSpace: selectedCommodities.includes(
           spotCommoditiesFilter.find(
             (commodity) =>
@@ -577,6 +561,30 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
               commodity.commodity === PLACE_COMMODITIES_ENUM.PUBLIC_BATHROOMS
           )?.id || 0
         ),
+        greenAreas: selectedCommodities.includes(
+          spotCommoditiesFilter.find(
+            commodity =>
+              commodity.commodity === PLACE_COMMODITIES_ENUM.GREEN_AREAS
+          )?.id || 0
+        ),
+        outdoorSeating: selectedCommodities.includes(
+          spotCommoditiesFilter.find(
+            commodity =>
+              commodity.commodity === PLACE_COMMODITIES_ENUM.OUTDOOR_SEATING
+          )?.id || 0
+        ),
+        accessibility: null,
+        alcoholAvailability: null,
+        bakery: null,
+        bakeryQuality: null,
+        cafe: null,
+        cafeQuality: null,
+        comfortLevel: null,
+        eventSpace: null,
+        food: null,
+        foodQuality: null,
+        mobileSignal: null,
+        temperatureControl: null
       },
       multimedia: [],
       discoveredByID: userData.id,
@@ -734,16 +742,16 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
         <SpotRulesInput
           onSpotRule={(rule) => handleRuleInput(rule)}
           selectedSpotRules={selectedRules}
+          selectedRuleOptions={{}}
         />
 
         <SpotCommoditiesInput
-          handleCommodityWithDetailInput={handleCommodityWithDetailInput}
           onSpotCommodity={(commodity) => handleCommodityInput(commodity)}
           selectedSpotCommodities={selectedCommodities}
           commiditiesWithDetail={{
-            [PLACE_COMMODITIES_ENUM.PUBLIC_WIFI]: wifiSpeed || "",
             [PLACE_COMMODITIES_ENUM.PUBLIC_PLUGS]: plugsAmount || "",
           }}
+          selectedCommodityOptions={{}}
         />
       </form>
       {!alreadyConfirmed && !isRecommendByAuthUser && (

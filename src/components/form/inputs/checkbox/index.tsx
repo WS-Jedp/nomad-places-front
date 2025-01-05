@@ -1,10 +1,15 @@
+import { useTranslation } from "react-i18next";
 import { MdCheck } from "react-icons/md";
 
 type SimpleCheckboxProps = {
+  id?: string
   label: string;
   callback: () => void;
   isSelected?: boolean;
   withInputValue?: boolean;
+  withInputOptions?: boolean;
+  options?: any[]
+  isMultiple?: boolean
   inputValue?: string;
   inputPlaceholder?: string;
   onChangeInputValue?: (value: string) => void;
@@ -20,7 +25,11 @@ export const SimpleCheckbox: React.FC<SimpleCheckboxProps> = ({
   withInputValue = false,
   inputPlaceholder = "Ej. 320kbps",
   inputValue = "",
+  options = [],
+  withInputOptions = false,
+  isMultiple = false
 }) => {
+  const { t } = useTranslation()
   return (
     <article
       className={`
@@ -65,6 +74,18 @@ export const SimpleCheckbox: React.FC<SimpleCheckboxProps> = ({
           defaultValue={inputValue}
         />
       )}
+
+      {
+        withInputOptions && onChangeInputValue && (
+          <select multiple={isMultiple} className="max-w-[30%] bg-white border border-zinc-400 rounded-md p-1 px-3 text-sm font-light text-black cursor-pointer" defaultValue={inputValue}>
+            {
+              options.map(opt => (
+                <option value={opt} key={opt}>{t(`filters.options.${opt}`)}</option>
+              ))
+            }
+          </select>
+        )
+      }
     </article>
   );
 };

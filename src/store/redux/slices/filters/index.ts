@@ -51,28 +51,23 @@ const spotTypesFilters:PlaceTypesFilter[] = [
         name: PLACE_TYPES.LIBRARY,
         title: 'Library'
     },
-    // {
-    //     id: 3,
-    //     name: PLACE_TYPES.LOOKOUT,
-    //     title: 'Lookout'
-    // },
+    {
+        id: 3,
+        name: PLACE_TYPES.LOOKOUT,
+        title: 'Lookout'
+    },
     {
         id: 4,
         name: PLACE_TYPES.PARK,
         title: 'Park'
     },
-    // {
-    //     id: 5,
-    //     name: PLACE_TYPES.RESTAURANT,
-    //     title: 'Restaurant'
-    // },
     {
-        id: 6,
+        id: 5,
         name: PLACE_TYPES.ROOFTOP,
         title: 'Rooftop'
     },
     {
-        id: 7,
+        id: 6,
         name: PLACE_TYPES.COWORK_ZONE,
         title: PLACE_TYPES.COWORK_ZONE
     },
@@ -103,7 +98,78 @@ const spotCommoditiesFilters:SpotCommoditiesFilters[] = [
         id: 5,
         commodity: PLACE_COMMODITIES_ENUM.PUBLIC_BATHROOMS,
         name: 'Public Bathrooms',
-    }
+    },
+    {
+        id: 6,
+        commodity: PLACE_COMMODITIES_ENUM.MOBILE_SIGNAL,
+        name: 'Mobile Signal Level',
+    },
+    {
+        id: 7,
+        commodity: PLACE_COMMODITIES_ENUM.FOOD,
+        name: 'Available Type of Food in Place',
+    },
+    {
+        id: 8,
+        commodity: PLACE_COMMODITIES_ENUM.FOOD_QUALITY,
+        name: 'Rating of Food Products',
+    },
+    {
+        id: 9,
+        commodity: PLACE_COMMODITIES_ENUM.COMFORT_LEVEL,
+        name: 'Comfort Level',
+    },
+    {
+        id: 10,
+        commodity: PLACE_COMMODITIES_ENUM.OUTDOOR_SEATING,
+        name: 'Outdoor Seating',
+    },
+    {
+        id: 11,
+        commodity: PLACE_COMMODITIES_ENUM.TEMPERATURE_CONTROL,
+        name: 'Temperature Control',
+    },
+    {
+        id: 12,
+        commodity: PLACE_COMMODITIES_ENUM.ACCESSIBILITY,
+        name: 'Accessibility',
+    },
+    {
+        id: 13,
+        commodity: PLACE_COMMODITIES_ENUM.EVENT_SPACE,
+        name: 'Event Space Available',
+    },
+    {
+        id: 14,
+        commodity: PLACE_COMMODITIES_ENUM.GREEN_AREAS,
+        name: 'Green Areas',
+    },
+    {
+        id: 15,
+        commodity: PLACE_COMMODITIES_ENUM.ALCOHOL_AVAILABILITY,
+        name: 'Alcohol Availability',
+    },
+    {
+        id: 16,
+        commodity: PLACE_COMMODITIES_ENUM.CAFE,
+        name: 'Cafe',
+    },
+    {
+        id: 17,
+        commodity: PLACE_COMMODITIES_ENUM.CAFE_QUALITY,
+        name: 'Cafe Rating',
+    },
+    {
+        id: 18,
+        commodity: PLACE_COMMODITIES_ENUM.BAKERY,
+        name: 'Bakery',
+    },
+    {
+        id: 19,
+        commodity: PLACE_COMMODITIES_ENUM.BAKERY_QUALITY,
+        name: 'Bakery Rating',
+    },
+
 ]
 
 const spotRulesFilters: SpotRulesFilters[] = [
@@ -121,6 +187,26 @@ const spotRulesFilters: SpotRulesFilters[] = [
         id: 3,
         rule: PLACE_RULES_ENUM.UNDER_AGE,
         name: 'Under age allowed',
+    },
+    {
+        id: 4,
+        rule: PLACE_RULES_ENUM.TIME_LIMIT,
+        name: 'Minimum time spent in place',
+    },
+    {
+        id: 5,
+        rule: PLACE_RULES_ENUM.NOISE_POLICY,
+        name: 'Policy about noise levels',
+    },
+    {
+        id: 6,
+        rule: PLACE_RULES_ENUM.CONSUMPTION_POLICY,
+        name: 'Minimum consumption of the place',
+    },
+    {
+        id: 7,
+        rule: PLACE_RULES_ENUM.PRIVACY_POLICY,
+        name: 'Spaces dedicated to each person policy',
     },
 ]
 
@@ -159,16 +245,16 @@ const spotAmountPeople: SpotAmountPeopleFilter[] = [
 
 const initialFiltersState: FiltersState = {
     spotMindsetFilter: mindsetsFilters,
-    selectedSpotMindsetFilter: mindsetsFilters.map(filter => filter.id),
+    selectedSpotMindsetFilter: [],
     spotTypesFilter: spotTypesFilters,
-    selectedSpotTypesFilter: spotTypesFilters.map(filter => filter.id),
+    selectedSpotTypesFilter: [],
     spotCommoditiesFilter: spotCommoditiesFilters,
     selectedSpotCommoditiesFilter: [],
     spotRulesFilters: spotRulesFilters,
     selectedSpotRulesFilter: [],
     spotAmountPeopleFilter: spotAmountPeople,
     selectedSpotAmountPeopleFilter: null,
-    selectedSpotKnownForFilter: mindsetsFilters.map(filter => filter.id),
+    selectedSpotKnownForFilter: [],
     spotKnownForFilter: mindsetsFilters
 }
 

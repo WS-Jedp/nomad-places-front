@@ -34,9 +34,11 @@ export const RowPlacesFilterOptions: React.FC<{ chilren?: JSX.Element}> = ({ chi
             border-y border-gray-300
             px-3 md:px-9
         ">
-            <AllMindsetTag onClick={handleAllTagActions} />
+            <article className="w-auto">
+                <AllMindsetTag onClick={handleAllTagActions} />
+            </article>
 
-            <div className="inline-flex ml-3 mr-6 h-full w-[1px] bg-gray-300"></div>
+            <article className="inline-flex mx-2 h-full w-[2px] bg-gray-300"></article>
 
             {/* Other filters */}
             {

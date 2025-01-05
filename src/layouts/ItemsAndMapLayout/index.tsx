@@ -57,8 +57,8 @@ export const ItemsAndMapLayout: React.FC<{
       <IonModal
         ref={modal}
         isOpen={isMobile && shouldModalBeOpen}
-        initialBreakpoint={0.42}
-        breakpoints={[0.25, 0.5, 0.81]}
+        initialBreakpoint={0.51}
+        breakpoints={[0.25, 0.5, 0.90]}
         backdropDismiss={false}
         backdropBreakpoint={0.5}
         color="light"

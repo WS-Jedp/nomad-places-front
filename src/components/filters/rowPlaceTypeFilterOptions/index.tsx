@@ -52,9 +52,11 @@ export const RowPlacesTypeFilterOptions: React.FC<{ chilren?: JSX.Element }> = (
             px-3 md:px-9
         "
     >
-      <AllPlaceTypesTag onClick={handleAllTagActions} />
+        <article className="w-auto">
+            <AllPlaceTypesTag onClick={handleAllTagActions} />
+        </article>
 
-      <div className="inline-flex ml-3 mr-6 h-full w-[1px] bg-gray-300"></div>
+      <article className="inline-flex mx-2 h-[30px] w-[2px] bg-gray-300"></article>
 
       {/* Other filters */}
       {filters.map((filter) => (

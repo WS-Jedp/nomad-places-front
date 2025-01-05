@@ -67,10 +67,10 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
   }
 
   async function getNearPlaces() {
-    // temporal change while I'm outside of Medellin
-    // await dispatch(getNearestPlaces()) // Original
     try {
       setIsSearchingPlaces(true);
+      // temporal change while I'm outside of Medellin
+      // await dispatch(getNearestPlaces()) // Original
       await dispatch(getAllPlaces());
     } catch (err) {
       toast.error(String(err));
@@ -208,6 +208,7 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
       // Filtering by current mindset from cached data (Only for paid users)
       if (
         selectedSpotMindsetFilter.length > 0 &&
+        selectedSpotMindsetFilter.length < spotMindsetFilter.length &&
         place.sessionCachedData.bestMindsetTo
       ) {
         const selectedSpotMindset = selectedSpotMindsetFilter.map(
@@ -263,6 +264,15 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
     const lastSession = (await dispatch(
       getUserLastSession({ token: authUser.token })
     )) as PayloadAction<UserLastSession>;
+
+
+    if(lastSession && lastSession.payload.lastSession) {
+
+      if(!lastSession.payload.expired) {
+        await dispatch( findPlace({ placeID: lastSession.payload.lastSession.placeID }) )
+        history.push(`/place/${lastSession.payload.lastSession.placeID}/session`)
+      }
+    }
   }
 
   useEffect(() => {
@@ -276,6 +286,7 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
   useEffect(() => {
     getFilteredPlaces();
   }, [
+    authUser.token,
     places.nearPlaces,
     selectedSpotKnownForFilter,
     selectedSpotAmountPeopleFilter,
@@ -292,6 +303,8 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
   ]);
 
   useEffect(() => {
+    if(places && places.nearPlaces && places.nearPlaces.length > 0) return
+
     if (userLocation.latitude && userLocation.longitude) getNearPlaces();
   }, [userLocation]);
 

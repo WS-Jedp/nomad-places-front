@@ -1,13 +1,12 @@
 import { IonCol, IonRow, IonText } from "@ionic/react";
 import { useState } from "react";
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from "react-i18next";
 import { useDistanceToSpot } from "../../common/hooks/useDistanceToSpot";
 
 import { useIsMobile } from "../../common/hooks/useIsMobile";
 import { useAppSelector } from "../../common/hooks/useTypedSelectors";
 import { BackNavigationButton } from "../../components/buttons/navigation/goBack";
 import { GeneralHeader } from "../../components/header/general";
-
 
 interface DetailAndSessionActionsLayoutProps {
   children: JSX.Element;
@@ -21,8 +20,7 @@ export const DetailAndSessionActionsLayout: React.FC<
   const [isMobile] = useIsMobile();
   const [isRenderSession, setIsRenderSession] = useState<boolean>(false);
   const currentPlace = useAppSelector((state) => state.places.currentPlace);
-  const [ distanceToSpot ] = useDistanceToSpot(currentPlace?.location)
-
+  const [distanceToSpot] = useDistanceToSpot(currentPlace?.location);
 
   function handlePlaceLocation() {
     if (!currentPlace) return null;
@@ -34,7 +32,7 @@ export const DetailAndSessionActionsLayout: React.FC<
     if (currentPlace.location.country)
       location += `, ${currentPlace.location.country}`;
 
-    return location.length > 0 ? location + ' - ' : location;
+    return location.length > 0 ? location + " - " : location;
   }
 
   function renderMobileView() {
@@ -60,15 +58,23 @@ export const DetailAndSessionActionsLayout: React.FC<
           className="bg-gray-50 overflow-y-auto h-screen"
         >
           <section className="py-5 w-full border-b-[2px] border-b-gray-300">
-              <IonRow className="px-3 d-flex flex-row flex-nowrap mb-2">
-                <BackNavigationButton />
-              </IonRow>
-            <IonText>
-              <h2 className="font-bold text-3xl px-3">{currentPlace?.name}</h2>
-              <p className="pt-1 px-3">
-                { handlePlaceLocation() } { distanceToSpot }km
-              </p>
-            </IonText>
+            <IonRow className="px-3 d-flex flex-row flex-nowrap mb-2">
+              <BackNavigationButton />
+            </IonRow>
+            <IonRow className="h-full flex flex-col px-4 ion-no-padding justify-center">
+              <IonText>
+                <h1 className="font-bold text-lg md:text-xl">
+                  {currentPlace?.name}
+                </h1>
+              </IonText>
+              <IonText>
+                <span className="text-xs font-light">
+                  {handlePlaceLocation()}{" "}
+                </span>
+                {/* Distance from current location */}
+                <span className="text-xs">{distanceToSpot} km</span>
+              </IonText>
+            </IonRow>
           </section>
           {children}
         </IonCol>
@@ -99,7 +105,7 @@ export const DetailAndSessionActionsLayout: React.FC<
               <h2
                 className={`text-black ${!isRenderSession ? "font-bold" : ""}`}
               >
-                { t('spots.information.aboutTheSpot') }
+                {t("spots.information.aboutTheSpot")}
               </h2>
             </section>
           </IonCol>
@@ -115,7 +121,7 @@ export const DetailAndSessionActionsLayout: React.FC<
               <h2
                 className={`text-black ${isRenderSession ? "font-bold" : ""}`}
               >
-                { t('spots.information.aboutTheSession') }
+                {t("spots.information.aboutTheSession")}
               </h2>
             </section>
           </IonCol>

@@ -46,7 +46,7 @@ export const SearchSpotsGeneralFilters: React.FC<
   const { canUseRealTimeFilters } = useUserPermissions();
 
   function handleSpotTypeFilterCurrentValue() {
-    if (!selectedSpotTypesFilter.length) return t("filters.labels.none");
+    if (!selectedSpotTypesFilter.length) return t("filters.labels.all");
 
     const MAXIMUN_SPOT_TYPES = spotTypesFilter.length;
     if (selectedSpotTypesFilter.length === MAXIMUN_SPOT_TYPES)

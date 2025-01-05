@@ -44,6 +44,7 @@ export const MutipleOptionsPicker: React.FC<MultipleOptionsPickerProps> = ({
         >
           {options.map((opt) => (
             <article
+              key={opt}
               className={`relative inline-flex flex-col w-48 h-20 justify-between p-2 mr-2 my-2 rounded-md ${
                 !isSelected(opt)
                   ? "bg-white-200 border-[1px] border-solid border-gray-300"

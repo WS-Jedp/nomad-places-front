@@ -10,7 +10,6 @@ import {
   placeTimeLimitOptions,
   privacyPolicyRuleOptions,
 } from "../../../../models/places";
-import { SpotRulesFilters } from "../../../../models/filters";
 import { OptionsPicker } from "../../../../components/form/inputs/picker";
 import { MutipleOptionsPicker } from "../../../../components/form/inputs/pickerMultipleOptions";
 
@@ -103,7 +102,7 @@ export const SpotRulesInput: React.FC<SpotRulesProps> = ({
           const rule = spotRulesFilters.find((rule) => rule.rule === r);
           if (!rule) return;
           return (
-            <IonCol size="12" sizeMd="6" key={rule.id}>
+            <IonCol size="12" sizeMd="6" key={rule.id} className="px-3">
               <OptionsPicker
                 label={t(`filters.rules.${rule.rule}`)}
                 small
@@ -139,6 +138,9 @@ export const SpotRulesInput: React.FC<SpotRulesProps> = ({
           />
         )})}
       </section>
+
+       {/* Divider */}
+       <hr className="my-5" />
     </div>
   );
 };

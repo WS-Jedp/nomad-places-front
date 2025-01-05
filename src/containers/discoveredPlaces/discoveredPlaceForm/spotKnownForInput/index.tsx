@@ -37,6 +37,9 @@ export const SpotKnownForInput: React.FC<SpotKnownForProps> = ({ onSpotKnownFor,
           </div>
         ))}
       </IonRow>
+
+       {/* Divider */}
+       <hr className="my-5" />
     </div>
   );
 };

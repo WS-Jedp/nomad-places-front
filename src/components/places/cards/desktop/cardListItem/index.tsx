@@ -82,7 +82,7 @@ export const PlaceCardListItemDesktop: React.FC<PlaceCardListItemProps> = ({
     <IonCol
       className={`
             bg-none bg-white-300 cursor-pointer rounded-md
-            flex flex-col items-start justify-between py-5 px-2 my-1 mx-0 w-4/12 h-[240px] border-1 border-black md:bg-white
+            flex flex-col items-start justify-between py-5 px-2 my-1 mx-0  max-w-[270px] h-[240px] border-1 border-black md:bg-white
             transition-all duration-300 ease-in-out
             ${placeOnFocus === place.id ? "shadow-md border-black" : ""}
             hover:shadow-md hover:border-black

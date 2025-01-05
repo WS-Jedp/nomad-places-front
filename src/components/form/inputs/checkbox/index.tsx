@@ -70,7 +70,10 @@ export const SimpleCheckbox: React.FC<SimpleCheckboxProps> = ({
           type="text"
           className="w-auto max-w-[60px] bg-transparent border-b-[1px] text-xs text-end z-30"
           placeholder={inputPlaceholder}
-          onChange={(ev) => onChangeInputValue(ev.target.value)}
+          onChange={(ev) => {
+            ev.preventDefault()
+            onChangeInputValue(ev.target.value)
+          }}
           defaultValue={inputValue}
         />
       )}

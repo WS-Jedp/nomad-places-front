@@ -5,7 +5,6 @@ type SimpleCheckboxProps = {
   id?: string;
   label: string;
   currentSelection?: string;
-  withInputOptions?: boolean;
   options?: any[];
   onChangeInputValue: (value: string) => void;
   small?: boolean;
@@ -27,7 +26,7 @@ export const OptionsPicker: React.FC<SimpleCheckboxProps> = ({
                 flex flex-col items-start justify-between
                 rounded-lg
                 w-full ${small ? "h-10" : "h-12"}
-                px-3 mb-4
+                mb-4
             `}
     >
       <span

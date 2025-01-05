@@ -1,33 +1,20 @@
-import { IonCol, IonRow } from "@ionic/react";
-import { current, PayloadAction } from "@reduxjs/toolkit";
+import { PayloadAction } from "@reduxjs/toolkit";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { MdAddAPhoto, MdClose } from "react-icons/md";
 import { toast } from "react-toastify";
 import {
   useAppDispatch,
   useAppSelector,
 } from "../../../common/hooks/useTypedSelectors";
-import { handleSpotTypeIcon } from "../../../common/utils/icons/icons";
 import { SimpleButton } from "../../../components/buttons/simple";
-import { SimpleDropdown } from "../../../components/dropdowns/simple";
-import { SimpleCheckbox } from "../../../components/form/inputs/checkbox";
-import { TextInput } from "../../../components/form/inputs/text";
-import { TextAreaInput } from "../../../components/form/inputs/textarea";
 import { LoaderSpinner } from "../../../components/loaders/spinner";
-import { SimpleMindsetCard } from "../../../components/mindsets/cards/simpleCardMindset";
-import { SimplePlaceTypeCard } from "../../../components/places/types/cards/simple";
 import {
   DiscoveredSpotByUserResponseDTO,
   DiscoverSpotDTO,
 } from "../../../dto/places";
-import {
-  SpotCommoditiesFilters,
-  SpotRulesFilters,
-} from "../../../models/filters";
 import { MINDSETS } from "../../../models/mindsets";
-import { PLACE_RULES } from "../../../models/placeRules";
 import {
+  AMBIENCE_TAG_ENUM,
   COMFORT_LEVEL_COMMODITY_ENUM,
   COMMODITY_QUALITY,
   CONSUMPTION_POLICY_RULE_ENUM,
@@ -35,12 +22,13 @@ import {
   MOBILE_SIGNAL_COMMODITY_ENUM,
   NOISE_POLICY_RULE_ENUM,
   PARKING_COMMODITY_ENUM,
+  PLACE_APPROXIMATE_DAILY_CONST_ENUM,
   PLACE_COMMODITIES_ENUM,
   PLACE_RULES_ENUM,
   PLACE_TIME_LIMIT_RULE,
   PRIVACY_POLICY_RULE_ENUM,
-  privacyPolicyRuleOptions,
   TEMPERATURE_CONTROL_COMMODITY_ENUM,
+  THEME_TAG_ENUM,
   WIFI_SPEED_COMMODITY_ENUM,
 } from "../../../models/places";
 import { PLACE_TYPES } from "../../../models/placeTypes";
@@ -79,6 +67,11 @@ export const DiscoveredPlaceForm: React.FC<{
 
   const [spotName, setSpotName] = useState<string>("");
   const [spotDescription, setSpotDescription] = useState<string>("");
+
+  const [approximateDailyCost, setApproximateDailyCost] = useState<PLACE_APPROXIMATE_DAILY_CONST_ENUM>()
+  const [ambianceTags, setAmbianceTags] = useState<AMBIENCE_TAG_ENUM[]>([])
+  const [themeTags, setThemeTags] = useState<THEME_TAG_ENUM[]>([])
+
 
   const [openingTime, setOpeningTime] = useState<string>("");
   const [closingTime, setClosingTime] = useState<string>("");
@@ -122,6 +115,14 @@ export const DiscoveredPlaceForm: React.FC<{
           ...selectedPrivacyPolicyRule.filter((opt) => opt !== option),
         ]);
   };
+
+  const handleAmbianceTag = (ambiance: AMBIENCE_TAG_ENUM) => {
+    ambianceTags.includes(ambiance) ? setAmbianceTags(old => [...old.filter(a => a !== ambiance)]) : setAmbianceTags(old => [...old, ambiance])
+  }
+
+  const handleThemeTag = (theme: THEME_TAG_ENUM) => {
+    themeTags.includes(theme) ? setThemeTags(old => [...old.filter(t => t !== theme)]) : setThemeTags(old => [...old, theme])
+  }
 
   const [selectedRules, setSelectedRules] = useState<number[]>([]);
 
@@ -389,6 +390,9 @@ export const DiscoveredPlaceForm: React.FC<{
       description: spotDescription,
       type: [spotTypeID],
       knownFor: spotKnownFor,
+      approximateDailyCost: approximateDailyCost ? approximateDailyCost : null,
+      ambienceTags: ambianceTags,
+      themeTags: themeTags,
       rules: {
         closedAt: closingTime,
         openAt: openingTime,
@@ -505,6 +509,11 @@ export const DiscoveredPlaceForm: React.FC<{
           onSpotDescriptionChange={(val) => setSpotDescription(val)}
           onOpeningTimeChange={(val) => setOpeningTime(val)}
           onClosingTimeChange={(val) => setClosingTime(val)}
+          onApproximateDailyCost={(val) => setApproximateDailyCost(val)}
+          onPlaceTheme={(theme) => handleThemeTag(theme)}
+          placesThemesSelected={themeTags}
+          onPlaceAmbiance={(ambiance) => handleAmbianceTag(ambiance)}
+          placeAmbiancesSelected={ambianceTags}
         />
 
         <LocationInputs

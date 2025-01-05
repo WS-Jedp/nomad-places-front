@@ -72,11 +72,13 @@ export const ListSearchPlaces: React.FC<ListSearchPlacesProps> = ({
 
       <IonList
         className="
-                relative flex flex-col md:flex-row md:flex-wrap
+                relative
+                grid  grid-cols-2 lg:grid-cols-3
                 w-full h-[90%]
                 p-6
                 md:bg-white
                 overflow-y-auto
+                
             "
       >
         {children}

@@ -161,7 +161,7 @@ export const SpotCommoditiesInput: React.FC<SpotCommoditiesProps> = ({
       </h2>
       <IonRow>
         {currentSelectCommodities.map((commodity) => (
-          <IonCol size="12" sizeMd="6" key={commodity.id}>
+          <IonCol size="12" sizeMd="6" key={commodity.id} className="px-3">
             <OptionsPicker
               key={commodity.id}
               label={t(`filters.commodities.${commodity.commodity}`)}
@@ -194,6 +194,9 @@ export const SpotCommoditiesInput: React.FC<SpotCommoditiesProps> = ({
           </IonCol>
         ))}
       </IonRow>
+
+       {/* Divider */}
+       <hr className="my-5" />
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import { GeoLocation } from "../../models/location";
 import { MINDSETS } from "../../models/mindsets";
 import { DiscoveredPlaceConfirmation } from "../../models/placeConfirmation";
-import { Commodities, Place, PlaceRules } from "../../models/places";
+import { AMBIENCE_TAG_ENUM, Commodities, Place, PLACE_APPROXIMATE_DAILY_CONST_ENUM, PlaceRules, THEME_TAG_ENUM } from "../../models/places";
 import { PLACE_TYPES } from "../../models/placeTypes";
 import { PlaceSession, PlaceSessionCachedDataDTO } from "../../models/session";
 import { UserEarnedPoints } from "../gamification/userEarnedPoints";
@@ -24,6 +24,9 @@ export type DiscoverSpotDTO = {
     name: string
     description?: string
     knownFor?: MINDSETS
+    ambienceTags: AMBIENCE_TAG_ENUM[];
+    themeTags: THEME_TAG_ENUM[];
+    approximateDailyCost: PLACE_APPROXIMATE_DAILY_CONST_ENUM | null;
     type: PLACE_TYPES[]
     location: GeoLocation
     commodities: Commodities

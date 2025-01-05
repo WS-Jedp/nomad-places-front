@@ -523,6 +523,9 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
       description: spotDescription,
       type: [spotTypeID],
       knownFor: spotKnownFor,
+      approximateDailyCost: null,
+      ambienceTags: [],
+      themeTags: [],
       rules: {
         closedAt: closingTime,
         openAt: openingTime,
@@ -716,6 +719,9 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
           reviewsDescriptionOptions={reviewsDescriptionOptions}
           reviewsCloseAtOptions={reviewsClosedAtOptions}
           reviewsOpenAtOptions={reviewsOPenAtOptions}
+          onApproximateDailyCost={() => {}}
+          onPlaceTheme={() => {}}
+          onPlaceAmbiance={() => {}}
         />
 
         <LocationInputs

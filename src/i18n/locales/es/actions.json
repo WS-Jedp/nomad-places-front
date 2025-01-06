@@ -14,7 +14,8 @@
         "seeLess": "Ver Menos",
         "seeMoreInformation": "Ver más información",
         "remove": "Remover",
-        "shareIt": "Compartir"
+        "shareIt": "Compartir",
+        "seeMap": "Ver mapa"
     },
     "confirmation": {
         "yes": "Sí",
@@ -44,7 +45,9 @@
     "session": {
         "join": "Unirse a la sesión",
         "leave": "Abandonar la sesión",
-        "update": "Actualizar la sesión"
+        "update": "Actualizar la sesión",
+        "watchSession": "Ver sesión",
+        "seeRealTimeData": "Ver actualizaciones"
     },
     "subscriptionPlan": {
         "upgrade": "Mejorar mi plan"

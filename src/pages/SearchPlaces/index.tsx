@@ -270,7 +270,7 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
 
       if(!lastSession.payload.expired) {
         await dispatch( findPlace({ placeID: lastSession.payload.lastSession.placeID }) )
-        history.push(`/place/${lastSession.payload.lastSession.placeID}/session`)
+        history.push(`/home/detail/${lastSession.payload.lastSession.placeID}/session`)
       }
     }
   }

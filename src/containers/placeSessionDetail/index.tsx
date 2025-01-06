@@ -27,6 +27,7 @@ import {
   addMultipleActionsToCurrentSession,
   addRecentActivityAction,
   addUserIntoCachedSession,
+  getSpotCachedSession,
   removeUserFromCachedSession,
   uploadRecentActivity,
 } from "../../store/redux/slices/spotSession";
@@ -53,11 +54,25 @@ import { PayloadAction } from "@reduxjs/toolkit";
 import { PlaceSessionAction } from "../../models/session/actions";
 import { UserGamification } from "../../models/gamification";
 import { useUserPermissions } from "../../common/hooks/useUserPermissions";
+import { BackNavigationButton } from "../../components/buttons/navigation/goBack";
+import { useHistory } from "react-router";
+import { returnUpForward } from "ionicons/icons";
+import { findPlace } from "../../store/redux/slices/places";
+import { LoaderSpinner } from "../../components/loaders/spinner";
 
-export const PlaceSessionDetail: React.FC = () => {
+interface PlaceSessionDetailProps {
+  withBackButtonAction?: boolean;
+  withCloseSessionButton?: boolean;
+}
+
+export const PlaceSessionDetail: React.FC<PlaceSessionDetailProps> = ({
+  withBackButtonAction = false,
+  withCloseSessionButton = false,
+}) => {
   const { t } = useTranslation();
+  const history = useHistory();
 
-  const { canAuthSession } = useUserPermissions()
+  const { canAuthSession } = useUserPermissions();
 
   const dispatch = useAppDispatch();
   const currentPlace = useAppSelector((state) => state.places.currentPlace);
@@ -83,7 +98,9 @@ export const PlaceSessionDetail: React.FC = () => {
   const { socket, sessionID } = useAppSelector((state) => state.userSession);
 
   const [recentActivityOpen, setRecentActivityOpen] = useState<boolean>(false);
-  const [recentActivityOpened, setRecentActivityOpened] = useState<number[]>([])
+  const [recentActivityOpened, setRecentActivityOpened] = useState<number[]>(
+    []
+  );
   const [mediaSelectedIndex, setMediaSelectedIndex] = useState<number>(0);
   const [userInSession, setUserInSession] = useState<boolean>(false);
   const [joiningSessionLoader, setJoiningSessionLoader] =
@@ -102,8 +119,48 @@ export const PlaceSessionDetail: React.FC = () => {
   }
 
   function onRecentActivitySelectionChange(index: number) {
-    setRecentActivityOpened([...recentActivityOpened, index])
+    setRecentActivityOpened([...recentActivityOpened, index]);
   }
+
+  // =========================
+  // SESSION DATA METHODS
+  // =========================
+  const [fetchingSessionData, setFetchingSessionData] = useState(true);
+
+  function goToMapRoute() {
+    if (!currentPlace?.id) return;
+    return history.push(`/home/detail/${currentPlace?.id}`);
+  }
+
+  function handleGoBack() {
+    history.push("/home");
+  }
+
+  async function handleEmptyCurrentPlace() {
+    if (!currentPlace?.id) return;
+    await findPlace({ placeID: currentPlace?.id });
+    if (!currentPlace) return handleGoBack();
+  }
+
+  async function handleCreateComponent() {
+    if (!currentPlace?.id) return history.push("/home");
+    if (!currentPlace) return handleEmptyCurrentPlace();
+  }
+
+  async function getCachedSession() {
+    if (!currentPlace || !currentPlace.id) return;
+    await dispatch(getSpotCachedSession({ spotID: currentPlace.id }));
+  }
+
+  async function getSessionData() {
+    await handleCreateComponent();
+    await getCachedSession();
+    setFetchingSessionData(false);
+  }
+
+  useEffect(() => {
+    getSessionData();
+  }, []);
 
   // =========================
   // ACCESS TO SESSION METHODS
@@ -220,16 +277,17 @@ export const PlaceSessionDetail: React.FC = () => {
           username: string;
           userPhotoURL: string;
         };
-        await dispatch(addRecentActivityAction({
-          id: payload.action.id,
-          createdDate: getLocalISODate(payload.action.createdDate),
-          type: recentActivityPayload.type,
-          url: recentActivityPayload.url,
-          userID: payload.action.userID,
-          username: payload.action.username,
-          userPhotoURL: recentActivityPayload.userPhotoURL
-         }));
-
+        await dispatch(
+          addRecentActivityAction({
+            id: payload.action.id,
+            createdDate: getLocalISODate(payload.action.createdDate),
+            type: recentActivityPayload.type,
+            url: recentActivityPayload.url,
+            userID: payload.action.userID,
+            username: payload.action.username,
+            userPhotoURL: recentActivityPayload.userPhotoURL,
+          })
+        );
       } else if (payload.action) {
         await dispatch(addActionToCurrentSession({ action: payload.action }));
       }
@@ -372,7 +430,7 @@ export const PlaceSessionDetail: React.FC = () => {
         sessionID: sessionID,
         url: resp.payload.data.url,
         type: resp.payload.data.type,
-        userProfilePicture: userData?.profilePicture|| "",
+        userProfilePicture: userData?.profilePicture || "",
       });
     }
 
@@ -384,143 +442,182 @@ export const PlaceSessionDetail: React.FC = () => {
 
   if (!currentPlace) return null;
 
+  if (fetchingSessionData)
+    return (
+      <IonRow className="flex flex-col justify-center items-center w-full h-full bg-gray-100">
+        <LoaderSpinner />
+      </IonRow>
+    );
+
   return (
-    <IonRow className="relative w-full h-full overflow-hidden">
-      {userInSession && (
-        <section className="realtive w-full h-auto
+    <IonRow className="flex flex-col justify-between w-full h-full bg-gray-100">
+      <section>
+        {/* Go Back button */}
+        {withBackButtonAction && (
+          <IonRow
+            className="
+                    relative
+                    flex flex-row w-full h-16 p-6 md:py-3
+                    items-center
+                    border-b border-gray-300
+                    mb-1
+                "
+          >
+            <BackNavigationButton goToURL={`/home/detail/${currentPlace.id}`} />
+          </IonRow>
+        )}
+        {userInSession && (
+          <section
+            className="realtive w-full h-auto
             px-3 py-1
             flex flex-row items-center justify-start
             overflow-hidden overflow-x-auto
             border-b-[1px] border-gray-300 
-          ">
+          "
+          >
             <div className="border-solid border-r-[1px] border-gray-300 mr-3">
               <RecentActivityButton
                 onError={onRecentActivityFileError}
                 onSuccess={onRecentActivityFileSuccess}
               />
             </div>
-          {cachedSession?.lastRecentlyActivities?.map(
-            (activity, index) => (
+            {cachedSession?.lastRecentlyActivities?.map((activity, index) => (
               <RecentActivityCard
                 key={index}
                 callback={() => handleRecentActivityOpen(index)}
                 isImage={activity.type === MULTIMEDIA_TYPE.IMAGE}
                 checked={recentActivityOpened.includes(index)}
               />
+            ))}
+          </section>
+        )}
+
+        <IonRow className="w-full p-3 pb-5 relative flex flex-col flex-nowrap border-b border-gray-300">
+          {cachedSession &&
+            cachedSession.lastActions.length > 0 &&
+            cachedSession?.lastUpdate && (
+              <section className="my-1">
+                <h2 className="text-xs font-light">
+                  {t("spots.messages.session.lastUpdateAt")}{" "}
+                  <span className="font-light">
+                    -{" "}
+                    {format(
+                      parseISO(getLocalISODate(cachedSession.lastUpdate)),
+                      "p"
+                    )}
+                  </span>
+                </h2>
+              </section>
+            )}
+          <section className="mb-3">
+            <h2 className="font-bold text-md mb-1">
+              {t("spots.session.perfectTo")}
+            </h2>
+            {userInSession ? (
+              <AmountMindsetActions
+                mindsetCallback={handleMindsetQuickAction}
+              />
+            ) : (
+              <HandleMindsetTags mindset={MINDSETS.UNKNOWN} />
+            )}
+          </section>
+
+          <IonRow className="relative w-full flex flex-row mb-3">
+            <IonCol size="12">
+              <h2 className="font-bold text-md">
+                {t("spots.session.amountOfPeople")}:
+              </h2>
+              <div className="my-1">
+                {userInSession && (
+                  <AmountOfPeopleActionsAmount
+                    callback={handleAmountOfPeopleQuickAction}
+                  />
+                )}
+              </div>
+            </IonCol>
+            <AvatarGroup users={cachedSession?.usersInSession || []} />
+          </IonRow>
+          <section className="w-full mb-2">
+            {/* <p className="font-regular text-xs my-3 text-left">Last update made 30 minutes ago</p> */}
+          </section>
+          {userInSession ? (
+            <article className="flex flex-row flex-nowrap w-full items-center justify-start">
+              <div className="w-5/10">
+                <SimpleButton
+                  action={() => setUpdateSessionModal(true)}
+                  text={t("actions.session.update")}
+                  loading={joiningSessionLoader}
+                />
+              </div>
+              <span
+                className="cursor-pointer text-red-500 underline ml-6"
+                onClick={() => setLeaveSessionModal(true)}
+              >
+                {t("actions.session.leave")}
+              </span>
+            </article>
+          ) : (
+            // JOIN SESSION BUTTON
+            canAuthSession() && (
+              <SimpleButton
+                action={handleJoinSession}
+                text={t("actions.session.join")}
+                loading={joiningSessionLoader}
+                disabled={!auth.isAuth}
+              />
             )
           )}
-        </section>
-      )}
-
-      <IonRow className="w-full p-3 pb-5 relative flex flex-col flex-nowrap border-b border-gray-300">
-        {cachedSession &&
-          cachedSession.lastActions.length > 0 &&
-          cachedSession?.lastUpdate && (
-            <section className="my-1">
-              <h2 className="text-xs font-light">
-                {t("spots.messages.session.lastUpdateAt")}{" "}
-                <span className="font-light">
-                  -{" "}
-                  {format(
-                    parseISO(getLocalISODate(cachedSession.lastUpdate)),
-                    "p"
-                  )}
-                </span>
-              </h2>
-            </section>
-          )}
-        <section className="mb-3">
-          <h2 className="font-bold text-lg mb-1">
-            {t("spots.session.perfectTo")}
-          </h2>
-          {userInSession ? (
-            <AmountMindsetActions mindsetCallback={handleMindsetQuickAction} />
-          ) : (
-            <HandleMindsetTags mindset={MINDSETS.UNKNOWN} />
-          )}
-        </section>
-
-        <IonRow className="relative w-full flex flex-row mb-3">
-          <IonCol size="12">
-            <h2 className="font-bold text-lg">
-              {t("spots.session.amountOfPeople")}:
-            </h2>
-            <div className="my-1">
-              {userInSession && (
-                <AmountOfPeopleActionsAmount
-                  callback={handleAmountOfPeopleQuickAction}
-                />
-              )}
-            </div>
-          </IonCol>
-          <AvatarGroup users={cachedSession?.usersInSession || []} />
         </IonRow>
-        <section className="w-full mb-2">
-          {/* <p className="font-regular text-xs my-3 text-left">Last update made 30 minutes ago</p> */}
-        </section>
-        {userInSession ? (
-          <article className="flex flex-row flex-nowrap w-full items-center justify-start">
-            <div className="w-5/10">
-              <SimpleButton
-                action={() => setUpdateSessionModal(true)}
-                text={t("actions.session.update")}
-                loading={joiningSessionLoader}
-              />
-            </div>
-            <span
-              className="cursor-pointer text-red-500 underline ml-6"
-              onClick={() => setLeaveSessionModal(true)}
-            >
-              {t("actions.session.leave")}
-            </span>
-          </article>
-        ) : (
-          // JOIN SESSION BUTTON
-          canAuthSession() && (
-            <SimpleButton
-              action={handleJoinSession}
-              text={t("actions.session.join")}
-              loading={joiningSessionLoader}
-              disabled={!auth.isAuth}
-            />
-          )
-        )}
-      </IonRow>
 
-      <section className="relative w-full h-3/6 overflow-y-auto">
-        <article className="relative w-full pt-3 border-solid border-b-[1px] border-gray-300">
-          <h2 className="w-full font-bold text-lg mb-1 pb-3 px-3">
-            {t("spots.session.communityActions")}:
-          </h2>
-        </article>
-        <section className="relative h-full flex flex-col flex-nowrap mb-3">
-          <ol className="w-full min-h-full h-auto my-3">
-            {currentSessionActions.length > 0 ? (
-              // Order by date, last action first
-              getCurrentSessionActionsOrderByDate().map((action, index) => {
-                return (
-                  <li key={index}>
-                    <HandleActionCardType action={action} />
-                  </li>
-                );
-              })
-            ) : (
-              <li className="px-3">
-                <p className="text-xs font-light px-3 py-3 w-full bg-gray-200">
-                  {t("spots.messages.noCommunityActions")}
-                </p>
-              </li>
-            )}
-          </ol>
+        <section className="w-full overflow-y-auto">
+          <article className="w-full pt-3 border-solid border-b-[1px] border-gray-300">
+            <h2 className="w-full font-bold text-md mb-1 pb-3 px-3">
+              {t("spots.session.communityActions")}:
+            </h2>
+          </article>
+          <section className="relative flex flex-col flex-nowrap mb-3">
+            <ol className="w-full h-auto my-3">
+              {currentSessionActions.length > 0 ? (
+                // Order by date, last action first
+                getCurrentSessionActionsOrderByDate().map((action, index) => {
+                  return (
+                    <li key={index}>
+                      <HandleActionCardType action={action} />
+                    </li>
+                  );
+                })
+              ) : (
+                <li className="px-3">
+                  <p className="text-xs font-light px-3 py-3 w-full bg-gray-200">
+                    {t("spots.messages.noCommunityActions")}
+                  </p>
+                </li>
+              )}
+            </ol>
+          </section>
         </section>
       </section>
+
+      {withCloseSessionButton && (
+        <article className="bg-white w-full h-12 shadow-md flex items-center justify-end px-3">
+          <button
+            className="
+            px-6 py-1 
+            font-light text-xs text-black border border-solid border-gray-300 
+            rounded-md
+            hover:bg-gray-200 transition-all ease-in-out duration-300
+          "
+            onClick={goToMapRoute}
+          >
+            {t("actions.general.seeMap")}
+          </button>
+        </article>
+      )}
 
       {recentActivityOpen && (
         <AppModal>
           <MultimediaSliderModal
-            images={
-              cachedSession?.lastRecentlyActivities || []
-            }
+            images={cachedSession?.lastRecentlyActivities || []}
             closeCallback={() => setRecentActivityOpen(false)}
             currentImage={mediaSelectedIndex}
             recentActivity
@@ -623,12 +720,15 @@ export const PlaceSessionDetail: React.FC = () => {
             <h2 className="font-bold text-2xl">
               {t("messages.permissions.unlockRealTimeData")}
             </h2>
-          <div className="w-full mx-auto h-[1px] bg-white my-3"></div>
+            <div className="w-full mx-auto h-[1px] bg-white my-3"></div>
             <p className="text-md font-light mx-3">
               {t("messages.auth.required.explorerPlan")}
             </p>
             <div className="flex flex-col flex-nowrap w-full items-center justify-center mt-4">
-              <SimpleButton action={handleLogin} text={t("actions.subscriptionPlan.upgrade")} />
+              <SimpleButton
+                action={handleLogin}
+                text={t("actions.subscriptionPlan.upgrade")}
+              />
             </div>
           </article>
         </section>

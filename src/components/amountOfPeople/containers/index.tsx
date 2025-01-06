@@ -19,6 +19,7 @@ export const AmountOfPeopleActionsAmount: React.FC<AmountOfPeopleActionsAmountPr
     }
 
     useEffect(() => {
+        console.log(cachedSession, "OPTS")
         getAmountOfPeopleUpdateActionsSortered()
     }, [currentSessionActions])
 

@@ -14,7 +14,8 @@
         "seeLess": "See Less",
         "seeMoreInformation": "See More Information",
         "remove": "Remove",
-        "shareIt": "Share it"
+        "shareIt": "Share it",
+        "seeMap": "See map"
     },
     "confirmation": {
         "yes": "Yes",
@@ -48,7 +49,9 @@
     "session": {
         "join": "Join Session",
         "leave": "Leave Session",
-        "update": "Update Session"
+        "update": "Update Session",
+        "watchSession": "Watch Session",
+        "seeRealTimeData": "See Updates"
     },
     "discover": {
         "shareSpot": "Share spot",

@@ -1,5 +1,5 @@
 import { useParams, useHistory } from "react-router-dom";
-import { IonRow, IonText } from "@ionic/react";
+import { IonPage, IonRow, IonText } from "@ionic/react";
 import { useEffect } from "react";
 
 import { DetailAndSessionActionsLayout } from "../../layouts/DetailAndSessionActionsLayout";
@@ -53,11 +53,19 @@ export const PlaceDetailPage = () => {
   }, []);
 
   return (
-    <IonRow className="relative h-screen w-screen overflow-y-hidden bg-white text-black">
+    <section className="
+        relative
+        w-screen h-full
+        bg-white
+        p-0 
+        text-black
+        overflow-hidden
+      "
+      >
       {isMobile && <BackNavigationHeader />}
       <DetailAndSessionActionsLayout secondTab={<PlaceSessionDetail />}>
         <PlaceQuickSession />
       </DetailAndSessionActionsLayout>
-    </IonRow>
+    </section>
   );
 };

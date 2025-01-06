@@ -84,7 +84,6 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
     useState<boolean>(false);
   const [multimediaSelected, setMultimediaSelected] = useState<number>();
 
-  const [isMobile] = useIsMobile();
 
   function handleOnMultimediaSelected(index: number) {
     setMultimediaSelected(index);
@@ -204,19 +203,17 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
         "
     >
       {/* Go back action */}
-      {!isMobile && (
-        <IonRow
-          className="
+      <IonRow
+        className="
                 relative
                 flex flex-row w-full h-16 p-6 md:py-3
                 items-center
                 border-b border-gray-300
                 mb-1
             "
-        >
-          <BackNavigationButton />
-        </IonRow>
-      )}
+      >
+        <BackNavigationButton goToURL="/home" />
+      </IonRow>
 
       {/* Scrollable section */}
       <section className="w-full h-auto overflow-y-auto">
@@ -274,7 +271,7 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
             {canAuthSession() &&
             canViewPlaceRealTimeData() &&
             currentPlace?.sessionCachedData?.usersInSession.length ? (
-              <div className="mb-1">
+              <div className="w-full flex items-start justify-start mb-1">
                 <AvatarGroup
                   users={currentPlace?.sessionCachedData?.usersInSession || []}
                 />
@@ -311,7 +308,7 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
                 "
                 >
                   <SimpleButton
-                    text={t("actions.general.seeMore")}
+                    text={t("actions.session.seeRealTimeData")}
                     action={handleInformationButton}
                   />
                 </IonRow>

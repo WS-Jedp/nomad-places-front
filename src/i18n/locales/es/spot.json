@@ -18,7 +18,7 @@
         "knownFor": "Conocido por",
         "multimedia": "Multimedia del spot",
         "perfectTo": "Perfecto para",
-        "communityActions": "Acciones de la comunidad",
+        "communityActions": "Actualizaciones de la comunidad",
         "closed": "Cerrado",
         "open": "Abierto",
         "recentActivity": "Actividad reciente"
@@ -29,7 +29,7 @@
         "noUsersInSession": "No hay usuarios en sesión",
         "userInSession": "usuario en la sesión",
         "usersInSession": "usuarios en la sesión",
-        "noCommunityActions": "No hay acciones de la comunidad por ahora",
+        "noCommunityActions": "No hay actualizaciones de la comunidad por ahora",
         "session": {
             "lastUpdateAt": "Última actualización",
             "leaveSessionConfirmation": "¿Estás seguro que quieres salir de la sesión?",

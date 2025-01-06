@@ -18,7 +18,7 @@
         "knownFor": "Known for",
         "multimedia": "Spot multimedia",
         "perfectTo": "Perfect to",
-        "communityActions": "Community actions",
+        "communityActions": "Community Updates",
         "closed": "Closed",
         "open": "Open",
         "recentActivity": "Recent activity"
@@ -29,7 +29,7 @@
         "noUsersInSession": "No users in session",
         "userInSession": "user in session",
         "usersInSession": "users in session",
-        "noCommunityActions": "There are no actions shared by the community yet",
+        "noCommunityActions": "There are no updates shared by the community yet",
         "session": {
             "lastUpdateAt": "Last update at",
             "leaveSessionConfirmation": "Are you sure you want to leave this session?",

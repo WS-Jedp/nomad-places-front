@@ -41,7 +41,7 @@ export const ListSearchPlaces: React.FC<ListSearchPlacesProps> = ({
         quickJoin: true,
       })
     );
-    history.push(`/place/${userSession.placeID}/session`);
+    history.push(`/home/detail/${userSession.placeID}/session`);
   };
 
   return (

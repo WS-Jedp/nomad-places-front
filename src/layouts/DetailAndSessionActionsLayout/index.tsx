@@ -21,9 +21,9 @@ export const DetailAndSessionActionsLayout: React.FC<
     return (
       <>
         {!isRenderSession ? (
-          <IonCol size="12">{children}</IonCol>
+          <IonCol size="12" className="w-full">{children}</IonCol>
         ) : (
-          <IonCol size="12" className="pb-32">
+          <IonCol size="12" className="h-full">
             {secondTab}
           </IonCol>
         )}
@@ -36,9 +36,10 @@ export const DetailAndSessionActionsLayout: React.FC<
       <IonPage
         className="
                 relative
-                w-full h-screen overflow-hidden
-                flex flex-column md:flex-row md:flex-nowrap
+                w-full
+                flex flex-row flex-nowrap
                 p-0
+                ion-no-padding
             "
       >
         <IonCol
@@ -57,7 +58,7 @@ export const DetailAndSessionActionsLayout: React.FC<
           size="12"
           sizeMd="5"
           className="block
-            w-full min-w-full h-full md:w-5/12 md:min-w-min
+            w-full min-w-full md:w-5/12 md:min-w-min
             z-40
             ion-no-padding ion-no-margin"
         >
@@ -68,13 +69,13 @@ export const DetailAndSessionActionsLayout: React.FC<
   }
 
   return (
-    <IonRow className="w-full relative flex flex-col bg-gray-100">
+    <IonRow className="w-full h-full text-black">
       {/* Header of the layout */}
       {!isMobile && <GeneralHeader />}
 
       {/* Tabs for change section in mobile view - This should be an independent component */}
       {isMobile && (
-        <IonRow className="w-full flex-row flex-nowrap h-12 border-b-[1px] border-gray-300 ">
+        <IonRow className="relative w-full flex-row flex-nowrap h-12 border-b-[1px] border-gray-300 ">
           <IonCol size="6" onClick={() => setIsRenderSession(false)}>
             <section
               className={`
@@ -94,7 +95,7 @@ export const DetailAndSessionActionsLayout: React.FC<
           <IonCol size="6" onClick={() => setIsRenderSession(true)}>
             <section
               className={`
-                            h-full
+                            w-full h-full
                             flex items-center justify-center 
                             cursor-pointer hover:bg-gray-200 p-3
                             ${isRenderSession ? "bg-gray-300" : ""}
@@ -110,7 +111,7 @@ export const DetailAndSessionActionsLayout: React.FC<
         </IonRow>
       )}
 
-      <IonRow className="w-full h-auto relative bg-gray-100 text-black">
+      <IonRow className="relative w-full md:h-full bg-gray-100 text-black">
         {isMobile ? renderMobileView() : renderDesktopView()}
       </IonRow>
     </IonRow>

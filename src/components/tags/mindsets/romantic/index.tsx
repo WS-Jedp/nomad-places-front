@@ -15,9 +15,9 @@ export const RomanticMindsetTag: React.FC<RomanticMindsetTagProps> = ({ disabled
     onClick()
   }
   return (
-    <IonChip outline className={`px-3 py-1 ${disabled ? 'bg-gray-200' : 'bg-pink-100'}`} onClick={handleClick}>
-      <IonIcon icon={heartOutline} className={`mr-2 ${disabled ? 'text-gray-400' : 'text-pink-600'}`} />
-      <IonLabel className={`text-md font-medium ${disabled ? 'text-gray-400' : 'text-pink-600'}`}>{ t('filters.mindsets.romantic') }</IonLabel>
+    <IonChip outline className={`px-3 ${disabled ? 'bg-gray-200' : 'bg-pink-100'}`} onClick={handleClick}>
+      <IonIcon icon={heartOutline} className={`mr-1 ${disabled ? 'text-gray-400' : 'text-pink-600'}`} />
+      <IonLabel className={`text-xs font-medium ${disabled ? 'text-gray-400' : 'text-pink-600'}`}>{ t('filters.mindsets.romantic') }</IonLabel>
     </IonChip>
   );
 };

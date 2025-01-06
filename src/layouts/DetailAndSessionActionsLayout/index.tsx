@@ -1,11 +1,8 @@
-import { IonCol, IonRow, IonText } from "@ionic/react";
+import { IonCol, IonPage, IonRow } from "@ionic/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDistanceToSpot } from "../../common/hooks/useDistanceToSpot";
 
 import { useIsMobile } from "../../common/hooks/useIsMobile";
-import { useAppSelector } from "../../common/hooks/useTypedSelectors";
-import { BackNavigationButton } from "../../components/buttons/navigation/goBack";
 import { GeneralHeader } from "../../components/header/general";
 
 interface DetailAndSessionActionsLayoutProps {
@@ -18,22 +15,7 @@ export const DetailAndSessionActionsLayout: React.FC<
 > = ({ children, secondTab }) => {
   const { t } = useTranslation();
   const [isMobile] = useIsMobile();
-  const [isRenderSession, setIsRenderSession] = useState<boolean>(false);
-  const currentPlace = useAppSelector((state) => state.places.currentPlace);
-  const [distanceToSpot] = useDistanceToSpot(currentPlace?.location);
-
-  function handlePlaceLocation() {
-    if (!currentPlace) return null;
-    let location = "";
-
-    if (currentPlace.location.zone) location += currentPlace.location.zone;
-    if (currentPlace.location.city)
-      location += `, ${currentPlace.location.city}`;
-    if (currentPlace.location.country)
-      location += `, ${currentPlace.location.country}`;
-
-    return location.length > 0 ? location + " - " : location;
-  }
+  const [isRenderSession, setIsRenderSession] = useState<boolean>(true);
 
   function renderMobileView() {
     return (
@@ -51,42 +33,42 @@ export const DetailAndSessionActionsLayout: React.FC<
 
   function renderDesktopView() {
     return (
-      <>
+      <IonPage
+        className="
+                relative
+                w-full h-screen overflow-hidden
+                flex flex-column md:flex-row md:flex-nowrap
+                p-0
+            "
+      >
         <IonCol
           size="12"
-          sizeMd="6"
-          className="bg-gray-50 overflow-y-auto h-screen"
+          sizeMd="7"
+          className="relative
+                  flex flex-col
+                  w-full min-w-full md:w-7/12 md:min-w-min
+                  bg-white text-black
+                  z-30
+                  ion-no-padding"
         >
-          <section className="py-5 w-full border-b-[2px] border-b-gray-300">
-            <IonRow className="px-3 d-flex flex-row flex-nowrap mb-2">
-              <BackNavigationButton />
-            </IonRow>
-            <IonRow className="h-full flex flex-col px-4 ion-no-padding justify-center">
-              <IonText>
-                <h1 className="font-bold text-lg md:text-xl">
-                  {currentPlace?.name}
-                </h1>
-              </IonText>
-              <IonText>
-                <span className="text-xs font-light">
-                  {handlePlaceLocation()}{" "}
-                </span>
-                {/* Distance from current location */}
-                <span className="text-xs">{distanceToSpot} km</span>
-              </IonText>
-            </IonRow>
-          </section>
           {children}
         </IonCol>
-        <IonCol size="12" sizeMd="6" className="overflow-y-auto h-screen">
+        <IonCol
+          size="12"
+          sizeMd="5"
+          className="block
+            w-full min-w-full h-full md:w-5/12 md:min-w-min
+            z-40
+            ion-no-padding ion-no-margin"
+        >
           {secondTab}
         </IonCol>
-      </>
+      </IonPage>
     );
   }
 
   return (
-    <IonRow className="w-screen h-auto relative overflow-hidden flex flex-col bg-gray-100">
+    <IonRow className="w-full relative flex flex-col bg-gray-100">
       {/* Header of the layout */}
       {!isMobile && <GeneralHeader />}
 
@@ -128,7 +110,7 @@ export const DetailAndSessionActionsLayout: React.FC<
         </IonRow>
       )}
 
-      <IonRow className="w-full h-screen relative overflow-y-auto overflow-x-hidden bg-gray-100 text-black">
+      <IonRow className="w-full h-auto relative bg-gray-100 text-black">
         {isMobile ? renderMobileView() : renderDesktopView()}
       </IonRow>
     </IonRow>

@@ -1,13 +1,32 @@
-import { User } from "../../../models/user"
+import { MdImageNotSupported } from "react-icons/md";
+import { User } from "../../../models/user";
 
 type AvatarSingleCircle = {
-    url: string
-}
-export const AvatarSingleCircle: React.FC<AvatarSingleCircle> = ({ url }) => {
-
-    return (
-        <figure
-            className="relative inline-flex w-7 h-7 rounded-full bg-gray-300 mr-[-9px] shadow-md"
-        ></figure>
-    )
-}
+  url?: string;
+  styles?: string;
+};
+export const AvatarSingleCircle: React.FC<AvatarSingleCircle> = ({
+  url,
+  styles,
+}) => {
+  return (
+    <figure
+      className={`relative inline-flex items-center justify-center w-7 h-7 rounded-full overflow-hidden bg-gray-300 shadow-md ${
+        styles ? styles : ""
+      } `}
+    >
+      {
+        url ? (
+        <img
+          src={url}
+          alt="Discovered by image"
+          className="w-full h-full object-contain"
+        />
+        ) : (
+          <MdImageNotSupported color="white" size={15} />    
+        )
+      }
+      
+    </figure>
+  );
+};

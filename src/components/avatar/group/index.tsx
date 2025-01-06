@@ -24,7 +24,7 @@ export const AvatarGroup: React.FC<AvatarGrupProps> = ({
       <div className="flex flex-row items-center justify-center">
         {users.length > 0 &&
           users.map((user) => (
-            <AvatarSingleCircle key={user.id} url={user.profilePicture || ""} />
+            <AvatarSingleCircle styles="mr-[-9px]" key={user.id} url={user.profilePicture || ""} />
           ))}
       </div>
 

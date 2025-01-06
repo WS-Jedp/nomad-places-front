@@ -8,7 +8,8 @@
         "multimedia": "Multimedia",
         "leaveTheSession": "Leave The Session",
         "updateTheSession": "Update The Session",
-        "quickUpdate": "Quick update"
+        "quickUpdate": "Quick update",
+        "discoveredBy":"Discovered by"
     },
     "session": {
         "usersInSession": "Users in session",

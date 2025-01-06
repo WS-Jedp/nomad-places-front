@@ -30,18 +30,29 @@ import { computeDistanceToSpot } from "../../common/utils/geoLocation";
 import { useDistanceToSpot } from "../../common/hooks/useDistanceToSpot";
 import { useTranslation } from "react-i18next";
 import { PLACE_CONFIRMATION_STATUS } from "../../models/places";
-import { IoIosInformation, IoIosInformationCircle, IoIosInformationCircleOutline } from "react-icons/io";
+import {
+  IoIosInformation,
+  IoIosInformationCircle,
+  IoIosInformationCircleOutline,
+} from "react-icons/io";
 import { ConfirmPlaceDiscoveredModal } from "../discoveredPlaces/modals/confirmPlaceDiscovered";
 import { newSpotDiscoveredConfirmedDTO } from "../../dto/places";
 import { SpotApprovedSuccessfulModal } from "../discoveredPlaces/modals/spotApprovedSuccessful";
 import { SpotConfirmedSuccessfulModal } from "../discoveredPlaces/modals/spotConfirmedSuccessful";
-import { addDiscoverSpotIntoNearPlaces, approvedCurrentPlace, updateCurrentPlace } from "../../store/redux/slices/places";
+import {
+  addDiscoverSpotIntoNearPlaces,
+  approvedCurrentPlace,
+  updateCurrentPlace,
+} from "../../store/redux/slices/places";
 import { AppModal } from "../../components/modals/container";
 import { MultimediaSliderModal } from "../multimediaSliderModal";
 import { useUserPermissions } from "../../common/hooks/useUserPermissions";
+import { SimpleTag } from "../../components/tags/simpleTag";
+import { AvatarSingleCircle } from "../../components/avatar/singleCircle";
+import { useIsMobile } from "../../common/hooks/useIsMobile";
 
 interface PlaceQuickSessionProps {
-  changePageCallback: Function;
+  changePageCallback?: Function;
 }
 
 // This quickSession detail will only show what is going on in the place
@@ -51,39 +62,48 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
 }) => {
   const { t } = useTranslation();
 
-  const { canApproveDiscoveredPlaces, canAuthSession } = useUserPermissions()
+  const {
+    canApproveDiscoveredPlaces,
+    canAuthSession,
+    canViewPlaceRealTimeData,
+  } = useUserPermissions();
 
   const history = useHistory();
   const dispatch = useAppDispatch();
   const { currentPlace } = useAppSelector((state) => state.places);
-  const { userData, location: userLocation } = useAppSelector((state) => state.user);
+  const { userData, location: userLocation } = useAppSelector(
+    (state) => state.user
+  );
   const { socket } = useAppSelector((state) => state.userSession);
   const [confirmSpot, setConfirmSpot] = useState<boolean>(false);
   const [isSpotConfirmed, setIsSpotConfirmed] = useState<boolean>(false);
   const [isSpotApproved, setIsSpotApproved] = useState<boolean>(false);
   const [isRecentActivity, setIsRecentActivity] = useState<boolean>(false);
 
-  const [ multimediaModalOpen, setMultimediaModalOpen ] = useState<boolean>(false)
-  const [ multimediaSelected, setMultimediaSelected ] = useState<number>()
+  const [multimediaModalOpen, setMultimediaModalOpen] =
+    useState<boolean>(false);
+  const [multimediaSelected, setMultimediaSelected] = useState<number>();
+
+  const [isMobile] = useIsMobile();
 
   function handleOnMultimediaSelected(index: number) {
-    setMultimediaSelected(index)
-    setMultimediaModalOpen(true)
+    setMultimediaSelected(index);
+    setMultimediaModalOpen(true);
   }
 
-  const [ distanceToSpot ] = useDistanceToSpot(currentPlace?.location)
+  const [distanceToSpot] = useDistanceToSpot(currentPlace?.location);
 
   function handleConfirmSpot() {
     setConfirmSpot(!confirmSpot);
   }
   async function handleOnConfirmSpot(spotState: newSpotDiscoveredConfirmedDTO) {
-    closeConfirmSpot()
-    if(spotState.placeApproved) {
-      await dispatch( approvedCurrentPlace() )
-      await dispatch( updateCurrentPlace( spotState.place ) )
-      return setIsSpotApproved(true)
+    closeConfirmSpot();
+    if (spotState.placeApproved) {
+      await dispatch(approvedCurrentPlace());
+      await dispatch(updateCurrentPlace(spotState.place));
+      return setIsSpotApproved(true);
     }
-    setIsSpotConfirmed(true)
+    setIsSpotConfirmed(true);
   }
 
   function closeConfirmSpot() {
@@ -93,7 +113,11 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
   function handleNoCurrentPlace() {
     return history.goBack();
   }
-  
+
+  function onDiscoveredBy(id?: string) {
+    return history.push(`/profile/${id}`);
+  }
+
   async function handleUserSession() {
     if (!userData || !currentPlace) return;
 
@@ -146,7 +170,7 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
     if (currentPlace.location.country)
       location += `, ${currentPlace.location.country}`;
 
-    return location.length > 0 ? location + ' - ' : location;
+    return location.length > 0 ? location + " - " : location;
   }
 
   useEffect(() => {
@@ -162,6 +186,7 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
   function handleInformationButton(
     ev: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) {
+    if (!changePageCallback) return;
     ev.preventDefault();
     if (!currentPlace) handleNoCurrentPlace();
     else {
@@ -173,164 +198,177 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
     <section
       className="
             relative
-            w-full h-screen
+            w-full h-full
             flex flex-col items-start justify-start
             text-black
         "
     >
       {/* Go back action */}
-      <IonRow
-        className="
+      {!isMobile && (
+        <IonRow
+          className="
                 relative
                 flex flex-row w-full h-16 p-6 md:py-3
                 items-center
                 border-b border-gray-300
                 mb-1
             "
-      >
-        <BackNavigationButton />
-      </IonRow>
+        >
+          <BackNavigationButton />
+        </IonRow>
+      )}
 
-      {/* Place Headers */}
-      {
-        canApproveDiscoveredPlaces() && currentPlace?.confirmationStatus && currentPlace?.confirmationStatus === PLACE_CONFIRMATION_STATUS.RECOMMENDED && (
-          <IonRow class="w-full px-3 py-2 ion-no-padding border-b border-gray-300 shadow-sm">
-            <IonCol size="12">
-              <IonRow className="h-full flex flex-col justify-center">
+      {/* Scrollable section */}
+      <section className="w-full h-auto overflow-y-auto">
+        {/* Place Headers */}
+        {canApproveDiscoveredPlaces() &&
+          currentPlace?.confirmationStatus &&
+          currentPlace?.confirmationStatus ===
+            PLACE_CONFIRMATION_STATUS.RECOMMENDED && (
+            <IonRow class="w-full px-3 py-2 ion-no-padding border-b border-gray-300 shadow-sm">
+              <IonCol size="12">
+                <IonRow className="h-auto flex flex-col justify-center">
                   <h1 className="font-light text-sm flex flex-row items-center bg-indigo-50 px-3 py-3 rounded-md">
                     <IoIosInformationCircleOutline size={21} className="mr-1" />
                     <span>
-                      {t("messages.discover.spot.stage.recommendation")}. <span className="underline font-semibold cursor-pointer" onClick={handleConfirmSpot}>{t("messages.discover.spot.actions.wannaHelpConfirm")}</span>
+                      {t("messages.discover.spot.stage.recommendation")}.{" "}
+                      <span
+                        className="underline font-semibold cursor-pointer"
+                        onClick={handleConfirmSpot}
+                      >
+                        {t("messages.discover.spot.actions.wannaHelpConfirm")}
+                      </span>
                     </span>
                   </h1>
-              </IonRow>
-            </IonCol>
-          </IonRow>
-        )
-      }
-      
-      {/* Place information */}
-      <IonRow class="w-full p-3 ion-no-padding border-b border-gray-300 shadow-sm">
-        <IonCol size="8">
-          <IonRow className="h-full flex flex-col justify-center">
-            <IonText>
-              <h1 className="font-bold text-lg md:text-xl">
-                {currentPlace?.name}
-              </h1>
-            </IonText>
-            <IonText>
-              <span className="text-xs font-light">
-                {handlePlaceLocation()}{" "}
-              </span>
-              {/* Distance from current location */}
-              <span className="text-xs">{distanceToSpot} km</span>
-            </IonText>
-          </IonRow>
-        </IonCol>
-        <IonCol size="4">
-          <IonRow
-            className="
-                w-full h-full
-                flex flex-row flex-nowrap
-                items-center justify-center
-            "
-          >
-            <SimpleButton text={t('actions.general.seeMore')} action={handleInformationButton} />
-            {/* <SimpleButton text="Subscribe" action={(ev) => {}} /> */}
-          </IonRow>
-        </IonCol>
-      </IonRow>
+                </IonRow>
+              </IonCol>
+            </IonRow>
+          )}
 
-      {/* Scrollable data */}
-      <IonRow
-        className="
-        relative w-full h-full overflow-y-auto mb-9
-      "
-      >
-        {/* Quick session data */}
-        <IonRow className="flex flex-col w-full p-3 border-b border-gray-300">
-          {/* People in the sesion */}
-          <article className="mb-3">
-            <IonText>
-              <h3 className="text-lg font-bold">{ t('spots.information.description') }</h3>
-            </IonText>
-            <IonRow className="w-full flex flex-row flex-nowrap items-center pt-1">
-              <IonText className="text-md font-normal">
-                { currentPlace?.description }
+        {/* Multimedia grid */}
+        <IonRow className="w-full p-3 flex flex-row flex-nowrap overflow-x-auto overflow-y-hidden">
+          {isRecentActivity ? (
+            currentPlace?.sessionCachedData?.lastRecentlyActivities?.length ? (
+              <QuickPlaceDetailRecentActivitySlider
+                recentActivity={
+                  currentPlace?.sessionCachedData?.lastRecentlyActivities || []
+                }
+              />
+            ) : (
+              <p>There is no recent activity</p>
+            )
+          ) : (
+            <div className="w-full h-[270px]">
+              <MultimediaMasonryGrid
+                multimedia={currentPlace?.multimedia || []}
+                onMultimedia={handleOnMultimediaSelected}
+              />
+            </div>
+          )}
+        </IonRow>
+
+        {/* Place information */}
+        <IonRow class="w-full p-3 ion-no-padding border-b border-gray-300 shadow-sm">
+          <IonCol size="8">
+            {/* Users in session */}
+            {canAuthSession() &&
+            canViewPlaceRealTimeData() &&
+            currentPlace?.sessionCachedData?.usersInSession.length ? (
+              <div className="mb-1">
+                <AvatarGroup
+                  users={currentPlace?.sessionCachedData?.usersInSession || []}
+                />
+              </div>
+            ) : (
+              <></>
+            )}
+            <div></div>
+            <IonRow className="flex flex-col justify-center">
+              <IonText className="flex flex-row flex-nowrap items-center">
+                <h1 className="font-bold text-lg md:text-xl mr-2">
+                  {currentPlace?.name}
+                </h1>
+                <HandlePlaceStatus status={isOpenNow()} />
+              </IonText>
+              <IonText>
+                <span className="text-xs font-light">
+                  {handlePlaceLocation()}{" "}
+                </span>
+                {/* Distance from current location */}
+                <span className="text-xs">{distanceToSpot} km</span>
               </IonText>
             </IonRow>
-          </article>
-
-          {
-            canAuthSession() && (
-              <article className="mb-3">
-                <IonText>
-                  <h3 className="text-lg font-bold">{ t('spots.session.usersInSession') }</h3>
-                </IonText>
-                <IonRow className="w-full flex flex-row flex-nowrap items-center pt-3 md:pt-2">
-                  <AvatarGroup
-                    users={currentPlace?.sessionCachedData?.usersInSession || []}
+          </IonCol>
+          <IonCol size="4">
+            {canAuthSession() &&
+              canViewPlaceRealTimeData() &&
+              changePageCallback && (
+                <IonRow
+                  className="
+                    w-full
+                    flex flex-row flex-nowrap
+                    items-center justify-center
+                "
+                >
+                  <SimpleButton
+                    text={t("actions.general.seeMore")}
+                    action={handleInformationButton}
                   />
-                  {/* Button to join quickly to the session of the place, temporarily commented */}
-                  {/* <SimpleButton text="Join" action={(ev) => {}} /> */}
                 </IonRow>
-              </article>
-            )
-          }
-
-          {/* ------------------------- */}
-          {/* Status of the place in the session */}
-          <IonRow className="mt-3">
-            <IonCol size="6">
-              <IonText>
-                <h3 className="text-lg font-bold">{t('spots.session.status')}</h3>
-              </IonText>
-              <IonRow className="w-full flex flex-row flex-nowrap items-center">
-                <HandlePlaceStatus status={isOpenNow()} />
-                <span className="text-sm font-light ml-1">
-                  {t('filters.rules.closeAt')} {currentPlace?.rules?.closedAt}
-                </span>
-              </IonRow>
-            </IonCol>
-
-            {/* ------------------------- */}
-            {/* Mindset of the session */}
-            {
-              canAuthSession() && (
-                <IonCol size="6">
-                  <IonText>
-                    <h3 className="text-lg font-bold">{t('spots.session.knownFor')}</h3>
-                  </IonText>
-                  <IonRow className="w-full flex flex-row flex-nowrap items-center">
-                    <HandleMindsetTags
-                      mindset={currentPlace?.knownFor || MINDSETS.UNKNOWN}
-                    />
-                  </IonRow>
-                </IonCol>
-              )
-            }
-          </IonRow>
+              )}
+          </IonCol>
         </IonRow>
 
         {/* ------------------------- */}
-        {/* Last stories of the place */}
-        <IonRow className="w-full h-auto max-h-12 border-b border-gray-300">
+        {/* Tags of the place of the session */}
+        {canAuthSession() && canViewPlaceRealTimeData() && (
+          <IonRow className="w-full flex flex-row items-start justify-start p-3 border-b border-gray-300">
+            {currentPlace?.knownFor && (
+              <div className="mr-1">
+                <SimpleTag
+                  text={t(
+                    `filters.mindsets.${currentPlace?.knownFor.toLowerCase()}`
+                  )}
+                />
+              </div>
+            )}
+            {currentPlace?.ambianceTags?.map((ambiance) => (
+              <div className="mr-1 mb-1" key={ambiance}>
+                <SimpleTag
+                  text={t(`filters.options.places.ambiances.${ambiance}`)}
+                />
+              </div>
+            ))}
+            {currentPlace?.themeTags?.map((theme) => (
+              <div className="mr-1 mb-1" key={theme}>
+                <SimpleTag text={t(`filters.options.places.themes.${theme}`)} />
+              </div>
+            ))}
+          </IonRow>
+        )}
+
+        <IonRow className="relative w-full">
+          <IonRow className="flex flex-col w-full p-3 border-b border-gray-300">
+            <article className="mb-3">
+              <IonText>
+                <h3 className="text-md font-medium">
+                  {t("spots.information.aboutTheSpot")}
+                </h3>
+              </IonText>
+              <IonRow className="w-full flex flex-row flex-nowrap items-center pt-1">
+                <IonText className="text-sm font-normal">
+                  {currentPlace?.description}
+                </IonText>
+              </IonRow>
+            </article>
+          </IonRow>
+
+          {/* ------------------------- */}
+          {/* Last stories of the place */}
           {/* If  the router is not hard to do we should do it with tabs if not we can do render logic to apply it */}
+          {/* <IonRow className="w-full h-auto max-h-12 border-b border-gray-300">
           <IonRow className="relative w-full h-auto">
-            <IonCol size="12" onClick={() => setIsRecentActivity(false)}>
-              <section
-                className={`
-                            h-full
-                            flex items-center justify-center 
-                            cursor-pointer hover:bg-gray-200 p-3
-                        `}
-              >
-                <h2 className={`${!isRecentActivity ? "font-bold" : ""}`}>
-                  { t('spots.session.multimedia') }
-                </h2>
-              </section>
-            </IonCol>
-            {/* <IonCol size="6" onClick={() => setIsRecentActivity(true)}>
+            <IonCol size="6" onClick={() => setIsRecentActivity(true)}>
               <section
                 className={`
                             h-full
@@ -343,51 +381,64 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
                   Recent Activity
                 </h2>
               </section>
-            </IonCol> */}
+            </IonCol>
           </IonRow>
+        </IonRow> */}
         </IonRow>
 
-        {/* Multimedia grid */}
-        <IonRow className="w-full h-full p-3 flex flex-row flex-nowrap overflow-x-auto overflow-y-hidden">
-          {isRecentActivity ? (
-            currentPlace?.sessionCachedData?.lastRecentlyActivities?.length ? (
-              <QuickPlaceDetailRecentActivitySlider
-                recentActivity={
-                  currentPlace?.sessionCachedData?.lastRecentlyActivities || []
-                }
-              />
+        <IonRow className="flex flex-col w-full h-auto p-3">
+          <article className="mb-3">
+            <IonText>
+              <h3 className="text-md font-medium">
+                {t("spots.information.discoveredBy")}:
+              </h3>
+            </IonText>
+            {currentPlace?.discoveredByID ? (
+              <IonRow className="w-full flex flex-row flex-nowrap items-center pt-1">
+                <AvatarSingleCircle
+                  url={currentPlace?.discoveredBy?.profilePicture}
+                  styles="mr-1"
+                />
+
+                <IonText
+                  className="text-sm font-medium underline cursor-pointer"
+                  onClick={() => onDiscoveredBy(currentPlace.discoveredByID)}
+                >
+                  {currentPlace?.discoveredBy?.username}
+                </IonText>
+              </IonRow>
             ) : (
-              <p>There is no recent activity</p>
-            )
-          ) : (
-            <MultimediaMasonryGrid
-              multimedia={currentPlace?.multimedia || []}
-              onMultimedia={handleOnMultimediaSelected}
-            />
-          )}
+              <IonRow className="w-full flex flex-row flex-nowrap items-center pt-1">
+                <AvatarSingleCircle
+                  url="/assets/images/coffi-logo.svg"
+                  styles="mr-1"
+                />
+
+                <IonText className="text-sm font-medium">Coffi</IonText>
+              </IonRow>
+            )}
+          </article>
         </IonRow>
-      </IonRow>
+      </section>
 
-      {
-        confirmSpot && (
-          <ConfirmPlaceDiscoveredModal 
-            closeCallback={closeConfirmSpot}
-            onSuccess={handleOnConfirmSpot}
-          />
-        )
-      }
+      {confirmSpot && (
+        <ConfirmPlaceDiscoveredModal
+          closeCallback={closeConfirmSpot}
+          onSuccess={handleOnConfirmSpot}
+        />
+      )}
 
-      {
-        isSpotApproved && (
-          <SpotApprovedSuccessfulModal closeDiscoveredSpot={() => setIsSpotApproved(false)} />
-        )
-      }
+      {isSpotApproved && (
+        <SpotApprovedSuccessfulModal
+          closeDiscoveredSpot={() => setIsSpotApproved(false)}
+        />
+      )}
 
-      {
-        isSpotConfirmed && (
-          <SpotConfirmedSuccessfulModal closeDiscoveredSpot={() => setIsSpotConfirmed(false)} />
-        )
-      }
+      {isSpotConfirmed && (
+        <SpotConfirmedSuccessfulModal
+          closeDiscoveredSpot={() => setIsSpotConfirmed(false)}
+        />
+      )}
 
       {/* Multimedia detail view with app modal */}
       {multimediaModalOpen && (

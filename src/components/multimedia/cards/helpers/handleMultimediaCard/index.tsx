@@ -1,3 +1,4 @@
+import { MdImageNotSupported } from 'react-icons/md';
 import { MULTIMEDIA_TYPE } from '../../../../../models/multimedia';
 import { MultimediaHoverCardImage } from '../../hoverImage';
 import { MultimediaCardImage } from '../../image'
@@ -21,8 +22,8 @@ export const HandleMultimediaCard: React.FC<{ type: MULTIMEDIA_TYPE, url: string
 
 
     return (
-        <span>
-            There is no support for that type of multimedia :(
-        </span>
+        <div className='w-full h-full relative flex items-center justify-center'>
+            <MdImageNotSupported size={21} color='gray' />
+        </div>
     )
 }

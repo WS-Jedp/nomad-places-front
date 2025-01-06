@@ -19,28 +19,14 @@ import { createSocket } from "../../store/redux/slices/userSession";
 import { getSpotCachedSession } from "../../store/redux/slices/spotSession";
 import { useDistanceToSpot } from "../../common/hooks/useDistanceToSpot";
 import { PLACE_CONFIRMATION_STATUS } from "../../models/places";
+import { PlaceQuickSession } from "../../containers/placeQuickSession";
 
 export const PlaceDetailPage = () => {
   const history = useHistory();
   const { currentPlace } = useAppSelector((state) => state.places);
-  const { cachedSession } = useAppSelector((state) => state.spotSession);
   const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
   const [isMobile] = useIsMobile();
-  const [distanceToSpot] = useDistanceToSpot(currentPlace?.location);
-
-  function handlePlaceLocation() {
-    if (!currentPlace) return null;
-    let location = "";
-
-    if (currentPlace.location.zone) location += currentPlace.location.zone;
-    if (currentPlace.location.city)
-      location += `, ${currentPlace.location.city}`;
-    if (currentPlace.location.country)
-      location += `, ${currentPlace.location.country}`;
-
-    return location.length > 0 ? location + " - " : location;
-  }
 
   function handleEmptyCurrentPlace() {
     findPlace({ placeID: id });
@@ -69,18 +55,8 @@ export const PlaceDetailPage = () => {
   return (
     <IonRow className="relative h-screen w-screen overflow-y-hidden bg-white text-black">
       {isMobile && <BackNavigationHeader />}
-      <IonRow className={`w-full h-auto ${isMobile ? "p-3" : ""}`}>
-        {isMobile && (
-          <IonText>
-            <h2 className="font-bold text-3xl">{currentPlace?.name}</h2>
-            <p className="pt-1">
-              {handlePlaceLocation()} {distanceToSpot}km
-            </p>
-          </IonText>
-        )}
-      </IonRow>
       <DetailAndSessionActionsLayout secondTab={<PlaceSessionDetail />}>
-        <PlaceInformationDetail />
+        <PlaceQuickSession />
       </DetailAndSessionActionsLayout>
     </IonRow>
   );

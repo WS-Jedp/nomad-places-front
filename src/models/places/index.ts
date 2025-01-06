@@ -10,14 +10,18 @@ export interface Place {
   knownFor: MINDSETS;
   description?: string | null;
   ambianceTags: AMBIENCE_TAG_ENUM[];
-  themesTags: THEME_TAG_ENUM[];
+  themeTags: THEME_TAG_ENUM[];
   approximateDailyCost: PLACE_APPROXIMATE_DAILY_CONST_ENUM | null;
   multimedia: PlaceMultimedia[];
   type: PLACE_TYPES[];
   location: GeoLocation;
   commodities?: Commodities;
   rules: PlaceRules;
-  discoveredBy?: UserRequestDTO;
+  discoveredBy?: {
+    id: string
+    username: string,
+    profilePicture?: string
+  };
   discoveredByID?: string;
   confirmedBy?: UserRequestDTO[];
   confirmedByIDs?: string[];

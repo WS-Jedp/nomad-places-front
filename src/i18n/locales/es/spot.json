@@ -1,14 +1,15 @@
 {
     "information": {
         "description": "Descripción",
-        "aboutTheSpot": "Acerca del Spot",
+        "aboutTheSpot": "Acerca del lugar",
         "aboutTheSession": "Acerca de la sesión",
         "rules": "Reglas",
         "commodities": "Comodidades",
         "multimedia": "Multimedia",
         "leaveTheSession": "Salir de la sesión",
         "updateTheSession": "Actualizar la sesión",
-        "quickUpdate": "Actualización rápida"
+        "quickUpdate": "Actualización rápida",
+        "discoveredBy":"Descubierto por"
     },
     "session": {
         "usersInSession": "Usuarios en sesión",
@@ -24,7 +25,7 @@
     },
     "messages": {
         "noDescription": "No hay una descripción para este Spot por ahora :(",
-        "noMultimedia": "No hay multimedia para este Spot por ahora",
+        "noMultimedia": "No hay multimedia para este lugar por ahora",
         "noUsersInSession": "No hay usuarios en sesión",
         "userInSession": "usuario en la sesión",
         "usersInSession": "usuarios en la sesión",

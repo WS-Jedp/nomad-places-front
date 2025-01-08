@@ -14,7 +14,7 @@ export const ParkingAmenitiesCard:React.FC<ParkingAmenitiesCardProps> = ({ state
     return (
         <AmenitiesCard 
             Icon={state ? MdOutlineLocalParking : BsSignNoParking}
-            amenities={t(`filters.commodities.parking.${value ? value : 'null'}`)}
+            amenities={t(`filters.commodities.parking.${value ? value : 'label'}`)}
             state={state || false}
         />
     )

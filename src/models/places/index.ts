@@ -319,6 +319,31 @@ export const MAIN_PLACE_COMMODITIES_KEYS = [
   PLACE_COMMODITIES_ENUM.FOOD,
 ];
 
+export function getCommodityOptions(rule: PLACE_COMMODITIES_ENUM) {
+  switch (rule) {
+    case PLACE_COMMODITIES_ENUM.WIFI_SPEED:
+      return wifiSpeedOptions;
+    case PLACE_COMMODITIES_ENUM.PARKING:
+      return parkingOptions;
+    case PLACE_COMMODITIES_ENUM.MOBILE_SIGNAL:
+      return mobileSignalOptions;
+    case PLACE_COMMODITIES_ENUM.FOOD_QUALITY:
+      return commodityQualityOptions;
+    case PLACE_COMMODITIES_ENUM.COMFORT_LEVEL:
+      return comfortLevelOptions;
+    case PLACE_COMMODITIES_ENUM.CAFE_QUALITY:
+      return commodityQualityOptions;
+    case PLACE_COMMODITIES_ENUM.BAKERY_QUALITY:
+      return commodityQualityOptions;
+    case PLACE_COMMODITIES_ENUM.FOOD:
+      return foodOptions;
+    case PLACE_COMMODITIES_ENUM.TEMPERATURE_CONTROL:
+      return temperatureControlOptions;
+    default:
+      return [];
+  }
+}
+
 /**
  * Model PlaceRules
  *
@@ -400,6 +425,21 @@ export const privacyPolicyRuleOptions = [
   PRIVACY_POLICY_RULE_ENUM.SHARED_DESKS,
   PRIVACY_POLICY_RULE_ENUM.PRIVATE_ROOM,
 ];
+
+export function getRuleOptions(rule: PLACE_RULES_ENUM) {
+  switch (rule) {
+    case PLACE_RULES_ENUM.TIME_LIMIT:
+      return placeTimeLimitOptions;
+    case PLACE_RULES_ENUM.NOISE_POLICY:
+      return noisePolicyRuleOptions;
+    case PLACE_RULES_ENUM.CONSUMPTION_POLICY:
+      return consumptionRuleOptions;
+    case PLACE_RULES_ENUM.PRIVACY_POLICY:
+      return privacyPolicyRuleOptions;
+    default:
+      return [];
+  }
+}
 
 export const MAIN_RULES_KEYS: PLACE_RULES_ENUM[] = [
   PLACE_RULES_ENUM.PET_FRIENDLY,

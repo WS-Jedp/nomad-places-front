@@ -27,19 +27,21 @@
     "commodities": {
         "publicWifi": "Wifi público disponible",
         "wifiSpeed": {
-            "null": "Velocidad de Wifi no especificada",
+            "label": "Velocidad de Wifi",
+            "null": "Velocidad de Wifi desconocida",
             "SLOW": "Internet de baja velocidad",
             "MODERATE": "Buen Wifi para Navegacion Diaria",
             "FAST": "Wifi Rapido y Confiable",
             "VERY_FAST": "Velocidad de Wifi de Primera"
         },
         "parking": {
-            "null": "Estacionamiento no especificado",
+            "label": "Zona de estacionamiento",
+            "null": "Disponibilidad de estacionamiento desconocida",
             "IN_PLACE": "Estacionamiento disponible en el lugar",
             "IN_STREET": "Estacionamiento disponible en la calle",
             "NEARBY": "Estacionamiento cerca del lugar"
         },
-        "publicPlugs": "Disponibilidad de enchufes publicos",
+        "publicPlugs": "Enchufes publicos",
         "plugsAmoount": "Cantidad de Enchufes",
         "coworkSpace": "Espacio de Coworking",
         "publicBathrooms": "Disponibilidad de baños publicos",
@@ -48,14 +50,20 @@
         "balcony": "Balcón",
         "terrace": "Terraza",
         "mobileSignal": {
+            "label": "Señal movil",
             "null": "Fuerza de señal movil desconocida",
             "WEAK": "Señal movil limitada",
             "MEDIUM": "Señal movil decente",
             "STRONG": "Señal movil confiable"
         },
-        "food": "Disponibilidad de comida",
-        "foodQuality": "Calidad de comida",
+        "food": {
+            "label": "Servicio de comida"
+        },
+        "foodQuality": {
+            "label": "Calidad del servicio comida"
+        },
         "comfortLevel": {
+            "label": "Nivel de comodidad",
             "null": "Nivel de comodidad no especificado",
             "BASIC": "Comodidad esencial para estadias cortas",
             "CASUAL": "Ambiente relajado e informal",
@@ -65,7 +73,8 @@
         },
         "outdoorSeating": "Asientos en el exterior",
         "temperatureControl": {
-            "null": "Control de temperatura no especificado",
+            "label": "Regulador de temperatura",
+            "null": "Disponibilidad de regulador de temperatura",
             "AIR_CONDITIONING": "Aire acondicionado",
             "HEATING": "Calefacción"
         },
@@ -73,10 +82,16 @@
         "eventSpace": "Espacio para eventos",
         "greenAreas": "Espacios verdes disponibles",
         "alcoholAvailability": "Disponibilidad de alcohol",
-        "cafe": "Servicio de cafe disponible",
-        "cafeQuality": "Calidad del servicio de cafe",
-        "bakery": "Servicio de panaderia disponible",
-        "bakeryQuality": "Calidad del servicio de panaderia"
+        "cafe": "Servicio de café",
+        "cafeQuality": {
+            "label": "Calidad del servicio de cafe"
+        },
+        "bakery": {
+            "label": "Servicio de panadería"
+        },
+        "bakeryQuality": {
+            "label": "Calidad del servicio de panadería"
+        }
     },
     "rules": {
         "openAt": "Abre a",
@@ -88,24 +103,28 @@
         "underAge": "Menores de edad permitidos",
         "noUnderAge": "Menores de edad no permitidos",
         "noisePolicy": {
+            "label": "Politica de sonido",
             "null": "Politica de sonido desconocida",
             "QUIET_ONLY": "Espacio silencioso",
             "MODERATE_NOISE_ALLOWED": "Ruido moderado permitido",
             "NO_NOISE_RESTRICTION": "Sin restriccion de sonidos"
         },
         "privacyPolicy": {
+            "label": "Politica de privacidad",
             "null": "Politica de privacidad desconocida",
             "OPEN_WORKSPACE": "Espacio de trabajo abierto",
             "SHARED_DESKS": "Espacio con escritorios compartidos",
             "PRIVATE_ROOM": "Habitaciones privadas disponibles"
         },
         "timeLimit": {
+            "label": "Politica de tiempo",
             "null": "Politica de tiempo desconocida",
             "NO_LIMIT": "Estadia sin tiempo limite",
             "UNLIMITED": "Estadia de tiempo ilimitado",
             "PER_HOUR": "Estadia con limite de tiempo"
         },
         "consumptionPolicy": {
+            "label": "Politica de consumo",
             "null": "Politica de consumo desconocida",
             "PURCHASE_REQUIRED": "Compra un producto para quedarte",
             "OUTSIDE_PURCHASE_ALLOWED": "Puedes consumir productos externos",
@@ -133,7 +152,7 @@
         "BAD": "Mal",
         "REGULAR": "Regular",
         "GOOD": "Bien",
-        "VERY_GOOD": "Muy bien",
+        "VERY_GOOD": "Muy bueno",
         "EXCELLENT": "Excelente",
         "BASIC": "Basico",
         "CASUAL": "Casual",
@@ -152,9 +171,9 @@
         "NO_LIMIT": "Sin limite",
         "UNLIMITED": "Ilimitado",
         "PER_HOUR": "Por hora",
-        "PURCHASE_REQUIRED": "Compra requerida",
-        "OUTSIDE_PURCHASE_ALLOWED": "Compras externas permitidas",
-        "NO_OUTSIDE_FOOD": "Sin comida de afuera",
+        "PURCHASE_REQUIRED": "Compra un producto para quedarte",
+        "OUTSIDE_PURCHASE_ALLOWED": "Puedes consumir productos externos",
+        "NO_OUTSIDE_FOOD": "Consumibles externos no estan permitidos",
         "places": {
             "themes": {
                 "STARTUPS": "Startups",

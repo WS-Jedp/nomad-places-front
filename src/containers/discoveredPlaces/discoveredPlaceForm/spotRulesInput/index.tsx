@@ -4,6 +4,7 @@ import { useAppSelector } from "../../../../common/hooks/useTypedSelectors";
 import { SimpleCheckbox } from "../../../../components/form/inputs/checkbox";
 import {
   consumptionRuleOptions,
+  getRuleOptions,
   noisePolicyRuleOptions,
   PLACE_RULES_ENUM,
   PLACE_TIME_LIMIT_RULE,
@@ -35,21 +36,6 @@ export const SpotRulesInput: React.FC<SpotRulesProps> = ({
   ];
 
   const multipleOptionsRules = [PLACE_RULES_ENUM.PRIVACY_POLICY];
-
-  function getRuleOptions(rule: PLACE_RULES_ENUM) {
-    switch (rule) {
-      case PLACE_RULES_ENUM.TIME_LIMIT:
-        return placeTimeLimitOptions;
-      case PLACE_RULES_ENUM.NOISE_POLICY:
-        return noisePolicyRuleOptions;
-      case PLACE_RULES_ENUM.CONSUMPTION_POLICY:
-        return consumptionRuleOptions;
-      case PLACE_RULES_ENUM.PRIVACY_POLICY:
-        return privacyPolicyRuleOptions;
-      default:
-        return [];
-    }
-  }
 
   function getSelectedOptionsRule(rule: PLACE_RULES_ENUM) {
     switch(rule) {

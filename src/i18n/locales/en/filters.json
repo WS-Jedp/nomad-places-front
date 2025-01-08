@@ -27,6 +27,7 @@
     "commodities": {
         "publicWifi": "Free Public Wifi Available",
         "wifiSpeed": {
+            "label": "Wifi Speed",
             "null": "Wifi Speed Not Specified",
             "SLOW": "Basic Wifi Connection",
             "MODERATE": "Good Wifi for Everyday Browsing",
@@ -34,6 +35,7 @@
             "VERY_FAST": "Top-Tier Wifi Speed"
         },
         "parking": {
+            "label": "Parking Zone",
             "null": "Parking Not Specified",
             "IN_PLACE": "On-Site Parking Available",
             "IN_STREET": "Street Parking Available",
@@ -48,14 +50,20 @@
         "balcony": "Balcony",
         "terrace": "Terrace",
         "mobileSignal": {
+            "label": "Mobile Signal Strength",
             "null": "Mobile Signal Strength Unknown",
             "WEAK": "Limited Mobile Signal",
             "MEDIUM": "Decent Mobile Signal",
             "STRONG": "Reliable Mobile Signal"
         },
-        "food": "Food Available",
-        "foodQuality": "Food Quality",
+        "food": {
+            "label": "Food Service"
+        },
+        "foodQuality": {
+            "label": "Food Service Quality"
+        },
         "comfortLevel": {
+            "label": "Comfort Level",
             "null": "Comfort Level Not Specified",
             "BASIC": "Essential Comfort for Short Stays",
             "CASUAL": "Relaxed and Informal Setting",
@@ -65,6 +73,7 @@
         },
         "outdoorSeating": "Outdoor Seating",
         "temperatureControl": {
+            "label": "Temperature Control",
             "null": "Temperature Control Not Specified",
             "AIR_CONDITIONING": "Air Conditioning",
             "HEATING": "Heating"
@@ -73,10 +82,14 @@
         "eventSpace": "Event Space",
         "greenAreas": "Green Spaces Available",
         "alcoholAvailability": "Alcohol Available",
-        "cafe": "Cafe Service Available",
+        "cafe": "Cafe Service",
         "cafeQuality": "Cafe Service Quality",
-        "bakery": "Bakery Service Available",
-        "bakeryQuality": "Bakery Service Quality"
+        "bakery": {
+            "label": "Bakery Service Quality"
+        },
+        "bakeryQuality": {
+            "label": "Bakery Service Quality"
+        }
     },
     "rules": {
         "openAt": "Open at",
@@ -86,20 +99,25 @@
         "smoking": "Smoking Friendly",
         "noSmoking": "Not Smoking Friendly",
         "underAge": "Under Age Friendly",
-        "privacyPolicy": "Privacy Policy",
+        "privacyPolicy": {
+            "label": "Privacy Policy"
+        },
         "noisePolicy": {
+            "label": "Noise Policy",
             "null": "Noise Policy Unknown",
             "QUIET_ONLY": "Quiet Zone",
             "MODERATE_NOISE_ALLOWED": "Moderate Noise Allowed",
             "NO_NOISE_RESTRICTION": "No Noise Restriction"
         },
         "timeLimit": {
+            "label": "Time Limit Policy",
             "null": "Time Limit Policy Unknown",
             "NO_LIMIT": "Stay Without Time Limit",
             "UNLIMITED": "Unlimited Time stay",
             "PER_HOUR": "Limited Stay Time"
         },
         "consumptionPolicy": {
+            "label": "Consumption Policy",
             "null": "Consumption Policy Not Specified",
             "PURCHASE_REQUIRED": "Stay With A Purchase",
             "OUTSIDE_PURCHASE_ALLOWED": "You Can Bring External Consumables",
@@ -198,9 +216,9 @@
         "NO_LIMIT": "No Limit",
         "UNLIMITED": "Unlimited",
         "PER_HOUR": "Per Hour",
-        "PURCHASE_REQUIRED": "Purchase Required",
-        "OUTSIDE_PURCHASE_ALLOWED": "Outside Purchase Allowed",
-        "NO_OUTSIDE_FOOD": "No Outside Food",
+        "PURCHASE_REQUIRED": "Stay With A Purchase",
+        "OUTSIDE_PURCHASE_ALLOWED": "You Can Bring External Consumables",
+        "NO_OUTSIDE_FOOD": "External Consumables Not Allowed",
         "places": {
             "themes": {
                 "STARTUPS": "Startups",

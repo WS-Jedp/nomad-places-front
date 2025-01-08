@@ -1,12 +1,4 @@
-import {
-  IonAvatar,
-  IonCol,
-  IonIcon,
-  IonRouterLink,
-  IonRow,
-  IonText,
-} from "@ionic/react";
-import { arrowBack } from "ionicons/icons";
+import { IonCol, IonRow, IonText } from "@ionic/react";
 import { useEffect, useMemo, useState } from "react";
 import { useHistory } from "react-router-dom";
 
@@ -14,8 +6,6 @@ import { MultimediaMasonryGrid } from "../../components/multimedia/grid/masonry"
 
 import { QuickPlaceDetailRecentActivitySlider } from "../../components/slider/quickPlaceDetail/recentActivity";
 import { SimpleButton } from "../../components/buttons/simple";
-import { HandleMindsetTags } from "../../components/tags/mindsets";
-import { MINDSETS } from "../../models/mindsets";
 import { HandlePlaceStatus } from "../../components/tags/placeStatus";
 import { PLACE_STATUS } from "../../models/placeStatus";
 import { AvatarGroup } from "../../components/avatar/group";
@@ -23,10 +13,8 @@ import {
   useAppDispatch,
   useAppSelector,
 } from "../../common/hooks/useTypedSelectors";
-import { MdArrowBack } from "react-icons/md";
 import { BackNavigationButton } from "../../components/buttons/navigation/goBack";
 import { createSocket } from "../../store/redux/slices/userSession";
-import { computeDistanceToSpot } from "../../common/utils/geoLocation";
 import { useDistanceToSpot } from "../../common/hooks/useDistanceToSpot";
 import { useTranslation } from "react-i18next";
 import {
@@ -36,17 +24,12 @@ import {
   PLACE_CONFIRMATION_STATUS,
   PLACE_RULES_ENUM,
 } from "../../models/places";
-import {
-  IoIosInformation,
-  IoIosInformationCircle,
-  IoIosInformationCircleOutline,
-} from "react-icons/io";
+import { IoIosInformationCircleOutline } from "react-icons/io";
 import { ConfirmPlaceDiscoveredModal } from "../discoveredPlaces/modals/confirmPlaceDiscovered";
 import { newSpotDiscoveredConfirmedDTO } from "../../dto/places";
 import { SpotApprovedSuccessfulModal } from "../discoveredPlaces/modals/spotApprovedSuccessful";
 import { SpotConfirmedSuccessfulModal } from "../discoveredPlaces/modals/spotConfirmedSuccessful";
 import {
-  addDiscoverSpotIntoNearPlaces,
   approvedCurrentPlace,
   updateCurrentPlace,
 } from "../../store/redux/slices/places";
@@ -55,18 +38,21 @@ import { MultimediaSliderModal } from "../multimediaSliderModal";
 import { useUserPermissions } from "../../common/hooks/useUserPermissions";
 import { SimpleTag } from "../../components/tags/simpleTag";
 import { AvatarSingleCircle } from "../../components/avatar/singleCircle";
-import { useIsMobile } from "../../common/hooks/useIsMobile";
 import { HandleRuleRender } from "../../components/rules/handleRuleRender";
 import { HandleAmenitiesRender } from "../../components/amenities/handleAmenitiesRender";
+import { getLocalISODate } from "../../common/utils/dates";
+import { format, parseISO } from "date-fns";
 
 interface PlaceQuickSessionProps {
   changePageCallback?: Function;
+  onSessionPath?: boolean;
 }
 
 // This quickSession detail will only show what is going on in the place
 // The page detail from a place or the session of a place should allow interact with it
 export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
   changePageCallback,
+  onSessionPath,
 }) => {
   const { t } = useTranslation();
 
@@ -330,9 +316,9 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
             </IonRow>
           </IonCol>
           <IonCol size="4">
-            {canAuthSession() &&
-              canViewPlaceRealTimeData() &&
-              changePageCallback && (
+            {!onSessionPath &&
+              canAuthSession() &&
+              canViewPlaceRealTimeData() && (
                 <IonRow
                   className="
                     w-full
@@ -420,53 +406,79 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
               <h2 className="font-medium text-md mb-2">
                 {t("spots.information.commodities")}
               </h2>
-              <IonRow className="relative w-full h-auto">
+              <IonRow className="relative w-full h-auto mb-3">
                 {currentPlace &&
                   availableCommodities.map((commodity, i) => {
-                    let optValue
-                    let quality
-                    if(currentPlace.commodities) {
+                    let optValue;
+                    let quality;
+                    if (currentPlace.commodities) {
+                      const currCommidity = currentPlace.commodities[commodity];
 
-                      const currCommidity = currentPlace.commodities[commodity]
-
-                      if(commodity === PLACE_COMMODITIES_ENUM.WIFI_SPEED && currCommidity) {
-                        optValue = currCommidity
+                      if (
+                        commodity === PLACE_COMMODITIES_ENUM.WIFI_SPEED &&
+                        currCommidity
+                      ) {
+                        optValue = currCommidity;
                       }
 
-                      if(commodity === PLACE_COMMODITIES_ENUM.FOOD && currCommidity) {
-                        const foodQuality = currentPlace.commodities.foodQuality
-                        optValue = currentPlace.commodities.food
-                        quality = currentPlace.commodities.foodQuality
+                      if (
+                        commodity === PLACE_COMMODITIES_ENUM.FOOD &&
+                        currCommidity
+                      ) {
+                        optValue = currentPlace.commodities.food;
+                        quality = currentPlace.commodities.foodQuality;
                       }
 
-                      if(commodity === PLACE_COMMODITIES_ENUM.CAFE && currCommidity) {
-                        const cafeQuality = currentPlace.commodities.cafeQuality
-                        optValue = cafeQuality
+                      if (
+                        commodity === PLACE_COMMODITIES_ENUM.CAFE &&
+                        currCommidity
+                      ) {
+                        const cafeQuality =
+                          currentPlace.commodities.cafeQuality;
+                        optValue = cafeQuality;
                       }
 
-                      if(commodity === PLACE_COMMODITIES_ENUM.BAKERY && currCommidity) {
-                        const bakeryQuality = currentPlace.commodities.bakeryQuality
-                        optValue = bakeryQuality
+                      if (
+                        commodity === PLACE_COMMODITIES_ENUM.BAKERY &&
+                        currCommidity
+                      ) {
+                        const bakeryQuality =
+                          currentPlace.commodities.bakeryQuality;
+                        optValue = bakeryQuality;
                       }
 
-                      if(commodity === PLACE_COMMODITIES_ENUM.TEMPERATURE_CONTROL && currCommidity) {
-                        optValue = currentPlace.commodities.temperatureControl
+                      if (
+                        commodity ===
+                          PLACE_COMMODITIES_ENUM.TEMPERATURE_CONTROL &&
+                        currCommidity
+                      ) {
+                        optValue = currentPlace.commodities.temperatureControl;
                       }
 
-                      if(commodity === PLACE_COMMODITIES_ENUM.COMFORT_LEVEL && currCommidity) {
-                        const comfortLevel = currentPlace.commodities.comfortLevel
-                        optValue = comfortLevel
+                      if (
+                        commodity === PLACE_COMMODITIES_ENUM.COMFORT_LEVEL &&
+                        currCommidity
+                      ) {
+                        const comfortLevel =
+                          currentPlace.commodities.comfortLevel;
+                        optValue = comfortLevel;
                       }
 
-                      if(commodity === PLACE_COMMODITIES_ENUM.MOBILE_SIGNAL && currCommidity) {
-                        optValue = currentPlace.commodities.mobileSignal
+                      if (
+                        commodity === PLACE_COMMODITIES_ENUM.MOBILE_SIGNAL &&
+                        currCommidity
+                      ) {
+                        optValue = currentPlace.commodities.mobileSignal;
                       }
 
-                      if(commodity === PLACE_COMMODITIES_ENUM.PARKING && currCommidity) {
-                        optValue = currentPlace.commodities.parking
+                      if (
+                        commodity === PLACE_COMMODITIES_ENUM.PARKING &&
+                        currCommidity
+                      ) {
+                        optValue = currentPlace.commodities.parking;
                       }
                     }
-                    
+
                     return (
                       <IonCol size="12" sizeMd="6" className="my-1" key={i}>
                         <HandleAmenitiesRender
@@ -485,6 +497,10 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
                     );
                   })}
               </IonRow>
+
+              <h2 className="font-medium text-md mb-2">
+                {t("spots.information.unavailableCommodities")}
+              </h2>
               <IonRow className="relative w-full h-auto">
                 {currentPlace &&
                   unavailableCommodities.map((commodity, i) => {
@@ -519,15 +535,25 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
               <IonRow className="w-full flex flex-row flex-nowrap items-center pt-1">
                 <AvatarSingleCircle
                   url={currentPlace?.discoveredBy?.profilePicture}
-                  styles="mr-1"
+                  styles="mr-2"
                 />
 
-                <IonText
-                  className="text-sm font-medium underline cursor-pointer"
-                  onClick={() => onDiscoveredBy(currentPlace.discoveredByID)}
-                >
-                  {currentPlace?.discoveredBy?.username}
-                </IonText>
+                <article className="flex flex-col items-start justify-start">
+                  <IonText
+                    className="text-sm font-medium underline cursor-pointer"
+                    onClick={() => onDiscoveredBy(currentPlace.discoveredByID)}
+                  >
+                    {currentPlace?.discoveredBy?.username}
+                  </IonText>
+                  {currentPlace.discoveredDate && (
+                    <IonText className="text-xs font-light">
+                      {`${t("spots.information.discoveredOn")} ${format(
+                        parseISO(getLocalISODate(currentPlace.discoveredDate)),
+                        "dd/MM/yyyy"
+                      )}`}
+                    </IonText>
+                  )}
+                </article>
               </IonRow>
             ) : (
               <IonRow className="w-full flex flex-row flex-nowrap items-center pt-1">

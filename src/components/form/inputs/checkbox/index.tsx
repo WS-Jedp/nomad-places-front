@@ -43,12 +43,12 @@ export const SimpleCheckbox: React.FC<SimpleCheckboxProps> = ({
                 transition-all duration-300
             `}
     >
-      <div className="flex flex-row flex-nowrap w-full" onClick={callback}>
+      <div className="flex flex-row flex-nowrap w-full items-center" onClick={callback}>
         <span
           className={`
                         relative
                         flex items-center justify-center text-center
-                        ${small ? "w-4 h-4 rounded-sm" : "w-6 h-6 rounded-md"}
+                        ${small ? "w-4 h-4 rounded-sm" : "w-4 h-4 rounded-sm"}
                         mr-2
                         border border-solid border-gray-400 
                         bg-${isSelected ? "gray-900" : "white"} 
@@ -58,7 +58,7 @@ export const SimpleCheckbox: React.FC<SimpleCheckboxProps> = ({
         </span>
         <span
           className={`${
-            small ? "text-sm font-normal" : "text-md font-semibold"
+            small ? "text-sm font-normal" : "text-md font-medium"
           } text-start break-keep`}
         >
           {label}

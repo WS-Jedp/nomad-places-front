@@ -13,7 +13,7 @@ export const FoodAmenitiesCard:React.FC<FoodCommoditiessCardProps> = ({ state, v
     const { t } = useTranslation()
 
     function getFoodTypesText() {
-        if (!state || !value || !value.length) return t(`filters.commodities.food.null`);
+        if (!state || !value || !value.length) return t(`filters.commodities.food.label`);
     
         if (value.length === 1) return t(`filters.commodities.food.${value[0]}`);
     

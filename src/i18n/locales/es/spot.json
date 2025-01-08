@@ -5,11 +5,13 @@
         "aboutTheSession": "Acerca de la sesión",
         "rules": "Lo que debes de saber",
         "commodities": "Que vas a encontrar",
+        "unavailableCommodities": "Lo que no hay",
         "multimedia": "Multimedia",
         "leaveTheSession": "Salir de la sesión",
         "updateTheSession": "Actualizar la sesión",
         "quickUpdate": "Actualización rápida",
-        "discoveredBy":"Descubierto por"
+        "discoveredBy":"Quién descubrió este lugar",
+        "discoveredOn":"Descubierto el"
     },
     "session": {
         "usersInSession": "Usuarios en sesión",

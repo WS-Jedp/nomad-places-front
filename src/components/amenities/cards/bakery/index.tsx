@@ -5,7 +5,7 @@ import { COMMODITY_QUALITY } from "../../../../models/places"
 
 interface ParkingAmenitiesCardProps {
     state?: boolean
-    value?: COMMODITY_QUALITY | null
+    value?: COMMODITY_QUALITY
 }
 
 export const BakeryAmenitiesCard:React.FC<ParkingAmenitiesCardProps> = ({ state, value = null }) => {
@@ -13,7 +13,7 @@ export const BakeryAmenitiesCard:React.FC<ParkingAmenitiesCardProps> = ({ state,
     return (
         <AmenitiesCard 
             Icon={MdOutlineBakeryDining}
-            amenities={t('filters.commodities.bakery')}
+            amenities={t('filters.commodities.bakery.label')}
             state={state || false}
             value={t(`filters.options.${value}`)}
             tagValue

@@ -65,7 +65,7 @@ export const MutipleOptionsPicker: React.FC<MultipleOptionsPickerProps> = ({
                 {isSelected(opt) && <MdCheck size={12} color="white" />}
               </article>
               <p
-                className={`text-sm font-normal my-2 ${
+                className={`text-sm text-start font-normal my-2 ${
                   !isSelected(opt) ? "text-gray-600" : "text-black"
                 }`}
               >

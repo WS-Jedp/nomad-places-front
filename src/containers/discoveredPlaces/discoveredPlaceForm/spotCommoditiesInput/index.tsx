@@ -4,14 +4,8 @@ import { useAppSelector } from "../../../../common/hooks/useTypedSelectors";
 import { SimpleCheckbox } from "../../../../components/form/inputs/checkbox";
 import { SpotCommoditiesFilters } from "../../../../models/filters";
 import {
-  comfortLevelOptions,
-  commodityQualityOptions,
-  foodOptions,
-  mobileSignalOptions,
-  parkingOptions,
-  PLACE_COMMODITIES_ENUM,
-  temperatureControlOptions,
-  wifiSpeedOptions,
+  getCommodityOptions,
+  PLACE_COMMODITIES_ENUM
 } from "../../../../models/places";
 import { useMemo } from "react";
 import { OptionsPicker } from "../../../../components/form/inputs/picker";
@@ -49,30 +43,7 @@ export const SpotCommoditiesInput: React.FC<SpotCommoditiesProps> = ({
     PLACE_COMMODITIES_ENUM.TEMPERATURE_CONTROL,
   ];
 
-  function getCommodityOptions(rule: PLACE_COMMODITIES_ENUM) {
-    switch (rule) {
-      case PLACE_COMMODITIES_ENUM.WIFI_SPEED:
-        return wifiSpeedOptions;
-      case PLACE_COMMODITIES_ENUM.PARKING:
-        return parkingOptions;
-      case PLACE_COMMODITIES_ENUM.MOBILE_SIGNAL:
-        return mobileSignalOptions;
-      case PLACE_COMMODITIES_ENUM.FOOD_QUALITY:
-        return commodityQualityOptions;
-      case PLACE_COMMODITIES_ENUM.COMFORT_LEVEL:
-        return comfortLevelOptions;
-      case PLACE_COMMODITIES_ENUM.CAFE_QUALITY:
-        return commodityQualityOptions;
-      case PLACE_COMMODITIES_ENUM.BAKERY_QUALITY:
-        return commodityQualityOptions;
-      case PLACE_COMMODITIES_ENUM.FOOD:
-        return foodOptions;
-      case PLACE_COMMODITIES_ENUM.TEMPERATURE_CONTROL:
-        return temperatureControlOptions;
-      default:
-        return [];
-    }
-  }
+  
 
   function getSelectedOptionsCommodities(rule: PLACE_COMMODITIES_ENUM) {
     switch(rule) {

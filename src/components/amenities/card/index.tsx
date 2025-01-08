@@ -33,7 +33,7 @@ export const AmenitiesCard: React.FC<AmmenitiesCardProps> = ({
           }`}
         >
           {amenities}
-          {value && tagValue && (
+          {commodityQuality && value && tagValue && (
             <span
               className={`inline-flex rounded-md ml-1 px-1 ${getCommodityQualityColor(
                 commodityQuality

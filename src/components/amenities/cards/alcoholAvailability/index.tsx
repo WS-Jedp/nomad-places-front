@@ -1,5 +1,4 @@
-import { MdOutlineNoDrinks } from "react-icons/md"
-import { FaWineGlassAlt } from "react-icons/fa"
+import { MdOutlineNoDrinks, MdOutlineWineBar } from "react-icons/md"
 import { AmenitiesCard } from "../../card"
 import { useTranslation } from "react-i18next"
 
@@ -11,7 +10,7 @@ export const AlcoholAvailabilityAmenitiesCard:React.FC<ParkingAmenitiesCardProps
     const { t } = useTranslation()
     return (
         <AmenitiesCard 
-            Icon={state ? FaWineGlassAlt : MdOutlineNoDrinks}
+            Icon={state ? MdOutlineWineBar : MdOutlineNoDrinks}
             amenities={t('filters.commodities.alcoholAvailability')}
             state={state || false}
         />

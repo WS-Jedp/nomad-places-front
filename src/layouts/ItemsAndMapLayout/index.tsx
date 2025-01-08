@@ -117,10 +117,10 @@ export const ItemsAndMapLayout: React.FC<{
         >
           <IonRouterOutlet>
             <Route path="/home/detail/:id">
-              <PlaceQuickSession changePageCallback={goToPlaceSession} />
+              <PlaceQuickSession changePageCallback={goToPlaceSession} onSessionPath={onSession} />
             </Route>
             <Route path="/home/place/:id/session">
-              <PlaceQuickSession />
+              <PlaceQuickSession onSessionPath={onSession}/>
             </Route>
             <Route exact path="/home">
               <ListSearchPlaces>{children}</ListSearchPlaces>

@@ -45,7 +45,9 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
     selectedSpotKnownForFilter,
     selectedSpotAmountPeopleFilter,
     selectedSpotCommoditiesFilter,
+    selectedValuesSpotCommoditiesFilter,
     selectedSpotRulesFilter,
+    selectedValuesSpotRulesFilter,
     selectedSpotTypesFilter,
     spotAmountPeopleFilter,
     spotCommoditiesFilter,
@@ -168,6 +170,41 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
         });
       }
 
+      if (place.commodities && selectedValuesSpotCommoditiesFilter.length > 0) {
+        selectedValuesSpotCommoditiesFilter
+          .filter((opt) => opt.value)
+          .forEach((commodity) => {
+            if (!commodity.value || !commodity.value.length) return;
+
+            if (place.commodities?.[commodity.commodity]) {
+              const val = place.commodities[commodity.commodity] as
+                | string
+                | string[];
+              const selectedValue = commodity.value;
+              if (
+                val &&
+                Array.isArray(val) &&
+                val.length > 0 &&
+                Array.isArray(selectedValue)
+              ) {
+                // If there is no any math from selectedValue in Val, the place msut be invalid
+                if (!selectedValue.some((value) => val.includes(value))) {
+                  isValid = false;
+                  return;
+                }
+              } else {
+                if (val != selectedValue) {
+                  isValid = false;
+                  return;
+                }
+              }
+            } else {
+              isValid = false;
+              return;
+            }
+          });
+      }
+
       // Filtering by rules
       if (selectedSpotRulesFilter.length > 0) {
         const selectedSpotRules = selectedSpotRulesFilter.map((ruleID) => {
@@ -180,6 +217,39 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
             return;
           }
         });
+      }
+
+      if (place.rules && selectedValuesSpotRulesFilter.length > 0) {
+        selectedValuesSpotRulesFilter
+          .filter((opt) => opt.value)
+          .forEach((rule) => {
+            if (!rule.value || !rule.value.length) return;
+
+            if (place.rules?.[rule.rule]) {
+              const val = place.rules[rule.rule] as string | string[];
+              const selectedValue = rule.value;
+              if (
+                val &&
+                Array.isArray(val) &&
+                val.length > 0 &&
+                Array.isArray(selectedValue)
+              ) {
+                // If there is no any math from selectedValue in Val, the place msut be invalid
+                if (!selectedValue.some((value) => val.includes(value))) {
+                  isValid = false;
+                  return;
+                }
+              } else {
+                if (val != selectedValue) {
+                  isValid = false;
+                  return;
+                }
+              }
+            } else {
+              isValid = false;
+              return;
+            }
+          });
       }
 
       // Filtering by current amount of people from cached data (Only for paid users)
@@ -265,12 +335,14 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
       getUserLastSession({ token: authUser.token })
     )) as PayloadAction<UserLastSession>;
 
-
-    if(lastSession && lastSession.payload.lastSession) {
-
-      if(!lastSession.payload.expired) {
-        await dispatch( findPlace({ placeID: lastSession.payload.lastSession.placeID }) )
-        history.push(`/home/detail/${lastSession.payload.lastSession.placeID}/session`)
+    if (lastSession && lastSession.payload.lastSession) {
+      if (!lastSession.payload.expired) {
+        await dispatch(
+          findPlace({ placeID: lastSession.payload.lastSession.placeID })
+        );
+        history.push(
+          `/home/detail/${lastSession.payload.lastSession.placeID}/session`
+        );
       }
     }
   }
@@ -291,7 +363,9 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
     selectedSpotKnownForFilter,
     selectedSpotAmountPeopleFilter,
     selectedSpotCommoditiesFilter,
+    selectedValuesSpotCommoditiesFilter,
     selectedSpotRulesFilter,
+    selectedValuesSpotRulesFilter,
     selectedSpotTypesFilter,
     spotAmountPeopleFilter,
     spotCommoditiesFilter,
@@ -303,7 +377,7 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
   ]);
 
   useEffect(() => {
-    if(places && places.nearPlaces && places.nearPlaces.length > 0) return
+    if (places && places.nearPlaces && places.nearPlaces.length > 0) return;
 
     if (userLocation.latitude && userLocation.longitude) getNearPlaces();
   }, [userLocation]);

@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next"
-import { MdGroupWork } from "react-icons/md"
+import { MdOutlineGroup } from "react-icons/md"
 import { AmenitiesCard } from "../../card"
 
 interface CoworkSpaceAmenitiesCardProps {
@@ -10,7 +10,7 @@ export const CoworkSpaceAmenitiesCard:React.FC<CoworkSpaceAmenitiesCardProps> = 
     const { t } = useTranslation()
     return (
         <AmenitiesCard 
-            Icon={MdGroupWork}
+            Icon={MdOutlineGroup}
             amenities={t('filters.commodities.coworkSpace')}
             state={state || false}
         />

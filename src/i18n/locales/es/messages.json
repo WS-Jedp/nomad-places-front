@@ -153,6 +153,9 @@
     },
     "utils": {
         "and": "y",
+        "or": "o",
+        "find": "Encuentra",
+        "workOn": "Trabaja en",
         "hello": "Hola"
     }
 }

@@ -1,27 +1,19 @@
-import { IonRow } from "@ionic/react"
-import { IconType } from 'react-icons'
+import { IonRow, IonText } from "@ionic/react";
+import { IconType } from "react-icons";
 
 export interface RuleCard {
-    Icon: IconType
-    rule: string
-    description: string
+  Icon: IconType;
+  rule: string;
+  description?: string;
 }
 
-export const RuleCard:React.FC<RuleCard> = ({ Icon, description, rule }) => {
-
-    return (
-        <IonRow className="relative w-full h-auto max-h-6 flex flex-row flex-nowrap align-center">
-            <article className="h-full mr-2 flex align-center justify-center">
-                <Icon size="21px" />
-            </article>
-            <article>
-                <strong className="font-bold text-md p-0 m-0">
-                    { rule }
-                </strong>
-                <p className="font-light text-sm p-0 m-0">
-                    { description }
-                </p>
-            </article>
-        </IonRow>
-    )
-}
+export const RuleCard: React.FC<RuleCard> = ({ Icon, rule }) => {
+  return (
+    <IonRow className="relative w-full h-auto flex flex-row flex-nowrap align-center">
+      <Icon size="24px" className="mr-2" />
+      <IonText>
+        <strong className="font-normal text-md">{rule}</strong>
+      </IonText>
+    </IonRow>
+  );
+};

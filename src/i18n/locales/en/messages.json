@@ -153,6 +153,9 @@
     },
     "utils": {
         "and": "and",
+        "or": "or",
+        "find": "Find",
+        "workOn": "Work on",
         "hello": "Hello"
     }
 }

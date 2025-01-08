@@ -7,7 +7,7 @@ import {
   IonText,
 } from "@ionic/react";
 import { arrowBack } from "ionicons/icons";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useHistory } from "react-router-dom";
 
 import { MultimediaMasonryGrid } from "../../components/multimedia/grid/masonry";
@@ -29,7 +29,13 @@ import { createSocket } from "../../store/redux/slices/userSession";
 import { computeDistanceToSpot } from "../../common/utils/geoLocation";
 import { useDistanceToSpot } from "../../common/hooks/useDistanceToSpot";
 import { useTranslation } from "react-i18next";
-import { PLACE_CONFIRMATION_STATUS } from "../../models/places";
+import {
+  MAIN_PLACE_COMMODITIES_KEYS,
+  MAIN_RULES_KEYS,
+  PLACE_COMMODITIES_ENUM,
+  PLACE_CONFIRMATION_STATUS,
+  PLACE_RULES_ENUM,
+} from "../../models/places";
 import {
   IoIosInformation,
   IoIosInformationCircle,
@@ -50,6 +56,8 @@ import { useUserPermissions } from "../../common/hooks/useUserPermissions";
 import { SimpleTag } from "../../components/tags/simpleTag";
 import { AvatarSingleCircle } from "../../components/avatar/singleCircle";
 import { useIsMobile } from "../../common/hooks/useIsMobile";
+import { HandleRuleRender } from "../../components/rules/handleRuleRender";
+import { HandleAmenitiesRender } from "../../components/amenities/handleAmenitiesRender";
 
 interface PlaceQuickSessionProps {
   changePageCallback?: Function;
@@ -83,7 +91,6 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
   const [multimediaModalOpen, setMultimediaModalOpen] =
     useState<boolean>(false);
   const [multimediaSelected, setMultimediaSelected] = useState<number>();
-
 
   function handleOnMultimediaSelected(index: number) {
     setMultimediaSelected(index);
@@ -172,9 +179,35 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
     return location.length > 0 ? location + " - " : location;
   }
 
+  function getRuleValue(rule: PLACE_RULES_ENUM): {
+    [key: string]: boolean | string | string[] | null;
+  } {
+    return {
+      [rule]: currentPlace?.rules[rule] || null,
+    };
+  }
+
+  const availableCommodities = useMemo(() => {
+    if (!currentPlace || !currentPlace?.commodities) return [];
+    return MAIN_PLACE_COMMODITIES_KEYS.filter((c) => {
+      return currentPlace &&
+        currentPlace.commodities &&
+        currentPlace.commodities[c]
+        ? true
+        : false;
+    });
+  }, [currentPlace]);
+  const unavailableCommodities = useMemo(() => {
+    if (!currentPlace || !currentPlace?.commodities) return [];
+    return MAIN_PLACE_COMMODITIES_KEYS.filter((c) =>
+      currentPlace && currentPlace.commodities && currentPlace.commodities[c]
+        ? false
+        : true
+    );
+  }, [currentPlace]);
+
   useEffect(() => {
     if (!currentPlace) handleNoCurrentPlace();
-    // console.log(currentPlace)
     handleUserSession();
   }, []);
 
@@ -206,7 +239,7 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
       <IonRow
         className="
                 relative
-                flex flex-row w-full h-16 p-6 md:py-3
+                flex flex-row w-full h-16 p-5 md:py-3
                 items-center
                 border-b border-gray-300
                 mb-1
@@ -222,7 +255,7 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
           currentPlace?.confirmationStatus &&
           currentPlace?.confirmationStatus ===
             PLACE_CONFIRMATION_STATUS.RECOMMENDED && (
-            <IonRow class="w-full px-3 py-2 ion-no-padding border-b border-gray-300 shadow-sm">
+            <IonRow class="w-full px-5 py-2 ion-no-padding border-b border-gray-300 shadow-sm">
               <IonCol size="12">
                 <IonRow className="h-auto flex flex-col justify-center">
                   <h1 className="font-light text-sm flex flex-row items-center bg-indigo-50 px-3 py-3 rounded-md">
@@ -243,7 +276,7 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
           )}
 
         {/* Multimedia grid */}
-        <IonRow className="w-full p-3 flex flex-row flex-nowrap overflow-x-auto overflow-y-hidden">
+        <IonRow className="w-full px-5 py-3 flex flex-row flex-nowrap overflow-x-auto overflow-y-hidden">
           {isRecentActivity ? (
             currentPlace?.sessionCachedData?.lastRecentlyActivities?.length ? (
               <QuickPlaceDetailRecentActivitySlider
@@ -265,7 +298,7 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
         </IonRow>
 
         {/* Place information */}
-        <IonRow class="w-full p-3 ion-no-padding border-b border-gray-300 shadow-sm">
+        <IonRow class="w-full px-5 py-3 ion-no-padding border-b border-gray-300 shadow-sm">
           <IonCol size="8">
             {/* Users in session */}
             {canAuthSession() &&
@@ -281,12 +314,12 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
             )}
             <div></div>
             <IonRow className="flex flex-col justify-center">
-              <IonText className="flex flex-row flex-nowrap items-center">
+              <div className="flex flex-row flex-nowrap items-center">
                 <h1 className="font-bold text-lg md:text-xl mr-2">
                   {currentPlace?.name}
                 </h1>
                 <HandlePlaceStatus status={isOpenNow()} />
-              </IonText>
+              </div>
               <IonText>
                 <span className="text-xs font-light">
                   {handlePlaceLocation()}{" "}
@@ -319,7 +352,7 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
         {/* ------------------------- */}
         {/* Tags of the place of the session */}
         {canAuthSession() && canViewPlaceRealTimeData() && (
-          <IonRow className="w-full flex flex-row items-start justify-start p-3 border-b border-gray-300">
+          <IonRow className="w-full flex flex-row items-start justify-start px-5 py-3 border-b border-gray-300">
             {currentPlace?.knownFor && (
               <div className="mr-1">
                 <SimpleTag
@@ -344,50 +377,142 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
           </IonRow>
         )}
 
-        <IonRow className="relative w-full">
-          <IonRow className="flex flex-col w-full p-3 border-b border-gray-300">
-            <article className="mb-3">
-              <IonText>
-                <h3 className="text-md font-medium">
-                  {t("spots.information.aboutTheSpot")}
-                </h3>
-              </IonText>
+        <IonRow className="relative flex flex-col w-full">
+          <IonRow className="flex flex-col w-full px-5 py-3 border-b border-gray-300">
+            <IonText>
+              <h3 className="text-md font-semibold">
+                {t("spots.information.aboutTheSpot")}
+              </h3>
+            </IonText>
+            <article className="mb-6">
               <IonRow className="w-full flex flex-row flex-nowrap items-center pt-1">
-                <IonText className="text-sm font-normal">
+                <IonText className="text-md font-normal">
                   {currentPlace?.description}
                 </IonText>
               </IonRow>
             </article>
-          </IonRow>
 
-          {/* ------------------------- */}
-          {/* Last stories of the place */}
-          {/* If  the router is not hard to do we should do it with tabs if not we can do render logic to apply it */}
-          {/* <IonRow className="w-full h-auto max-h-12 border-b border-gray-300">
-          <IonRow className="relative w-full h-auto">
-            <IonCol size="6" onClick={() => setIsRecentActivity(true)}>
-              <section
-                className={`
-                            h-full
-                            flex items-center justify-center 
-                            cursor-pointer hover:bg-gray-200 p-3
-                            ${isRecentActivity ? "bg-gray-200" : ""}
-                        `}
-              >
-                <h2 className={`${isRecentActivity ? "font-bold" : ""}`}>
-                  Recent Activity
-                </h2>
-              </section>
-            </IonCol>
+            {/* Rules */}
+            <article className="mb-6">
+              <h2 className="font-medium text-md mb-2">
+                {t("spots.information.rules")}
+              </h2>
+              <IonRow className="relative w-full h-auto">
+                {MAIN_RULES_KEYS.map((rule, i) => {
+                  const ruleValue = getRuleValue(rule);
+                  return (
+                    <IonCol size="12" sizeMd="6" className="my-1" key={i}>
+                      <HandleRuleRender
+                        rule={
+                          ruleValue as {
+                            [key: string]: boolean | string | string[] | null;
+                          }
+                        }
+                      />
+                    </IonCol>
+                  );
+                })}
+              </IonRow>
+            </article>
+
+            {/* Commodities */}
+            <article>
+              <h2 className="font-medium text-md mb-2">
+                {t("spots.information.commodities")}
+              </h2>
+              <IonRow className="relative w-full h-auto">
+                {currentPlace &&
+                  availableCommodities.map((commodity, i) => {
+                    let optValue
+                    let quality
+                    if(currentPlace.commodities) {
+
+                      const currCommidity = currentPlace.commodities[commodity]
+
+                      if(commodity === PLACE_COMMODITIES_ENUM.WIFI_SPEED && currCommidity) {
+                        optValue = currCommidity
+                      }
+
+                      if(commodity === PLACE_COMMODITIES_ENUM.FOOD && currCommidity) {
+                        const foodQuality = currentPlace.commodities.foodQuality
+                        optValue = currentPlace.commodities.food
+                        quality = currentPlace.commodities.foodQuality
+                      }
+
+                      if(commodity === PLACE_COMMODITIES_ENUM.CAFE && currCommidity) {
+                        const cafeQuality = currentPlace.commodities.cafeQuality
+                        optValue = cafeQuality
+                      }
+
+                      if(commodity === PLACE_COMMODITIES_ENUM.BAKERY && currCommidity) {
+                        const bakeryQuality = currentPlace.commodities.bakeryQuality
+                        optValue = bakeryQuality
+                      }
+
+                      if(commodity === PLACE_COMMODITIES_ENUM.TEMPERATURE_CONTROL && currCommidity) {
+                        optValue = currentPlace.commodities.temperatureControl
+                      }
+
+                      if(commodity === PLACE_COMMODITIES_ENUM.COMFORT_LEVEL && currCommidity) {
+                        const comfortLevel = currentPlace.commodities.comfortLevel
+                        optValue = comfortLevel
+                      }
+
+                      if(commodity === PLACE_COMMODITIES_ENUM.MOBILE_SIGNAL && currCommidity) {
+                        optValue = currentPlace.commodities.mobileSignal
+                      }
+
+                      if(commodity === PLACE_COMMODITIES_ENUM.PARKING && currCommidity) {
+                        optValue = currentPlace.commodities.parking
+                      }
+                    }
+                    
+                    return (
+                      <IonCol size="12" sizeMd="6" className="my-1" key={i}>
+                        <HandleAmenitiesRender
+                          amenities={commodity}
+                          state={
+                            currentPlace.commodities
+                              ? currentPlace.commodities[commodity]
+                                ? true
+                                : false
+                              : false
+                          }
+                          value={optValue as string | undefined}
+                          quality={quality || null}
+                        />
+                      </IonCol>
+                    );
+                  })}
+              </IonRow>
+              <IonRow className="relative w-full h-auto">
+                {currentPlace &&
+                  unavailableCommodities.map((commodity, i) => {
+                    return (
+                      <IonCol size="12" sizeMd="6" className="my-1" key={i}>
+                        <HandleAmenitiesRender
+                          amenities={commodity}
+                          state={
+                            currentPlace.commodities
+                              ? currentPlace.commodities[commodity]
+                                ? true
+                                : false
+                              : false
+                          }
+                        />
+                      </IonCol>
+                    );
+                  })}
+              </IonRow>
+            </article>
           </IonRow>
-        </IonRow> */}
         </IonRow>
 
-        <IonRow className="flex flex-col w-full h-auto p-3">
+        <IonRow className="flex flex-col w-full h-auto px-5 py-3">
           <article className="mb-3">
             <IonText>
               <h3 className="text-md font-medium">
-                {t("spots.information.discoveredBy")}:
+                {t("spots.information.discoveredBy")}
               </h3>
             </IonText>
             {currentPlace?.discoveredByID ? (

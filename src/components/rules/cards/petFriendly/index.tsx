@@ -1,4 +1,4 @@
-import { MdPets } from "react-icons/md"
+import { TbDog } from "react-icons/tb"
 import { useTranslation } from 'react-i18next'
 import { RuleCard } from "../../card"
 import { RuleCardState } from "../../cardState"
@@ -14,14 +14,14 @@ export const PetFriendlyRuleCard: React.FC<RuleCardProps> = ({ state }) => {
             state={state}
             positiveState={
                 <RuleCard 
-                    Icon={MdPets}
+                    Icon={TbDog}
                     rule={t('filters.rules.petFriendly')}
                     description={t('spots.messages.rules.petFriendly')}
                 />
             }
             negativeState={
                 <RuleCard 
-                    Icon={MdPets}
+                    Icon={TbDog}
                     rule={t('filters.rules.noPetFriendly')}
                     description={t('spots.messages.rules.noPetFriendly')}
                 />

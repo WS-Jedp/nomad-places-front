@@ -1,4 +1,4 @@
-import { AiFillAlert } from "react-icons/ai"
+import {  AiOutlineAlert, } from "react-icons/ai"
 import { FaBan } from "react-icons/fa"
 import { useTranslation } from 'react-i18next'
 import { RuleCard } from "../../card"
@@ -15,7 +15,7 @@ export const UnderAgeFriendlyRuleCard: React.FC<RuleCardProps> = ({ state }) => 
             state={state}
             positiveState={
                 <RuleCard 
-                        Icon={AiFillAlert}
+                        Icon={AiOutlineAlert}
                         rule={t('filters.rules.underAge')}
                         description={t('spots.messages.rules.underAge')}
                     />

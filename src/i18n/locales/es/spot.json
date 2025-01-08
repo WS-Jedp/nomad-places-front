@@ -1,10 +1,10 @@
 {
     "information": {
         "description": "Descripción",
-        "aboutTheSpot": "Acerca del lugar",
+        "aboutTheSpot": "Todo sobre este lugar",
         "aboutTheSession": "Acerca de la sesión",
-        "rules": "Reglas",
-        "commodities": "Comodidades",
+        "rules": "Lo que debes de saber",
+        "commodities": "Que vas a encontrar",
         "multimedia": "Multimedia",
         "leaveTheSession": "Salir de la sesión",
         "updateTheSession": "Actualizar la sesión",

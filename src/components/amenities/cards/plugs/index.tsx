@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next"
-import { FaPlug } from "react-icons/fa"
+import { MdOutlineElectricalServices } from "react-icons/md"
 import { AmenitiesCard } from "../../card"
 
 interface PlugsAmenitiesCardProps {
@@ -11,7 +11,7 @@ export const PlugsAmenitiesCard:React.FC<PlugsAmenitiesCardProps> = ({ state, va
     const { t } = useTranslation();
     return (
         <AmenitiesCard 
-            Icon={FaPlug}
+            Icon={MdOutlineElectricalServices}
             amenities={t('filters.commodities.publicPlugs')}
             state={state || false}
             value={value ? value : undefined}

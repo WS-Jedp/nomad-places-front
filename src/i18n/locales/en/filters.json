@@ -25,30 +25,57 @@
         "mindset": "Mindset"
     },
     "commodities": {
-        "publicWifi": "Public Wifi",
-        "wifiSpeed": "Wifi Speed",
-        "parking": "Parking",
-        "publicPlugs": "Plugs",
+        "publicWifi": "Free Public Wifi Available",
+        "wifiSpeed": {
+            "null": "Wifi Speed Not Specified",
+            "SLOW": "Basic Wifi Connection",
+            "MODERATE": "Good Wifi for Everyday Browsing",
+            "FAST": "Fast and Reliable Wifi",
+            "VERY_FAST": "Top-Tier Wifi Speed"
+        },
+        "parking": {
+            "null": "Parking Not Specified",
+            "IN_PLACE": "On-Site Parking Available",
+            "IN_STREET": "Street Parking Available",
+            "NEARBY": "Nearby Parking Available"
+        },
+        "publicPlugs": "Public Plugs Available",
         "plugsAmoount": "Plugs Amount",
         "coworkSpace": "Cowork Space",
-        "publicBathrooms": "Bathrooms",
+        "publicBathrooms": "Public Bathrooms Available",
         "ac": "AC",
         "heater": "Heater",
         "balcony": "Balcony",
         "terrace": "Terrace",
-        "mobileSignal": "Mobile Signal",
+        "mobileSignal": {
+            "null": "Mobile Signal Strength Unknown",
+            "WEAK": "Limited Mobile Signal",
+            "MEDIUM": "Decent Mobile Signal",
+            "STRONG": "Reliable Mobile Signal"
+        },
         "food": "Food Available",
         "foodQuality": "Food Quality",
-        "comfortLevel": "Comfort Level",
+        "comfortLevel": {
+            "null": "Comfort Level Not Specified",
+            "BASIC": "Essential Comfort for Short Stays",
+            "CASUAL": "Relaxed and Informal Setting",
+            "ERGONOMIC": "Designed for Productivity and Supportt",
+            "LUXURIOUS": "Premium Comfort with High-End Amenities",
+            "SPACIOUS": "Ample Space for Relaxation and Work"
+        },
         "outdoorSeating": "Outdoor Seating",
-        "temperatureControl": "Temperature Control",
-        "accessibility": "Accessibility",
+        "temperatureControl": {
+            "null": "Temperature Control Not Specified",
+            "AIR_CONDITIONING": "Air Conditioning",
+            "HEATING": "Heating"
+        },
+        "accessibility": "Accessible for Everyone",
         "eventSpace": "Event Space",
-        "greenAreas": "Green Areas",
-        "alcoholAvailability": "Alcohol Availability",
-        "cafe": "Cafe Service",
+        "greenAreas": "Green Spaces Available",
+        "alcoholAvailability": "Alcohol Available",
+        "cafe": "Cafe Service Available",
         "cafeQuality": "Cafe Service Quality",
-        "bakery": "Bakery Service",
+        "bakery": "Bakery Service Available",
         "bakeryQuality": "Bakery Service Quality"
     },
     "rules": {
@@ -59,10 +86,25 @@
         "smoking": "Smoking Friendly",
         "noSmoking": "Not Smoking Friendly",
         "underAge": "Under Age Friendly",
-        "noisePolicy": "Noise Policy",
         "privacyPolicy": "Privacy Policy",
-        "timeLimit": "Time Limit In Place",
-        "consumptionPolicy": "Consumption Policy"
+        "noisePolicy": {
+            "null": "Noise Policy Unknown",
+            "QUIET_ONLY": "Quiet Zone",
+            "MODERATE_NOISE_ALLOWED": "Moderate Noise Allowed",
+            "NO_NOISE_RESTRICTION": "No Noise Restriction"
+        },
+        "timeLimit": {
+            "null": "Time Limit Policy Unknown",
+            "NO_LIMIT": "Stay Without Time Limit",
+            "UNLIMITED": "Unlimited Time stay",
+            "PER_HOUR": "Limited Stay Time"
+        },
+        "consumptionPolicy": {
+            "null": "Consumption Policy Not Specified",
+            "PURCHASE_REQUIRED": "Stay With A Purchase",
+            "OUTSIDE_PURCHASE_ALLOWED": "You Can Bring External Consumables",
+            "NO_OUTSIDE_FOOD": "External Consumables Not Allowed"
+        }
     },
     "spotTypes": {
         "coffee": "Coffee",

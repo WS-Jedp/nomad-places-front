@@ -235,7 +235,7 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
       </IonRow>
 
       {/* Scrollable section */}
-      <section className="w-full h-auto overflow-y-auto">
+      <section className="w-full h-auto overflow-y-auto mb-20 md:mb-0">
         {/* Place Headers */}
         {canApproveDiscoveredPlaces() &&
           currentPlace?.confirmationStatus &&

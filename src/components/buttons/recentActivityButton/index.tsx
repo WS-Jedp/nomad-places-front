@@ -7,16 +7,21 @@ import { Capacitor } from "@capacitor/core";
 interface RecentActivityButtonProps {
   onError: (error: string) => void;
   onSuccess: (file: File) => void;
+  callback?: () => void
 }
 
 export const RecentActivityButton: React.FC<RecentActivityButtonProps> = ({
   onError,
   onSuccess,
+  callback
 }) => {
   const [isCapturing, setIsCapturing] = useState(false);
 
   const handleCapture = async () => {
     try {
+      if(callback) {
+        callback()
+      }
       setIsCapturing(true);
 
       // Open the device camera
@@ -53,7 +58,7 @@ export const RecentActivityButton: React.FC<RecentActivityButtonProps> = ({
         onClick={handleCapture}
         className="
             relative
-            w-[42px] h-[42px]
+            w-[33px] h-[33px]
             inline-flex items-center justify-center
             rounded-full
             bg-gray-200

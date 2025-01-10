@@ -39,7 +39,7 @@ export const ItemsAndMapLayout: React.FC<{
 
   const goToPlaceSession = async (id: string) => {
     await setShouldModalBeOpen(true);
-    history.push(`/home/detail/${id}/session`);
+    history.push(`/home/place/${id}/session`);
   };
 
   useEffect(() => {

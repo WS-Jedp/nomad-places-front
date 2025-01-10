@@ -358,6 +358,8 @@ export const PlaceSessionDetail: React.FC<PlaceSessionDetailProps> = ({
     actionType: UPDATE_ACTIONS,
     value: MINDSETS
   ) {
+    validateUserInSession();
+
     setQuickActionModal(true);
     setQuickActionType(actionType);
     setQuickActionValue(value);
@@ -367,6 +369,8 @@ export const PlaceSessionDetail: React.FC<PlaceSessionDetailProps> = ({
     actionType: UPDATE_ACTIONS,
     value: string
   ) {
+    validateUserInSession()
+
     setQuickActionModal(true);
     setQuickActionType(actionType);
     setQuickActionValue(value);
@@ -375,6 +379,8 @@ export const PlaceSessionDetail: React.FC<PlaceSessionDetailProps> = ({
   function handleUpdateMultipleActions(
     actions: { type: UPDATE_ACTIONS; data: any }[]
   ) {
+    validateUserInSession()
+    
     setJoiningSessionLoader(true);
     setUpdateSessionModal(false);
     if (!sessionID) {
@@ -396,6 +402,13 @@ export const PlaceSessionDetail: React.FC<PlaceSessionDetailProps> = ({
   const [recentActivityError, setRecentActivityError] = useState<string | null>(
     null
   );
+
+  function validateUserInSession() {
+    if (!userInSession) {
+      toast.error(t("spots.messages.session.unallowed.mustJoinToUpdate"));
+      throw new Error(t("spots.messages.session.unallowed.mustJoinToUpdate"));
+    }
+  }
 
   async function onRecentActivityFileChange(file: File) {
     setRecentActivityFile(file);
@@ -450,8 +463,8 @@ export const PlaceSessionDetail: React.FC<PlaceSessionDetailProps> = ({
     );
 
   return (
-    <IonRow className="flex flex-col justify-between w-full h-full bg-gray-100">
-      <section>
+    <section className="relative flex flex-col justify-between w-full h-full bg-gray-100">
+      <section className="relative w-full h-full overflow-y-auto">
         {/* Go Back button */}
         {withBackButtonAction && (
           <IonRow
@@ -466,31 +479,37 @@ export const PlaceSessionDetail: React.FC<PlaceSessionDetailProps> = ({
             <BackNavigationButton goToURL={`/home/detail/${currentPlace.id}`} />
           </IonRow>
         )}
-        {userInSession && (
-          <section
-            className="realtive w-full h-auto
-            px-3 py-1
+
+        <section
+          className="realtive w-full h-h-16
             flex flex-row items-center justify-start
+            px-3 py-1
             overflow-hidden overflow-x-auto
             border-b-[1px] border-gray-300 
           "
-          >
-            <div className="border-solid border-r-[1px] border-gray-300 mr-3">
-              <RecentActivityButton
-                onError={onRecentActivityFileError}
-                onSuccess={onRecentActivityFileSuccess}
-              />
-            </div>
-            {cachedSession?.lastRecentlyActivities?.map((activity, index) => (
-              <RecentActivityCard
-                key={index}
-                callback={() => handleRecentActivityOpen(index)}
-                isImage={activity.type === MULTIMEDIA_TYPE.IMAGE}
-                checked={recentActivityOpened.includes(index)}
-              />
-            ))}
-          </section>
-        )}
+        >
+          <div className="border-solid border-r-[1px] border-gray-300 mr-3">
+            <RecentActivityButton
+              callback={validateUserInSession}
+              onError={onRecentActivityFileError}
+              onSuccess={onRecentActivityFileSuccess}
+            />
+          </div>
+          {cachedSession?.lastRecentlyActivities?.map((activity, index) => (
+            <RecentActivityCard
+              key={index}
+              callback={() => handleRecentActivityOpen(index)}
+              isImage={activity.type === MULTIMEDIA_TYPE.IMAGE}
+              checked={recentActivityOpened.includes(index)}
+            />
+          ))}
+        </section>
+
+        <IonRow className="w-full p-3 border-b border-gray-300 flex flex-row flex-nowrap items-center justify-between">
+          <h1 className="font-bold text-lg md:text-xl">
+            Actualizaciones de la comunidad
+          </h1>
+        </IonRow>
 
         <IonRow className="w-full p-3 pb-5 relative flex flex-col flex-nowrap border-b border-gray-300">
           {cachedSession &&
@@ -509,33 +528,32 @@ export const PlaceSessionDetail: React.FC<PlaceSessionDetailProps> = ({
                 </h2>
               </section>
             )}
+
           <section className="mb-3">
-            <h2 className="font-bold text-md mb-1">
+            <h2 className="font-bold text-sm mb-1">
+              {t("spots.session.usersInSession")}
+            </h2>
+            <article className="pb-3">
+              <AvatarGroup users={cachedSession?.usersInSession || []} />
+            </article>
+            <h2 className="font-bold text-sm mb-1">
               {t("spots.session.perfectTo")}
             </h2>
-            {userInSession ? (
-              <AmountMindsetActions
-                mindsetCallback={handleMindsetQuickAction}
-              />
-            ) : (
-              <HandleMindsetTags mindset={MINDSETS.UNKNOWN} />
-            )}
+            <AmountMindsetActions mindsetCallback={handleMindsetQuickAction} />
+            {/* <HandleMindsetTags mindset={MINDSETS.UNKNOWN} /> */}
           </section>
 
           <IonRow className="relative w-full flex flex-row mb-3">
             <IonCol size="12">
-              <h2 className="font-bold text-md">
-                {t("spots.session.amountOfPeople")}:
+              <h2 className="font-bold text-sm">
+                {t("spots.session.amountOfPeople")}
               </h2>
               <div className="my-1">
-                {userInSession && (
-                  <AmountOfPeopleActionsAmount
-                    callback={handleAmountOfPeopleQuickAction}
-                  />
-                )}
+                <AmountOfPeopleActionsAmount
+                  callback={handleAmountOfPeopleQuickAction}
+                />
               </div>
             </IonCol>
-            <AvatarGroup users={cachedSession?.usersInSession || []} />
           </IonRow>
           <section className="w-full mb-2">
             {/* <p className="font-regular text-xs my-3 text-left">Last update made 30 minutes ago</p> */}
@@ -572,7 +590,7 @@ export const PlaceSessionDetail: React.FC<PlaceSessionDetailProps> = ({
         <section className="w-full overflow-y-auto">
           <article className="w-full pt-3 border-solid border-b-[1px] border-gray-300">
             <h2 className="w-full font-bold text-md mb-1 pb-3 px-3">
-              {t("spots.session.communityActions")}:
+              {t("spots.session.lastsUpdates")}:
             </h2>
           </article>
           <section className="relative flex flex-col flex-nowrap mb-3">
@@ -733,6 +751,6 @@ export const PlaceSessionDetail: React.FC<PlaceSessionDetailProps> = ({
           </article>
         </section>
       )}
-    </IonRow>
+    </section>
   );
 };

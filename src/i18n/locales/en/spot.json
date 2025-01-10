@@ -14,16 +14,17 @@
         "discoveredOn":"Discovered on"
     },
     "session": {
-        "usersInSession": "Users in session",
-        "amountOfPeople": "Amount of people",
+        "usersInSession": "Who’s Here Right Now?",
+        "amountOfPeople": "How Busy Is It?",
         "status": "Status",
         "knownFor": "Known for",
         "multimedia": "Spot multimedia",
-        "perfectTo": "Perfect to",
+        "perfectTo": "the perfect place to",
         "communityActions": "Community Updates",
         "closed": "Closed",
         "open": "Open",
-        "recentActivity": "Recent activity"
+        "recentActivity": "Recent activity",
+        "lastsUpdates": "Lasts Updates"
     },
     "messages": {
         "noDescription": "There is no a description for this spot yet :(",
@@ -31,7 +32,7 @@
         "noUsersInSession": "No users in session",
         "userInSession": "user in session",
         "usersInSession": "users in session",
-        "noCommunityActions": "There are no updates shared by the community yet",
+        "noCommunityActions": "There are no updates in the moment, be the first to share",
         "session": {
             "lastUpdateAt": "Last update at",
             "leaveSessionConfirmation": "Are you sure you want to leave this session?",
@@ -50,7 +51,8 @@
                 "locationRange": "You must be in the spot to join or update the session",
                 "alreadyInSession": "You are already in this session",
                 "alreadyLeftSession": "You already left this session",
-                "userLocation": "You must have your location enabled to join or update the session"
+                "userLocation": "You must have your location enabled to join or update the session",
+                "mustJoinToUpdate": "You must join the session to be able to update it"
             }
         },
         "rules": {

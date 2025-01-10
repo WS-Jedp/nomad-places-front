@@ -14,24 +14,25 @@
         "discoveredOn":"Descubierto el"
     },
     "session": {
-        "usersInSession": "Usuarios en sesión",
-        "amountOfPeople": "Cantidad de personas",
+        "usersInSession": "¿Quien se encuentra ahora?",
+        "amountOfPeople": "¿Cuantas personas hay?",
         "status": "Estado",
         "knownFor": "Conocido por",
         "multimedia": "Multimedia del spot",
-        "perfectTo": "Perfecto para",
+        "perfectTo": "El lugar perfecto para",
         "communityActions": "Actualizaciones de la comunidad",
         "closed": "Cerrado",
         "open": "Abierto",
-        "recentActivity": "Actividad reciente"
+        "recentActivity": "Actividad reciente",
+        "lastsUpdates": "Últimas actualizaciones"
     },
     "messages": {
         "noDescription": "No hay una descripción para este Spot por ahora :(",
         "noMultimedia": "No hay multimedia para este lugar por ahora",
-        "noUsersInSession": "No hay usuarios en sesión",
+        "noUsersInSession": "Ningún usuario se encuentra activo en el lugar",
         "userInSession": "usuario en la sesión",
         "usersInSession": "usuarios en la sesión",
-        "noCommunityActions": "No hay actualizaciones de la comunidad por ahora",
+        "noCommunityActions": "No hay actualizaciones en el momento, sé el primero en compartir",
         "session": {
             "lastUpdateAt": "Última actualización",
             "leaveSessionConfirmation": "¿Estás seguro que quieres salir de la sesión?",
@@ -50,7 +51,8 @@
                 "locationRange": "Debes estar en el rango del spot para unirte a la sesión",
                 "alreadyInSession": "Ya estás en esta sesión",
                 "alreadyLeftSession": "Ya has salido de esta sesión",
-                "userLocation": "Debes tener tu ubicación activada para unirte a la sesión"
+                "userLocation": "Debes tener tu ubicación activada para unirte a la sesión",
+                "mustJoinToUpdate": "Debes unirte a la sesión para poder actualizarla"
             }
         },
         "rules": {

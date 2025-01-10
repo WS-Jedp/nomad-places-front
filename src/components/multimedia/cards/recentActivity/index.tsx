@@ -15,7 +15,7 @@ export const RecentActivityCard: React.FC<RecentActivityCardProps> = ({
     <article
       className={`
             relative
-            w-[42px] h-[42px]
+            w-[33px] h-[33px]
             overflow-hidden
             inline-flex items-center justify-center
             rounded-full

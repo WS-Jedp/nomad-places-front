@@ -13,7 +13,7 @@ export const AvatarGroup: React.FC<AvatarGrupProps> = ({
   const { t } = useTranslation();
   if (users.length === 0) {
     return (
-      <span className="text-xs bg-gray-200 rounded-full p-2">
+      <span className="text-xs font-light bg-gray-200 rounded-md px-2 py-1">
         { t('spots.messages.noUsersInSession') }
       </span>
     );

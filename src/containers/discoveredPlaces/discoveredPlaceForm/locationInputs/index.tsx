@@ -46,11 +46,9 @@ export const LocationInputs: React.FC<LocationInputsProps> = ({
                   onClick={() => onSpotZoneChange(option.value)}
                 >
                   <IonLabel className="text-xs">{option.value}</IonLabel>
-                  {option.amount > 1 && (
-                    <IonLabel className="text-xs absolute bg-indigo-400 text-white flex items-center justify-center text-center rounded-full w-[18px] h-[18px] top-[-6px] right-[-6px]">
-                      {option.amount}
-                    </IonLabel>
-                  )}
+                  <IonLabel className="text-xs absolute bg-indigo-400 text-white flex items-center justify-center text-center rounded-full w-[18px] h-[18px] top-[-6px] right-[-6px]">
+                    {option.amount}
+                  </IonLabel>
                 </div>
               ))}
             </div>
@@ -73,11 +71,9 @@ export const LocationInputs: React.FC<LocationInputsProps> = ({
                   onClick={() => onSpotCityChange(option.value)}
                 >
                   <IonLabel className="text-xs">{option.value}</IonLabel>
-                  {option.amount > 1 && (
-                    <IonLabel className="text-xs absolute bg-indigo-400 text-white flex items-center justify-center text-center rounded-full w-[18px] h-[18px] top-[-6px] right-[-6px]">
-                      {option.amount}
-                    </IonLabel>
-                  )}
+                  <IonLabel className="text-xs absolute bg-indigo-400 text-white flex items-center justify-center text-center rounded-full w-[18px] h-[18px] top-[-6px] right-[-6px]">
+                    {option.amount}
+                  </IonLabel>
                 </div>
               ))}
             </div>

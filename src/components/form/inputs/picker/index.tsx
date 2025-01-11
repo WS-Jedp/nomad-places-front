@@ -1,3 +1,4 @@
+import { IonLabel } from "@ionic/react";
 import { useTranslation } from "react-i18next";
 import { MdCheck } from "react-icons/md";
 
@@ -16,7 +17,7 @@ export const OptionsPicker: React.FC<SimpleCheckboxProps> = ({
   onChangeInputValue,
   options = [],
   id,
-  currentSelection
+  currentSelection,
 }) => {
   const { t } = useTranslation();
   return (
@@ -25,8 +26,8 @@ export const OptionsPicker: React.FC<SimpleCheckboxProps> = ({
                 relative
                 flex flex-col items-start justify-between
                 rounded-lg
-                w-full ${small ? "h-10" : "h-12"}
-                mb-4
+                w-full 
+                mb-1
             `}
     >
       <span
@@ -48,7 +49,7 @@ export const OptionsPicker: React.FC<SimpleCheckboxProps> = ({
           onChange={(e) => onChangeInputValue(e.target.value)}
           id={id ? `${id}-option` : `${label}-option`}
         >
-          <option value="0">No aplicable</option>
+          <option value="null">No aplicable</option>
           {options.map((opt) => (
             <option value={opt} key={opt} selected={currentSelection === opt}>
               {t(`filters.options.${opt}`)}

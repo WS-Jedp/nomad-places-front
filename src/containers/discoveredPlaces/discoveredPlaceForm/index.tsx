@@ -241,39 +241,39 @@ export const DiscoveredPlaceForm: React.FC<{
 
     if (value) {
       if (typeof value === "string") {
+        const currValue = value == "0" ? undefined : value
         switch (currentCommodity.commodity) {
           case PLACE_COMMODITIES_ENUM.WIFI_SPEED:
-            setWifiSpeed(value as WIFI_SPEED_COMMODITY_ENUM);
+            setWifiSpeed(currValue as WIFI_SPEED_COMMODITY_ENUM | undefined);
             break;
           case PLACE_COMMODITIES_ENUM.PLUGS_AMOUNT:
-            setPlugsAmonunt(value);
+            setPlugsAmonunt(currValue);
             break;
           case PLACE_COMMODITIES_ENUM.PARKING:
-            setSelectedParkingCommodity(value as PARKING_COMMODITY_ENUM | undefined);
+            setSelectedParkingCommodity(currValue as PARKING_COMMODITY_ENUM | undefined);
             break;
           case PLACE_COMMODITIES_ENUM.MOBILE_SIGNAL:
-            setSelectedMobileSignalCommodity(value as MOBILE_SIGNAL_COMMODITY_ENUM | undefined);
+            setSelectedMobileSignalCommodity(currValue as MOBILE_SIGNAL_COMMODITY_ENUM | undefined);
             break;
           case PLACE_COMMODITIES_ENUM.FOOD:
-            handleFoodOptionSelection(value as FOOD_COMMODITY_ENUM);
+            handleFoodOptionSelection(currValue as FOOD_COMMODITY_ENUM);
             break;
           case PLACE_COMMODITIES_ENUM.FOOD_QUALITY:
-            setSelectedFoodQuality(value as COMMODITY_QUALITY);
+            setSelectedFoodQuality(currValue as COMMODITY_QUALITY | undefined);
             break;
           case PLACE_COMMODITIES_ENUM.COMFORT_LEVEL:
-            setSelectedComfortLevel(value as COMFORT_LEVEL_COMMODITY_ENUM);
+            setSelectedComfortLevel(currValue as COMFORT_LEVEL_COMMODITY_ENUM | undefined);
             break;
           case PLACE_COMMODITIES_ENUM.TEMPERATURE_CONTROL:
-            handleTemperatureControlOptionSelection(value as TEMPERATURE_CONTROL_COMMODITY_ENUM)
+            handleTemperatureControlOptionSelection(currValue as TEMPERATURE_CONTROL_COMMODITY_ENUM )
             break;
           case PLACE_COMMODITIES_ENUM.CAFE_QUALITY:
-            setSelectedCafeQuality(value as COMMODITY_QUALITY);
+            setSelectedCafeQuality(currValue as COMMODITY_QUALITY | undefined);
             break;
           case PLACE_COMMODITIES_ENUM.BAKERY_QUALITY:
-            setSelectedBakeryeQuality(value as COMMODITY_QUALITY);
+            setSelectedBakeryeQuality(currValue as COMMODITY_QUALITY | undefined);
             break;
         }
-      } else {
       }
     }
   };
@@ -407,7 +407,7 @@ export const DiscoveredPlaceForm: React.FC<{
         longitude: userLocation.longitude,
         zone: spotZone,
         city: spotCity,
-        country: "COLOMBIA",
+        country: "Colombia",
       },
       commodities: {
         publicPlugs: advancedCommodities.plugs.public,
@@ -509,7 +509,7 @@ export const DiscoveredPlaceForm: React.FC<{
           onSpotDescriptionChange={(val) => setSpotDescription(val)}
           onOpeningTimeChange={(val) => setOpeningTime(val)}
           onClosingTimeChange={(val) => setClosingTime(val)}
-          onApproximateDailyCost={(val) => setApproximateDailyCost(val)}
+          onApproximateDailyCost={(val) => setApproximateDailyCost(val ? val : undefined)}
           onPlaceTheme={(theme) => handleThemeTag(theme)}
           placesThemesSelected={themeTags}
           onPlaceAmbiance={(ambiance) => handleAmbianceTag(ambiance)}

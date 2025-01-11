@@ -71,9 +71,6 @@ export const SpotRulesInput: React.FC<SpotRulesProps> = ({
                 small
                 withInputOptions={advancedRules.includes(rule.rule)}
                 options={getRuleOptions(rule.rule)}
-                onChangeInputValue={(value) => {
-                  onSpotRule(rule.id, value);
-                }}
               />
             </IonCol>
           );
@@ -90,7 +87,7 @@ export const SpotRulesInput: React.FC<SpotRulesProps> = ({
           return (
             <IonCol size="12" sizeMd="6" key={rule.id} className="px-3">
               <OptionsPicker
-                label={t(`filters.rules.${rule.rule}`)}
+                label={t(`filters.rules.${rule.rule}.label`)}
                 small
                 options={getRuleOptions(rule.rule)}
                 onChangeInputValue={(value) => {
@@ -113,7 +110,7 @@ export const SpotRulesInput: React.FC<SpotRulesProps> = ({
           if (!rule) return;
           return (
           <MutipleOptionsPicker
-            label={t(`filters.rules.${r}`)}
+            label={t(`filters.rules.${r}.label`)}
             onSelect={(value) => {
               onSpotRule(rule.id, value)
             }}

@@ -1,5 +1,5 @@
 import { PayloadAction } from "@reduxjs/toolkit";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { AiFillLike } from "react-icons/ai";
 import { IoMdInformationCircleOutline } from "react-icons/io";
@@ -16,12 +16,28 @@ import {
   DiscoverSpotDTO,
   newSpotDiscoveredConfirmedDTO,
 } from "../../../../dto/places";
-import { SpotCommoditiesFilters, SpotRulesFilters } from "../../../../models/filters";
+import {
+  SpotCommoditiesFilters,
+  SpotRulesFilters,
+} from "../../../../models/filters";
 import { MINDSETS } from "../../../../models/mindsets";
 import { DiscoveredPlaceConfirmation } from "../../../../models/placeConfirmation";
 import {
+  AMBIENCE_TAG_ENUM,
+  COMFORT_LEVEL_COMMODITY_ENUM,
+  COMMODITY_QUALITY,
+  CONSUMPTION_POLICY_RULE_ENUM,
+  FOOD_COMMODITY_ENUM,
+  MOBILE_SIGNAL_COMMODITY_ENUM,
+  NOISE_POLICY_RULE_ENUM,
+  PARKING_COMMODITY_ENUM,
+  PLACE_APPROXIMATE_DAILY_CONST_ENUM,
   PLACE_COMMODITIES_ENUM,
   PLACE_RULES_ENUM,
+  PLACE_TIME_LIMIT_RULE,
+  PRIVACY_POLICY_RULE_ENUM,
+  TEMPERATURE_CONTROL_COMMODITY_ENUM,
+  THEME_TAG_ENUM,
   WIFI_SPEED_COMMODITY_ENUM,
 } from "../../../../models/places";
 import { PLACE_TYPES } from "../../../../models/placeTypes";
@@ -111,13 +127,161 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
     useState<ReviewValueAmountOptions<PLACE_TYPES>[]>();
   const [reviewsKnownForOptions, setReviewsKnownForOptions] =
     useState<ReviewValueAmountOptions<MINDSETS>[]>();
+  const [reviewsApproximateDailyCost, setReviewsApproximateDailyCost] =
+    useState<ReviewValueAmountOptions<PLACE_APPROXIMATE_DAILY_CONST_ENUM>[]>();
+
+  // Rules with values
+  const [selectedTimLimiteRule, setSelectedTimeLimitRule] =
+    useState<PLACE_TIME_LIMIT_RULE>();
+  const [selectedNoisePolicyRule, setSelectedNoisePolicyRule] =
+    useState<NOISE_POLICY_RULE_ENUM>();
+  const [selectedConsumptionPolicyRule, setSelectedConsumptionPolicyRule] =
+    useState<CONSUMPTION_POLICY_RULE_ENUM>();
+  const [selectedPrivacyPolicyRule, setSelectedPrivacyPolicyRule] = useState<
+    PRIVACY_POLICY_RULE_ENUM[]
+  >([]);
+
+  const rulesSelectedOptions = useMemo(
+    () => ({
+      [PLACE_RULES_ENUM.PRIVACY_POLICY]: selectedPrivacyPolicyRule,
+      [PLACE_RULES_ENUM.TIME_LIMIT]: selectedTimLimiteRule,
+      [PLACE_RULES_ENUM.NOISE_POLICY]: selectedNoisePolicyRule,
+      [PLACE_RULES_ENUM.CONSUMPTION_POLICY]: selectedConsumptionPolicyRule,
+    }),
+    [
+      selectedTimLimiteRule,
+      selectedNoisePolicyRule,
+      selectedConsumptionPolicyRule,
+      selectedPrivacyPolicyRule,
+    ]
+  );
+
+  const [approximateDailyCost, setApproximateDailyCost] =
+    useState<PLACE_APPROXIMATE_DAILY_CONST_ENUM | null>(
+      currentPlace?.approximateDailyCost || null
+    );
+  const [ambianceTags, setAmbianceTags] = useState<AMBIENCE_TAG_ENUM[]>(
+    currentPlace?.ambianceTags || []
+  );
+  const [themeTags, setThemeTags] = useState<THEME_TAG_ENUM[]>(
+    currentPlace?.themeTags || []
+  );
+
+  // Commodities with option value
+  const [wifiSpeed, setWifiSpeed] = useState<WIFI_SPEED_COMMODITY_ENUM>();
+  const [plugsAmount, setPlugsAmonunt] = useState<string>();
+  const [selectedParkingCommodity, setSelectedParkingCommodity] =
+    useState<PARKING_COMMODITY_ENUM>();
+  const [selectedMobileSignalCommodity, setSelectedMobileSignalCommodity] =
+    useState<MOBILE_SIGNAL_COMMODITY_ENUM>();
+
+  const [selectedFoodCommodity, setSelectedFoodCommodity] = useState<
+    FOOD_COMMODITY_ENUM[]
+  >([]);
+  const handleFoodOptionSelection = (option: FOOD_COMMODITY_ENUM) => {
+    !selectedFoodCommodity.includes(option)
+      ? setSelectedFoodCommodity((old) => [...old, option])
+      : setSelectedFoodCommodity((old) => [
+          ...old.filter((opt) => opt !== option),
+        ]);
+  };
+
+  const [selectedFoodQuality, setSelectedFoodQuality] =
+    useState<COMMODITY_QUALITY>();
+  const [selectedComfortLevel, setSelectedComfortLevel] =
+    useState<COMFORT_LEVEL_COMMODITY_ENUM>();
+  const [selectedTemperatureControl, setSelectedTemperatureControl] = useState<
+    TEMPERATURE_CONTROL_COMMODITY_ENUM[]
+  >([]);
+  const handleTemperatureControlOptionSelection = (
+    option: TEMPERATURE_CONTROL_COMMODITY_ENUM
+  ) => {
+    !selectedTemperatureControl.includes(option)
+      ? setSelectedTemperatureControl((old) => [...old, option])
+      : setSelectedTemperatureControl((old) => [
+          ...old.filter((opt) => opt !== option),
+        ]);
+  };
+  const [selectedCafeQuality, setSelectedCafeQuality] =
+    useState<COMMODITY_QUALITY>();
+  const [selectedBakeryQuality, setSelectedBakeryeQuality] =
+    useState<COMMODITY_QUALITY>();
+
+  const commoditiesSelectedOptions = useMemo(
+    () => ({
+      [PLACE_COMMODITIES_ENUM.WIFI_SPEED]: wifiSpeed,
+      [PLACE_COMMODITIES_ENUM.PARKING]: selectedParkingCommodity,
+      [PLACE_COMMODITIES_ENUM.MOBILE_SIGNAL]: selectedMobileSignalCommodity,
+      [PLACE_COMMODITIES_ENUM.FOOD]: selectedFoodCommodity,
+      [PLACE_COMMODITIES_ENUM.FOOD_QUALITY]: selectedFoodQuality,
+      [PLACE_COMMODITIES_ENUM.COMFORT_LEVEL]: selectedComfortLevel,
+      [PLACE_COMMODITIES_ENUM.TEMPERATURE_CONTROL]: selectedTemperatureControl,
+      [PLACE_COMMODITIES_ENUM.CAFE_QUALITY]: selectedCafeQuality,
+      [PLACE_COMMODITIES_ENUM.BAKERY]: selectedBakeryQuality,
+    }),
+    [
+      wifiSpeed,
+      selectedParkingCommodity,
+      selectedMobileSignalCommodity,
+      selectedFoodCommodity,
+      selectedFoodQuality,
+      selectedComfortLevel,
+      selectedTemperatureControl,
+      selectedCafeQuality,
+      selectedBakeryQuality,
+    ]
+  );
+
+  const handlePrivacyPolicySelection = (option: PRIVACY_POLICY_RULE_ENUM) => {
+    !selectedPrivacyPolicyRule.includes(option)
+      ? setSelectedPrivacyPolicyRule([...selectedPrivacyPolicyRule, option])
+      : setSelectedPrivacyPolicyRule([
+          ...selectedPrivacyPolicyRule.filter((opt) => opt !== option),
+        ]);
+  };
+
+  const handleAmbianceTag = (ambiance: AMBIENCE_TAG_ENUM) => {
+    ambianceTags.includes(ambiance)
+      ? setAmbianceTags((old) => [...old.filter((a) => a !== ambiance)])
+      : setAmbianceTags((old) => [...old, ambiance]);
+  };
+
+  const handleThemeTag = (theme: THEME_TAG_ENUM) => {
+    themeTags.includes(theme)
+      ? setThemeTags((old) => [...old.filter((t) => t !== theme)])
+      : setThemeTags((old) => [...old, theme]);
+  };
 
   const [selectedRules, setSelectedRules] = useState<number[]>([]);
-  const handleRuleInput = (id: number) => {
+  const handleRuleInput = (id: number, value?: string | string[]) => {
+    const currentRule = spotRulesFilters.find((r) => r.id === id);
+    if (!currentRule) return;
+
     if (selectedRules.includes(id)) {
       setSelectedRules(selectedRules.filter((rule) => rule !== id));
     } else {
       setSelectedRules([...selectedRules, id]);
+    }
+
+    if (value) {
+      if (typeof value === "string") {
+        switch (currentRule.rule) {
+          case PLACE_RULES_ENUM.CONSUMPTION_POLICY:
+            setSelectedConsumptionPolicyRule(
+              value as CONSUMPTION_POLICY_RULE_ENUM
+            );
+            break;
+          case PLACE_RULES_ENUM.NOISE_POLICY:
+            setSelectedNoisePolicyRule(value as NOISE_POLICY_RULE_ENUM);
+            break;
+          case PLACE_RULES_ENUM.TIME_LIMIT:
+            setSelectedTimeLimitRule(value as PLACE_TIME_LIMIT_RULE);
+            break;
+          case PLACE_RULES_ENUM.PRIVACY_POLICY:
+            handlePrivacyPolicySelection(value as PRIVACY_POLICY_RULE_ENUM);
+            break;
+        }
+      }
     }
   };
 
@@ -134,13 +298,56 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
   }
 
   const [selectedCommodities, setSelectedCommodities] = useState<number[]>([]);
-  const handleCommodityInput = (id: number) => {
+  const handleCommodityInput = (id: number, value?: string | string[]) => {
+    const currentCommodity = spotCommoditiesFilter.find((c) => c.id === id);
+    if (!currentCommodity) return;
+
     if (selectedCommodities.includes(id)) {
       setSelectedCommodities(
         selectedCommodities.filter((commodity) => commodity !== id)
       );
     } else {
       setSelectedCommodities([...selectedCommodities, id]);
+    }
+
+    if (value) {
+      if (typeof value === "string") {
+        switch (currentCommodity.commodity) {
+          case PLACE_COMMODITIES_ENUM.WIFI_SPEED:
+            setWifiSpeed(value as WIFI_SPEED_COMMODITY_ENUM);
+            break;
+          case PLACE_COMMODITIES_ENUM.PARKING:
+            setSelectedParkingCommodity(
+              value as PARKING_COMMODITY_ENUM | undefined
+            );
+            break;
+          case PLACE_COMMODITIES_ENUM.MOBILE_SIGNAL:
+            setSelectedMobileSignalCommodity(
+              value as MOBILE_SIGNAL_COMMODITY_ENUM | undefined
+            );
+            break;
+          case PLACE_COMMODITIES_ENUM.FOOD:
+            handleFoodOptionSelection(value as FOOD_COMMODITY_ENUM);
+            break;
+          case PLACE_COMMODITIES_ENUM.FOOD_QUALITY:
+            setSelectedFoodQuality(value as COMMODITY_QUALITY);
+            break;
+          case PLACE_COMMODITIES_ENUM.COMFORT_LEVEL:
+            setSelectedComfortLevel(value as COMFORT_LEVEL_COMMODITY_ENUM);
+            break;
+          case PLACE_COMMODITIES_ENUM.TEMPERATURE_CONTROL:
+            handleTemperatureControlOptionSelection(
+              value as TEMPERATURE_CONTROL_COMMODITY_ENUM
+            );
+            break;
+          case PLACE_COMMODITIES_ENUM.CAFE_QUALITY:
+            setSelectedCafeQuality(value as COMMODITY_QUALITY);
+            break;
+          case PLACE_COMMODITIES_ENUM.BAKERY_QUALITY:
+            setSelectedBakeryeQuality(value as COMMODITY_QUALITY);
+            break;
+        }
+      }
     }
   };
   function getRecommendedCommodities() {
@@ -157,9 +364,6 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
       .map((commodity) => commodity.id);
     setSelectedCommodities(allCommoditiesSelected);
   }
-  //  Commodities with detail
-  const [wifiSpeed, setWifiSpeed] = useState<WIFI_SPEED_COMMODITY_ENUM>();
-  const [plugsAmount, setPlugsAmonunt] = useState<string>();
 
   function getRecommendedCommoditiesWithDetail() {
     if (currentPlace?.commodities?.wifiSpeed) {
@@ -168,10 +372,52 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
     if (currentPlace?.commodities?.plugsAmount) {
       setPlugsAmonunt(currentPlace.commodities.plugsAmount.toString());
     }
+    if (currentPlace?.commodities?.parking) {
+      setSelectedParkingCommodity(currentPlace.commodities.parking);
+    }
+    if (currentPlace?.commodities?.mobileSignal) {
+      setSelectedMobileSignalCommodity(currentPlace.commodities.mobileSignal);
+    }
+    if (currentPlace?.commodities?.food) {
+      setSelectedFoodCommodity(currentPlace.commodities.food);
+    }
+    if (currentPlace?.commodities?.foodQuality) {
+      setSelectedFoodQuality(currentPlace.commodities.foodQuality);
+    }
+    if (currentPlace?.commodities?.comfortLevel) {
+      setSelectedComfortLevel(currentPlace.commodities.comfortLevel);
+    }
+    if (currentPlace?.commodities?.temperatureControl) {
+      setSelectedTemperatureControl(
+        currentPlace.commodities.temperatureControl
+      );
+    }
+    if (currentPlace?.commodities?.cafeQuality) {
+      setSelectedCafeQuality(currentPlace.commodities.cafeQuality);
+    }
+    if (currentPlace?.commodities?.bakeryQuality) {
+      setSelectedBakeryeQuality(currentPlace.commodities.bakeryQuality);
+    }
+  }
+
+  function getRecommendedRulesWithDetail() {
+    if (currentPlace?.rules?.timeLimit) {
+      setSelectedTimeLimitRule(currentPlace.rules.timeLimit);
+    }
+    if (currentPlace?.rules?.noisePolicy) {
+      setSelectedNoisePolicyRule(currentPlace.rules.noisePolicy);
+    }
+    if (currentPlace?.rules?.consumptionPolicy) {
+      setSelectedConsumptionPolicyRule(currentPlace.rules.consumptionPolicy);
+    }
+    if (currentPlace?.rules?.privacyPolicy) {
+      setSelectedPrivacyPolicyRule(currentPlace.rules.privacyPolicy);
+    }
   }
 
   useEffect(() => {
     getRecommendedRules();
+    getRecommendedRulesWithDetail();
     getRecommendedCommodities();
     getRecommendedCommoditiesWithDetail();
   }, []);
@@ -406,6 +652,21 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
         });
       }
     });
+
+    if (currentPlace?.type[0]) {
+      const currentPlaceType = typeOptions.find(
+        (option) => option.value === currentPlace.type[0]
+      );
+      if (currentPlaceType) {
+        currentPlaceType.amount++;
+      } else {
+        typeOptions.push({
+          value: currentPlace.type[0],
+          amount: 1,
+        });
+      }
+    }
+
     return typeOptions;
   };
 
@@ -427,8 +688,56 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
         });
       }
     });
+
+    if (currentPlace?.knownFor) {
+      const currentPlaceKnownFor = knownForOptions.find(
+        (option) => option.value === currentPlace.knownFor
+      );
+      if (currentPlaceKnownFor) {
+        currentPlaceKnownFor.amount++;
+      } else {
+        knownForOptions.push({
+          value: currentPlace.knownFor,
+          amount: 1,
+        });
+      }
+    }
     return knownForOptions;
   };
+
+  const countApproximateDailyCost = (
+    confirmations: DiscoveredPlaceConfirmation[]
+  ): ReviewValueAmountOptions<PLACE_APPROXIMATE_DAILY_CONST_ENUM>[] => {
+    const approximateDailyCostOptions: ReviewValueAmountOptions<PLACE_APPROXIMATE_DAILY_CONST_ENUM>[] =
+      [];
+    confirmations.forEach((place) => {
+      if (!place.approximateDailyCost) return;
+      const approximateDailyCost = approximateDailyCostOptions.find(
+        (option) => option.value === place.approximateDailyCost
+      );
+      if (approximateDailyCost) {
+        approximateDailyCost.amount++;
+      } else {
+        approximateDailyCostOptions.push({
+          value: place.approximateDailyCost,
+          amount: 1,
+        });
+      }
+    });
+
+    if(currentPlace?.approximateDailyCost) {
+      const currApproxDailyCost = approximateDailyCostOptions.find(cost => cost.value === currentPlace.approximateDailyCost);
+      if(currApproxDailyCost) {
+        currApproxDailyCost.amount++;
+      } else {
+        approximateDailyCostOptions.push({
+          value: currentPlace.approximateDailyCost,
+          amount: 1,
+        });
+      }
+    }
+    return approximateDailyCostOptions;
+  }
 
   useEffect(() => {
     setReviewsNameOptions(countSpotNames(reviews));
@@ -439,11 +748,20 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
     setReviewsCityOptions(countSpotCities(reviews));
     setReviewsSpotTypeOptions(countSpotTypes(reviews));
     setReviewsKnownForOptions(countSpotKnownFor(reviews));
+    setReviewsApproximateDailyCost(countApproximateDailyCost(reviews))
 
     setAlreadyConfirmed(
       reviews.some((review) => review.confirmedByID === userData?.id)
     );
   }, [reviews, userData]);
+
+  function isBooleanCommoditySelected(
+    commodity: PLACE_COMMODITIES_ENUM
+  ): boolean {
+    return selectedCommodities.includes(
+      spotCommoditiesFilter.find((c) => c.commodity === commodity)?.id || 0
+    );
+  }
 
   function handleGetSpotData(): DiscoverSpotDTO {
     if (!userLocation || !userLocation.latitude || !userLocation.longitude) {
@@ -514,8 +832,9 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
               commodity.commodity === PLACE_COMMODITIES_ENUM.PUBLIC_WIFI
           )?.id || 0
         )
-          ? wifiSpeed as WIFI_SPEED_COMMODITY_ENUM: null,
-      }
+          ? (wifiSpeed as WIFI_SPEED_COMMODITY_ENUM)
+          : null,
+      },
     };
 
     return {
@@ -524,15 +843,15 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
       type: [spotTypeID],
       knownFor: spotKnownFor,
       approximateDailyCost: null,
-      ambienceTags: [],
-      themeTags: [],
+      ambienceTags: ambianceTags,
+      themeTags: themeTags,
       rules: {
         closedAt: closingTime,
         openAt: openingTime,
-        consumptionPolicy: null,
-        noisePolicy: null,
-        privacyPolicy: null,
-        timeLimit: null,
+        consumptionPolicy: selectedConsumptionPolicyRule || null,
+        noisePolicy: selectedNoisePolicyRule || null,
+        privacyPolicy: selectedPrivacyPolicyRule || [],
+        timeLimit: selectedTimLimiteRule || null,
         ...currentRules,
       },
       location: {
@@ -551,7 +870,7 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
         wifiSpeed: advancedCommodities.wifi.speed
           ? advancedCommodities.wifi.speed
           : null,
-        parking: null,
+        parking: selectedParkingCommodity || null,
         coworkSpace: selectedCommodities.includes(
           spotCommoditiesFilter.find(
             (commodity) =>
@@ -566,28 +885,34 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
         ),
         greenAreas: selectedCommodities.includes(
           spotCommoditiesFilter.find(
-            commodity =>
+            (commodity) =>
               commodity.commodity === PLACE_COMMODITIES_ENUM.GREEN_AREAS
           )?.id || 0
         ),
         outdoorSeating: selectedCommodities.includes(
           spotCommoditiesFilter.find(
-            commodity =>
+            (commodity) =>
               commodity.commodity === PLACE_COMMODITIES_ENUM.OUTDOOR_SEATING
           )?.id || 0
         ),
-        accessibility: null,
-        alcoholAvailability: null,
-        bakery: null,
-        bakeryQuality: null,
-        cafe: null,
-        cafeQuality: null,
-        comfortLevel: null,
-        eventSpace: null,
-        food: null,
-        foodQuality: null,
-        mobileSignal: null,
-        temperatureControl: null
+        accessibility: isBooleanCommoditySelected(
+          PLACE_COMMODITIES_ENUM.ACCESSIBILITY
+        ),
+        alcoholAvailability: isBooleanCommoditySelected(
+          PLACE_COMMODITIES_ENUM.ALCOHOL_AVAILABILITY
+        ),
+        bakery: isBooleanCommoditySelected(PLACE_COMMODITIES_ENUM.BAKERY),
+        bakeryQuality: selectedBakeryQuality || null,
+        cafe: isBooleanCommoditySelected(PLACE_COMMODITIES_ENUM.CAFE),
+        cafeQuality: selectedCafeQuality || null,
+        comfortLevel: selectedComfortLevel || null,
+        eventSpace: isBooleanCommoditySelected(
+          PLACE_COMMODITIES_ENUM.EVENT_SPACE
+        ),
+        food: selectedFoodCommodity || [],
+        foodQuality: selectedFoodQuality || null,
+        mobileSignal: selectedMobileSignalCommodity || null,
+        temperatureControl: selectedTemperatureControl || [],
       },
       multimedia: [],
       discoveredByID: userData.id,
@@ -719,9 +1044,13 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
           reviewsDescriptionOptions={reviewsDescriptionOptions}
           reviewsCloseAtOptions={reviewsClosedAtOptions}
           reviewsOpenAtOptions={reviewsOPenAtOptions}
-          onApproximateDailyCost={() => {}}
-          onPlaceTheme={() => {}}
-          onPlaceAmbiance={() => {}}
+          reviewsApproximateDailyCostOptions={reviewsApproximateDailyCost}
+          approximateDailyCostSelected={approximateDailyCost || undefined}
+          onApproximateDailyCost={(val) => setApproximateDailyCost(val)}
+          onPlaceTheme={(theme) => handleThemeTag(theme)}
+          placesThemesSelected={themeTags}
+          onPlaceAmbiance={(ambiance) => handleAmbianceTag(ambiance)}
+          placeAmbiancesSelected={ambianceTags}
         />
 
         <LocationInputs
@@ -746,18 +1075,20 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
         />
 
         <SpotRulesInput
-          onSpotRule={(rule) => handleRuleInput(rule)}
+          onSpotRule={(rule, value) => handleRuleInput(rule, value)}
           selectedSpotRules={selectedRules}
-          selectedRuleOptions={{}}
+          selectedRuleOptions={rulesSelectedOptions}
         />
 
         <SpotCommoditiesInput
-          onSpotCommodity={(commodity) => handleCommodityInput(commodity)}
+          onSpotCommodity={(commodity, value) =>
+            handleCommodityInput(commodity, value)
+          }
           selectedSpotCommodities={selectedCommodities}
           commiditiesWithDetail={{
             [PLACE_COMMODITIES_ENUM.PUBLIC_PLUGS]: plugsAmount || "",
           }}
-          selectedCommodityOptions={{}}
+          selectedCommodityOptions={commoditiesSelectedOptions}
         />
       </form>
       {!alreadyConfirmed && !isRecommendByAuthUser && (

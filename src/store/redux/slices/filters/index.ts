@@ -373,11 +373,20 @@ export const filtersSlice = createSlice({
       const selectedOptions = state.selectedValuesSpotCommoditiesFilter.find(
         (c) => c.commodity == action.payload.commodity
       );
+
+      if(value === "0" || !value || value == "null") {
+        state.selectedValuesSpotCommoditiesFilter = state.selectedValuesSpotCommoditiesFilter.filter(
+          (c) => c.commodity !== commodity
+        );
+        return
+      };
+
       if (!selectedOptions) {
         const shouldBeArrayValue = [
           PLACE_COMMODITIES_ENUM.FOOD,
           PLACE_COMMODITIES_ENUM.TEMPERATURE_CONTROL,
         ];
+
         const currentValue = shouldBeArrayValue.includes(commodity)
           ? [value]
           : value;
@@ -440,6 +449,12 @@ export const filtersSlice = createSlice({
       const selectedOptions = state.selectedValuesSpotRulesFilter.find(
         (r) => r.rule == action.payload.rule
       );
+      if(value === "0" || !value || value == "null") {
+        state.selectedValuesSpotRulesFilter = state.selectedValuesSpotRulesFilter.filter(
+          (r) => r.rule !== rule
+        );
+        return
+      };
       if (!selectedOptions) {
         const shouldBeArrayValue = [
           PLACE_RULES_ENUM.PRIVACY_POLICY,

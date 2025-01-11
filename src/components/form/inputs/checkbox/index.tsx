@@ -2,18 +2,19 @@ import { useTranslation } from "react-i18next";
 import { MdCheck } from "react-icons/md";
 
 type SimpleCheckboxProps = {
-  id?: string
+  id?: string;
   label: string;
   callback: () => void;
   isSelected?: boolean;
   withInputValue?: boolean;
   withInputOptions?: boolean;
-  options?: any[]
-  isMultiple?: boolean
+  options?: any[];
+  isMultiple?: boolean;
   inputValue?: string;
   inputPlaceholder?: string;
-  onChangeInputValue?: (value: string) => void;
   small?: boolean;
+  withBadge?: boolean;
+  badgeValue?: string;
 };
 
 export const SimpleCheckbox: React.FC<SimpleCheckboxProps> = ({
@@ -21,15 +22,16 @@ export const SimpleCheckbox: React.FC<SimpleCheckboxProps> = ({
   callback,
   isSelected,
   small,
-  onChangeInputValue,
   withInputValue = false,
   inputPlaceholder = "Ej. 320kbps",
   inputValue = "",
   options = [],
   withInputOptions = false,
-  isMultiple = false
+  isMultiple = false,
+  withBadge = false,
+  badgeValue,
 }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   return (
     <article
       className={`
@@ -43,7 +45,10 @@ export const SimpleCheckbox: React.FC<SimpleCheckboxProps> = ({
                 transition-all duration-300
             `}
     >
-      <div className="flex flex-row flex-nowrap w-full items-center" onClick={callback}>
+      <div
+        className="flex flex-row flex-nowrap w-full items-center"
+        onClick={callback}
+      >
         <span
           className={`
                         relative
@@ -64,31 +69,6 @@ export const SimpleCheckbox: React.FC<SimpleCheckboxProps> = ({
           {label}
         </span>
       </div>
-
-      {withInputValue && onChangeInputValue && (
-        <input
-          type="text"
-          className="w-auto max-w-[60px] bg-transparent border-b-[1px] text-xs text-end z-30"
-          placeholder={inputPlaceholder}
-          onChange={(ev) => {
-            ev.preventDefault()
-            onChangeInputValue(ev.target.value)
-          }}
-          defaultValue={inputValue}
-        />
-      )}
-
-      {
-        withInputOptions && onChangeInputValue && (
-          <select multiple={isMultiple} className="max-w-[30%] bg-white border border-zinc-400 rounded-md p-1 px-3 text-sm font-light text-black cursor-pointer" defaultValue={inputValue}>
-            {
-              options.map(opt => (
-                <option value={opt} key={opt}>{t(`filters.options.${opt}`)}</option>
-              ))
-            }
-          </select>
-        )
-      }
     </article>
   );
 };

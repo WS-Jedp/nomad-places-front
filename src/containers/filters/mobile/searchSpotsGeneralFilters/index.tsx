@@ -1,5 +1,5 @@
 import { IonCol, IonRow } from "@ionic/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdClose } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import {
@@ -40,6 +40,7 @@ export const SearchSpotsGeneralFilters: React.FC<
     selectedSpotKnownForFilter,
     selectedSpotMindsetFilter,
     spotMindsetFilter,
+    selectedValuesSpotCommoditiesFilter
   } = useAppSelector((state) => state.filters);
   const { isAuth } = useAppSelector((state) => state.user.auth);
 
@@ -130,6 +131,10 @@ export const SearchSpotsGeneralFilters: React.FC<
   const [currentFilter, setCurrentFilter] = useState<GeneralFiltersEnum>(
     defaultFilter || GeneralFiltersEnum.type
   );
+
+  useEffect(() => {
+    console.log(selectedValuesSpotCommoditiesFilter)
+  }, [selectedValuesSpotCommoditiesFilter])
 
   return (
     <IonCol

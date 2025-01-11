@@ -36,8 +36,12 @@ export interface GeneralInformationInputsProps {
   reviewsOpenAtOptions?: ReviewValueAmountOptions<string>[];
   reviewsCloseAtOptions?: ReviewValueAmountOptions<string>[];
 
+  reviewsApproximateDailyCostOptions?: ReviewValueAmountOptions<PLACE_APPROXIMATE_DAILY_CONST_ENUM>[];
+
   approximateDailyCostSelected?: PLACE_APPROXIMATE_DAILY_CONST_ENUM;
-  onApproximateDailyCost: (value: PLACE_APPROXIMATE_DAILY_CONST_ENUM) => void;
+  onApproximateDailyCost: (
+    value: PLACE_APPROXIMATE_DAILY_CONST_ENUM | null
+  ) => void;
   placesThemesSelected?: THEME_TAG_ENUM[];
   onPlaceTheme: (value: THEME_TAG_ENUM) => void;
   placeAmbiancesSelected?: AMBIENCE_TAG_ENUM[];
@@ -62,6 +66,7 @@ export const GeneralInformationInputs: React.FC<
   reviewsDescriptionOptions = [],
   reviewsOpenAtOptions = [],
   reviewsCloseAtOptions = [],
+  reviewsApproximateDailyCostOptions = [],
   approximateDailyCostSelected,
   onApproximateDailyCost,
   placesThemesSelected,
@@ -104,11 +109,9 @@ export const GeneralInformationInputs: React.FC<
                 onClick={() => handleOnNameOption(option.value)}
               >
                 <IonLabel className="text-xs">{option.value}</IonLabel>
-                {option.amount > 1 && (
-                  <IonLabel className="text-xs absolute bg-indigo-400 text-white flex items-center justify-center text-center rounded-full w-[18px] h-[18px] top-[-6px] right-[-6px]">
-                    {option.amount}
-                  </IonLabel>
-                )}
+                <IonLabel className="text-xs absolute bg-indigo-400 text-white flex items-center justify-center text-center rounded-full w-[18px] h-[18px] top-[-6px] right-[-6px]">
+                  {option.amount}
+                </IonLabel>
               </div>
             ))}
           </div>
@@ -140,11 +143,9 @@ export const GeneralInformationInputs: React.FC<
                   onClick={() => onSpotDescriptionChange(option.value)}
                 >
                   <IonLabel className="text-xs">{option.value}</IonLabel>
-                  {option.amount > 1 && (
-                    <IonLabel className="text-xs absolute bg-indigo-400 text-white flex items-center justify-center text-center rounded-full w-[18px] h-[18px] top-[-6px] right-[-6px]">
-                      {option.amount}
-                    </IonLabel>
-                  )}
+                  <IonLabel className="text-xs absolute bg-indigo-400 text-white flex items-center justify-center text-center rounded-full w-[18px] h-[18px] top-[-6px] right-[-6px]">
+                    {option.amount}
+                  </IonLabel>
                 </div>
               ))}
           </div>
@@ -167,11 +168,9 @@ export const GeneralInformationInputs: React.FC<
                   onClick={() => onOpeningTimeChange(option.value)}
                 >
                   <IonLabel className="text-xs">{option.value}</IonLabel>
-                  {option.amount > 1 && (
-                    <IonLabel className="text-xs absolute bg-indigo-400 text-white flex items-center justify-center text-center rounded-full w-[18px] h-[18px] top-[-6px] right-[-6px]">
-                      {option.amount}
-                    </IonLabel>
-                  )}
+                  <IonLabel className="text-xs absolute bg-indigo-400 text-white flex items-center justify-center text-center rounded-full w-[18px] h-[18px] top-[-6px] right-[-6px]">
+                    {option.amount}
+                  </IonLabel>
                 </div>
               ))}
             </div>
@@ -193,11 +192,9 @@ export const GeneralInformationInputs: React.FC<
                   onClick={() => onClosingTimeChange(option.value)}
                 >
                   <IonLabel className="text-xs">{option.value}</IonLabel>
-                  {option.amount > 1 && (
-                    <IonLabel className="text-xs absolute bg-indigo-400 text-white flex items-center justify-center text-center rounded-full w-[18px] h-[18px] top-[-6px] right-[-6px]">
-                      {option.amount}
-                    </IonLabel>
-                  )}
+                  <IonLabel className="text-xs absolute bg-indigo-400 text-white flex items-center justify-center text-center rounded-full w-[18px] h-[18px] top-[-6px] right-[-6px]">
+                    {option.amount}
+                  </IonLabel>
                 </div>
               ))}
             </div>
@@ -211,15 +208,35 @@ export const GeneralInformationInputs: React.FC<
             id="approximateDailyCost"
             label="Costo Aproximado Diario"
             onChangeInputValue={(val) =>
-              onApproximateDailyCost(val as PLACE_APPROXIMATE_DAILY_CONST_ENUM)
+              onApproximateDailyCost(
+                val ? (val as PLACE_APPROXIMATE_DAILY_CONST_ENUM) : null
+              )
             }
             currentSelection={approximateDailyCostSelected}
             small
             options={placeApproximateDailyCostOptions}
           />
+          {isConfirmation && reviewsApproximateDailyCostOptions.length > 0 && (
+            <article className="flex flex-row flex-nowrap w-full h-auto overflow-y-visible overflow-x-auto pt-1 mb-1">
+              {reviewsApproximateDailyCostOptions.map((rev) => (
+                <div
+                  onClick={() => onApproximateDailyCost(rev.value)}
+                  key={rev.value}
+                  className="inline-flex w-auto h-auto bg-indigo-50 text-indigo-700 font-semibold rounded-md py-1 px-2 relative cursor-pointer hover:bg-indigo-200 mr-1 overflow-visible"
+                >
+                  <IonLabel className="text-xs">
+                    {t(`filters.options.${rev.value}`)}
+                  </IonLabel>
+                  <IonLabel className="text-xs absolute bg-indigo-400 text-white flex items-center justify-center text-center rounded-full w-[18px] h-[18px] top-[-6px] right-[-6px]">
+                    {rev.amount}
+                  </IonLabel>
+                </div>
+              ))}
+            </article>
+          )}
         </IonCol>
 
-        <div className="flex flex-col align-start justify-start text-start">
+        <div className="flex flex-col align-start justify-start text-start my-3">
           <SmallDropdown
             title="Selecciona las tematicas representan mejor el lugar:"
             isOpen={isThemeDropdownOpen}

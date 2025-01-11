@@ -103,7 +103,7 @@
                 "alreadyConfirmed": "You've already confirmed this spot",
                 "discoveredSpot": "You've discovered this spot",
                 "helpToConfirm": "Help us confirm this spot",
-                "confirmCorrectData": "Please, confirm or input the correct data for you",
+                "confirmCorrectData": "Your input helps ensure the most accurate information for this place. The final values are determined by the options with the most community votes.",
                 "wannaHelpConfirm": "Wanna help us confirm this spot?"
             },
             "stage": {

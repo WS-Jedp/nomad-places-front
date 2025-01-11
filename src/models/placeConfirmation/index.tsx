@@ -1,27 +1,30 @@
-import { GeoLocation } from "../location"
-import { MINDSETS } from "../mindsets"
-import { PlaceMultimedia } from "../multimedia"
-import { Commodities, PlaceRules } from "../places"
-import { PLACE_TYPES } from "../placeTypes"
+import { GeoLocation } from "../location";
+import { MINDSETS } from "../mindsets";
+import { PlaceMultimedia } from "../multimedia";
+import { AMBIENCE_TAG_ENUM, Commodities, PLACE_APPROXIMATE_DAILY_CONST_ENUM, PlaceRules, THEME_TAG_ENUM } from "../places";
+import { PLACE_TYPES } from "../placeTypes";
 
 export enum PlaceConfirmationStatus {
-    RECOMMENDED = "RECOMMENDED",
-    CONFIRMED = "CONFIRMED",
-    APPROVED = "APPROVED",
-    REJECTED = "REJECTED"
+  RECOMMENDED = "RECOMMENDED",
+  CONFIRMED = "CONFIRMED",
+  APPROVED = "APPROVED",
+  REJECTED = "REJECTED",
 }
 
 export interface DiscoveredPlaceConfirmation {
-    id: string
-    name: string
-    placeID: string
-    confirmedByID: string
-    description?: string
-    knownFor?: MINDSETS
-    confirmationPlaceStatus: PlaceConfirmationStatus
-    multimedia: PlaceMultimedia[]
-    type: PLACE_TYPES[]
-    location: GeoLocation
-    commodities: Commodities
-    rules: PlaceRules
+  id: string;
+  name: string;
+  placeID: string;
+  confirmedByID: string;
+  description?: string;
+  knownFor?: MINDSETS;
+  ambianceTags: AMBIENCE_TAG_ENUM[];
+  themeTags: THEME_TAG_ENUM[];
+  approximateDailyCost: PLACE_APPROXIMATE_DAILY_CONST_ENUM | null;
+  confirmationPlaceStatus: PlaceConfirmationStatus;
+  multimedia: PlaceMultimedia[];
+  type: PLACE_TYPES[];
+  location: GeoLocation;
+  commodities: Commodities;
+  rules: PlaceRules;
 }

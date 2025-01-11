@@ -101,7 +101,7 @@ export const SpotCommoditiesInput: React.FC<SpotCommoditiesProps> = ({
         {currentBooleanCommodities.map((commodity) => (
           <IonCol size="12" sizeMd="6" key={commodity.id}>
             <SimpleCheckbox
-              label={t(`filters.commodities.${commodity.commodity}`)}
+              label={t(`filters.commodities.${commodity.commodity === PLACE_COMMODITIES_ENUM.BAKERY ? 'bakery.label' : commodity.commodity}`)}
               callback={() => onSpotCommodity(commodity.id)}
               isSelected={selectedSpotCommodities.includes(commodity.id)}
               small
@@ -120,9 +120,6 @@ export const SpotCommoditiesInput: React.FC<SpotCommoditiesProps> = ({
                   ? "Ej. 9"
                   : ""
               }
-              onChangeInputValue={(value) =>
-                onSpotCommodity(commodity.id, value)
-              }
             />
           </IonCol>
         ))}
@@ -135,7 +132,7 @@ export const SpotCommoditiesInput: React.FC<SpotCommoditiesProps> = ({
           <IonCol size="12" sizeMd="6" key={commodity.id} className="px-3">
             <OptionsPicker
               key={commodity.id}
-              label={t(`filters.commodities.${commodity.commodity}`)}
+              label={t(`filters.commodities.${commodity.commodity}.label`)}
               small
               onChangeInputValue={(val) => {
                 onSpotCommodity(commodity.id, val)
@@ -153,7 +150,7 @@ export const SpotCommoditiesInput: React.FC<SpotCommoditiesProps> = ({
         {currentMultipleOptionsCommodities.map((c) => (
           <IonCol size="12" key={c.id}>
             <MutipleOptionsPicker
-              label={t(`filters.commodities.${c.commodity}`)}
+              label={t(`filters.commodities.${c.commodity}.label`)}
               onSelect={(value) => {
                 onSpotCommodity(c.id, value)
               }}

@@ -311,7 +311,7 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
                   {handlePlaceLocation()}{" "}
                 </span>
                 {/* Distance from current location */}
-                <span className="text-xs">{distanceToSpot} km</span>
+                <span className="text-xs font-light">{distanceToSpot} km</span>
               </IonText>
             </IonRow>
           </IonCol>

@@ -507,7 +507,7 @@ export const PlaceSessionDetail: React.FC<PlaceSessionDetailProps> = ({
 
         <IonRow className="w-full p-3 border-b border-gray-300 flex flex-row flex-nowrap items-center justify-between">
           <h1 className="font-bold text-lg md:text-xl">
-            Actualizaciones de la comunidad
+            {t('spots.session.peopleUpdates')}
           </h1>
         </IonRow>
 

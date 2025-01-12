@@ -2,10 +2,10 @@
     "general": {
         "search": "Buscar",
         "searching": "Buscando...",
-        "searchForASpot": "Buscar un Spot",
-        "findASpot": "Encontrar un Spot",
-        "recommendSpots": "Recomendar Spots",
-        "recommendASpot": "Recomendar un Spot",
+        "searchForASpot": "Busca un lugar",
+        "findASpot": "Encuentra un lugar",
+        "recommendSpots": "Recomendar Coffi",
+        "recommendASpot": "Recomendar un lugar",
         "close": "Cerrar",
         "save": "Guardar",
         "update": "Actualizar",
@@ -53,11 +53,11 @@
         "upgrade": "Mejorar mi plan"
     },
     "discover": {
-        "shareSpot": "Compartir Spot",
+        "shareSpot": "Compartir lugar",
         "shareDiscovery": "Compartir descubrimiento",
         "suggest": {
-            "spot": "Sugerir un Spot"
+            "spot": "Sugerir un lugar"
         },
-        "confirmSpot": "Confirmar Spot"
+        "confirmSpot": "Confirmar lugar"
     }
 }

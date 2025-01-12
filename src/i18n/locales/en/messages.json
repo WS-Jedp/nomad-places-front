@@ -9,7 +9,7 @@
         },
         "success": {
             "login": "Successfully logged in! Welcome back {{name}} 🎉",
-            "register": "You have successfully registered! Welcome to Spots {{name}}",
+            "register": "You have successfully registered! Welcome to Coffi {{name}}",
             "logout": "You have successfully logged out"
         }
     },
@@ -18,11 +18,11 @@
         "needUpgradePlan": "Upgrade your plan to access this feature"
     },
     "welcome": {
-        "title": "Welcome to Spots"
+        "title": "Welcome to Coffi"
     },
     "welcomeToSpots": {
-        "title": "Welcome to Spots! 🎉",
-        "message": "Thanks for registering! now you can find the best spots for you and your dreams"
+        "title": "Welcome to Coffi! 🎉",
+        "message": "Thanks for registering! now you can find the best places for you and your dreams"
     },
     "resetPassword": {
         "title": "Reset your password",
@@ -59,8 +59,8 @@
             "industry": "Main activity on {{industry}}",
             "empty": {
                 "personalDescription": "Oops! {{name}} doesn't have a description yet",
-                "spotsRecommended": "{{name}} hasn't recommended any spots yet, busy person!",
-                "spotsDiscovered": "{{name}} hasn't visited any spot yet, what a shame!",
+                "spotsRecommended": "{{name}} hasn't recommended any place yet, busy person!",
+                "spotsDiscovered": "{{name}} hasn't visited any place yet, what a shame!",
                 "languages": "We don't know if {{name}} can speak :o",
                 "country": "We don't know where {{name}} is from",
                 "industry": "We don't know what {{name}} does for a living"
@@ -73,8 +73,8 @@
             "industry": "Your main activity is {{industry}}",
             "empty": {
                 "personalDescription": "You haven't add a description yet",
-                "spotsRecommended": "You haven't recommended any spots yet",
-                "spotsDiscovered": "You haven't visited any spot yet",
+                "spotsRecommended": "You haven't recommended any place yet",
+                "spotsDiscovered": "You haven't visited any place yet",
                 "languages": "You haven't share which languages do you speak",
                 "country": "You haven't share your country with us",
                 "industry": "You haven't share your main activity with us"
@@ -83,8 +83,8 @@
     },
     "general": {
         "confirmation": {
-            "success": "Spot confirmed!",
-            "approved": "Spot approved!"
+            "success": "Place confirmed!",
+            "approved": "Place approved!"
         },
         "thanks": {
             "thumbsUp": "Thanks for your thumbs-up!",
@@ -94,24 +94,24 @@
     "discover": {
         "spot": {
             "confirmation": {
-                "positiveReview": "Your confirmation has brought this spot one step closer to becoming a permanent part of our community’s map.",
+                "positiveReview": "Your confirmation has brought this place one step closer to becoming a permanent part of our community’s map.",
                 "itsOfficial": "Your confirmation has made it official!",
-                "approvedReview": "Your approval has made this spot become a permanent part of our community’s map."
+                "approvedReview": "Your approval has made this place become a permanent part of our community’s map."
             },
             "stillOnReview": "It still needs more approvals, so stay tuned!",
             "actions": {
-                "alreadyConfirmed": "You've already confirmed this spot",
-                "discoveredSpot": "You've discovered this spot",
-                "helpToConfirm": "Help us confirm this spot",
+                "alreadyConfirmed": "You've already confirmed this place",
+                "discoveredSpot": "You've discovered this place",
+                "helpToConfirm": "Help us confirm this place",
                 "confirmCorrectData": "Your input helps ensure the most accurate information for this place. The final values are determined by the options with the most community votes.",
-                "wannaHelpConfirm": "Wanna help us confirm this spot?"
+                "wannaHelpConfirm": "Wanna help us confirm this place?"
             },
             "stage": {
-                "recommendation": "This spot it's in recommendation stage"
+                "recommendation": "This place it's in recommendation stage"
             },
             "discovered": {
                 "thanksForSharing": "Thank you for sharing your discovery!",
-                "spotInReviewForCommunity": "Your spot is now up for community review.",
+                "spotInReviewForCommunity": "Your place is now up for community review.",
                 "howToApprove": "It needs 6 thumbs-ups within 3 weeks to be permanently added.",
                 "keepAnEyeOnIt": "Keep an eye on its progress and we'll let you know anything about it."
             },
@@ -125,10 +125,10 @@
         },
         "byUser": {
             "external": {
-                "discovered": "Spots discovered by user",
-                "empty": "The user haven't shared any spots yet"
+                "discovered": "Places discovered by user",
+                "empty": "The user haven't shared any place yet"
             },
-            "empty": "You haven't shared any spots yet"
+            "empty": "You haven't shared any place yet"
         }
     },
     "session": {
@@ -142,14 +142,14 @@
         "byUser": {
             "empty": "You haven't registered any visits yet",
             "external": {
-                "visited": "Spots visited by user",
-                "empty": "The user haven't visited any spot yet"
+                "visited": "Places visited by user",
+                "empty": "The user haven't visited any place yet"
             }
         }
     },
     "spotsTeam": {
-        "yours": "Your Spots team",
-        "we": "The Spots Team"
+        "yours": "Your Coffi team",
+        "we": "The Coffi Team"
     },
     "utils": {
         "and": "and",

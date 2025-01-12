@@ -8,21 +8,32 @@
         "mindset": "Perfect to",
         "howManyPeople?": "How many people?",
         "whatDoYouNeed?": "What do you need?",
-        "whatTypeOfSpot?": "What type of spot?",
+        "whatTypeOfSpot?": "What type of place?",
         "mindsetVibes": "Mindset vibes",
         "peopleAmount": "People amount",
         "all": "All",
         "any": "Any",
         "none": "None",
-        "unknown": "Unknown"
+        "unknown": "Unknown",
+        "languages": "Languages spoken",
+        "approximateDailyCost": "Approximate daily cost",
+        "themeTags": "Pick the themes that better describe the place",
+        "ambianceTags": "Pick all the ambiances that better fit the place",
+        "selectBestOption": "Select the best fit option",
+        "pickBestOptions": "Select the options that best fit"
     },
     "titles": {
         "people": "People",
         "person": "Person",
         "commodities": "Commodities",
-        "spotType": "Spot type",
+        "spotType": "Place type",
         "rules": "Rules",
         "mindset": "Mindset"
+    },
+    "languages": {
+        "spanish": "Spanish",
+        "english": "English",
+        "french": "French"
     },
     "commodities": {
         "publicWifi": "Free Public Wifi Available",
@@ -83,7 +94,9 @@
         "greenAreas": "Green Spaces Available",
         "alcoholAvailability": "Alcohol Available",
         "cafe": "Cafe Service",
-        "cafeQuality": "Cafe Service Quality",
+        "cafeQuality": {
+            "label": "Cafe Service Quality"
+        },
         "bakery": {
             "label": "Bakery Service Quality"
         },
@@ -135,10 +148,18 @@
     "mindsets": {
         "work": "Work",
         "study": "Study",
-        "relax": "Chill",
+        "relax": "Relax",
         "socialize": "Socialize",
-        "vibe": "Vibe",
+        "vibe": "Have fun",
         "romantic": "Romantic"
+    },
+    "idealFor": {
+        "work": "Ideal for Work",
+        "study": "Ideal for Study",
+        "relax": "Ideal for Relax",
+        "socialize": "Ideal for Socialize",
+        "vibe": "Ideal to have fun",
+        "romantic": "Ideal for a date"
     },
     "users": {
         "industries": {
@@ -172,8 +193,8 @@
         }
     },
     "messages": {
-        "reduceFilters": "There is no near spots around, try reducing the filters",
-        "noSpots": "There is no near spots around"
+        "reduceFilters": "There is no near places around that match your filters, try reducing them",
+        "noSpots": "There is no near places around you"
     },
     "options": {
         "CHEAP": "Cheap",
@@ -182,6 +203,7 @@
         "SLOW": "Slow",
         "MODERATE": "Moderate",
         "FAST": "Fast",
+        "VERY_FAST": "Top-Tier Wifi Speed",
         "IN_PLACE": "In place",
         "IN_STREET": "In Outside street",
         "NEARBY": "Nearby",
@@ -219,6 +241,9 @@
         "PURCHASE_REQUIRED": "Stay With A Purchase",
         "OUTSIDE_PURCHASE_ALLOWED": "You Can Bring External Consumables",
         "NO_OUTSIDE_FOOD": "External Consumables Not Allowed",
+        "spanish": "Spanish",
+        "english": "English",
+        "french": "French",
         "places": {
             "themes": {
                 "STARTUPS": "Startups",

@@ -14,6 +14,7 @@
         "discoveredOn":"Discovered on"
     },
     "session": {
+        "peopleUpdates": "Community Updates",
         "usersInSession": "Who’s Here Right Now?",
         "amountOfPeople": "How Busy Is It?",
         "status": "Status",

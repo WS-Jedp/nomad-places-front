@@ -1,28 +1,39 @@
 {
     "texts": {
         "title": "Filtros",
-        "message": "Selecciona los filtros que necesitas para encontrar el spot perfecto"
+        "message": "Selecciona los filtros que necesitas para encontrar el lugar perfecto"
     },
     "labels": {
         "knownFor": "Un lugar para",
         "mindset": "Perfecto para",
         "howManyPeople?": "¿Cuántas personas?",
         "whatDoYouNeed?": "¿Que necesitas?",
-        "whatTypeOfSpot?": "¿Qué tipo de spot?",
+        "whatTypeOfSpot?": "¿Qué tipo de lugar?",
         "mindsetVibes": "Mentalidad",
         "peopleAmount": "Cantidad de personas",
         "all": "Todos",
         "any": "Cualquiera",
         "none": "Ninguna",
-        "unknown": "Desconocido"
+        "unknown": "Desconocido",
+        "languages": "Idiomas hablados",
+        "approximateDailyCost": "Costo diario aproximado",
+        "themeTags": "Selecciona las temáticas que mejor describen el lugar",
+        "ambianceTags": "Selecciona los ambientes que mejor representan el lugar",
+        "selectBestOption": "Selecciona la opción que mejor aplique",
+        "pickBestOptions": "Selecciona las opciones que mejor apliquen"
     },
     "titles": {
         "people": "Personas",
         "person": "Persona",
         "commodities": "Comodidades",
-        "spotType": "Tipo de Spot",
+        "spotType": "Tipo de lugar",
         "rules": "Reglas",
         "mindset": "Mentalidad"
+    },
+    "languages": {
+        "spanish": "Español",
+        "english": "Inglés",
+        "french": "Francés"
     },
     "commodities": {
         "publicWifi": "Wifi público disponible",
@@ -138,6 +149,7 @@
         "SLOW": "Lento",
         "MODERATE": "Moderado",
         "FAST": "Rapido",
+        "VERY_FAST": "Velocidad de Wifi de Primera",
         "IN_PLACE": "En el lugar",
         "IN_STREET": "En la calle",
         "NEARBY": "Cerca",
@@ -174,6 +186,9 @@
         "PURCHASE_REQUIRED": "Compra un producto para quedarte",
         "OUTSIDE_PURCHASE_ALLOWED": "Puedes consumir productos externos",
         "NO_OUTSIDE_FOOD": "Consumibles externos no estan permitidos",
+        "spanish": "Español",
+        "english": "Inglés",
+        "french": "Francés",
         "places": {
             "themes": {
                 "STARTUPS": "Startups",
@@ -234,7 +249,15 @@
         "relax": "Relajarse",
         "socialize": "Socializar",
         "vibe": "Divertirse",
-        "romantic": "Romántico"
+        "romantic": "Romantico"
+    },
+    "idealFor": {
+        "work": "Ideal para trabajar",
+        "study": "Ideal para estudiar",
+        "relax": "Ideal para relajarse",
+        "socialize": "Ideal para socializar",
+        "vibe": "Ideal para divertirse",
+        "romantic": "Ideal para citas"
     },
     "users": {
         "industries": {
@@ -268,7 +291,7 @@
         }
     },
     "messages": {
-        "reduceFilters": "No hay spots alrededor, intenta reduciendo los filtros",
-        "noSpots": "No hay spots alrededor"
+        "reduceFilters": "No hay lugares alrededor que cumplan con tus filtros, intenta reducir los filtros",
+        "noSpots": "No hay lugares alrededor como los que buscas."
     }
 }

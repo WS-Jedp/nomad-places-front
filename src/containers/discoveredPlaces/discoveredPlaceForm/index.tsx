@@ -19,6 +19,7 @@ import {
   COMMODITY_QUALITY,
   CONSUMPTION_POLICY_RULE_ENUM,
   FOOD_COMMODITY_ENUM,
+  LANGUAGE_ENUM,
   MOBILE_SIGNAL_COMMODITY_ENUM,
   NOISE_POLICY_RULE_ENUM,
   PARKING_COMMODITY_ENUM,
@@ -71,6 +72,7 @@ export const DiscoveredPlaceForm: React.FC<{
   const [approximateDailyCost, setApproximateDailyCost] = useState<PLACE_APPROXIMATE_DAILY_CONST_ENUM>()
   const [ambianceTags, setAmbianceTags] = useState<AMBIENCE_TAG_ENUM[]>([])
   const [themeTags, setThemeTags] = useState<THEME_TAG_ENUM[]>([])
+  const [languages, setLanguages] = useState<LANGUAGE_ENUM[]>([]);
 
 
   const [openingTime, setOpeningTime] = useState<string>("");
@@ -107,6 +109,12 @@ export const DiscoveredPlaceForm: React.FC<{
       selectedPrivacyPolicyRule,
     ]
   );
+
+  const handleLanguagesSelection = (language: LANGUAGE_ENUM) => {
+    !languages.includes(language)
+      ? setLanguages([...languages, language])
+      : setLanguages([...languages.filter((lang) => lang !== language)]);
+  }
 
   const handlePrivacyPolicySelection = (option: PRIVACY_POLICY_RULE_ENUM) => {
     !selectedPrivacyPolicyRule.includes(option)
@@ -390,6 +398,7 @@ export const DiscoveredPlaceForm: React.FC<{
       description: spotDescription,
       type: [spotTypeID],
       knownFor: spotKnownFor,
+      languages: languages,
       approximateDailyCost: approximateDailyCost ? approximateDailyCost : null,
       ambienceTags: ambianceTags,
       themeTags: themeTags,
@@ -514,6 +523,8 @@ export const DiscoveredPlaceForm: React.FC<{
           placesThemesSelected={themeTags}
           onPlaceAmbiance={(ambiance) => handleAmbianceTag(ambiance)}
           placeAmbiancesSelected={ambianceTags}
+          onPlaceLanguages={handleLanguagesSelection}
+          selectedLanguages={languages || []}
         />
 
         <LocationInputs

@@ -9,6 +9,7 @@ export interface Place {
   name: string;
   knownFor: MINDSETS;
   description?: string | null;
+  languages: LANGUAGE_ENUM[];
   ambianceTags: AMBIENCE_TAG_ENUM[];
   themeTags: THEME_TAG_ENUM[];
   approximateDailyCost: PLACE_APPROXIMATE_DAILY_CONST_ENUM | null;
@@ -30,6 +31,19 @@ export interface Place {
   rejectedDate?: string;
   confirmationStatus: PLACE_CONFIRMATION_STATUS;
 }
+
+
+export enum LANGUAGE_ENUM {
+  SPANISH = "SPANISH",
+  ENGLISH = "ENGLISH",
+  FRENCH = "FRENCH"
+}
+
+export const languageOptions = [
+  LANGUAGE_ENUM.SPANISH,
+  LANGUAGE_ENUM.ENGLISH,
+  LANGUAGE_ENUM.FRENCH,
+];
 
 export enum AMBIENCE_TAG_ENUM {
   ELEGANT = "ELEGANT",

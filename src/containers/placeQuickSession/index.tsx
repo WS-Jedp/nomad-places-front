@@ -343,7 +343,7 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
               <div className="mr-1">
                 <SimpleTag
                   text={t(
-                    `filters.mindsets.${currentPlace?.knownFor.toLowerCase()}`
+                    `filters.idealFor.${currentPlace?.knownFor.toLowerCase()}`
                   )}
                 />
               </div>

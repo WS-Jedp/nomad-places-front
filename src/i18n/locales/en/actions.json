@@ -2,10 +2,10 @@
     "general": {
         "search": "Search",
         "searching": "Searching...",
-        "searchForASpot": "Search for a spot",
-        "findASpot": "Find a Spot",
-        "recommendSpots": "Recommend Spots",
-        "recommendASpot": "Recommend a Spot",
+        "searchForASpot": "Search for a place",
+        "findASpot": "Find a place",
+        "recommendSpots": "Recommend Coffi",
+        "recommendASpot": "Recommend a place",
         "close": "Close",
         "save": "Save",
         "update": "Update",
@@ -54,11 +54,11 @@
         "seeRealTimeData": "See Updates"
     },
     "discover": {
-        "shareSpot": "Share spot",
+        "shareSpot": "Share place",
         "shareDiscovery": "Share discovery",
         "suggest": {
-            "spot": "Suggest a spot"
+            "spot": "Suggest a place"
         },
-        "confirmSpot": "Confirm spot"
+        "confirmSpot": "Confirm place"
     }
 }

@@ -88,7 +88,7 @@ export const BackNavigationHeader: React.FC = () => {
         onClick={goBack}
       >
         <MdArrowBack className="inline-flex mr-1" />
-        <span className="inline-flex font-bold text-black text-sm">Spots</span>
+        <span className="inline-flex font-bold text-black text-sm">Coffi</span>
       </h1>
 
       <span

@@ -8,6 +8,8 @@ import { OptionsPicker } from "../../../../components/form/inputs/picker";
 import {
   AMBIENCE_TAG_ENUM,
   ambienceTagsOptions,
+  LANGUAGE_ENUM,
+  languageOptions,
   PLACE_APPROXIMATE_DAILY_CONST_ENUM,
   placeApproximateDailyCostOptions,
   THEME_TAG_ENUM,
@@ -16,6 +18,7 @@ import {
 import { SimpleDropdown } from "../../../../components/dropdowns/simple";
 import { SmallDropdown } from "../../../../components/dropdowns/small";
 import { useState } from "react";
+import { MutipleOptionsPicker } from "../../../../components/form/inputs/pickerMultipleOptions";
 
 export interface GeneralInformationInputsProps {
   spotName: string;
@@ -37,6 +40,10 @@ export interface GeneralInformationInputsProps {
   reviewsCloseAtOptions?: ReviewValueAmountOptions<string>[];
 
   reviewsApproximateDailyCostOptions?: ReviewValueAmountOptions<PLACE_APPROXIMATE_DAILY_CONST_ENUM>[];
+  reviewsThemesOptions?: ReviewValueAmountOptions<THEME_TAG_ENUM>[];
+  reviewsAmbiancesOptions?: ReviewValueAmountOptions<AMBIENCE_TAG_ENUM>[];
+
+  reviewsLanguagesOptions?: ReviewValueAmountOptions<LANGUAGE_ENUM>[];
 
   approximateDailyCostSelected?: PLACE_APPROXIMATE_DAILY_CONST_ENUM;
   onApproximateDailyCost: (
@@ -46,6 +53,8 @@ export interface GeneralInformationInputsProps {
   onPlaceTheme: (value: THEME_TAG_ENUM) => void;
   placeAmbiancesSelected?: AMBIENCE_TAG_ENUM[];
   onPlaceAmbiance: (value: AMBIENCE_TAG_ENUM) => void;
+  onPlaceLanguages: (value: LANGUAGE_ENUM) => void;
+  selectedLanguages?: LANGUAGE_ENUM[];
 }
 
 export const GeneralInformationInputs: React.FC<
@@ -73,6 +82,11 @@ export const GeneralInformationInputs: React.FC<
   onPlaceTheme,
   placeAmbiancesSelected,
   onPlaceAmbiance,
+  reviewsAmbiancesOptions,
+  reviewsThemesOptions,
+  onPlaceLanguages,
+  reviewsLanguagesOptions,
+  selectedLanguages
 }) => {
   const { t } = useTranslation();
   function handleOnNameOption(value: string) {
@@ -206,7 +220,7 @@ export const GeneralInformationInputs: React.FC<
         <IonCol size="6" sizeMd="6">
           <OptionsPicker
             id="approximateDailyCost"
-            label="Costo Aproximado Diario"
+            label={t("filters.labels.approximateDailyCost")}
             onChangeInputValue={(val) =>
               onApproximateDailyCost(
                 val ? (val as PLACE_APPROXIMATE_DAILY_CONST_ENUM) : null
@@ -236,20 +250,34 @@ export const GeneralInformationInputs: React.FC<
           )}
         </IonCol>
 
+        <div className="flex flex-col align-start justify-start text-start mt-3">
+          <IonCol size="12">
+            <MutipleOptionsPicker
+              label={t(`filters.labels.languages`)}
+              onSelect={(value) => {
+                onPlaceLanguages(value as LANGUAGE_ENUM);
+              }}
+              small
+              options={languageOptions.map((lang) => lang.toLowerCase())}
+              selected={selectedLanguages}
+            />
+          </IonCol>
+        </div>
+
         <div className="flex flex-col align-start justify-start text-start my-3">
           <SmallDropdown
-            title="Selecciona las tematicas representan mejor el lugar:"
+            title={t("filters.labels.themeTags")}
             isOpen={isThemeDropdownOpen}
             openCallback={() => setIsThemeDropdownOpen(true)}
             closeCallback={() => setIsThemeDropdownOpen(false)}
           >
-            <div className="flex flex-row flex-wrap align-start justify-start">
+            <div className="flex flex-row flex-wrap align-start justify-start overflow-visible">
               {themeTagOptions.map((theme, index) => (
                 <IonChip
                   onClick={() => onPlaceTheme(theme)}
                   outline
                   key={index}
-                  className={`cursor-pointer px-3 my-1 mr-1 ${
+                  className={`relative overflow-visible cursor-pointer px-3 my-1 mr-1 ${
                     placesThemesSelected?.includes(theme)
                       ? "bg-indigo-100 text-indigo-500"
                       : "bg-gray-200 text-gray-500"
@@ -258,6 +286,23 @@ export const GeneralInformationInputs: React.FC<
                   <IonLabel className="text-xs font-medium capitalize">
                     {t(`filters.options.places.themes.${theme.toUpperCase()}`)}
                   </IonLabel>
+                  {reviewsThemesOptions?.find((rev) => rev.value === theme)
+                    ?.amount && (
+                    <div
+                      className={`text-xs text-white font-medium absolute w-[18px] h-[18px] rounded-full flex items-center justify-center top-[-3px] right-[-6px]
+                        ${
+                          placesThemesSelected?.includes(theme)
+                            ? "bg-indigo-500"
+                            : "bg-gray-400"
+                        }
+                        `}
+                    >
+                      {
+                        reviewsThemesOptions?.find((rev) => rev.value === theme)
+                          ?.amount
+                      }
+                    </div>
+                  )}
                 </IonChip>
               ))}
             </div>
@@ -266,18 +311,18 @@ export const GeneralInformationInputs: React.FC<
 
         <div className="flex flex-col align-start justify-start text-start mt-3">
           <SmallDropdown
-            title="Selecciona que ambiente transmite mejor el lugar:"
+            title={t("filters.labels.ambianceTags")}
             isOpen={isAmbianceDropdownOpen}
             openCallback={() => setIsAmbianceDropdownOpen(true)}
             closeCallback={() => setIsAmbianceDropdownOpen(false)}
           >
-            <div className="flex flex-row flex-wrap align-start justify-start">
+            <div className="flex flex-row flex-wrap align-start justify-start overflow-visible">
               {ambienceTagsOptions.map((ambiance, index) => (
                 <IonChip
                   key={index}
                   onClick={() => onPlaceAmbiance(ambiance)}
                   outline
-                  className={`cursor-pointer px-3 my-1 mr-1 ${
+                  className={`relative overflow-visible cursor-pointer px-3 my-1 mr-1 ${
                     placeAmbiancesSelected?.includes(ambiance)
                       ? "bg-indigo-100 text-indigo-500"
                       : "bg-gray-200 text-gray-500"
@@ -288,6 +333,25 @@ export const GeneralInformationInputs: React.FC<
                       `filters.options.places.ambiances.${ambiance.toUpperCase()}`
                     )}
                   </IonLabel>
+                  {reviewsAmbiancesOptions?.find(
+                    (rev) => rev.value === ambiance
+                  )?.amount && (
+                    <div
+                      className={`text-xs text-white font-medium absolute w-[18px] h-[18px] rounded-full flex items-center justify-center top-[-3px] right-[-6px]
+                        ${
+                          placeAmbiancesSelected?.includes(ambiance)
+                            ? "bg-indigo-500"
+                            : "bg-gray-400"
+                        }
+                        `}
+                    >
+                      {
+                        reviewsAmbiancesOptions?.find(
+                          (rev) => rev.value === ambiance
+                        )?.amount
+                      }
+                    </div>
+                  )}
                 </IonChip>
               ))}
             </div>

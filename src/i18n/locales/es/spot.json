@@ -14,11 +14,12 @@
         "discoveredOn":"Descubierto el"
     },
     "session": {
+        "peopleUpdates": "Actualizaciones de la comunidad",
         "usersInSession": "¿Quien se encuentra ahora?",
         "amountOfPeople": "¿Cuantas personas hay?",
         "status": "Estado",
         "knownFor": "Conocido por",
-        "multimedia": "Multimedia del spot",
+        "multimedia": "Fotos y videos",
         "perfectTo": "El lugar perfecto para",
         "communityActions": "Actualizaciones de la comunidad",
         "closed": "Cerrado",
@@ -27,8 +28,8 @@
         "lastsUpdates": "Últimas actualizaciones"
     },
     "messages": {
-        "noDescription": "No hay una descripción para este Spot por ahora :(",
-        "noMultimedia": "No hay multimedia para este lugar por ahora",
+        "noDescription": "No hay una descripción disponible para este lugar por ahora",
+        "noMultimedia": "No hay fotos o videos para este lugar por ahora",
         "noUsersInSession": "Ningún usuario se encuentra activo en el lugar",
         "userInSession": "usuario en la sesión",
         "usersInSession": "usuarios en la sesión",
@@ -38,17 +39,17 @@
             "leaveSessionConfirmation": "¿Estás seguro que quieres salir de la sesión?",
             "userJoin": "se unió a la sesión",
             "userLeave": "salió de la sesión",
-            "updateAmountOfPeople": "Hay entre {{firstAmount}} y {{lastAmount}} personas en el spot.",
-            "updatePerfectTo": "El spot es perfecto para",
-            "updateStatus": "El spot está",
-            "recentActivity": "Ha compartido una imagen del spot",
+            "updateAmountOfPeople": "Hay entre {{firstAmount}} y {{lastAmount}} personas en el lugar.",
+            "updatePerfectTo": "El lugar perfecto para",
+            "updateStatus": "El lugar está",
+            "recentActivity": "Ha compartido una imagen del lugar",
             "confirmation": {
-                "amountOfPeople": "¿Es esta la cantidad de personas en el spot?",
-                "perfectTo": "¿Es este el ambiente del spot?",
-                "status": "¿Es este el estado del spot?"
+                "amountOfPeople": "¿Es esta la cantidad de personas en el lugar?",
+                "perfectTo": "¿Es este el ambiente del lugar?",
+                "status": "¿Es este el estado actual del lugar?"
             },
             "unallowed": {
-                "locationRange": "Debes estar en el rango del spot para unirte a la sesión",
+                "locationRange": "Debes estar adentro del lugar para unirte a la sesión",
                 "alreadyInSession": "Ya estás en esta sesión",
                 "alreadyLeftSession": "Ya has salido de esta sesión",
                 "userLocation": "Debes tener tu ubicación activada para unirte a la sesión",

@@ -28,6 +28,7 @@ import {
   COMMODITY_QUALITY,
   CONSUMPTION_POLICY_RULE_ENUM,
   FOOD_COMMODITY_ENUM,
+  LANGUAGE_ENUM,
   MOBILE_SIGNAL_COMMODITY_ENUM,
   NOISE_POLICY_RULE_ENUM,
   PARKING_COMMODITY_ENUM,
@@ -129,6 +130,10 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
     useState<ReviewValueAmountOptions<MINDSETS>[]>();
   const [reviewsApproximateDailyCost, setReviewsApproximateDailyCost] =
     useState<ReviewValueAmountOptions<PLACE_APPROXIMATE_DAILY_CONST_ENUM>[]>();
+  const [reviewsAmbianceTags, setReviewsAmbianceTags] =
+    useState<ReviewValueAmountOptions<AMBIENCE_TAG_ENUM>[]>();
+  const [reviewsThemeTags, setReviewsThemeTags] =
+    useState<ReviewValueAmountOptions<THEME_TAG_ENUM>[]>();
 
   // Rules with values
   const [selectedTimLimiteRule, setSelectedTimeLimitRule] =
@@ -165,6 +170,9 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
   );
   const [themeTags, setThemeTags] = useState<THEME_TAG_ENUM[]>(
     currentPlace?.themeTags || []
+  );
+  const [languages, setLanguages] = useState<LANGUAGE_ENUM[]>(
+    currentPlace?.languages || []
   );
 
   // Commodities with option value
@@ -231,6 +239,12 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
       selectedBakeryQuality,
     ]
   );
+
+  const handleLanguagesSelection = (language: LANGUAGE_ENUM) => {
+    !languages.includes(language)
+      ? setLanguages([...languages, language])
+      : setLanguages([...languages.filter((lang) => lang !== language)]);
+  };
 
   const handlePrivacyPolicySelection = (option: PRIVACY_POLICY_RULE_ENUM) => {
     !selectedPrivacyPolicyRule.includes(option)
@@ -725,9 +739,11 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
       }
     });
 
-    if(currentPlace?.approximateDailyCost) {
-      const currApproxDailyCost = approximateDailyCostOptions.find(cost => cost.value === currentPlace.approximateDailyCost);
-      if(currApproxDailyCost) {
+    if (currentPlace?.approximateDailyCost) {
+      const currApproxDailyCost = approximateDailyCostOptions.find(
+        (cost) => cost.value === currentPlace.approximateDailyCost
+      );
+      if (currApproxDailyCost) {
         currApproxDailyCost.amount++;
       } else {
         approximateDailyCostOptions.push({
@@ -737,7 +753,90 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
       }
     }
     return approximateDailyCostOptions;
-  }
+  };
+
+  const countThemeTagsSelected = (
+    places: DiscoveredPlaceConfirmation[]
+  ): ReviewValueAmountOptions<THEME_TAG_ENUM>[] => {
+    const themeTagsOptions: ReviewValueAmountOptions<THEME_TAG_ENUM>[] = [];
+
+    places.forEach((place) => {
+      if (!place.themeTags) return;
+      place.themeTags.forEach((tag) => {
+        const themeTag = themeTagsOptions.find(
+          (option) => option.value === tag
+        );
+        if (themeTag) {
+          themeTag.amount++;
+        } else {
+          themeTagsOptions.push({
+            value: tag,
+            amount: 1,
+          });
+        }
+      });
+    });
+
+    if (currentPlace?.themeTags) {
+      currentPlace.themeTags.forEach((tag) => {
+        const currentThemeTag = themeTagsOptions.find(
+          (option) => option.value === tag
+        );
+        if (currentThemeTag) {
+          currentThemeTag.amount++;
+        } else {
+          themeTagsOptions.push({
+            value: tag,
+            amount: 1,
+          });
+        }
+      });
+    }
+
+    return themeTagsOptions;
+  };
+
+  const countAmbianceTagsSelected = (
+    reviews: DiscoveredPlaceConfirmation[]
+  ): ReviewValueAmountOptions<AMBIENCE_TAG_ENUM>[] => {
+    const ambianceTagsOptions: ReviewValueAmountOptions<AMBIENCE_TAG_ENUM>[] =
+      [];
+
+    reviews.forEach((review) => {
+      if (!review.ambianceTags) return;
+      review.ambianceTags.forEach((tag) => {
+        const ambianceTag = ambianceTagsOptions.find(
+          (option) => option.value === tag
+        );
+        if (ambianceTag) {
+          ambianceTag.amount++;
+        } else {
+          ambianceTagsOptions.push({
+            value: tag,
+            amount: 1,
+          });
+        }
+      });
+    });
+
+    if (currentPlace?.ambianceTags) {
+      currentPlace.ambianceTags.forEach((tag) => {
+        const currentAmbianceTag = ambianceTagsOptions.find(
+          (option) => option.value === tag
+        );
+        if (currentAmbianceTag) {
+          currentAmbianceTag.amount++;
+        } else {
+          ambianceTagsOptions.push({
+            value: tag,
+            amount: 1,
+          });
+        }
+      });
+    }
+
+    return ambianceTagsOptions;
+  };
 
   useEffect(() => {
     setReviewsNameOptions(countSpotNames(reviews));
@@ -748,7 +847,9 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
     setReviewsCityOptions(countSpotCities(reviews));
     setReviewsSpotTypeOptions(countSpotTypes(reviews));
     setReviewsKnownForOptions(countSpotKnownFor(reviews));
-    setReviewsApproximateDailyCost(countApproximateDailyCost(reviews))
+    setReviewsApproximateDailyCost(countApproximateDailyCost(reviews));
+    setReviewsAmbianceTags(countAmbianceTagsSelected(reviews));
+    setReviewsThemeTags(countThemeTagsSelected(reviews));
 
     setAlreadyConfirmed(
       reviews.some((review) => review.confirmedByID === userData?.id)
@@ -842,7 +943,8 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
       description: spotDescription,
       type: [spotTypeID],
       knownFor: spotKnownFor,
-      approximateDailyCost: null,
+      languages: [],
+      approximateDailyCost: approximateDailyCost,
       ambienceTags: ambianceTags,
       themeTags: themeTags,
       rules: {
@@ -936,6 +1038,7 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
       if (!currentPlace) {
         throw new Error("No place selected");
       }
+
       const resp = (await dispatch(
         confirmNewSpotDiscovered({
           confirmmedSpot: {
@@ -1039,6 +1142,8 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
           onOpeningTimeChange={(val) => setOpeningTime(val)}
           spotCloseAt={closingTime}
           onClosingTimeChange={(val) => setClosingTime(val)}
+          onPlaceLanguages={handleLanguagesSelection}
+          selectedLanguages={languages}
           isConfirmation
           reviewsNameOptions={reviewsNameOptions}
           reviewsDescriptionOptions={reviewsDescriptionOptions}
@@ -1046,6 +1151,8 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
           reviewsOpenAtOptions={reviewsOPenAtOptions}
           reviewsApproximateDailyCostOptions={reviewsApproximateDailyCost}
           approximateDailyCostSelected={approximateDailyCost || undefined}
+          reviewsAmbiancesOptions={reviewsAmbianceTags}
+          reviewsThemesOptions={reviewsThemeTags}
           onApproximateDailyCost={(val) => setApproximateDailyCost(val)}
           onPlaceTheme={(theme) => handleThemeTag(theme)}
           placesThemesSelected={themeTags}

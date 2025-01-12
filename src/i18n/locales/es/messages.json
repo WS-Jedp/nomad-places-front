@@ -9,7 +9,7 @@
         },
         "success": {
             "login": "¡Iniciaste sesión exitosamente! Bienvenido de vuelta {{name}} 🎉",
-            "register": "¡Te has registrado exitosamente! Bienvenido a Spots {{name}}",
+            "register": "¡Te has registrado exitosamente! Bienvenido a Coffi {{name}}",
             "logout": "Has cerrado sesión exitosamente"
         }
     },
@@ -18,11 +18,11 @@
         "needUpgradePlan": "Mejora tu plan para acceder a esta funcionalidad"
     },
     "welcome": {
-        "title": "Bienvenido a Spots"
+        "title": "Bienvenido a Coffi"
     },
     "welcomeToSpots": {
-        "title": "¡Bienvenido a Spots! 🎉",
-        "message": "¡Gracias por registrarte en Spots!. Ahora puedes encontrar tus lugares favoritos para ti y tus sueños"
+        "title": "¡Bienvenido a Coffi! 🎉",
+        "message": "¡Gracias por registrarte en Coffi!. Ahora puedes encontrar tus lugares favoritos para ti y tus sueños"
     },
     "resetPassword": {
         "title": "Restablecer tu contraseña",
@@ -73,8 +73,8 @@
             "industry": "Estas dedicado en {{industry}}",
             "empty": {
                 "personalDescription": "Todavía no has agregado una descripción sobre ti",
-                "spotsRecommended": "Todavía no has recomendado ningún spot",
-                "spotsDiscovered": "Todavía no has descubierto ningún spot",
+                "spotsRecommended": "Todavía no has recomendado ningún lugar",
+                "spotsDiscovered": "Todavía no has descubierto ningún lugar",
                 "languages": "Todavía no has compartido que idiomas hablas",
                 "country": "Todavía no has compartido de qué país eres",
                 "industry": "Todavía no has compartido a qué te dedicas"
@@ -88,31 +88,31 @@
         },
         "thanks": {
             "thumbsUp": "¡Gracias por tu aprobación!",
-            "approvedSpot": "Estamos agradecidos por tu ayuda a formar el mapa de la comunidad de Spots"
+            "approvedSpot": "Estamos agradecidos por tu ayuda a formar el mapa de la comunidad de Coffi"
         }
     },
     "discover": {
         "spot": {
             "confirmation": {
-                "positiveReview": "Tu confirmación ha acercado este spot a ser parte permanente del mapa de la comunidad de Spots. ¡Gracias!",
+                "positiveReview": "Tu confirmación ha acercado este lugar a ser parte permanente del mapa de la comunidad de Coffi. ¡Gracias!",
                 "itsOfficial": "¡Tu confirmación lo ha hecho oficial!",
-                "approvedReview": "Tu aprobación ha hecho que este spot sea parte permanente del mapa de la comunidad de Spots. ¡Gracias!"
+                "approvedReview": "Tu aprobación ha hecho que este lugar sea parte permanente del mapa de la comunidad de Coffi. ¡Gracias!"
             },
-            "stillOnReview": "Este spot aún está en revisión, mantente atento a su confirmación",
+            "stillOnReview": "Este lugar aún está en revisión, mantente atento a su confirmación",
             "actions": {
-                "alreadyConfirmed": "Ya has confirmado este spot",
-                "discoveredSpot": "Este spot ha sido descubierto por ti",
-                "helpToConfirm": "Ayudanos a confirmar este spot",
+                "alreadyConfirmed": "Ya has confirmado este lugar",
+                "discoveredSpot": "Este lugar ha sido descubierto por ti",
+                "helpToConfirm": "Ayudanos a confirmar este lugar",
                 "confirmCorrectData": "Tus comentarios ayudan a garantizar que la información sobre este lugar sea lo más precisa posible. Los valores finales se determinan según las opciones con más votos de la comunidad.",
-                "wannaHelpConfirm": "¿Quieres ayudar a confirmar este spot?"
+                "wannaHelpConfirm": "¿Quieres ayudar a confirmar este lugar?"
             },
             "stage": {
                 "recommendation": "Este lugar esta en etapa de recomendación"
             },
             "discovered": {
                 "thanksForSharing": "¡Gracias por compartir tu descubrimiento!",
-                "spotInReviewForCommunity": "Este spot ahora está en revisión por la comunidad.",
-                "howToApprove": "Necesita 6 confirmaciones para ser parte permanente del mapa de la comunidad de Spots.",
+                "spotInReviewForCommunity": "Este lugar está en revisión por la comunidad.",
+                "howToApprove": "Necesita 6 confirmaciones para ser parte permanente del mapa de la comunidad de Coffi.",
                 "keepAnEyeOnIt": "Mantente atento a su progreso y te dejaremos saber cuando sea aprobado."
             },
             "discoveredAt": "Descubierto el {{date}}"
@@ -148,8 +148,8 @@
         }
     },
     "spotsTeam": {
-        "yours": "El equipo de Spots",
-        "we": "El equipo de Spots"
+        "yours": "El equipo de Coffi",
+        "we": "El equipo de Coffi"
     },
     "utils": {
         "and": "y",

@@ -33,12 +33,8 @@ export const SpotConfirmedSuccessfulModal: React.FC<
         <p className="font-light">
         {t("messages.discover.spot.confirmation.positiveReview")}
           </p>
-        <p className="font-light">
-          {t("messages.discover.spot.stillOnReview")}
-        </p>
         <p className="mt-3 mb-6 font-extralight text-sm">
-          {t("messages.discover.user.insight.matter")} <br /> -{" "}
-          {t("messages.spotsTeam.we")} ✨
+          {t("messages.discover.user.insight.matter")} - {t("messages.spotsTeam.we")} ✨
         </p>
         <SimpleButton
           action={closeDiscoveredSpot}

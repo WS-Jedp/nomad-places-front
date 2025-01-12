@@ -141,7 +141,13 @@ export const PlaceCommoditiesSelection: React.FC = () => {
         .map((commodity) => (
           <IonCol size="6" sizeMd="6" key={commodity.id}>
             <SimpleCheckbox
-              label={t(`filters.commodities.${commodity.commodity}`)}
+              label={t(
+                `filters.commodities.${
+                  commodity.commodity === PLACE_COMMODITIES_ENUM.BAKERY
+                    ? "bakery.label"
+                    : commodity.commodity
+                }`
+              )}
               callback={() => handleCallback(commodity.id)}
               isSelected={isComoditySelected(commodity.id)}
             />

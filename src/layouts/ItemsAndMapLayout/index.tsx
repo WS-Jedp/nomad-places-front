@@ -87,14 +87,16 @@ export const ItemsAndMapLayout: React.FC<{
                 ) : (
                   <RowPlacesTypeFilterOptions />
                 )}
-                <IonList
-                  className="
-                        relative flex flex-col items-start justify-start
-                        overflow-y-auto bg-white 
+                <section className="relative h-full overflow-y-auto mb-36">
+                  <IonList
+                    className="
+                    relative flex flex-col items-start justify-start
+                    overflow-y-auto bg-white h-[87%]
                     "
-                >
-                  {children}
-                </IonList>
+                    >
+                    {children}
+                  </IonList>
+                  </section>
               </>
             </Route>
           </IonRouterOutlet>

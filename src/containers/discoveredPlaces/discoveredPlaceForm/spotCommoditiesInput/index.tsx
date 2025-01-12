@@ -125,7 +125,7 @@ export const SpotCommoditiesInput: React.FC<SpotCommoditiesProps> = ({
         ))}
       </IonRow>
       <h2 className="text-sm font-semibold my-2 mx-3">
-        Selecciona la opcion que aplique
+        {t('filters.labels.selectBestOption')}
       </h2>
       <IonRow>
         {currentSelectCommodities.map((commodity) => (
@@ -144,7 +144,7 @@ export const SpotCommoditiesInput: React.FC<SpotCommoditiesProps> = ({
         ))}
       </IonRow>
       <h2 className="text-sm font-semibold my-2 mx-3">
-        Selecciona las opciones que apliquen
+        {t('filters.labels.pickBestOptions')}
       </h2>
       <IonRow className="px-3">
         {currentMultipleOptionsCommodities.map((c) => (

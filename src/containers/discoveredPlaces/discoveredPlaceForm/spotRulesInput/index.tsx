@@ -77,7 +77,7 @@ export const SpotRulesInput: React.FC<SpotRulesProps> = ({
         })}
       </IonRow>
       <h2 className="text-sm font-semibold my-2 mx-3">
-        Selecciona la opcion que aplique
+        {t('filters.labels.selectBestOption')}
       </h2>
 
       <IonRow>
@@ -101,7 +101,7 @@ export const SpotRulesInput: React.FC<SpotRulesProps> = ({
       </IonRow>
 
       <h2 className="text-sm font-semibold my-2 mx-3">
-        Selecciona las opciones que apliquen
+        {t('filters.labels.pickBestOptions')}
       </h2>
 
       <section className="relative w-full px-3">

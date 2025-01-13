@@ -16,8 +16,8 @@ export const VibeMindsetTag: React.FC<VibeMindsetTagProps> = ({ disabled, onClic
   }
   return (
     <IonChip outline className={`px-3 ${disabled ? 'bg-gray-200' : 'bg-amber-100'}`} onClick={handleClick}>
-      <IonIcon icon={starOutline} className={`mr-1 ${disabled ? 'text-gray-400' : 'text-amber-600'}`} />
-      <IonLabel className={`text-xs font-medium ${disabled ? 'text-gray-400' : 'text-amber-600'}`}>{ t('filters.mindsets.vibe') }</IonLabel>
+      <IonIcon icon={starOutline} className={`mr-1 ${disabled ? 'text-gray-400' : 'text-amber-500'}`} />
+      <IonLabel className={`text-xs font-medium ${disabled ? 'text-gray-400' : 'text-amber-500'}`}>{ t('filters.mindsets.vibe') }</IonLabel>
     </IonChip>
   );
 };

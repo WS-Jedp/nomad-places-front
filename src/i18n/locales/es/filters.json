@@ -20,7 +20,10 @@
         "themeTags": "Selecciona las temáticas que mejor describen el lugar",
         "ambianceTags": "Selecciona los ambientes que mejor representan el lugar",
         "selectBestOption": "Selecciona la opción que mejor aplique",
-        "pickBestOptions": "Selecciona las opciones que mejor apliquen"
+        "pickBestOptions": "Selecciona las opciones que mejor apliquen",
+        "checkWhatYouNeed": "Marca lo que necesitas encontrar",
+        "selectWhatYouNeed": "Selecciona las opciones que necesitas",
+        "selectAllWhatYouNeed": "Selecciona todas las opciones que necesitas"
     },
     "titles": {
         "people": "Personas",

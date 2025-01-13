@@ -36,7 +36,7 @@ const CustomPlaceMarkerContent: React.FC<{
                 `}
     >
       <span
-        className={`absolute top-[-50%] max-w-none min-w-max w-auto font-bold text-xs px-3 rounded-sm bg-white text-black shadow-md`}
+        className={`absolute top-[-50%] max-w-none min-w-max w-auto font-bold text-xs px-3 rounded-sm bg-white text-coffi-black shadow-md`}
       >
         {place.name}
       </span>

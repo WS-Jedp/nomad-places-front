@@ -28,7 +28,7 @@ export const SmallDropdown: React.FC<SmallDropdownProps> = ({
                 relative
                 w-full h-auto
                 flex flex-col items-center justify-center
-                bg-transparent text-black
+                bg-transparent text-coffi-black
                 border-t border-b border-gray-300
                 transition-all duration-300 ease-in-out
                 py-3
@@ -53,7 +53,7 @@ export const SmallDropdown: React.FC<SmallDropdownProps> = ({
         {
           // The user must be subscribe at least to the basic plan to use this feature
           disabled ? (
-            <article className={`text-sm font-light text-black`}>
+            <article className={`text-sm font-light text-coffi-black`}>
               <div className="flex flex-row flex-nowrap items-center justify-end text-end">
                 <span className="mr-2">
                   {auth.isAuth

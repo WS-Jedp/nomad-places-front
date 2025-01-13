@@ -40,7 +40,7 @@ export const SearchSpotsGeneralFilters: React.FC<
     selectedSpotKnownForFilter,
     selectedSpotMindsetFilter,
     spotMindsetFilter,
-    selectedValuesSpotCommoditiesFilter
+    selectedValuesSpotCommoditiesFilter,
   } = useAppSelector((state) => state.filters);
   const { isAuth } = useAppSelector((state) => state.user.auth);
 
@@ -133,8 +133,8 @@ export const SearchSpotsGeneralFilters: React.FC<
   );
 
   useEffect(() => {
-    console.log(selectedValuesSpotCommoditiesFilter)
-  }, [selectedValuesSpotCommoditiesFilter])
+    console.log(selectedValuesSpotCommoditiesFilter);
+  }, [selectedValuesSpotCommoditiesFilter]);
 
   return (
     <IonCol
@@ -147,23 +147,25 @@ export const SearchSpotsGeneralFilters: React.FC<
     >
       {/* Filters Header */}
       <IonRow className="w-full h-auto flex flex-row items-center justify-between border-b-2 border-gray-600 pb-3">
-        <IonCol className="flex items-center justify-start px-3">
-          <button
-            className="w-auto h-auto flex items-center justify-center bg-white outline p-1 outline-gray-300 rounded-full"
-            onClick={closeCallback}
-          >
-            <MdClose size={18} color="gray" />
-          </button>
-        </IonCol>
-        <IonCol className="flex items-center justify-end px-3">
-          <h1 className="text-2xl font-bold text-black">
-            {t("filters.texts.title")}
-          </h1>
-        </IonCol>
+        <IonRow className="w-11/12 md:w-9/12 mx-auto">
+          <IonCol className="flex items-center justify-start px-3">
+            <button
+              className="w-auto h-auto flex items-center justify-center bg-white outline p-1 outline-gray-300 rounded-full"
+              onClick={closeCallback}
+            >
+              <MdClose size={18} color="gray" />
+            </button>
+          </IonCol>
+          <IonCol className="flex items-center justify-end px-3">
+            <h1 className="text-2xl font-bold text-black">
+              {t("filters.texts.title")}
+            </h1>
+          </IonCol>
+        </IonRow>
       </IonRow>
 
       {/* Filters options */}
-      <IonRow className="w-full h-full overflow-y-auto pb-9 flex flex-col flex-nowrap items-center justify-start px-3 py-9">
+      <section className="w-11/12 md:w-9/12 mx-auto h-full overflow-y-auto flex flex-col flex-nowrap items-center justify-start py-9">
         {/* Filter by type of place - Example: By Coffee, library, park, lookout, etc. */}
         <SimpleDropdown
           title={t("filters.labels.whatTypeOfSpot?")}
@@ -241,26 +243,28 @@ export const SearchSpotsGeneralFilters: React.FC<
 
         {/* TODO */}
         {/* Filter by distance from current location */}
-      </IonRow>
+      </section>
 
       <IonRow
         className="
                 sticky bottom-0 left-0
                 w-full h-auto
                 flex flex-row flex-nowrap items-center justify-start
-                px-3 py-6
+                px-3 py-4
                 bg-white
                 border-t border-gray-300
             "
       >
-        <SimpleButton
-          text={t("actions.general.search")}
-          action={handleOnSearch}
-        />
-        <SimpleButtonOutline
-          text={t("actions.general.close")}
-          action={closeCallback}
-        />
+        <IonRow className="w-11/12 md:w-9/12 mx-auto">
+          <SimpleButton
+            text={t("actions.general.search")}
+            action={handleOnSearch}
+          />
+          <SimpleButtonOutline
+            text={t("actions.general.close")}
+            action={closeCallback}
+          />
+        </IonRow>
       </IonRow>
     </IonCol>
   );

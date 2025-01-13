@@ -44,7 +44,7 @@ export const OptionsPicker: React.FC<SimpleCheckboxProps> = ({
                 transition-all duration-300 w-full"
       >
         <select
-          className="w-full bg-white border border-zinc-400 rounded-md p-1 px-3 text-sm font-light text-black cursor-pointer"
+          className="w-full bg-white border border-zinc-400 rounded-md p-1 px-3 text-sm font-light text-coffi-black cursor-pointer"
           defaultValue={currentSelection}
           onChange={(e) => onChangeInputValue(e.target.value)}
           id={id ? `${id}-option` : `${label}-option`}

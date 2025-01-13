@@ -32,7 +32,7 @@ export const RecentActivityFileModal: React.FC<
       className="
             relative
             flex flex-col items-center justify-between
-            bg-white text-black
+            bg-white text-coffi-black
             w-full max-w-sm md:max-w-xl h-[720px] max-h-[72%] md:max-h-[600px]
             rounded-lg shadow-md
             overflow-hidden"

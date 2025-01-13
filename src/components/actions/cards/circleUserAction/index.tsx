@@ -74,7 +74,7 @@ export const CircleUserAction: React.FC<CircleUserActionProps> = ({ action, call
             >
                 { defineActionIcon() }
             </div>
-            <span className={`text-center my-1 text-${fontSize || 'lg'} font-medium text-black capitalize`}>
+            <span className={`text-center my-1 text-${fontSize || 'lg'} font-medium text-coffi-black capitalize`}>
                 { defineActionName(action) }
             </span>
 

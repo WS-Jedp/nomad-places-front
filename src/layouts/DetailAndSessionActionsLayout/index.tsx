@@ -48,7 +48,7 @@ export const DetailAndSessionActionsLayout: React.FC<
           className="relative
                   flex flex-col
                   w-full min-w-full md:w-7/12 md:min-w-min
-                  bg-white text-black
+                  bg-white text-coffi-black
                   z-30
                   ion-no-padding"
         >
@@ -69,7 +69,7 @@ export const DetailAndSessionActionsLayout: React.FC<
   }
 
   return (
-    <IonRow className="w-full h-full text-black">
+    <IonRow className="w-full h-full text-coffi-black">
       {/* Header of the layout */}
       {!isMobile && <GeneralHeader />}
 
@@ -86,7 +86,7 @@ export const DetailAndSessionActionsLayout: React.FC<
                         `}
             >
               <h2
-                className={`text-black ${!isRenderSession ? "font-bold" : ""}`}
+                className={`text-coffi-black ${!isRenderSession ? "font-bold" : ""}`}
               >
                 {t("spots.information.aboutTheSpot")}
               </h2>
@@ -102,7 +102,7 @@ export const DetailAndSessionActionsLayout: React.FC<
                         `}
             >
               <h2
-                className={`text-black ${isRenderSession ? "font-bold" : ""}`}
+                className={`text-coffi-black ${isRenderSession ? "font-bold" : ""}`}
               >
                 {t("spots.information.aboutTheSession")}
               </h2>
@@ -111,7 +111,7 @@ export const DetailAndSessionActionsLayout: React.FC<
         </IonRow>
       )}
 
-      <IonRow className="relative w-full md:h-full bg-gray-100 text-black">
+      <IonRow className="relative w-full md:h-full bg-gray-100 text-coffi-black">
         {isMobile ? renderMobileView() : renderDesktopView()}
       </IonRow>
     </IonRow>

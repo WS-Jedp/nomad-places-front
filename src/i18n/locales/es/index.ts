@@ -1,3 +1,4 @@
+import Coffi from './coffi.json'
 import Actions from './actions.json'
 import Messages from './messages.json'
 import Filters from './filters.json'
@@ -11,6 +12,7 @@ import Visited from './visited.json';
 import User from './user.json';
 
 export default {
+    coffi: Coffi,
     actions: Actions,
     messages: Messages,
     filters: Filters,

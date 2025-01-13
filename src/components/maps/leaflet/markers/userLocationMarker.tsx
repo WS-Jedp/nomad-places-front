@@ -18,13 +18,13 @@ const UserMarkerContent: React.FC<{
                         relative
                         hover:z-50
                       rounded-full p-2
-                      bg-white text-black border-black
+                      bg-white text-coffi-black border-black
                       shadow-lg
                       ${scale ? scale : ""}
                   `}
       >
         <span
-          className={`absolute top-[-50%] max-w-none min-w-max w-auto font-bold text-xs px-3 rounded-sm bg-white text-black shadow-md`}
+          className={`absolute top-[-50%] max-w-none min-w-max w-auto font-bold text-xs px-3 rounded-sm bg-white text-coffi-black shadow-md`}
         >
           { t('user.you') }
         </span>

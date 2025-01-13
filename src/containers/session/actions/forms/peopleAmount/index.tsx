@@ -102,7 +102,7 @@ export const PeopleAmountActionForm: React.FC<PeopleAmountActionFormProps> = ({ 
                                 flex flex-col items-center justify-center 
                                 w-full border
                                 border-solid border-gray-100 
-                                text-center text-black
+                                text-center text-coffi-black
                                 h-32
                                 cursor-pointer
                         `}
@@ -111,7 +111,7 @@ export const PeopleAmountActionForm: React.FC<PeopleAmountActionFormProps> = ({ 
                             <div className={`
                                 w-full h-full
                                 flex flex-col items-center justify-center
-                                ${isOptionSelected(option.id) ? 'bg-blue-200 text-blue-500' : 'bg-white text-black'}
+                                ${isOptionSelected(option.id) ? 'bg-blue-200 text-blue-500' : 'bg-white text-coffi-black'}
                                 hover:bg-blue-100 
                             `}>
                                 <MdPeople size={30} />

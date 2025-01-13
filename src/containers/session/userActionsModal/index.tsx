@@ -103,7 +103,7 @@ export const UserActionsModal: React.FC<UserActionsModalProps> = ({ closeCallbac
         <IonRow className='
             flex flex-col items-center justify-between
             w-full h-screen 
-            text-black
+            text-coffi-black
             py-3
          '
         >

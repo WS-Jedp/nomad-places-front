@@ -71,9 +71,12 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
   async function getNearPlaces() {
     try {
       setIsSearchingPlaces(true);
-      // temporal change while I'm outside of Medellin
-      // await dispatch(getNearestPlaces()) // Original
-      await dispatch(getAllPlaces());
+      if (userLocation.latitude && userLocation.longitude) {
+        // await dispatch(getNearestPlaces());
+        await dispatch(getAllPlaces());
+      } else {
+        await dispatch(getAllPlaces());
+      }
     } catch (err) {
       toast.error(String(err));
     } finally {
@@ -335,6 +338,8 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
       getUserLastSession({ token: authUser.token })
     )) as PayloadAction<UserLastSession>;
 
+    if (!lastSession.payload.inSession) return;
+
     if (lastSession && lastSession.payload.lastSession) {
       if (!lastSession.payload.expired) {
         await dispatch(
@@ -395,7 +400,7 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
         <ItemsAndMapLayout map={<LeafletMap />}>
           <>
             {isSearchingPlaces ? (
-              <div className="w-full flex items-center justify-center p-5">
+              <div className="fixed h-full w-full flex items-center justify-center p-5">
                 <SatelliteLoader text={t("actions.general.searching")} />
               </div>
             ) : places.filteredPlaces.length ? (

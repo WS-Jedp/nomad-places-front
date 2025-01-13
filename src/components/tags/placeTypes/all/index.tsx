@@ -8,7 +8,9 @@ interface AllPlaceTypesTagProps {
   onClick: Function;
 }
 
-export const AllPlaceTypesTag: React.FC<AllPlaceTypesTagProps> = ({ onClick }) => {
+export const AllPlaceTypesTag: React.FC<AllPlaceTypesTagProps> = ({
+  onClick,
+}) => {
   const { t } = useTranslation();
   const { selectedSpotTypesFilter, spotTypesFilter } = useAppSelector(
     (state) => state.filters
@@ -21,24 +23,27 @@ export const AllPlaceTypesTag: React.FC<AllPlaceTypesTagProps> = ({ onClick }) =
   // Is only able when all filters are selected or none filter is selected
   const isDisabled = useMemo(() => {
     if (selectedSpotTypesFilter.length === 0) return false;
-    if (selectedSpotTypesFilter.length === spotTypesFilter.length)
-      return false;
+    if (selectedSpotTypesFilter.length === spotTypesFilter.length) return false;
 
     return true;
   }, [selectedSpotTypesFilter, spotTypesFilter]);
   return (
     <IonChip
       outline
-      className={`px-3 py-1 ${isDisabled ? "bg-gray-200" : "bg-blue-200"}`}
+      className={`px-3 ${
+        isDisabled
+          ? "bg-gray-200"
+          : "bg-gradient-to-r from-coffi-blue-50 to-coffi-purple-100  drop-shadow-sm"
+      }`}
       onClick={handleClick}
     >
       <IonIcon
         icon={colorWandOutline}
-        className={`mr-2 ${isDisabled ? "text-gray-400" : "text-blue-600"}`}
+        className={`mr-1 ${isDisabled ? "text-gray-400" : "text-coffi-purple"}`}
       />
       <IonLabel
-        className={`text-md font-medium ${
-          isDisabled ? "text-gray-400" : "text-blue-600"
+        className={`text-xs font-medium ${
+          isDisabled ? "text-gray-400" : "text-coffi-purple"
         }`}
       >
         {t("filters.labels.all")}

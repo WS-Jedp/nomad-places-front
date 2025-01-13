@@ -58,7 +58,7 @@ export const PlaceDetailPage = () => {
         w-screen h-full
         bg-white
         p-0 
-        text-black
+        text-coffi-black
         overflow-hidden
       "
       >

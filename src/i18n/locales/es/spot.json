@@ -14,6 +14,7 @@
         "discoveredOn":"Descubierto el"
     },
     "session": {
+        "about": "Encuentra información útil basada en votos y comentarios de usuarios que ya se encuentran en el lugar, manteniendo la información fresca, confiable y actualizada",
         "peopleUpdates": "Actualizaciones de la comunidad",
         "usersInSession": "¿Quien se encuentra ahora?",
         "amountOfPeople": "¿Cuantas personas hay?",

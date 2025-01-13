@@ -85,22 +85,41 @@ export const PlaceRulesSelection: React.FC = () => {
 
   return (
     <IonRow class="w-full">
+      <IonCol
+        size="12"
+        className="flex flex-col items-start justify-start px-3 my-3"
+      >
+        <h2 className="font-bold text-md text-coffi-black">
+          {t("filters.labels.checkWhatYouNeed")}
+        </h2>
+      </IonCol>
+
       {spotRulesFilters
         .filter((c) => booleanRules.includes(c.rule))
         .map((rule) => (
-          <IonCol size="12" sizeMd="6" key={rule.id}>
+          <IonCol size="12" sizeMd="4" key={rule.id}>
             <SimpleCheckbox
               label={t(`filters.rules.${rule.rule}`)}
               callback={() => handleCallback(rule.id)}
               isSelected={isRuleSelected(rule.id)}
+              small
             />
           </IonCol>
         ))}
+
+      <IonCol
+        size="12"
+        className="flex flex-col items-start justify-start px-3 my-3"
+      >
+        <h2 className="font-bold text-md text-coffi-black">
+          {t("filters.labels.selectWhatYouNeed")}
+        </h2>
+      </IonCol>
       <IonRow class="flex flex-row w-full">
         {spotRulesFilters
           .filter((c) => selectionRules.includes(c.rule))
           .map((rule) => (
-            <IonCol size="12" sizeMd="6" key={rule.id}>
+            <IonCol size="12" sizeMd="6" key={rule.id} className="mb-2">
               <div className="px-3">
                 <OptionsPicker
                   key={rule.id}
@@ -117,20 +136,28 @@ export const PlaceRulesSelection: React.FC = () => {
           ))}
       </IonRow>
 
+      <IonCol
+        size="12"
+        className="flex flex-col items-start justify-start px-3 my-3"
+      >
+        <h2 className="font-bold text-md text-coffi-black">
+          {t("filters.labels.selectAllWhatYouNeed")}
+        </h2>
+      </IonCol>
       {spotRulesFilters
         .filter((c) => multipleOptionsRules.includes(c.rule))
         .map((rule) => (
           <IonRow class="flex flex-col items-start justify-start w-full px-3">
-                <MutipleOptionsPicker
-                  key={rule.id}
-                  label={t(`filters.rules.${rule.rule}.label`)}
-                  small
-                  onSelect={(val) => {
-                    handleCallback(rule.id, val);
-                  }}
-                  options={getRuleOptions(rule.rule)}
-                  selected={getSelectedOptionsRule(rule.rule) as string[]}
-                />
+            <MutipleOptionsPicker
+              key={rule.id}
+              label={t(`filters.rules.${rule.rule}.label`)}
+              small
+              onSelect={(val) => {
+                handleCallback(rule.id, val);
+              }}
+              options={getRuleOptions(rule.rule)}
+              selected={getSelectedOptionsRule(rule.rule) as string[]}
+            />
           </IonRow>
         ))}
     </IonRow>

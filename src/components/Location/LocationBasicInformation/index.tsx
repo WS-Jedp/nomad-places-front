@@ -6,7 +6,7 @@ export const LocationBasicInformation: React.FC = () => {
       className="
                 relative
                 flex flex-col md:flex-row md:items-center w-full p-9 md:py-4
-                bg-white text-black
+                bg-white text-coffi-black
             "
     >
       <IonText className="block">

@@ -66,7 +66,7 @@ export const MutipleOptionsPicker: React.FC<MultipleOptionsPickerProps> = ({
               </article>
               <p
                 className={`text-sm text-start font-normal my-2 ${
-                  !isSelected(opt) ? "text-gray-600" : "text-black"
+                  !isSelected(opt) ? "text-gray-600" : "text-coffi-black"
                 }`}
               >
                 {t(`filters.options.${opt}`)}

@@ -56,7 +56,7 @@ export const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
   }
 
   return (
-    <article className="bg-white rounded-lg p-6 shadow-xl text-black w-[90%] max-w-xl">
+    <article className="bg-white rounded-lg p-6 shadow-xl text-coffi-black w-[90%] max-w-xl">
       <section className="w-full relative flex flex-row flex-nowrap items-center justify-between bg-white border-b border-solid border-gray-300 pb-3">
         <button
           className="flex items-center justify-center border border-white rounded-full"

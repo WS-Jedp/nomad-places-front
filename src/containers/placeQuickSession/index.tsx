@@ -5,7 +5,10 @@ import { useHistory } from "react-router-dom";
 import { MultimediaMasonryGrid } from "../../components/multimedia/grid/masonry";
 
 import { QuickPlaceDetailRecentActivitySlider } from "../../components/slider/quickPlaceDetail/recentActivity";
-import { SimpleButton } from "../../components/buttons/simple";
+import {
+  SimpleButton,
+  SimpleButtonOutline,
+} from "../../components/buttons/simple";
 import { HandlePlaceStatus } from "../../components/tags/placeStatus";
 import { PLACE_STATUS } from "../../models/placeStatus";
 import { AvatarGroup } from "../../components/avatar/group";
@@ -36,12 +39,13 @@ import {
 import { AppModal } from "../../components/modals/container";
 import { MultimediaSliderModal } from "../multimediaSliderModal";
 import { useUserPermissions } from "../../common/hooks/useUserPermissions";
-import { SimpleTag } from "../../components/tags/simpleTag";
+import { SimpleTag, SimpleTagOutline } from "../../components/tags/simpleTag";
 import { AvatarSingleCircle } from "../../components/avatar/singleCircle";
 import { HandleRuleRender } from "../../components/rules/handleRuleRender";
 import { HandleAmenitiesRender } from "../../components/amenities/handleAmenitiesRender";
 import { getLocalISODate } from "../../common/utils/dates";
 import { format, parseISO } from "date-fns";
+import { IdealForTag } from "../../components/tags/idealFor";
 
 interface PlaceQuickSessionProps {
   changePageCallback?: Function;
@@ -212,13 +216,38 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
     }
   }
 
+  function getMindsetOrKnownForState() {
+    if (!currentPlace) return null;
+
+    if (!currentPlace.sessionCachedData?.bestMindsetTo?.length)
+      return currentPlace?.knownFor || null;
+
+    const mostMindset = currentPlace.sessionCachedData.bestMindsetTo.reduce(
+      (prev, curr) => (prev.actions.length > curr.actions.length ? prev : curr)
+    );
+    if (mostMindset.actions.length === 0) return currentPlace.knownFor || null;
+    return mostMindset.mindset;
+  }
+
+  const isMindsetRealTime = useMemo(() => {
+    if (!currentPlace) return null;
+
+    if (!currentPlace.sessionCachedData?.bestMindsetTo?.length) return false;
+
+    const mostMindset = currentPlace.sessionCachedData.bestMindsetTo.reduce(
+      (prev, curr) => (prev.actions.length > curr.actions.length ? prev : curr)
+    );
+    if (mostMindset.actions.length === 0) return false;
+    return true;
+  }, [currentPlace]);
+
   return (
     <section
       className="
             relative
             w-full h-full
             flex flex-col items-start justify-start
-            text-black
+            text-coffi-black
         "
     >
       {/* Go back action */}
@@ -244,7 +273,7 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
             <IonRow class="w-full px-5 py-2 ion-no-padding border-b border-gray-300 shadow-sm">
               <IonCol size="12">
                 <IonRow className="h-auto flex flex-col justify-center">
-                  <h1 className="font-light text-sm flex flex-row items-center bg-indigo-50 px-3 py-3 rounded-md">
+                  <h1 className="font-light text-sm flex flex-row items-center bg-coffi-blue-50 text-coffi-purple px-3 py-3 rounded-md">
                     <IoIosInformationCircleOutline size={21} className="mr-1" />
                     <span>
                       {t("messages.discover.spot.stage.recommendation")}.{" "}
@@ -299,7 +328,7 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
               <></>
             )}
             <div></div>
-            <IonRow className="flex flex-col justify-center">
+            <IonRow className="flex flex-col justify-start md:justify-center">
               <div className="flex flex-row flex-nowrap items-center">
                 <h1 className="font-bold text-lg md:text-xl mr-2">
                   {currentPlace?.name}
@@ -315,7 +344,7 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
               </IonText>
             </IonRow>
           </IonCol>
-          <IonCol size="4">
+          <IonCol size="12" sizeMd="4">
             {!onSessionPath &&
               canAuthSession() &&
               canViewPlaceRealTimeData() && (
@@ -323,12 +352,15 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
                   className="
                     w-full
                     flex flex-row flex-nowrap
-                    items-center justify-center
+                    items-start justify-start
+                    md:items-center md:justify-center
+                    mt-2 md:mt-0
                 "
                 >
                   <SimpleButton
                     text={t("actions.session.seeRealTimeData")}
                     action={handleInformationButton}
+                    full
                   />
                 </IonRow>
               )}
@@ -339,25 +371,38 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
         {/* Tags of the place of the session */}
         {canAuthSession() && canViewPlaceRealTimeData() && (
           <IonRow className="w-full flex flex-row items-start justify-start px-5 py-3 border-b border-gray-300">
-            {currentPlace?.knownFor && (
-              <div className="mr-1">
-                <SimpleTag
-                  text={t(
-                    `filters.idealFor.${currentPlace?.knownFor.toLowerCase()}`
-                  )}
-                />
+            {getMindsetOrKnownForState() && (
+              <div className="mr-1 mb-2">
+                {isMindsetRealTime ? (
+                  <IdealForTag
+                    text={t(
+                      `filters.idealFor.${getMindsetOrKnownForState()?.toLowerCase()}`
+                    )}
+                    realTime
+                  />
+                ) : (
+                  <SimpleTagOutline
+                    text={t(
+                      `filters.idealFor.${getMindsetOrKnownForState()?.toLowerCase()}`
+                    )}
+                  />
+                )}
               </div>
             )}
             {currentPlace?.ambianceTags?.map((ambiance) => (
-              <div className="mr-1 mb-1" key={ambiance}>
-                <SimpleTag
+              <div className="mr-1 mb-2" key={ambiance}>
+                <SimpleTagOutline
                   text={t(`filters.options.places.ambiances.${ambiance}`)}
+                  active
                 />
               </div>
             ))}
             {currentPlace?.themeTags?.map((theme) => (
-              <div className="mr-1 mb-1" key={theme}>
-                <SimpleTag text={t(`filters.options.places.themes.${theme}`)} />
+              <div className="mr-1 mb-2" key={theme}>
+                <SimpleTagOutline
+                  text={t(`filters.options.places.themes.${theme}`)}
+                  active
+                />
               </div>
             ))}
           </IonRow>
@@ -366,7 +411,7 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
         <IonRow className="relative flex flex-col w-full">
           <IonRow className="flex flex-col w-full px-5 py-3 border-b border-gray-300">
             <IonText>
-              <h3 className="text-md font-semibold">
+              <h3 className="text-md font-bold">
                 {t("spots.information.aboutTheSpot")}
               </h3>
             </IonText>
@@ -380,7 +425,7 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
 
             {/* Rules */}
             <article className="mb-6">
-              <h2 className="font-medium text-md mb-2">
+              <h2 className="font-bold text-md mb-2">
                 {t("spots.information.rules")}
               </h2>
               <IonRow className="relative w-full h-auto">
@@ -403,7 +448,7 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
 
             {/* Commodities */}
             <article>
-              <h2 className="font-medium text-md mb-2">
+              <h2 className="font-bold text-md mb-2">
                 {t("spots.information.commodities")}
               </h2>
               <IonRow className="relative w-full h-auto mb-3">
@@ -498,7 +543,7 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
                   })}
               </IonRow>
 
-              <h2 className="font-medium text-md mb-2">
+              <h2 className="font-bold text-md mb-2">
                 {t("spots.information.unavailableCommodities")}
               </h2>
               <IonRow className="relative w-full h-auto">
@@ -527,7 +572,7 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
         <IonRow className="flex flex-col w-full h-auto px-5 py-3">
           <article className="mb-3">
             <IonText>
-              <h3 className="text-md font-medium">
+              <h3 className="text-md font-bold">
                 {t("spots.information.discoveredBy")}
               </h3>
             </IonText>
@@ -559,10 +604,15 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
               <IonRow className="w-full flex flex-row flex-nowrap items-center pt-1">
                 <AvatarSingleCircle
                   url="/assets/images/coffi-logo.svg"
-                  styles="mr-1"
+                  styles="mr-2 w-8 h-8"
                 />
 
-                <IonText className="text-sm font-medium">Coffi</IonText>
+                <section className="w-full flex flex-col items-start justify-start">
+                  <p className="text-sm font-black">Coffi</p>
+                  <p className="text-xs font-light mt-[-2px]">
+                    Be where you thrive
+                  </p>
+                </section>
               </IonRow>
             )}
           </article>

@@ -1,8 +1,11 @@
 import { IonCol, IonRow } from "@ionic/react";
 import { AvatarGroup } from "../../components/avatar/group";
-import { SimpleButton } from "../../components/buttons/simple";
+import {
+  SimpleButton,
+  SimpleButtonOutline,
+} from "../../components/buttons/simple";
 import { RecentActivityCard } from "../../components/multimedia/cards/recentActivity";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AppModal } from "../../components/modals/container";
 import { MultimediaSliderModal } from "../multimediaSliderModal";
 import {
@@ -369,7 +372,7 @@ export const PlaceSessionDetail: React.FC<PlaceSessionDetailProps> = ({
     actionType: UPDATE_ACTIONS,
     value: string
   ) {
-    validateUserInSession()
+    validateUserInSession();
 
     setQuickActionModal(true);
     setQuickActionType(actionType);
@@ -379,8 +382,8 @@ export const PlaceSessionDetail: React.FC<PlaceSessionDetailProps> = ({
   function handleUpdateMultipleActions(
     actions: { type: UPDATE_ACTIONS; data: any }[]
   ) {
-    validateUserInSession()
-    
+    validateUserInSession();
+
     setJoiningSessionLoader(true);
     setUpdateSessionModal(false);
     if (!sessionID) {
@@ -421,6 +424,15 @@ export const PlaceSessionDetail: React.FC<PlaceSessionDetailProps> = ({
   function onRecentActivityFileSuccess(file: File) {
     setRecentActivityFile(file);
   }
+
+  const lastUpdateAction = useMemo(() => {
+    if(!currentPlace || !currentPlace.sessionCachedData || !currentPlace.sessionCachedData.lastActions || !currentPlace.sessionCachedData.lastActions.length) return null
+    const allUpdateActions = currentPlace.sessionCachedData.lastActions.filter(action => action.type === PLACE_SESSION_ACTIONS_ENUM.UPDATE)
+
+    if(!allUpdateActions.length) return null
+    return allUpdateActions[0]
+
+  }, [currentPlace])
 
   async function shareRecentActivirtyMedia() {
     if (!recentActivityFile || !sessionID || !currentPlace?.id || !auth.token)
@@ -505,23 +517,25 @@ export const PlaceSessionDetail: React.FC<PlaceSessionDetailProps> = ({
           ))}
         </section>
 
-        <IonRow className="w-full p-3 border-b border-gray-300 flex flex-row flex-nowrap items-center justify-between">
+        <IonRow className="w-full p-3 border-b border-gray-300 flex flex-col flex-nowrap items-start justify-start">
           <h1 className="font-bold text-lg md:text-xl">
-            {t('spots.session.peopleUpdates')}
+            {t("spots.session.peopleUpdates")}
           </h1>
+
+          <p className="text-coffi-black font-normal text-sm mt-1">
+            {t("spots.session.about")}.
+          </p>
         </IonRow>
 
         <IonRow className="w-full p-3 pb-5 relative flex flex-col flex-nowrap border-b border-gray-300">
-          {cachedSession &&
-            cachedSession.lastActions.length > 0 &&
-            cachedSession?.lastUpdate && (
+          {lastUpdateAction &&  (
               <section className="my-1">
                 <h2 className="text-xs font-light">
                   {t("spots.messages.session.lastUpdateAt")}{" "}
                   <span className="font-light">
                     -{" "}
                     {format(
-                      parseISO(getLocalISODate(cachedSession.lastUpdate)),
+                      parseISO(getLocalISODate(lastUpdateAction.createdDate)),
                       "p"
                     )}
                   </span>
@@ -533,7 +547,7 @@ export const PlaceSessionDetail: React.FC<PlaceSessionDetailProps> = ({
             <h2 className="font-bold text-sm mb-1">
               {t("spots.session.usersInSession")}
             </h2>
-            <article className="pb-3">
+            <article className="flex flex-row w-full items-start justify-start pb-3">
               <AvatarGroup users={cachedSession?.usersInSession || []} />
             </article>
             <h2 className="font-bold text-sm mb-1">
@@ -560,19 +574,17 @@ export const PlaceSessionDetail: React.FC<PlaceSessionDetailProps> = ({
           </section>
           {userInSession ? (
             <article className="flex flex-row flex-nowrap w-full items-center justify-start">
-              <div className="w-5/10">
+              {/* <div className="w-5/10 mr-1">
                 <SimpleButton
                   action={() => setUpdateSessionModal(true)}
                   text={t("actions.session.update")}
                   loading={joiningSessionLoader}
                 />
-              </div>
-              <span
-                className="cursor-pointer text-red-500 underline ml-6"
-                onClick={() => setLeaveSessionModal(true)}
-              >
-                {t("actions.session.leave")}
-              </span>
+              </div> */}
+              <SimpleButtonOutline
+                action={() => setLeaveSessionModal(true)}
+                text={t("actions.session.leave")}
+              />
             </article>
           ) : (
             // JOIN SESSION BUTTON
@@ -621,7 +633,7 @@ export const PlaceSessionDetail: React.FC<PlaceSessionDetailProps> = ({
           <button
             className="
             px-6 py-1 
-            font-light text-xs text-black border border-solid border-gray-300 
+            font-light text-xs text-coffi-black border border-solid border-gray-300 
             rounded-md
             hover:bg-gray-200 transition-all ease-in-out duration-300
           "
@@ -677,7 +689,7 @@ export const PlaceSessionDetail: React.FC<PlaceSessionDetailProps> = ({
 
       {leaveSessionModal && (
         <AppModal>
-          <article className="w-full max-w-xs bg-white rounded-lg text-black p-6">
+          <article className="w-full max-w-xs bg-white rounded-lg text-coffi-black p-6">
             <h2 className="font-bold text-2xl">
               {t("spots.information.leaveTheSession")}
             </h2>

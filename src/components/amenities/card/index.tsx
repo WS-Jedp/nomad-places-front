@@ -24,7 +24,7 @@ export const AmenitiesCard: React.FC<AmmenitiesCardProps> = ({
     <IonRow className="relative w-full h-auto flex flex-row flex-nowrap items-center">
       <Icon
         size="24px"
-        className={`mr-2 ${!state ? "text-gray-300" : "text-black"}`}
+        className={`mr-2 ${!state ? "text-gray-300" : "text-coffi-black"}`}
       />
       <IonText className={`flex flex-row items-center justify-start`}>
         <strong

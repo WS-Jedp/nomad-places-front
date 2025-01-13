@@ -42,7 +42,7 @@ export const UserOptionsMenu: React.FC<UserOptionsMenuProps> = ({
                 mt-3
                 w-52  overflow-y-auto rounded-lg
                 bg-white shadow-xl
-                text-black
+                text-coffi-black
                 z-[999]
             "
     >
@@ -53,7 +53,7 @@ export const UserOptionsMenu: React.FC<UserOptionsMenuProps> = ({
               {t("messages.utils.hello")}{" "}
               {userData?.personalInformation?.firstName}
             </h2>
-            <span className="font-semibold bg-indigo-50 p-1 rounded-md text-indigo-600 text-xs">
+            <span className="font-semibold bg-coffi-purple-50 p-1 rounded-md text-coffi-purple text-xs">
               {userData?.gamification.points || 0}{" "}
               {t("gamification.utils.points")}
             </span>

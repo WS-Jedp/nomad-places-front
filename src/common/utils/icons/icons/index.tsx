@@ -53,17 +53,17 @@ export function handleSpotTypeIcon(spotType: PLACE_TYPES, size = 21) {
 export function handleCardColor(mindset: MINDSETS) {
   switch (mindset) {
     case MINDSETS.ALL:
-      return "bg-amber-400 text-white border-amber-400";
+      return "bg-gradient-to-r from-coffi-blue-50 to-coffi-purple-100 drop-shadow-sm text-coffi-purple border-coffi-purple-400";
     case MINDSETS.STUDY:
-      return "bg-indigo-400 text-white border-indigo-500";
+      return "bg-coffi-purple-300 text-white border-coffi-purple";
     case MINDSETS.WORK:
-      return "bg-blue-400 text-white border-blue-600";
+      return "bg-coffi-blue text-white border-coffi-blue";
     case MINDSETS.ROMANTIC:
       return "bg-pink-400 text-white border-pink-600";
     case MINDSETS.VIBE:
       return "bg-amber-400 text-white border-amber-600";
     default:
-        return 'bg-white text-black border-black'
+        return 'bg-white text-coffi-black border-black'
   }
 }
 

@@ -105,7 +105,7 @@ export const ProfilePage: React.FC = () => {
         className="
                 relative
                 w-full h-full
-                bg-gray-100 text-black
+                bg-gray-100 text-coffi-black
                 flex flex-col items-center justify-start
             "
       >

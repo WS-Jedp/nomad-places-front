@@ -14,9 +14,9 @@ export const StudyMindsetTag: React.FC<StudyMindsetTagProps> = ({ disabled, onCl
     onClick()
   }
   return (
-    <IonChip outline  className={`px-3 ${disabled ? 'bg-gray-200' : 'bg-indigo-100'}`} onClick={handleClick}>
-      <IonIcon icon={book} className={`mr-1 ${disabled ? 'text-gray-400' : 'text-indigo-500'}`} />
-      <IonLabel className={`text-xs font-medium ${disabled ? 'text-gray-400' : 'text-indigo-500'}`}>{ t('filters.mindsets.study') }</IonLabel>
+    <IonChip outline  className={`px-3 ${disabled ? 'bg-gray-200' : 'bg-coffi-purple-50'}`} onClick={handleClick}>
+      <IonIcon icon={book} className={`mr-1 ${disabled ? 'text-gray-400' : 'text-coffi-purple-400'}`} />
+      <IonLabel className={`text-xs font-medium ${disabled ? 'text-gray-400' : 'text-coffi-purple-400'}`}>{ t('filters.mindsets.study') }</IonLabel>
     </IonChip>
   );
 };

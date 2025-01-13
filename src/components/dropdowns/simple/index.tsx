@@ -22,7 +22,7 @@ export const SimpleDropdown: React.FC<SimpleDropdownProps> = ({ children, isOpen
                 relative
                 w-full h-auto
                 flex flex-col items-center justify-center
-                bg-white rounded-xl text-black
+                bg-white rounded-xl text-coffi-black
                 border border-gray-300
                 p-6
                 transition-all duration-300 ease-in-out
@@ -45,7 +45,7 @@ export const SimpleDropdown: React.FC<SimpleDropdownProps> = ({ children, isOpen
                 {
                     // The user must be subscribe at least to the basic plan to use this feature
                     disabled ? (
-                        <article className={`text-sm font-light text-black ${badge ? 'bg-gray-100 px-4 py-2 rounded-full' : ''}`}>
+                        <article className={`text-sm font-light text-coffi-black ${badge ? 'bg-gray-100 px-4 py-2 rounded-full' : ''}`}>
                             <div className="flex flex-row flex-nowrap items-center justify-end text-end">
                                 <span className="mr-2">
                                      { auth.isAuth ? t('messages.permissions.needUpgradePlan') : t('messages.auth.required.message') }
@@ -55,7 +55,7 @@ export const SimpleDropdown: React.FC<SimpleDropdownProps> = ({ children, isOpen
                         </article>
                     ) :
                     !isOpen ? (
-                        <span className={`text-xs font-light text-black capitalize ${badge ? 'bg-gray-100 px-4 py-2 rounded-full' : ''}`}>
+                        <span className={`text-xs font-light text-coffi-black capitalize ${badge ? 'bg-gray-100 px-4 py-2 rounded-full' : ''}`}>
                             {currentValue}
                         </span>
                     ) : (

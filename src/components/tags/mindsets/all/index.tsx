@@ -29,16 +29,16 @@ export const AllMindsetTag: React.FC<AllMindsetTagProps> = ({ onClick }) => {
   return (
     <IonChip
       outline
-      className={`px-3 ${isDisabled ? "bg-gray-200" : "bg-amber-100"}`}
+      className={`px-3 ${isDisabled ? "bg-gray-200" : "bg-gradient-to-r from-coffi-blue-50 to-coffi-purple-100  drop-shadow-sm"}`}
       onClick={handleClick}
     >
       <IonIcon
         icon={colorWandOutline}
-        className={`mr-1 ${isDisabled ? "text-gray-400" : "text-amber-400"}`}
+        className={`mr-1 ${isDisabled ? "text-gray-400" : "text-coffi-purple"}`}
       />
       <IonLabel
         className={`text-xs font-medium ${
-          isDisabled ? "text-gray-400" : "text-amber-500"
+          isDisabled ? "text-gray-400" : "text-coffi-purple"
         }`}
       >
         {t("filters.labels.all")}

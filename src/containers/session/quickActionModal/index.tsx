@@ -96,10 +96,10 @@ export const QuickActionModal:React.FC<QuickActionModalProps> = ({ onCancel, onU
             p-4
             items-center justify-center
             bg-white rounded-md shadow-md
-            text-black
+            text-coffi-black
         ">
 
-            <h2 className="font-bold text-black text-2xl m-3">
+            <h2 className="font-bold text-coffi-black text-2xl m-3">
                 Quick Update
             </h2>
 

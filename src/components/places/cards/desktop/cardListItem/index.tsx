@@ -17,6 +17,9 @@ import {
 } from "../../../../../store/redux/slices/places";
 import { PlaceCardMultimediaSlider } from "../../../../slider/placeCardMultimedia";
 import { useUserPermissions } from "../../../../../common/hooks/useUserPermissions";
+import { IdealForTag } from "../../../../tags/idealFor";
+import { t } from "i18next";
+import { useMemo } from "react";
 
 interface PlaceCardListItemProps {
   place: PlaceWithCachedSession;
@@ -74,6 +77,16 @@ export const PlaceCardListItemDesktop: React.FC<PlaceCardListItemProps> = ({
     return mostMindset.mindset;
   }
 
+  const isMindsetRealTime = useMemo(() => {
+    if (!place.sessionCachedData?.bestMindsetTo?.length) return false;
+
+    const mostMindset = place.sessionCachedData.bestMindsetTo.reduce(
+      (prev, curr) => (prev.actions.length > curr.actions.length ? prev : curr)
+    );
+    if (mostMindset.actions.length === 0) return false;
+    return true;
+  }, [place]);
+
   function handleClick() {
     action();
   }
@@ -82,7 +95,7 @@ export const PlaceCardListItemDesktop: React.FC<PlaceCardListItemProps> = ({
     <IonCol
       className={`
             bg-none bg-white-300 cursor-pointer rounded-md
-            flex flex-col items-start justify-between py-5 px-2 my-1 mx-0  max-w-[270px] h-[240px] border-1 border-black md:bg-white
+            flex flex-col items-start justify-between py-5 px-2 my-1 mx-0  max-w-[270px] h-[260px] border-1 border-black md:bg-white
             transition-all duration-300 ease-in-out
             ${placeOnFocus === place.id ? "shadow-md border-black" : ""}
             hover:shadow-md hover:border-black
@@ -103,19 +116,6 @@ export const PlaceCardListItemDesktop: React.FC<PlaceCardListItemProps> = ({
           multimedia={place.multimedia}
           onImage={() => handleClick()}
         />
-
-        {/* Perfect to (Real time data) or Known for */}
-        {canViewPlaceRealTimeData() && getMindsetOrKnownForState() && (
-          <article className="absolute bottom-0 right-5 p-1 z-[999]">
-            <div
-              className={`opacity-90 rounded-full flex items-center justify-center p-1 ${handleCardColor(
-                getMindsetOrKnownForState()
-              )} z`}
-            >
-              {handleMindsetIcon(getMindsetOrKnownForState(), 9)}
-            </div>
-          </article>
-        )}
       </IonRow>
       <IonItem
         className="relative w-full p-0 ion-no-padding flex flex-col border-none mt-2"
@@ -128,23 +128,53 @@ export const PlaceCardListItemDesktop: React.FC<PlaceCardListItemProps> = ({
               size="12"
               class="relative flex flex-col justify-start items-start"
             >
-              <h1 className="truncate max-w-full overflow-ellipsis font-bold text-black">
+              <h1 className="truncate max-w-full overflow-ellipsis font-bold text-coffi-black">
                 {place.name}
               </h1>
 
-              <IonText>
-                {/* If user have at least the basic subscription plan */}
-                {canViewPlaceRealTimeData() && getAmountOfPeopleState() && (
-                  <span className="flex flex-row flex-nowrap items-center justify-center font-sans font-regular text-[12px] capitalize mt-1 px-3 border border-black rounded-lg">
-                    {getAmountOfPeopleState()}{" "}
-                    {<MdPeople className="mx-1" size={12} />}
-                  </span>
-                )}
-              </IonText>
+              {/* Real time data */}
+              {/* If user have at least the basic subscription plan */}
+              {canViewPlaceRealTimeData() && (
+                <IonRow className="flex flex-row flex-wrap items-center justify-start w-full my-1">
+                  {getAmountOfPeopleState() && (
+                    <span
+                      className="flex flex-row flex-nowrap items-center justify-center py-1 font-regular text-xs rounded-md mr-1 
+                      text-coffi-white capitalize px-3 bg-gradient-to-r from-coffi-blue-400 to-coffi-purple-400 drop-shadow-md"
+                    >
+                      {getAmountOfPeopleState()}{" "}
+                      {<MdPeople className="mx-1" size={12} />}
+                    </span>
+                  )}
+                  {getMindsetOrKnownForState() && (
+                    <article
+                      className={`flex flex-row itmes-center justify-centerpx-3 rounded-md p-1 px-3
+                    ${
+                      isMindsetRealTime
+                        ? "bg-gradient-to-r from-coffi-blue-400 to-coffi-purple-400 drop-shadow-md"
+                        : "bg-white border-[1px] border-solid border-coffi-black"
+                    }
+                      `}
+                    >
+                      <span
+                        className={`text-xs font-normal ${
+                          isMindsetRealTime
+                            ? "text-white"
+                            : "text-coffi-black"
+                        }`}
+                      >
+                        {t(
+                          `filters.idealFor.${getMindsetOrKnownForState().toLowerCase()}`
+                        )}
+                      </span>
+                    </article>
+                  )}
+                </IonRow>
+              )}
+
               {/* TODO: Add for at least basic subscription current mood of the place */}
               {/* TODO: Add for at least basic subscription friends that are in the sesion and if not, how many users are in the session */}
               <IonText>
-                <span className="text-xs text-black font-light">
+                <span className="text-xs text-coffi-black font-light">
                   {getDistanceToSpot(place)} km{" "}
                 </span>
               </IonText>

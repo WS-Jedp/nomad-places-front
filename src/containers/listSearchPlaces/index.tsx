@@ -57,7 +57,7 @@ export const ListSearchPlaces: React.FC<ListSearchPlacesProps> = ({
       {/* {userSession.inSession && (
         <IonRow className="w-full border-solid border-b-[1px] px-12 bg-indigo-100 ">
           <section className="w-full p-3 rounded-md flex flex-row flex-nowrap items-center justify-between">
-            <span className="text-md font-light text-black flex flex-row flex-nowrap items-center justify-center">
+            <span className="text-md font-light text-coffi-black flex flex-row flex-nowrap items-center justify-center">
               <MdInfoOutline size={18} className="mr-2" /> You're already in a
               session
             </span>

@@ -54,7 +54,7 @@ export const StoryMultimediaCard: React.FC<StoryMultimediaCardProps> = ({
         <IonRow className="relative flex flex-row w-full items-center justify-start p-3">
           <figure className="relative inline-flex w-8 h-8 rounded-full bg-gray-300 mr-3"></figure>
           <IonText>
-            <strong className="text-black text-sm font-semibold">
+            <strong className="text-coffi-black text-sm font-semibold">
               {user.username}
             </strong>
           </IonText>

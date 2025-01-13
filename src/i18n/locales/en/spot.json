@@ -14,6 +14,7 @@
         "discoveredOn":"Discovered on"
     },
     "session": {
+        "about": "Find useful insights based on votes and feedback from users already at the spot, keeping information fresh, reliable, and up-to-date",
         "peopleUpdates": "Community Updates",
         "usersInSession": "Who’s Here Right Now?",
         "amountOfPeople": "How Busy Is It?",
@@ -37,8 +38,8 @@
         "session": {
             "lastUpdateAt": "Last update at",
             "leaveSessionConfirmation": "Are you sure you want to leave this session?",
-            "userJoinTheSession": "joined the session",
-            "userLeaveTheSession": "left the session",
+            "userJoin": "joined the session",
+            "userLeave": "left the session",
             "updateAmountOfPeople": "There is between {{firstAmount}} to {{lastAmount}} people in the spot",
             "updatePerfectTo": "This spot is perfect to",
             "updateStatus": "The spot it's",

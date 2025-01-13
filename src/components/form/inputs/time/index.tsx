@@ -70,7 +70,7 @@ const TimePicker: React.FC<TimePickerProps> = ({ onTimePick, label, defaultDatTi
             <label className="text-sm font-semibold my-1 block">{ label }</label>
             <div className='flex flex-row flex-nowrap'>
                 <select
-                    className="bg-white border border-zinc-400 rounded-md p-1 px-3 text-sm font-light text-black cursor-pointer"
+                    className="bg-white border border-zinc-400 rounded-md p-1 px-3 text-sm font-light text-coffi-black cursor-pointer"
                     value={hour}
                     onChange={(e) => setHour(e.target.value)}
                     style={{appearance: 'none'}}
@@ -81,7 +81,7 @@ const TimePicker: React.FC<TimePickerProps> = ({ onTimePick, label, defaultDatTi
                     :
                 </span>
                 <select
-                    className="bg-white border border-zinc-400 rounded-md p-1 px-3 text-sm font-light text-black cursor-pointer"
+                    className="bg-white border border-zinc-400 rounded-md p-1 px-3 text-sm font-light text-coffi-black cursor-pointer"
                     value={minutes}
                     onChange={(e) => setMinutes(e.target.value)}
                     style={{appearance: 'none'}}
@@ -89,7 +89,7 @@ const TimePicker: React.FC<TimePickerProps> = ({ onTimePick, label, defaultDatTi
                     {generateEach15MinutesOptions()}
                 </select>
                 <select
-                    className="bg-white border border-zinc-400 rounded-md p-1 px-2 text-sm font-light text-black cursor-pointer ml-1"
+                    className="bg-white border border-zinc-400 rounded-md p-1 px-2 text-sm font-light text-coffi-black cursor-pointer ml-1"
                     value={dayTime}
                     onChange={(e) => setDayTime(e.target.value)}
                     style={{appearance: 'none'}}

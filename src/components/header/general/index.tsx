@@ -221,15 +221,18 @@ export const GeneralHeader: React.FC = () => {
                     z-[999]
                 "
     >
-      <article className="flex flex-row flex-nowrap items-center" onClick={onLogo}>
-        <img src="/assets/images/coffi-logo-v2.svg" width={33} />
+      <article className="flex flex-row flex-nowrap items-center cursor-pointer text-coffi-black" onClick={onLogo}>
+        <img src="/assets/images/coffi-logo.svg" width={45} className="mr-2" />
         {
           !isMobile && (
-            <div className="flex flex-col items-start jusitfy-center h-full border-l-[3px] border-solid border-black ml-3 pl-2">
+            <div className="flex flex-col items-start jusitfy-center h-full border-solid border-black">
               <h1
-                className="block font-bold text-black text-2xl cursor-pointer my-0 py-0">
+                className="font-sf block font-black text-2xl cursor-pointer my-0 py-0">
                 Coffi
               </h1>
+              <h2 className="font-sf font-light text-sm my-0 py-0 pl-[1px] mt-[-2px]">
+                 Be where you thrive
+              </h2>
             </div>
           ) 
         }
@@ -247,14 +250,14 @@ export const GeneralHeader: React.FC = () => {
         onClick={() => handleOpenFilters(GeneralFiltersEnum.none)}
       >
         <button
-          className="text-black text-sm font-medium"
+          className="text-coffi-black text-sm font-medium"
           onClick={() => handleOpenFilters(GeneralFiltersEnum.none)}
         >
           {t("actions.general.findASpot")}
         </button>
         <span className="hidden md:flex separator h-[21px] w-[1px] bg-gray-300 mx-3"></span>
         <button
-          className="hidden md:flex text-black text-sm  font-light"
+          className="hidden md:flex text-coffi-black text-sm  font-light"
           onClick={() => handleOpenFilters(GeneralFiltersEnum.people)}
         >
           {handleSpotPeopleAmountFilterValue()}
@@ -263,12 +266,12 @@ export const GeneralHeader: React.FC = () => {
           className="hidden md:flex separator h-[21px] w-[1px] bg-gray-300 mx-3"
           onClick={() => handleOpenFilters(GeneralFiltersEnum.commodities)}
         ></span>
-        <button className="hidden md:flex text-black text-sm  font-light">
+        <button className="hidden md:flex text-coffi-black text-sm  font-light">
           {handleSpotCommoditiesFilterValue()}
         </button>
 
-        <span className="rounded-full p-1 bg-blue-400 ml-3">
-          <MdSearch size={18} color="white" />
+        <span className="rounded-full p-1 bg-coffi-blue-50 ml-3">
+          <MdSearch size={18} className="text-coffi-purple-400" />
         </span>
       </div>
 
@@ -287,7 +290,7 @@ export const GeneralHeader: React.FC = () => {
                                 hover:bg-gray-100
                             "
           >
-            <span className="text-black text-sm">
+            <span className="text-coffi-black text-sm">
               {t("actions.discover.suggest.spot")}
             </span>
           </button>
@@ -300,7 +303,7 @@ export const GeneralHeader: React.FC = () => {
                 hidden md:flex items-center justify-center
                 rounded-full outline outline-1 ${
                   userLocation
-                    ? "outline-blue-400 text-blue-600 bg-blue-100"
+                    ? "outline-coffi-purple-200 text-coffi-purple-400 bg-coffi-blue-50"
                     : "outline-gray-300 text-gray-500 hover:bg-gray-100"
                 }
                 cursor-pointer
@@ -326,7 +329,7 @@ export const GeneralHeader: React.FC = () => {
           >
             <FaUserAlt size={13} color="gray" />
             {isAuth ? (
-              <span className="font-light mx-1 text-sm text-black">
+              <span className="font-light mx-1 text-sm text-coffi-black">
                 {userData?.username}
               </span>
             ) : (
@@ -367,7 +370,7 @@ export const GeneralHeader: React.FC = () => {
                                     bg-white 
                                     rounded-lg
                                     p-6 shadow-xl 
-                                    text-black 
+                                    text-coffi-black 
                                 "
           >
             <h2 className="text-2xl font-bold">
@@ -410,7 +413,7 @@ export const GeneralHeader: React.FC = () => {
                                     bg-white 
                                     rounded-lg
                                     p-6 shadow-xl 
-                                    text-black 
+                                    text-coffi-black 
                                 "
           >
             <h2 className="text-2xl font-bold">

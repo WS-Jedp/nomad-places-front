@@ -62,8 +62,8 @@ export const SimpleCheckbox: React.FC<SimpleCheckboxProps> = ({
           {isSelected && <MdCheck size={small ? 12 : 15} color="white" />}
         </span>
         <span
-          className={`${
-            small ? "text-sm font-normal" : "text-md font-medium"
+          className={`font-medium ${
+            small ? "text-sm" : "text-md"
           } text-start break-keep`}
         >
           {label}

@@ -17,7 +17,7 @@ const Tooltip: React.FC<TooltipProps> = ({ children, text }) => {
                 {children}
             </div>
             {isHovering && (
-                <div className="absolute bottom-full mb-2 px-3 py-2 text-sm bg-white text-black rounded-lg shadow-md">
+                <div className="absolute bottom-full mb-2 px-3 py-2 text-sm bg-white text-coffi-black rounded-lg shadow-md">
                     {text}
                 </div>
             )}

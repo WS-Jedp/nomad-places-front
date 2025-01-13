@@ -55,7 +55,7 @@ export const SpotMultimediaInput: React.FC<SpotMultimediaInputProps> = ({
               >
                 <div
                   onClick={() => handleRemoveFile(index)}
-                  className="absolute right-0 top-0 text-black cursor-pointer p-1 bg-white shadow-md flex items-center justify-center rounded-full z-40"
+                  className="absolute right-0 top-0 text-coffi-black cursor-pointer p-1 bg-white shadow-md flex items-center justify-center rounded-full z-40"
                 >
                   <MdClose size={21} />
                 </div>

@@ -13,6 +13,8 @@ import { Place } from "../../../../../models/places";
 import { PlaceWithCachedSession } from "../../../../../models/session";
 import { HandleMultimediaCard } from "../../../../multimedia/cards/helpers/handleMultimediaCard";
 import { useUserPermissions } from "../../../../../common/hooks/useUserPermissions";
+import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
 interface PlaceCardListItemProps {
   place: PlaceWithCachedSession;
@@ -24,13 +26,23 @@ export const PlaceCardListItemMobile: React.FC<PlaceCardListItemProps> = ({
   action,
 }) => {
   const userLocation = useAppSelector((state) => state.user.location);
-  const { isAuth } = useAppSelector((state) => state.user.auth);
   const { canViewPlaceRealTimeData } = useUserPermissions();
+  const { t } = useTranslation()
 
   function handleClick(ev: React.MouseEvent<HTMLIonRowElement, MouseEvent>) {
     ev.preventDefault();
     action();
   }
+
+  const isMindsetRealTime = useMemo(() => {
+    if (!place.sessionCachedData?.bestMindsetTo?.length) return false;
+
+    const mostMindset = place.sessionCachedData.bestMindsetTo.reduce(
+      (prev, curr) => (prev.actions.length > curr.actions.length ? prev : curr)
+    );
+    if (mostMindset.actions.length === 0) return false;
+    return true;
+  }, [place]);
 
   function getAmountOfPeopleState() {
     if (!place.sessionCachedData?.amountOfPeople?.length) return;
@@ -66,7 +78,7 @@ export const PlaceCardListItemMobile: React.FC<PlaceCardListItemProps> = ({
   }
 
   return (
-    <IonRow className="bg-white text-black flex items-center p-0 m-0 w-full md:bg-white border-b border-t border-solid border-gray-100">
+    <IonRow className="bg-white text-coffi-black flex items-center p-0 m-0 w-full md:bg-white border-b border-t border-solid border-gray-100">
       <IonItem
         className="relative w-full p-0 ion-no-padding flex flex-col"
         color="none"
@@ -74,7 +86,7 @@ export const PlaceCardListItemMobile: React.FC<PlaceCardListItemProps> = ({
         <IonRow className="relative w-full p-3">
           {/* Place information */}
           <IonRow
-            class="w-full mb-3 ion-no-padding text-black"
+            class="w-full mb-3 ion-no-padding text-coffi-black"
             onClick={handleClick}
           >
             <IonCol size="2">
@@ -84,36 +96,54 @@ export const PlaceCardListItemMobile: React.FC<PlaceCardListItemProps> = ({
               size="10"
               className="pl-3 flex flex-row justify-center items-start"
             >
-              <IonCol size="9">
+              <IonCol size="12">
                 <IonText>
                   <h1 className="font-bold">{place.name}</h1>
                 </IonText>
-                <IonText>
-                  {canViewPlaceRealTimeData() && getAmountOfPeopleState() && (
-                    <span className="flex flex-row flex-nowrap items-center justify-center font-sans font-regular text-[12px] capitalize mt-1 px-3 border border-black rounded-lg max-w-[90px]">
-                      {getAmountOfPeopleState()}{" "}
-                      {<MdPeople className="mx-1" size={12} />}
-                    </span>
-                  )}
-                </IonText>
+
+                {/* Real time data */}
+                {/* If user have at least the basic subscription plan */}
+                {canViewPlaceRealTimeData() && (
+                  <IonRow className="relative w-full flex flex-row flex-nowrap items-center justify-start my-1">
+                    {getAmountOfPeopleState() && (
+                      <span
+                        className="flex flex-row flex-nowrap items-center justify-center py-1 font-regular text-xs rounded-md mr-1 
+                          text-coffi-white capitalize px-3 bg-gradient-to-r from-coffi-blue-400 to-coffi-purple-400 drop-shadow-md"
+                      >
+                        {getAmountOfPeopleState()}{" "}
+                        {<MdPeople className="mx-1" size={12} />}
+                      </span>
+                    )}
+                    {getMindsetOrKnownForState() && (
+                      <article
+                        className={`flex flex-row itmes-center justify-centerpx-3 rounded-md p-1 px-3
+                        ${
+                          isMindsetRealTime
+                            ? "bg-gradient-to-r from-coffi-blue-400 to-coffi-purple-400 drop-shadow-md"
+                            : "bg-coffi-purple/10"
+                        }
+                          `}
+                      >
+                        <span
+                          className={`text-xs font-medium ${
+                            isMindsetRealTime
+                              ? "text-white"
+                              : "text-coffi-purple-400"
+                          }`}
+                        >
+                          {t(
+                            `filters.idealFor.${getMindsetOrKnownForState().toLowerCase()}`
+                          )}
+                        </span>
+                      </article>
+                    )}
+                  </IonRow>
+                )}
                 <IonText>
                   <span className="text-xs font-light">
                     {getDistanceToSpot(place)} km
                   </span>
                 </IonText>
-              </IonCol>
-              <IonCol size="3">
-                <IonRow class="flex flex-row flex-nowrap items-end justify-end">
-                  {canViewPlaceRealTimeData() && getMindsetOrKnownForState() && (
-                    <div
-                      className={`opacity-90 rounded-full flex items-center justify-center p-2 ${handleCardColor(
-                        getMindsetOrKnownForState()
-                      )}`}
-                    >
-                      {handleMindsetIcon(getMindsetOrKnownForState(), 15)}
-                    </div>
-                  )}
-                </IonRow>
               </IonCol>
             </IonCol>
           </IonRow>

@@ -74,7 +74,7 @@ export const ConfirmPlaceDiscoveredModal: React.FC<ConfirmPlaceDiscoveredProps> 
         className="
                 relative
                 flex flex-col
-                bg-white text-black
+                bg-white text-coffi-black
                 w-full max-w-sm md:max-w-2xl h-[720px] max-h-[720px] md:max-h-[600px] pb-12 md:pb-0
                 rounded-lg shadow-md
                 overflow-hidden

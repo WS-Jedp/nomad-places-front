@@ -407,7 +407,7 @@ export const AuthFormModal: React.FC<AuthFormModalProps> = ({
   }
 
   return (
-    <article className="bg-white relative rounded-lg shadow-xl text-black w-[90%] max-w-xl overflow-hidden min-h-min max-h-[510px] overflow-y-auto">
+    <article className="bg-white relative rounded-lg shadow-xl text-coffi-black w-[90%] max-w-xl overflow-hidden min-h-min max-h-[510px] overflow-y-auto">
       <section className="w-full sticky p-6 shadow-sm top-0 left-0  flex flex-row flex-nowrap items-center justify-between bg-white border-b border-solid border-gray-300 pb-3 z-50">
         <button
           className="flex items-center justify-center border border-white rounded-full"

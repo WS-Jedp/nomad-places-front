@@ -136,10 +136,18 @@ export const PlaceCommoditiesSelection: React.FC = () => {
 
   return (
     <IonRow>
+      <IonCol
+        size="12"
+        className="flex flex-col items-start justify-start px-3 my-3"
+      >
+        <h2 className="font-bold text-md text-coffi-black">
+          {t("filters.labels.checkWhatYouNeed")}
+        </h2>
+      </IonCol>
       {spotCommoditiesFilter
         .filter((c) => booleanCommodities.includes(c.commodity))
         .map((commodity) => (
-          <IonCol size="6" sizeMd="6" key={commodity.id}>
+          <IonCol size="12" sizeMd="4" key={commodity.id}>
             <SimpleCheckbox
               label={t(
                 `filters.commodities.${
@@ -150,15 +158,24 @@ export const PlaceCommoditiesSelection: React.FC = () => {
               )}
               callback={() => handleCallback(commodity.id)}
               isSelected={isComoditySelected(commodity.id)}
+              small
             />
           </IonCol>
         ))}
 
       <IonRow class="flex flex-row w-full">
+        <IonCol
+          size="12"
+          className="flex flex-col items-start justify-start px-3 my-3"
+        >
+          <h2 className="font-bold text-md text-coffi-black">
+            {t("filters.labels.selectWhatYouNeed")}
+          </h2>
+        </IonCol>
         {spotCommoditiesFilter
           .filter((c) => commoditiesSelectedOptions.includes(c.commodity))
           .map((commodity) => (
-            <IonCol size="6" sizeMd="6" key={commodity.id}>
+            <IonCol size="6" sizeMd="6" key={commodity.id} className="mb-2">
               <div className="px-3">
                 <OptionsPicker
                   key={commodity.id}
@@ -177,6 +194,14 @@ export const PlaceCommoditiesSelection: React.FC = () => {
           ))}
       </IonRow>
 
+      <IonCol
+        size="12"
+        className="flex flex-col items-start justify-start px-3 my-3"
+      >
+        <h2 className="font-bold text-md text-coffi-black">
+          {t("filters.labels.selectAllWhatYouNeed")}
+        </h2>
+      </IonCol>
       {spotCommoditiesFilter
         .filter((c) => multipleOptionsCommodities.includes(c.commodity))
         .map((c) => (

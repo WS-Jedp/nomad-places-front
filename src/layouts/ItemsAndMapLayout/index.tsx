@@ -111,7 +111,7 @@ export const ItemsAndMapLayout: React.FC<{
                   relative
                   flex flex-col
                   w-full min-w-full md:w-7/12 md:min-w-min
-                  bg-white text-black
+                  bg-white text-coffi-black
                   shadow-2xl
                   z-30
                   ion-no-padding

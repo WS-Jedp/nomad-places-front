@@ -20,7 +20,7 @@ export const SpotApprovedSuccessfulModal: React.FC<
                                     bg-white 
                                     rounded-lg
                                     p-6 shadow-xl 
-                                    text-black 
+                                    text-coffi-black 
                                 "
       >
         <h2 className="text-2xl font-bold">

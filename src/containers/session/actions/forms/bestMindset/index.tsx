@@ -68,7 +68,7 @@ export const BestMindsetForm: React.FC<BestMindsetFormProps> = ({ onSave }) => {
                                 relative
                                 flex flex-col items-center justify-center 
                                 w-full
-                                text-center text-black
+                                text-center text-coffi-black
                                 h-32 px-6
                         `}
                             onClick={() => handleSelectOption(option.name)}

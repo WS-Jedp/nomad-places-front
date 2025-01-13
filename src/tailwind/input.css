@@ -1,3 +1,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    html {
+        @apply font-sf text-coffi-black;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        @apply font-sf font-bold;
+    }
+
+    p {
+        @apply font-sf;
+    }
+}
+
+
+@layer utilities {
+    .coffi-gradient-blue-to-purple {
+        background: linear-gradient(90deg, #6E91FF 9%, #533FFF 99%);
+    }
+}

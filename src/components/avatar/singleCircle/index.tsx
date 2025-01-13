@@ -20,7 +20,7 @@ export const AvatarSingleCircle: React.FC<AvatarSingleCircle> = ({
         <img
           src={url}
           alt="Discovered by image"
-          className="w-full h-full object-contain"
+          className="w-full h-full object-cover"
         />
         ) : (
           <MdImageNotSupported color="white" size={15} />    

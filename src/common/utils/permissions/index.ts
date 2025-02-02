@@ -23,26 +23,28 @@ export const sessionPermissions = {
 };
 
 const basicUsage = [placePermissions.list_places, placePermissions.view_place];
+
 const explorerPlanPermission = [
   placePermissions.list_places,
   placePermissions.view_place,
   filterPermissions.basic_filters,
+  placePermissions.view_place_real_time_data,
+  sessionPermissions.view_session,
+  sessionPermissions.auth_session,
+  sessionPermissions.update_session,
+  sessionPermissions.view_session_recent_activity,
 ];
+
 const nomadPlanPermission = [
   ...explorerPlanPermission,
-  placePermissions.view_place_real_time_data,
   placePermissions.view_discovered_places,
   placePermissions.discover_place,
   placePermissions.approve_discovered_place,
   placePermissions.reject_discovered_place,
-  ...Object.keys(filterPermissions),
-  sessionPermissions.view_session,
-  sessionPermissions.auth_session,
-  sessionPermissions.update_session,
+  ...Object.keys(filterPermissions), // All filters
 ];
 const wanderlustPlanPermission = [
   ...nomadPlanPermission,
-  sessionPermissions.view_session_recent_activity,
 ];
 
 export const PermissionsMap = {

@@ -254,6 +254,13 @@
         "vibe": "Divertirse",
         "romantic": "Romantico"
     },
+    "noiseLevel": {
+        "very_quiet": "Muy Silencioso",
+        "quite": "Silencioso",
+        "moderate": "Moderado",
+        "loud": "Ruidoso",
+        "very_loud": "Muy Ruidoso"
+    },
     "idealFor": {
         "work": "Ideal para trabajar",
         "study": "Ideal para estudiar",

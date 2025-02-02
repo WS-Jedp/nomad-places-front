@@ -327,7 +327,6 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
             ) : (
               <></>
             )}
-            <div></div>
             <IonRow className="flex flex-col justify-start md:justify-center">
               <div className="flex flex-row flex-nowrap items-center">
                 <h1 className="font-bold text-lg md:text-xl mr-2">

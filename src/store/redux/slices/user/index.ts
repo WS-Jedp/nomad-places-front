@@ -32,7 +32,7 @@ const initialUserState: UserState = {
     latitude: undefined,
     longitude: undefined,
   },
-  zoomInMap: 14,
+  zoomInMap: 15,
   auth: {
     isAuth: false,
     token: null,
@@ -51,6 +51,7 @@ export const getUserGeoLocation = createAsyncThunk<GeoLocation | null, void>(
       latitude: coords.latitude,
       longitude: coords.longitude,
     };
+    
   }
 );
 export const getUserData = createAsyncThunk<
@@ -288,7 +289,7 @@ export const userSlice = createSlice({
     setPointsToUser(state, action: PayloadAction<{ points: number }>) {
       if (!state.userData) return;
       state.userData.gamification.points = action.payload.points;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getUserGeoLocation.fulfilled, (state, action) => {

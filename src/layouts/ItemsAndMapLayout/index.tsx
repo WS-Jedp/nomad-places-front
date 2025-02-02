@@ -11,12 +11,9 @@ import {
 import { Route, useHistory, useLocation } from "react-router-dom";
 
 import { RowPlacesFilterOptions } from "../../components/filters/rowPlacesFilterOptions";
-import { LocationBasicInformation } from "../../components/Location/LocationBasicInformation";
 import { useIsMobile } from "../../common/hooks/useIsMobile";
 import { ListSearchPlaces } from "../../containers/listSearchPlaces";
 import { PlaceQuickSession } from "../../containers/placeQuickSession";
-import { useAppSelector } from "../../common/hooks/useTypedSelectors";
-import { useTranslation } from "react-i18next";
 import { useUserPermissions } from "../../common/hooks/useUserPermissions";
 import { RowPlacesTypeFilterOptions } from "../../components/filters/rowPlaceTypeFilterOptions";
 import { PlaceSessionDetail } from "../../containers/placeSessionDetail";
@@ -26,9 +23,12 @@ export const ItemsAndMapLayout: React.FC<{
   map: JSX.Element;
 }> = ({ children, map }) => {
   const location = useLocation();
-  const history = useHistory()
-  const onSession = useMemo(() => location.pathname.includes('session'), [location])
-
+  const history = useHistory();
+  const onSession = useMemo(
+    () => location.pathname.includes("session"),
+    [location]
+  );
+  
   const modal = useRef<HTMLIonModalElement>(null);
 
   const { canUseRealTimeFilters } = useUserPermissions();
@@ -46,6 +46,7 @@ export const ItemsAndMapLayout: React.FC<{
     if (isMobile) setShouldModalBeOpen(isMobile);
   }, [isMobile]);
 
+
   return (
     <IonPage
       className="
@@ -59,11 +60,11 @@ export const ItemsAndMapLayout: React.FC<{
       <IonModal
         ref={modal}
         isOpen={isMobile && shouldModalBeOpen}
-        initialBreakpoint={0.51}
-        breakpoints={[0.25, 0.5, .93]}
+        initialBreakpoint={0.3}
+        breakpoints={[0.3, 0.5, 0.93]}
         backdropDismiss={false}
         backdropBreakpoint={0.5}
-        color="light"
+        color="transparent"
       >
         <IonContent className="no-padding bg-white">
           <IonRouterOutlet>
@@ -75,7 +76,7 @@ export const ItemsAndMapLayout: React.FC<{
 
             <Route path="/home/place/:id/session">
               <IonRow class="h-full w-full">
-                <PlaceSessionDetail withBackButtonAction/>
+                <PlaceSessionDetail withBackButtonAction />
               </IonRow>
             </Route>
 
@@ -93,10 +94,10 @@ export const ItemsAndMapLayout: React.FC<{
                     relative flex flex-col items-start justify-start
                     overflow-y-auto bg-white h-[87%]
                     "
-                    >
+                  >
                     {children}
                   </IonList>
-                  </section>
+                </section>
               </>
             </Route>
           </IonRouterOutlet>
@@ -119,10 +120,13 @@ export const ItemsAndMapLayout: React.FC<{
         >
           <IonRouterOutlet>
             <Route path="/home/detail/:id">
-              <PlaceQuickSession changePageCallback={goToPlaceSession} onSessionPath={onSession} />
+              <PlaceQuickSession
+                changePageCallback={goToPlaceSession}
+                onSessionPath={onSession}
+              />
             </Route>
             <Route path="/home/place/:id/session">
-              <PlaceQuickSession onSessionPath={onSession}/>
+              <PlaceQuickSession onSessionPath={onSession} />
             </Route>
             <Route exact path="/home">
               <ListSearchPlaces>{children}</ListSearchPlaces>
@@ -143,7 +147,11 @@ export const ItemsAndMapLayout: React.FC<{
             ion-no-padding ion-no-margin
         "
       >
-        {!isMobile && onSession ? <PlaceSessionDetail withCloseSessionButton /> : map}
+        {!isMobile && onSession ? (
+          <PlaceSessionDetail withCloseSessionButton />
+        ) : (
+          map
+        )}
       </IonCol>
     </IonPage>
   );

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Marker, Popup, useMap } from "react-leaflet";
+import { Marker, Popup, useMap, useMapEvents } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import {
   useAppDispatch,
@@ -9,6 +9,7 @@ import { useHistory } from "react-router";
 import { setZoomMap } from "../../../../store/redux/slices/user";
 import {
   findPlace,
+  setCurrentMapCenter,
   setPlaceOnFocus,
 } from "../../../../store/redux/slices/places";
 
@@ -19,6 +20,7 @@ import { createCustomPlaceMarker } from "./placeMarker";
 import { createCustomClusterIcon } from "./clusterPlaceMarker";
 import { createUserMarker } from "./userLocationMarker";
 import L from 'leaflet';
+import { computeDistanceToSpot } from "../../../../common/utils/geoLocation";
 
 const CustomProfileMarkerContent: React.FC<{
   place: PlaceWithCachedSession;
@@ -43,6 +45,19 @@ export const LeafletMapMarkers: React.FC = () => {
 
   const [zoomLevel, setZoomLevel] = useState(map.getZoom());
 
+  const handleCurrentCenterMap = () => {
+    const mapCenter = map.getCenter()
+    dispatch(setCurrentMapCenter({ lat: mapCenter.lat, lng: mapCenter.lng }));
+  }
+
+  const UpdateMapCenter = () => {
+    const map = useMapEvents({
+      moveend: handleCurrentCenterMap
+    })
+    return null
+  }
+
+
   //   Handling zoom of the map
   useEffect(() => {
     const handleZoom = () => {
@@ -51,6 +66,7 @@ export const LeafletMapMarkers: React.FC = () => {
 
     // Listen for zoom events
     map.on("zoomend", handleZoom);
+
 
     // Cleanup the listener on unmount
     return () => {
@@ -96,6 +112,7 @@ export const LeafletMapMarkers: React.FC = () => {
       lng: focusedPlace.location.longitude,
     });
   }, [placeOnFocus]);
+
 
   async function handleClickInPlace(id: string) {
     await dispatch(findPlace({ placeID: id }));
@@ -150,6 +167,8 @@ export const LeafletMapMarkers: React.FC = () => {
       >
         {renderFilteredPlaces}
       </MarkerClusterGroup>
+
+      <UpdateMapCenter />
     </>
   );
 };

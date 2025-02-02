@@ -29,6 +29,14 @@ export const UpdateActionType: React.FC<{ payload: PlaceSessionActionDataPayload
                     </p>
                 </div>
             )
+        case UPDATE_ACTIONS.NOISE_LEVEL:
+            return (
+                <div>
+                    <p className="font-light text-sm">
+                        {t('spots.messages.session.updateNoiseLevel')} <span> { payloadValue && t(`filters.noiseLevel.${String(payloadValue).toLowerCase()}`)  } </span>
+                    </p>
+                </div>
+            )
        
         case UPDATE_ACTIONS.PLACE_STATUS:
             if(!payloadValue) return null

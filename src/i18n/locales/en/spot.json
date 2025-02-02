@@ -18,6 +18,7 @@
         "peopleUpdates": "Community Updates",
         "usersInSession": "Who’s Here Right Now?",
         "amountOfPeople": "How Busy Is It?",
+        "updateNoiseLevel": "Which is the noise level?",
         "status": "Status",
         "knownFor": "Known for",
         "multimedia": "Spot multimedia",
@@ -36,18 +37,21 @@
         "usersInSession": "users in session",
         "noCommunityActions": "There are no updates in the moment, be the first to share",
         "session": {
+            "quickUpdate": "Quick update",
             "lastUpdateAt": "Last update at",
             "leaveSessionConfirmation": "Are you sure you want to leave this session?",
             "userJoin": "joined the session",
             "userLeave": "left the session",
             "updateAmountOfPeople": "There is between {{firstAmount}} to {{lastAmount}} people in the spot",
             "updatePerfectTo": "This spot is perfect to",
+            "updateNoiseLevel": "The noise level is",
             "updateStatus": "The spot it's",
             "recentActivity": "Has share an image of the spot",
             "confirmation": {
                 "amountOfPeople": "Is this the amount of people in the spot?",
                 "perfectTo": "Is this the environfment to of the spot?",
-                "status": "Is this the current status of the spot?"
+                "status": "Is this the current status of the spot?",
+                "noiseLevel": "Is this the current noise level of the spot?"
             },
             "unallowed": {
                 "locationRange": "You must be in the spot to join or update the session",

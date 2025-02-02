@@ -4,13 +4,14 @@ import './styles.css'
 
 type AppLayoutProps = {
     children: React.ReactNode
+    onSearchInThisArea?: () => void
 }
 
-export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
+export const AppLayout: React.FC<AppLayoutProps> = ({ children, onSearchInThisArea }) => {
 
     return (
         <>
-           <GeneralHeader />
+           <GeneralHeader onSearchInThisArea={onSearchInThisArea} />
 
             <IonContent className='bg-white'>
                 {

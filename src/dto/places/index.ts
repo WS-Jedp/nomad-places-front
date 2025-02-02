@@ -24,6 +24,7 @@ export type DiscoverSpotDTO = {
     name: string
     description?: string
     knownFor?: MINDSETS
+    capacity?: number
     languages: LANGUAGE_ENUM[]
     ambienceTags: AMBIENCE_TAG_ENUM[];
     themeTags: THEME_TAG_ENUM[];

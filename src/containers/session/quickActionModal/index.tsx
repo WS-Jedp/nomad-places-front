@@ -8,6 +8,8 @@ import { MINDSETS } from "../../../models/mindsets"
 import { PLACE_STATUS } from "../../../models/placeStatus"
 import { PlaceSessionActionDataPayload, PLACE_SESSION_ACTIONS_ENUM, UPDATE_ACTIONS } from "../../../models/session"
 import { PlaceSessionAction, PLACE_AMOUNT_OF_PEOPLE_ACTION_OPTION, PLACE_AMOUNT_OF_PEOPLE_OPTIONS } from "../../../models/session/actions"
+import { CircleNoiseLevelActions } from "../../../components/noiseLevel/cards/circleNoiseLevelActions"
+import { PLACE_NOISE_LEVEL } from "../../../models/placeNoiseLevel"
 
 interface QuickActionModalProps {
     onCancel: () => void
@@ -41,6 +43,8 @@ export const QuickActionModal:React.FC<QuickActionModalProps> = ({ onCancel, onU
                 return <p className="text-sm font-medium my-2">{t('spots.messages.session.confirmation.amountOfPeople')}</p>
             case UPDATE_ACTIONS.PLACE_MINDSET:
                 return <p className="text-sm font-medium my-2">{t('spots.messages.session.confirmation.perfectTo')}</p>
+            case UPDATE_ACTIONS.NOISE_LEVEL:
+                return <p className="text-sm font-medium my-2">{t('spots.messages.session.confirmation.noiseLevel')}</p>
             case UPDATE_ACTIONS.PLACE_STATUS:
                 return <p className="text-sm font-medium my-2">{t('spots.messages.session.confirmation.status')}</p>
         }
@@ -52,6 +56,8 @@ export const QuickActionModal:React.FC<QuickActionModalProps> = ({ onCancel, onU
                 return <AmountOfPeopleCircleCard amount={value} actionsAmount={1} withBadge={false} />
             case UPDATE_ACTIONS.PLACE_MINDSET:
                     return <CircleMindsetActions actionsAmount={1} mindset={value as MINDSETS} withBadge={false} />
+            case UPDATE_ACTIONS.NOISE_LEVEL:
+                    return <CircleNoiseLevelActions actionsAmount={1} noiseLevel={value as PLACE_NOISE_LEVEL} withBadge={false} />
             case UPDATE_ACTIONS.PLACE_STATUS:
                 return <p>{t('spots.messages.session.updateStatus')} {  t(`spots.session.${value.toLowerCase()}`)  } </p>
         }
@@ -62,6 +68,8 @@ export const QuickActionModal:React.FC<QuickActionModalProps> = ({ onCancel, onU
             case UPDATE_ACTIONS.PLACE_AMOUNT_OF_PEOPLE:
                 return PLACE_AMOUNT_OF_PEOPLE_OPTIONS.find(option => option.amount === value)
             case UPDATE_ACTIONS.PLACE_MINDSET:
+                return value
+            case UPDATE_ACTIONS.NOISE_LEVEL:
                 return value
             case UPDATE_ACTIONS.PLACE_STATUS:
                 return value
@@ -100,7 +108,7 @@ export const QuickActionModal:React.FC<QuickActionModalProps> = ({ onCancel, onU
         ">
 
             <h2 className="font-bold text-coffi-black text-2xl m-3">
-                Quick Update
+                {t("spots.messages.session.quickUpdate")}
             </h2>
 
             <div className=" my-3 w-100 flex flex-col items-center justify-center text-center">

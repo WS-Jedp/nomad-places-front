@@ -62,6 +62,8 @@ import { useHistory } from "react-router";
 import { returnUpForward } from "ionicons/icons";
 import { findPlace } from "../../store/redux/slices/places";
 import { LoaderSpinner } from "../../components/loaders/spinner";
+import { NoiseLevelActionsAmount } from "../../components/noiseLevel/sessionContainer";
+import { PLACE_NOISE_LEVEL } from "../../models/placeNoiseLevel";
 
 interface PlaceSessionDetailProps {
   withBackButtonAction?: boolean;
@@ -368,6 +370,17 @@ export const PlaceSessionDetail: React.FC<PlaceSessionDetailProps> = ({
     setQuickActionValue(value);
   }
 
+  function handleNoiseLevelQuickAction(
+    actionType: UPDATE_ACTIONS,
+    value: PLACE_NOISE_LEVEL
+  ) {
+    validateUserInSession();
+
+    setQuickActionModal(true);
+    setQuickActionType(actionType);
+    setQuickActionValue(value);
+  }
+
   function handleAmountOfPeopleQuickAction(
     actionType: UPDATE_ACTIONS,
     value: string
@@ -564,6 +577,19 @@ export const PlaceSessionDetail: React.FC<PlaceSessionDetailProps> = ({
               </h2>
               <div className="my-1">
                 <AmountOfPeopleActionsAmount
+                  callback={handleAmountOfPeopleQuickAction}
+                />
+              </div>
+            </IonCol>
+          </IonRow>
+
+          <IonRow className="relative w-full flex flex-row mb-3">
+            <IonCol size="12">
+              <h2 className="font-bold text-sm">
+                {t("spots.session.updateNoiseLevel")}
+              </h2>
+              <div className="my-1">
+                <NoiseLevelActionsAmount
                   callback={handleAmountOfPeopleQuickAction}
                 />
               </div>

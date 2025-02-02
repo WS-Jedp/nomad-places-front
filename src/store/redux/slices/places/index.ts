@@ -21,13 +21,15 @@ export const getNearestPlaces = createAsyncThunk<
   }
 >("places/getNearestPlaces", async (params, thunkAPI) => {
   try {
-    const userCoords = thunkAPI.getState().user.location;
-    if (!userCoords.latitude || !userCoords.longitude) return null;
+    const mapCenter = thunkAPI.getState().places.currentMapCenter;
+    const { token } = thunkAPI.getState().user.auth;
+    if (!mapCenter?.lat || !mapCenter.lng) return null;
     const nearPlacesWithCachedSessionDTO =
       await placesServices.getNearestPlaces({
-        lng: userCoords.longitude,
-        lte: userCoords.latitude,
+        lng: mapCenter.lng,
+        lte: mapCenter.lat,
         maxDistance: params?.maxDistance ? params.maxDistance : 10000,
+        token,
       });
 
     const placesWithSessionData =
@@ -102,6 +104,8 @@ export interface PlacesState {
   nearPlaces: PlaceWithCachedSession[];
   filteredPlaces: PlaceWithCachedSession[];
   placeOnFocus?: string;
+  lastMapCenterSearch?: { lat: number; lng: number };
+  currentMapCenter?: { lat: number; lng: number };
 }
 
 const initialPlaceState: PlacesState = {
@@ -110,6 +114,7 @@ const initialPlaceState: PlacesState = {
   nearPlaces: [],
   filteredPlaces: [],
   placeOnFocus: undefined,
+  lastMapCenterSearch: undefined,
 };
 
 export const placesSlice = createSlice({
@@ -174,6 +179,7 @@ export const placesSlice = createSlice({
         sessionCachedData: {
           amountOfPeople: [],
           bestMindsetTo: [],
+          noiseLevel: [],
           lastActions: [],
           lastRecentlyActivities: [],
           lastUpdate: '',
@@ -184,6 +190,12 @@ export const placesSlice = createSlice({
 
       state.nearPlaces.push(place);
       state.filteredPlaces.push(place)
+    },
+    setLastMapCenterSearch: (state, action: PayloadAction<{ lat: number; lng: number }>) => {
+      state.lastMapCenterSearch = action.payload;
+    },
+    setCurrentMapCenter: (state, action: PayloadAction<{ lat: number; lng: number }>) => {
+      state.currentMapCenter = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -221,7 +233,9 @@ export const {
   stopDiscoveringPlace,
   approvedCurrentPlace,
   updateCurrentPlace,
-  addDiscoverSpotIntoNearPlaces
+  addDiscoverSpotIntoNearPlaces,
+  setLastMapCenterSearch,
+  setCurrentMapCenter
 } = placesSlice.actions;
 
 export default placesSlice.reducer;

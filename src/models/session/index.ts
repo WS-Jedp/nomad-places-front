@@ -1,6 +1,7 @@
 import { UserGamification } from "../gamification";
 import { MINDSETS } from "../mindsets";
 import { MULTIMEDIA_TYPE, PlaceMultimedia, RecentActivity } from "../multimedia";
+import { PLACE_NOISE_LEVEL } from "../placeNoiseLevel";
 import { Place } from "../places";
 import { PlaceState, PLACE_STATUS } from "../placeStatus";
 import { User } from "../user";
@@ -49,6 +50,10 @@ export type PlaceSessionCachedDataDTO = {
   sessionID?: string;
   placeID: string;
   lastUpdate: string;
+  noiseLevel: {
+    noiseLevel: PLACE_NOISE_LEVEL;
+    actions: PlaceSessionActions[];
+  }[];
   amountOfPeople: {
     amount: string;
     actions: PlaceSessionActions[];
@@ -102,11 +107,13 @@ export enum UPDATE_ACTIONS {
   PLACE_STATUS = "PLACE_STATUS",
   PLACE_RECENT_ACTIVITY = "PLACE_RECENT_ACTIVITY",
   RECENT_ACTIVITY = "RECENT_ACTIVITY",
+  NOISE_LEVEL = "NOISE_LEVEL",
 }
 
 export interface UpdateActionData {
   [UPDATE_ACTIONS.PLACE_AMOUNT_OF_PEOPLE]: [number, number];
   [UPDATE_ACTIONS.PLACE_MINDSET]: MINDSETS;
+  [UPDATE_ACTIONS.NOISE_LEVEL]: PLACE_NOISE_LEVEL;
   [UPDATE_ACTIONS.PLACE_STATUS]: any;
   [UPDATE_ACTIONS.PLACE_RECENT_ACTIVITY]: null;
 }
@@ -121,7 +128,7 @@ export interface PlaceSessionActionDataPayload {
   [PLACE_SESSION_ACTIONS_ENUM.UPDATE]: {
     type: UPDATE_ACTIONS;
     data: {
-      data: { amount: string; range: [number, number] } | MINDSETS | PlaceState;
+      data: { amount: string; range: [number, number] } | MINDSETS | PlaceState | PLACE_NOISE_LEVEL;
     };
   };
   [PLACE_SESSION_ACTIONS_ENUM.LEAVE]: {

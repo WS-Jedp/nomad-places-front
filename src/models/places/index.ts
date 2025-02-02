@@ -9,6 +9,7 @@ export interface Place {
   name: string;
   knownFor: MINDSETS;
   description?: string | null;
+  capacity?: number | null;
   languages: LANGUAGE_ENUM[];
   ambianceTags: AMBIENCE_TAG_ENUM[];
   themeTags: THEME_TAG_ENUM[];

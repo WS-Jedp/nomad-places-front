@@ -47,7 +47,26 @@ export const SimpleButtonOutline: React.FC<SimpleButtonProps> = ({
       className={`
           ${
             !full ? "max-w-[300px" : "w-full"
-          } bg-white-500 border-[1px] border-solid border-coffi-purple-300 text-coffi-purple rounded-lg py-[6px] px-6 mx-1 hover:bg-coffi-purple-50 transition-all duration-500 ease-in-out
+          } border-[1px] border-solid border-coffi-purple-300 text-coffi-purple rounded-lg py-[6px] px-6 mx-1 hover:bg-coffi-purple-50 transition-all duration-500 ease-in-out
+        `}
+      onClick={action}
+    >
+      <span className="font-medium text-md">{text}</span>
+    </button>
+  );
+};
+
+export const SimpleDarkButton: React.FC<SimpleButtonProps> = ({
+  text,
+  action,
+  full = false,
+}) => {
+  return (
+    <button
+      className={`
+          ${
+            !full ? "max-w-[300px" : "w-full"
+          } bg-coffi-black text-coffi-white rounded-lg shadow-md shadow-coffi-purple drop-shadow-md py-[6px] px-6 mx-1 hover:bg-coffi-black/90 transition-all duration-500 ease-in-out
         `}
       onClick={action}
     >

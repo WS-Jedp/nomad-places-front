@@ -27,7 +27,7 @@ export const PlaceCardListItemMobile: React.FC<PlaceCardListItemProps> = ({
 }) => {
   const userLocation = useAppSelector((state) => state.user.location);
   const { canViewPlaceRealTimeData } = useUserPermissions();
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   function handleClick(ev: React.MouseEvent<HTMLIonRowElement, MouseEvent>) {
     ev.preventDefault();
@@ -108,7 +108,7 @@ export const PlaceCardListItemMobile: React.FC<PlaceCardListItemProps> = ({
                     {getAmountOfPeopleState() && (
                       <span
                         className="flex flex-row flex-nowrap items-center justify-center py-1 font-regular text-xs rounded-md mr-1 
-                          text-coffi-white capitalize px-3 bg-gradient-to-r from-coffi-blue-400 to-coffi-purple-400 drop-shadow-md"
+                      text-coffi-white capitalize px-3 bg-gradient-to-r from-coffi-blue-400 to-coffi-purple-400 drop-shadow-md"
                       >
                         {getAmountOfPeopleState()}{" "}
                         {<MdPeople className="mx-1" size={12} />}
@@ -117,18 +117,18 @@ export const PlaceCardListItemMobile: React.FC<PlaceCardListItemProps> = ({
                     {getMindsetOrKnownForState() && (
                       <article
                         className={`flex flex-row itmes-center justify-centerpx-3 rounded-md p-1 px-3
-                        ${
-                          isMindsetRealTime
-                            ? "bg-gradient-to-r from-coffi-blue-400 to-coffi-purple-400 drop-shadow-md"
-                            : "bg-coffi-purple/10"
-                        }
-                          `}
+                    ${
+                      isMindsetRealTime
+                        ? "bg-gradient-to-r from-coffi-blue-400 to-coffi-purple-400 drop-shadow-md"
+                        : "bg-white border-[1px] border-solid border-coffi-black"
+                    }
+                      `}
                       >
                         <span
-                          className={`text-xs font-medium ${
+                          className={`text-xs font-normal ${
                             isMindsetRealTime
                               ? "text-white"
-                              : "text-coffi-purple-400"
+                              : "text-coffi-black"
                           }`}
                         >
                           {t(

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { IonHeader } from "@ionic/react";
 import { FaUserAlt, FaLocationArrow } from "react-icons/fa";
 import { IoMdMenu } from "react-icons/io";
@@ -25,7 +25,7 @@ import {
   showAuthModal,
 } from "../../../store/redux/slices/user";
 import { TOKEN_KEY } from "../../../common/constants/localstorage";
-import { SimpleButton } from "../../buttons/simple";
+import { SimpleButton, SimpleDarkButton } from "../../buttons/simple";
 import { useTranslation } from "react-i18next";
 import { ResetPasswordModal } from "../../../containers/auth/resetPasswordModal";
 import { getUserFollowRequests } from "../../../store/redux/slices/social";
@@ -37,13 +37,21 @@ import {
 import { toast } from "react-toastify";
 import { useUserPermissions } from "../../../common/hooks/useUserPermissions";
 import { useIsMobile } from "../../../common/hooks/useIsMobile";
+import { computeDistanceToSpot } from "../../../common/utils/geoLocation";
+import { useComputeLastSearchDistance } from "../../../common/hooks/useComputeLastSearchDistance";
 
-export const GeneralHeader: React.FC = () => {
+interface GeneralHeaderProps {
+  onSearchInThisArea?: () => void
+}
+
+export const GeneralHeader: React.FC<GeneralHeaderProps> = ({ onSearchInThisArea }) => {
   const { t } = useTranslation();
   const [ isMobile ] = useIsMobile()
  
   const location = useLocation();
   const history = useHistory();
+
+  const [ ableToNewSearch ] = useComputeLastSearchDistance()
 
   const { canDiscoverPlaces } = useUserPermissions();
 
@@ -342,6 +350,17 @@ export const GeneralHeader: React.FC = () => {
           )}
         </span>
       </section>
+
+      {
+        onSearchInThisArea && isMobile && ableToNewSearch && (
+          <div className="absolute bottom-[-30px] mx-auto w-full flex items-center justify-center">
+            <SimpleDarkButton 
+              text={t('actions.general.searchInThisArea')}
+              action={onSearchInThisArea}
+            />
+          </div>
+        )
+      }
 
       {showFilters && (
         <BlurAppModal>

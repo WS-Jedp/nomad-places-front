@@ -1,9 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { ItemsAndMapLayout } from "../../layouts/ItemsAndMapLayout";
-import { GoogleMapWrapper } from "../../components/maps/googleMapWrapper";
 import { HandlePlaceCardListItem } from "../../components/places/cards/helpers/handleCardListItem";
 
 import {
@@ -11,6 +10,7 @@ import {
   getNearestPlaces,
   getAllPlaces,
   setFilteredPlaces,
+  setLastMapCenterSearch,
 } from "../../store/redux/slices/places";
 import { getUserGeoLocation } from "../../store/redux/slices/user";
 import {
@@ -27,6 +27,7 @@ import { UserLastSession } from "../../dto/session";
 import LeafletMap from "../../components/maps/leaflet/container";
 import { useUserPermissions } from "../../common/hooks/useUserPermissions";
 import { PLACE_CONFIRMATION_STATUS } from "../../models/places";
+import { GeoLocation } from "../../models/location";
 
 interface SearchPlacesProps {}
 
@@ -36,7 +37,7 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
   const history = useHistory();
   const dispatch = useAppDispatch();
   const places = useAppSelector((state) => state.places);
-  const userLocation = useAppSelector((state) => state.user.location);
+  const { location: userLocation } = useAppSelector((state) => state.user);
   const authUser = useAppSelector((state) => state.user.auth);
   const userSession = useAppSelector((state) => state.userSession);
   const { canViewDiscoveredPlaces } = useUserPermissions();
@@ -56,7 +57,6 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
     spotTypesFilter,
     selectedSpotMindsetFilter,
   } = useAppSelector((state) => state.filters);
-  const allFilters = useAppSelector((state) => state.filters);
   const [isSearchingPlaces, setIsSearchingPlaces] = useState(false);
 
   async function selectPlace(placeID: string) {
@@ -64,16 +64,20 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
     history.push(`/home/detail/${placeID}`);
   }
 
-  async function getUserLocation() {
-    await dispatch(getUserGeoLocation());
-  }
 
   async function getNearPlaces() {
     try {
       setIsSearchingPlaces(true);
-      if (userLocation.latitude && userLocation.longitude) {
-        // await dispatch(getNearestPlaces());
-        await dispatch(getAllPlaces());
+      const { payload: { latitude, longitude }} = await dispatch(getUserGeoLocation()) as PayloadAction<GeoLocation>
+
+      if (latitude && longitude) {
+        await dispatch(getNearestPlaces());
+        dispatch(
+          setLastMapCenterSearch({
+            lat: latitude,
+            lng: longitude,
+          })
+        );
       } else {
         await dispatch(getAllPlaces());
       }
@@ -82,6 +86,21 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
     } finally {
       setIsSearchingPlaces(false);
     }
+  }
+
+  async function getAreaNearPlaces() {
+    try {
+      setIsSearchingPlaces(true);
+      if (places.currentMapCenter && places.currentMapCenter.lat && places.currentMapCenter.lng) {
+        await dispatch(getNearestPlaces());
+        await dispatch(setLastMapCenterSearch({ lat: places.currentMapCenter.lat, lng: places.currentMapCenter.lng }))
+      }
+    } catch (err) {
+      toast.error(String(err));
+    } finally {
+      setIsSearchingPlaces(false);
+    }
+
   }
 
   async function getFilteredPlaces() {
@@ -357,10 +376,6 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
   }, [authUser.token]);
 
   useEffect(() => {
-    getUserLocation();
-  }, []);
-
-  useEffect(() => {
     getFilteredPlaces();
   }, [
     authUser.token,
@@ -382,13 +397,11 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
   ]);
 
   useEffect(() => {
-    if (places && places.nearPlaces && places.nearPlaces.length > 0) return;
-
-    if (userLocation.latitude && userLocation.longitude) getNearPlaces();
-  }, [userLocation]);
+    getNearPlaces();
+  }, [authUser.token, authUser.isAuth, authUser]);
 
   return (
-    <AppLayout>
+    <AppLayout onSearchInThisArea={getAreaNearPlaces}> 
       <IonRow
         className="
           relative
@@ -397,7 +410,7 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
           p-0 bg-white
       "
       >
-        <ItemsAndMapLayout map={<LeafletMap />}>
+        <ItemsAndMapLayout map={<LeafletMap onSearchInArea={getAreaNearPlaces} />}>
           <>
             {isSearchingPlaces ? (
               <div className="fixed h-full w-full flex items-center justify-center p-5">

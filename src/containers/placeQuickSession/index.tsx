@@ -46,6 +46,7 @@ import { HandleAmenitiesRender } from "../../components/amenities/handleAmenitie
 import { getLocalISODate } from "../../common/utils/dates";
 import { format, parseISO } from "date-fns";
 import { IdealForTag } from "../../components/tags/idealFor";
+import { useIsMobile } from "../../common/hooks/useIsMobile";
 
 interface PlaceQuickSessionProps {
   changePageCallback?: Function;
@@ -59,6 +60,7 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
   onSessionPath,
 }) => {
   const { t } = useTranslation();
+  const [isMobile] = useIsMobile();
 
   const {
     canApproveDiscoveredPlaces,
@@ -314,32 +316,29 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
 
         {/* Place information */}
         <IonRow class="w-full px-5 py-3 ion-no-padding border-b border-gray-300 shadow-sm">
-          <IonCol size="8">
+          <IonCol size="12" sizeMd="8">
             {/* Users in session */}
-            {canAuthSession() &&
-            canViewPlaceRealTimeData() &&
-            currentPlace?.sessionCachedData?.usersInSession.length ? (
-              <div className="w-full flex items-start justify-start mb-1">
-                <AvatarGroup
-                  users={currentPlace?.sessionCachedData?.usersInSession || []}
-                />
+            {canAuthSession() && canViewPlaceRealTimeData() && (
+              <div className="w-full flex flex-col items-start justify-start">
+                <HandlePlaceStatus status={isOpenNow()} />
               </div>
-            ) : (
-              <></>
             )}
             <IonRow className="flex flex-col justify-start md:justify-center">
               <div className="flex flex-row flex-nowrap items-center">
-                <h1 className="font-bold text-lg md:text-xl mr-2">
+                <h1
+                  className={`font-extrabold mr-1 ${
+                    isMobile ? "text-2xl" : "text-4xl"
+                  }`}
+                >
                   {currentPlace?.name}
                 </h1>
-                <HandlePlaceStatus status={isOpenNow()} />
               </div>
-              <IonText>
-                <span className="text-xs font-light">
+              <IonText className="mt-[-3px]">
+                <span className="text-sm font-light">
                   {handlePlaceLocation()}{" "}
                 </span>
                 {/* Distance from current location */}
-                <span className="text-xs font-light">{distanceToSpot} km</span>
+                <span className="text-sm font-light">{distanceToSpot} km</span>
               </IonText>
             </IonRow>
           </IonCol>
@@ -350,7 +349,7 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
                 <IonRow
                   className="
                     w-full
-                    flex flex-row flex-nowrap
+                    flex flex-col flex-nowrap
                     items-start justify-start
                     md:items-center md:justify-center
                     mt-2 md:mt-0
@@ -361,6 +360,18 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
                     action={handleInformationButton}
                     full
                   />
+                  {currentPlace?.sessionCachedData?.usersInSession &&
+                    currentPlace?.sessionCachedData.usersInSession.length >
+                      0 && (
+                      <div className="w-full mt-2 flex items-end justify-end">
+                        <AvatarGroup
+                          users={
+                            currentPlace?.sessionCachedData?.usersInSession ||
+                            []
+                          }
+                        />
+                      </div>
+                    )}
                 </IonRow>
               )}
           </IonCol>
@@ -370,6 +381,16 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
         {/* Tags of the place of the session */}
         {canAuthSession() && canViewPlaceRealTimeData() && (
           <IonRow className="w-full flex flex-row items-start justify-start px-5 py-3 border-b border-gray-300">
+            {currentPlace?.capacity && (
+              <div className="mr-1 mb-2" key={`${currentPlace?.name}-capacity`}>
+                <SimpleTagOutline
+                  text={`${t("filters.labels.capacityFor", {
+                    capacity: currentPlace.capacity,
+                  })}`}
+                  active
+                />
+              </div>
+            )}
             {getMindsetOrKnownForState() && (
               <div className="mr-1 mb-2">
                 {isMindsetRealTime ? (
@@ -388,6 +409,7 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
                 )}
               </div>
             )}
+
             {currentPlace?.ambianceTags?.map((ambiance) => (
               <div className="mr-1 mb-2" key={ambiance}>
                 <SimpleTagOutline
@@ -416,7 +438,7 @@ export const PlaceQuickSession: React.FC<PlaceQuickSessionProps> = ({
             </IonText>
             <article className="mb-6">
               <IonRow className="w-full flex flex-row flex-nowrap items-center pt-1">
-                <IonText className="text-md font-normal">
+                <IonText className="text-md">
                   {currentPlace?.description}
                 </IonText>
               </IonRow>

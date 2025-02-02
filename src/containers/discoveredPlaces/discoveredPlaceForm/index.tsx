@@ -68,6 +68,7 @@ export const DiscoveredPlaceForm: React.FC<{
 
   const [spotName, setSpotName] = useState<string>("");
   const [spotDescription, setSpotDescription] = useState<string>("");
+  const [spotCapacity, setSpotCapacity] = useState<number>();
 
   const [approximateDailyCost, setApproximateDailyCost] = useState<PLACE_APPROXIMATE_DAILY_CONST_ENUM>()
   const [ambianceTags, setAmbianceTags] = useState<AMBIENCE_TAG_ENUM[]>([])
@@ -397,6 +398,7 @@ export const DiscoveredPlaceForm: React.FC<{
       name: spotName,
       description: spotDescription,
       type: [spotTypeID],
+      capacity: Number(spotCapacity),
       knownFor: spotKnownFor,
       languages: languages,
       approximateDailyCost: approximateDailyCost ? approximateDailyCost : null,
@@ -518,6 +520,8 @@ export const DiscoveredPlaceForm: React.FC<{
           onSpotDescriptionChange={(val) => setSpotDescription(val)}
           onOpeningTimeChange={(val) => setOpeningTime(val)}
           onClosingTimeChange={(val) => setClosingTime(val)}
+          spotCapacity={spotCapacity}
+          onSpotCapacity={(val) => setSpotCapacity(val)}
           onApproximateDailyCost={(val) => setApproximateDailyCost(val ? val : undefined)}
           onPlaceTheme={(theme) => handleThemeTag(theme)}
           placesThemesSelected={themeTags}
@@ -572,10 +576,13 @@ export const DiscoveredPlaceForm: React.FC<{
         {isSaving ? (
           <LoaderSpinner />
         ) : (
-          <SimpleButton
-            text={t("actions.discover.shareDiscovery")}
-            action={handleSaveSpot}
-          />
+          <div className="max-w-xs">
+            <SimpleButton
+              full
+              text={t("actions.discover.shareDiscovery")}
+              action={handleSaveSpot}
+            />
+          </div>
         )}
       </div>
     </section>

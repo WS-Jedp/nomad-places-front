@@ -65,6 +65,10 @@
                 "placeholder": "Pick the closing time",
                 "label": "Closing time"
             },
+            "capacity": {
+                "placeholder": "Enter the capacity of the spot",
+                "label": "Capacity"
+            },
             "zone": {
                 "placeholder": "Ex. Laureles, El Poblado, Envigado...",
                 "label": "Zone"

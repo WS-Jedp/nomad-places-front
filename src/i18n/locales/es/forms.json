@@ -65,6 +65,10 @@
                 "placeholder": "Escoge la hora de cierre",
                 "label": "Hora de cierre"
             },
+            "capacity": {
+                "placeholder": "Ingresa la capacidad total del lugar",
+                "label": "Capacidad"
+            },
             "zone": {
                 "placeholder": "Ej. Laureles, El Poblado, Centro...",
                 "label": "Zona"

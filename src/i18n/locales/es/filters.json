@@ -23,7 +23,8 @@
         "pickBestOptions": "Selecciona las opciones que mejor apliquen",
         "checkWhatYouNeed": "Marca lo que necesitas encontrar",
         "selectWhatYouNeed": "Selecciona las opciones que necesitas",
-        "selectAllWhatYouNeed": "Selecciona todas las opciones que necesitas"
+        "selectAllWhatYouNeed": "Selecciona todas las opciones que necesitas",
+        "capacityFor": "Capacidad para {{capacity}} personas"
     },
     "titles": {
         "people": "Personas",
@@ -71,7 +72,11 @@
             "STRONG": "Señal movil confiable"
         },
         "food": {
-            "label": "Servicio de comida"
+            "label": "Servicio de comida",
+            "FAST_FOOD": "Comida rapida",
+            "VEGAN": "Opciones veganas",
+            "VEGETARIAN": "Opciones vegetarianas",
+            "CARNIVORE": "Opciones carnivoras"
         },
         "foodQuality": {
             "label": "Calidad del servicio comida"
@@ -189,9 +194,9 @@
         "PURCHASE_REQUIRED": "Compra un producto para quedarte",
         "OUTSIDE_PURCHASE_ALLOWED": "Puedes consumir productos externos",
         "NO_OUTSIDE_FOOD": "Consumibles externos no estan permitidos",
-        "spanish": "Español",
-        "english": "Inglés",
-        "french": "Francés",
+        "SPANISH": "Español",
+        "ENGLISH": "Inglés",
+        "FRENCH": "Francés",
         "places": {
             "themes": {
                 "STARTUPS": "Startups",

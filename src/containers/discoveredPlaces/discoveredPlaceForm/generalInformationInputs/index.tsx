@@ -19,6 +19,7 @@ import { SimpleDropdown } from "../../../../components/dropdowns/simple";
 import { SmallDropdown } from "../../../../components/dropdowns/small";
 import { useState } from "react";
 import { MutipleOptionsPicker } from "../../../../components/form/inputs/pickerMultipleOptions";
+import NumberPicker from "../../../../components/form/inputs/number";
 
 export interface GeneralInformationInputsProps {
   spotName: string;
@@ -32,12 +33,16 @@ export interface GeneralInformationInputsProps {
   spotCloseAt?: string;
   onClosingTimeChange: (value: string) => void;
 
+  spotCapacity?: number;
+  onSpotCapacity: (value: number) => void;
+
   isConfirmation?: boolean;
 
   reviewsNameOptions?: ReviewValueAmountOptions<string>[];
   reviewsDescriptionOptions?: ReviewValueAmountOptions<string>[];
   reviewsOpenAtOptions?: ReviewValueAmountOptions<string>[];
   reviewsCloseAtOptions?: ReviewValueAmountOptions<string>[];
+  reviewsCapacityOptions?: ReviewValueAmountOptions<number>[];
 
   reviewsApproximateDailyCostOptions?: ReviewValueAmountOptions<PLACE_APPROXIMATE_DAILY_CONST_ENUM>[];
   reviewsThemesOptions?: ReviewValueAmountOptions<THEME_TAG_ENUM>[];
@@ -70,11 +75,14 @@ export const GeneralInformationInputs: React.FC<
   onClosingTimeChange,
   spotCloseAt,
   spotOpenAt,
+  spotCapacity,
+  onSpotCapacity,
   isConfirmation = false,
   reviewsNameOptions = [],
   reviewsDescriptionOptions = [],
   reviewsOpenAtOptions = [],
   reviewsCloseAtOptions = [],
+  reviewsCapacityOptions = [],
   reviewsApproximateDailyCostOptions = [],
   approximateDailyCostSelected,
   onApproximateDailyCost,
@@ -167,7 +175,7 @@ export const GeneralInformationInputs: React.FC<
       </div>
 
       <div className="my-2 flex flex-row">
-        <div className="w-6/12">
+        <div className="w-4/12">
           <TimePicker
             label={t("forms.inputs.spot.openingTime.label")}
             onTimePick={onOpeningTimeChange}
@@ -190,7 +198,7 @@ export const GeneralInformationInputs: React.FC<
             </div>
           )}
         </div>
-        <div className="w-6/12">
+        <div className="w-4/12">
           <TimePicker
             label={t("forms.inputs.spot.closingTime.label")}
             onTimePick={onClosingTimeChange}
@@ -213,6 +221,25 @@ export const GeneralInformationInputs: React.FC<
               ))}
             </div>
           )}
+        </div>
+        <div className="w-4/12">
+          <NumberPicker label={t("forms.inputs.spot.capacity.label")} onChange={onSpotCapacity} defaultValue={spotCapacity} />
+          {reviewsCapacityOptions.length > 0 && (
+          <div className="flex flex-row py-2 w-fll overflow-x-auto">
+            {reviewsCapacityOptions.map((option, index) => (
+              <div
+                key={index}
+                className="bg-indigo-50 text-indigo-700 font-semibold rounded-md px-2 relative cursor-pointer hover:bg-indigo-200 mr-1"
+                onClick={() => onSpotCapacity(option.value)}
+              >
+                <IonLabel className="text-xs">{option.value} {option.value > 1 ? t("filters.titles.people") : t("filters.titles.person") }</IonLabel>
+                <IonLabel className="text-xs absolute bg-indigo-400 text-white flex items-center justify-center text-center rounded-full w-[18px] h-[18px] top-[-6px] right-[-6px]">
+                  {option.amount}
+                </IonLabel>
+              </div>
+            ))}
+          </div>
+        )}
         </div>
       </div>
 
@@ -258,7 +285,7 @@ export const GeneralInformationInputs: React.FC<
                 onPlaceLanguages(value as LANGUAGE_ENUM);
               }}
               small
-              options={languageOptions.map((lang) => lang.toLowerCase())}
+              options={languageOptions.map((lang) => lang)}
               selected={selectedLanguages}
             />
           </IonCol>

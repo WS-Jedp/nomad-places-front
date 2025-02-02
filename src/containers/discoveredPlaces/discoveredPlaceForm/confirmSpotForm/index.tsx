@@ -88,6 +88,9 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
   const [spotDescription, setSpotDescription] = useState<string>(
     currentPlace?.description || ""
   );
+  const [spotCapacity, setSpotCapacity] = useState<number>(
+    currentPlace?.capacity || 0
+  );
 
   const [openingTime, setOpeningTime] = useState<string>(
     currentPlace?.rules?.openAt || ""
@@ -116,6 +119,8 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
     useState<ReviewValueAmountOptions<string>[]>();
   const [reviewsDescriptionOptions, setReviewsDescriptionOptions] =
     useState<ReviewValueAmountOptions<string>[]>();
+  const [reviewsSpotCapacity, setReviewsSpotCapacity] =
+    useState<ReviewValueAmountOptions<number>[]>();
   const [reviewsOPenAtOptions, setReviewsOPenAtOptions] =
     useState<ReviewValueAmountOptions<string>[]>();
   const [reviewsClosedAtOptions, setReviewsClosedAtOptions] =
@@ -510,6 +515,41 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
     return descriptionOptions;
   };
 
+  const countSpotCapacity = (
+    confirmations: DiscoveredPlaceConfirmation[]
+  ): ReviewValueAmountOptions<number>[] => {
+    const capacityOptions: ReviewValueAmountOptions<number>[] = [];
+    confirmations.forEach((place) => {
+      if (!place.capacity) return;
+      const capacity = capacityOptions.find(
+        (option) => option.value === place.capacity
+      );
+      if (capacity) {
+        capacity.amount++;
+      } else {
+        capacityOptions.push({
+          value: place.capacity,
+          amount: 1,
+        });
+      }
+    });
+
+    if (currentPlace?.capacity) {
+      const currentPlaceCapacity = capacityOptions.find(
+        (option) => option.value === currentPlace.capacity
+      );
+      if (currentPlaceCapacity) {
+        currentPlaceCapacity.amount++;
+      } else {
+        capacityOptions.push({
+          value: currentPlace.capacity,
+          amount: 1,
+        });
+      }
+    }
+    return capacityOptions;
+  };
+
   const countSpotOpenAt = (
     places: DiscoveredPlaceConfirmation[]
   ): ReviewValueAmountOptions<string>[] => {
@@ -841,6 +881,7 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
   useEffect(() => {
     setReviewsNameOptions(countSpotNames(reviews));
     setReviewsDescriptionOptions(countSpotDescriptions(reviews));
+    setReviewsSpotCapacity(countSpotCapacity(reviews));
     setReviewsOPenAtOptions(countSpotOpenAt(reviews));
     setReviewsClosedAtOptions(countSpotClosedAt(reviews));
     setReviewsZoneOptions(countSpotZones(reviews));
@@ -1142,6 +1183,8 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
           onOpeningTimeChange={(val) => setOpeningTime(val)}
           spotCloseAt={closingTime}
           onClosingTimeChange={(val) => setClosingTime(val)}
+          spotCapacity={spotCapacity}
+          onSpotCapacity={(val) => setSpotCapacity(val)}
           onPlaceLanguages={handleLanguagesSelection}
           selectedLanguages={languages}
           isConfirmation
@@ -1149,6 +1192,7 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
           reviewsDescriptionOptions={reviewsDescriptionOptions}
           reviewsCloseAtOptions={reviewsClosedAtOptions}
           reviewsOpenAtOptions={reviewsOPenAtOptions}
+          reviewsCapacityOptions={reviewsSpotCapacity}
           reviewsApproximateDailyCostOptions={reviewsApproximateDailyCost}
           approximateDailyCostSelected={approximateDailyCost || undefined}
           reviewsAmbiancesOptions={reviewsAmbianceTags}
@@ -1203,10 +1247,12 @@ export const ConfirmDiscoveredSpotForm: React.FC<{
           {isSaving ? (
             <LoaderSpinner />
           ) : (
-            <SimpleButton
-              text={t("actions.discover.confirmSpot")}
-              action={handleConfirmSpotRecommendation}
-            />
+            <div className="max-w-xs">
+              <SimpleButton
+                text={t("actions.discover.confirmSpot")}
+                action={handleConfirmSpotRecommendation}
+              />
+            </div>
           )}
         </div>
       )}

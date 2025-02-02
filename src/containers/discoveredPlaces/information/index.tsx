@@ -17,8 +17,10 @@ export const SharingDiscovery: React.FC<{ onShare: () => void }> = ({ onShare })
         { t('discover.texts.gratefulForSharing') }
       </p>
 
-      <div className="my-5">
-        <SimpleButton text={t('actions.discover.shareDiscovery')} action={onShare} />
+      <div className="relative my-5 w-full flex items-center justify-center mx-auto">
+        <div className='max-w-xs'>
+          <SimpleButton full text={t('actions.discover.shareDiscovery')} action={onShare} />
+        </div>
       </div>
 
       <h3 className="font-bold text-xl w-full text-center mt-5 mb-1">

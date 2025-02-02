@@ -17,6 +17,7 @@ export interface DiscoveredPlaceConfirmation {
   placeID: string;
   confirmedByID: string;
   description?: string;
+  capacity?: number;
   knownFor?: MINDSETS;
   languages: LANGUAGE_ENUM[];
   ambianceTags: AMBIENCE_TAG_ENUM[];

@@ -361,6 +361,8 @@ export const SearchPlaces: React.FC<SearchPlacesProps> = () => {
 
     if (lastSession && lastSession.payload.lastSession) {
       if (!lastSession.payload.expired) {
+        console.log(lastSession, "GO TO LAST SESSION");
+
         await dispatch(
           findPlace({ placeID: lastSession.payload.lastSession.placeID })
         );

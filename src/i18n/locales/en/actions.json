@@ -16,7 +16,8 @@
         "remove": "Remove",
         "shareIt": "Share it",
         "seeMap": "See map",
-        "searchInThisArea": "Search in this area"
+        "searchInThisArea": "Search in this area",
+        "downloadTheApp": "Download the App"
     },
     "confirmation": {
         "yes": "Yes",

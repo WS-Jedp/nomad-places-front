@@ -1,21 +1,22 @@
 {
   "short_name": "Coffi",
-  "name": "Coffi",
+  "name": "Coffi - Be where you thrive",
   "icons": [
     {
-      "src": "assets/icon/favicon.png",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "src": "/assets/images/coffi-logo.png",
+      "sizes": "421x421",
+      "type": "image/png",
+      "purpose": "any"
     },
     {
-      "src": "assets/icon/icon.png",
+      "src": "/assets/images/coffi-logo.png",
       "type": "image/png",
-      "sizes": "512x512",
-      "purpose": "maskable"
+      "sizes": "421x421",
+      "purpose": "any"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff"
+  "theme_color": "#533FFF",
+  "background_color": "#EFEFF9"
 }

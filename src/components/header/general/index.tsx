@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { IonHeader } from "@ionic/react";
 import { FaUserAlt, FaLocationArrow } from "react-icons/fa";
-import { IoMdMenu } from "react-icons/io";
+import { IoMdDownload, IoMdMenu } from "react-icons/io";
 import { MdSearch } from "react-icons/md";
 import { SearchSpotsGeneralFilters } from "../../../containers/filters/mobile/searchSpotsGeneralFilters";
 import { BlurAppModal } from "../../modals/blurContainer";
@@ -39,19 +39,23 @@ import { useUserPermissions } from "../../../common/hooks/useUserPermissions";
 import { useIsMobile } from "../../../common/hooks/useIsMobile";
 import { computeDistanceToSpot } from "../../../common/utils/geoLocation";
 import { useComputeLastSearchDistance } from "../../../common/hooks/useComputeLastSearchDistance";
+import useIsPWA from "../../../common/hooks/useIsPWA";
 
 interface GeneralHeaderProps {
-  onSearchInThisArea?: () => void
+  onSearchInThisArea?: () => void;
 }
 
-export const GeneralHeader: React.FC<GeneralHeaderProps> = ({ onSearchInThisArea }) => {
+export const GeneralHeader: React.FC<GeneralHeaderProps> = ({
+  onSearchInThisArea,
+}) => {
   const { t } = useTranslation();
-  const [ isMobile ] = useIsMobile()
- 
+  const [isMobile] = useIsMobile();
+  const [isPWA] = useIsPWA();
+
   const location = useLocation();
   const history = useHistory();
 
-  const [ ableToNewSearch ] = useComputeLastSearchDistance()
+  const [ableToNewSearch] = useComputeLastSearchDistance();
 
   const { canDiscoverPlaces } = useUserPermissions();
 
@@ -136,6 +140,9 @@ export const GeneralHeader: React.FC<GeneralHeaderProps> = ({ onSearchInThisArea
       case UserMenuOptions.about:
         console.log("Go to about page");
         break;
+      case UserMenuOptions.download:
+        handleInstallClick();
+        break;
       case UserMenuOptions.recommend:
         openDiscoveringPlaceModal();
         break;
@@ -217,6 +224,37 @@ export const GeneralHeader: React.FC<GeneralHeaderProps> = ({ onSearchInThisArea
     }
   }, []);
 
+  // PWA Installation
+  const [deferredPrompt, setDeferredPrompt] = useState<Event | null>(null);
+
+  useEffect(() => {
+    window.addEventListener("beforeinstallprompt", (event) => {
+      event.preventDefault(); // Prevent the default prompt
+      setDeferredPrompt(event);
+    });
+  }, []);
+
+  const handleInstallClick = () => {
+    if (
+      window.matchMedia("(display-mode: standalone)").matches ||
+      (navigator as any).standalone
+    ) {
+      // If PWA is already installed, open the app
+      window.location.href = "/"; // Change to your app's main route
+      return;
+    }
+
+    if (deferredPrompt) {
+      (deferredPrompt as any).prompt();
+      (deferredPrompt as any).userChoice.then((choiceResult: any) => {
+        if (choiceResult.outcome === "accepted") {
+          console.log("User accepted the install prompt");
+        }
+        setDeferredPrompt(null);
+      });
+    }
+  };
+
   return (
     <IonHeader
       className="
@@ -229,21 +267,21 @@ export const GeneralHeader: React.FC<GeneralHeaderProps> = ({ onSearchInThisArea
                     z-[999]
                 "
     >
-      <article className="flex flex-row flex-nowrap items-center cursor-pointer text-coffi-black" onClick={onLogo}>
+      <article
+        className="flex flex-row flex-nowrap items-center cursor-pointer text-coffi-black"
+        onClick={onLogo}
+      >
         <img src="/assets/images/coffi-logo.svg" width={45} className="mr-2" />
-        {
-          !isMobile && (
-            <div className="flex flex-col items-start jusitfy-center h-full border-solid border-black">
-              <h1
-                className="font-sf block font-black text-2xl cursor-pointer my-0 py-0">
-                Coffi
-              </h1>
-              <h2 className="font-sf font-light text-sm my-0 py-0 pl-[1px] mt-[-2px]">
-                 Be where you thrive
-              </h2>
-            </div>
-          ) 
-        }
+        {!isMobile && (
+          <div className="flex flex-col items-start jusitfy-center h-full border-solid border-black">
+            <h1 className="font-sf block font-black text-2xl cursor-pointer my-0 py-0">
+              Coffi
+            </h1>
+            <h2 className="font-sf font-light text-sm my-0 py-0 pl-[1px] mt-[-2px]">
+              Be where you thrive
+            </h2>
+          </div>
+        )}
       </article>
 
       <div
@@ -284,13 +322,34 @@ export const GeneralHeader: React.FC<GeneralHeaderProps> = ({ onSearchInThisArea
       </div>
 
       <section className="flex flex-row flex-nowrap items-center justify-center">
+        {!isPWA && (
+          <button
+            onClick={handleInstallClick}
+            className="
+                      hidden md:flex
+                      flex-nowrap 
+                      py-2 px-4 mr-2
+                      items-center justify-center 
+                      outline outline-1 outline-gray-300 rounded-full 
+                      text-center 
+                      cursor-pointer
+                      hover:bg-gray-100
+                  "
+          >
+            <IoMdDownload size={15} className="mr-1 text-coffi-black/80" />
+            <span className="text-coffi-black text-sm">
+              {t("actions.general.downloadTheApp")}
+            </span>
+          </button>
+        )}
+
         {canDiscoverPlaces() && (
           <button
             onClick={openDiscoveringPlaceModal}
             className="
                                 hidden md:flex
                                 flex-items flex-nowrap 
-                                py-2 px-4 mr-3 
+                                py-2 px-4 mr-2
                                 items-center justify-center 
                                 outline outline-1 outline-gray-300 rounded-full 
                                 text-center 
@@ -351,16 +410,14 @@ export const GeneralHeader: React.FC<GeneralHeaderProps> = ({ onSearchInThisArea
         </span>
       </section>
 
-      {
-        onSearchInThisArea && isMobile && ableToNewSearch && (
-          <div className="absolute bottom-[-30px] mx-auto w-full flex items-center justify-center">
-            <SimpleDarkButton 
-              text={t('actions.general.searchInThisArea')}
-              action={onSearchInThisArea}
-            />
-          </div>
-        )
-      }
+      {onSearchInThisArea && isMobile && ableToNewSearch && (
+        <div className="absolute bottom-[-30px] mx-auto w-full flex items-center justify-center">
+          <SimpleDarkButton
+            text={t("actions.general.searchInThisArea")}
+            action={onSearchInThisArea}
+          />
+        </div>
+      )}
 
       {showFilters && (
         <BlurAppModal>

@@ -1,6 +1,8 @@
 import { useTranslation } from "react-i18next";
 import { useAppSelector } from "../../../common/hooks/useTypedSelectors";
 import { useUserPermissions } from "../../../common/hooks/useUserPermissions";
+import { IoMdDownload } from "react-icons/io";
+import useIsPWA from "../../../common/hooks/useIsPWA";
 
 export enum UserMenuOptions {
   register = "register",
@@ -9,6 +11,7 @@ export enum UserMenuOptions {
   about = "about",
   logout = "logout",
   profile = "profile",
+  download = "download",
 }
 
 type UserOptionsMenuProps = {
@@ -19,6 +22,7 @@ export const UserOptionsMenu: React.FC<UserOptionsMenuProps> = ({
   callback,
 }) => {
   const { t, i18n } = useTranslation();
+  const [isPWA] = useIsPWA();
 
   const { canDiscoverPlaces } = useUserPermissions();
 
@@ -123,6 +127,21 @@ export const UserOptionsMenu: React.FC<UserOptionsMenuProps> = ({
       </button>
       <hr />
 
+      {!isPWA && (
+        <>
+          <button
+            className="px-6 py-3 w-full h-auto text-start hover:bg-gray-50"
+            onClick={() => handleAction(UserMenuOptions.download)}
+          >
+            <h2 className="font-regular text-sm flex items-center justify-start">
+              <IoMdDownload size={15} className="mr-1 text-coffi-black/80" />
+              {t("actions.general.downloadTheApp")}
+            </h2>
+          </button>
+          <hr />
+        </>
+      )}
+
       <div
         className="px-6 py-3 w-full h-auto text-start text-sm"
         onClick={() => handleAction(UserMenuOptions.about)}
@@ -136,13 +155,13 @@ export const UserOptionsMenu: React.FC<UserOptionsMenuProps> = ({
           }`}
           onClick={() => chooseLanguage("en")}
         >
-          En
+          EN
         </button>
         <button
           className={`underline ${i18n.language === "es" ? "font-bold" : ""}`}
           onClick={() => chooseLanguage("es")}
         >
-          Es
+          ES
         </button>
       </div>
     </article>

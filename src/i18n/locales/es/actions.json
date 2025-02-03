@@ -16,7 +16,8 @@
         "remove": "Remover",
         "shareIt": "Compartir",
         "seeMap": "Ver mapa",
-        "searchInThisArea": "Buscar en esta área"
+        "searchInThisArea": "Buscar en esta área",
+        "downloadTheApp": "Descargar la App"
     },
     "confirmation": {
         "yes": "Sí",
